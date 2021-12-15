@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	이 파일은 프로젝트 관리 프레임워크인 Maven Framework의 중앙 제어 설정 파일입니다.
+	이 파일에 프로젝트 설정을 모두 마친 후 build를 하면 프로젝트 구조가 변경됩니다.
+	기존의 Java EE 개발할 때 처럼 설정을 일일이 메뉴에서 할 필요가 없게 됩니다.
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!-- 
+		현재 프로젝트의 정보
+		- modelVersion : 사용할 maven 프로젝트 모델 버전(변경하지 않음)
+		- groupId : 프로젝트의 대표 그룹 식별자(e.g. 제조사). top-level-package의 1,2계층
+		- artifactId : 애플리케이션의 식별자(e.g. 제품). top-level-package의 3계층
+		- name : 프로젝트의 context 식별자(e.g. 프로젝트명)
+		- packaging : 배포 형태(jar/war)
+		- version : 프로젝트의 현재 버전(major.minor.release)
+	-->
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>여기</groupId>
+	<artifactId>안바꾸면</artifactId>
+	<name>바보</name>
+	<packaging>war</packaging>
+	<version>1.0.0-BUILD-SNAPSHOT</version>
+	
+	<!-- 
+		properties 영역에서는 이 문서에서 사용할 데이터들을 변수로 선언할 수 있다.
+		= 사용은 ${변수명} 과 같이 한다
+		= 주로 버전 관련 정보나 경로 관련 정보를 저장한다
+	 -->
+	<properties>
+		<java-version>1.8</java-version>
+		<org.springframework-version>5.3.13</org.springframework-version>
+		<org.aspectj-version>1.9.7</org.aspectj-version>
+		<org.slf4j-version>1.7.32</org.slf4j-version>
+	</properties>
+	
+	<!-- 
+		dependencies 영역은 프로젝트에서 필요로 하는 라이브러리(의존성) 정보를 선언하는 영역
+		= 정보만 선언하면 프로젝트 빌드(build)시 maven에서 자동으로 다운받아 설정해준다
+		= 의존성 정보는 반드시 groupId, artifactId, version 등을 명시해야 한다.
+		
+		= maven 중앙 저장소에서 기본적으로 의존성 정보를 다운로드할 수 있다.
+		= https://mvnrepository.com/
+	 -->
+	<dependencies>
+	
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				 </exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+				
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>	
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- 
+			slf4j 내부에 포함된 log4j의 보안이슈(2021.12.11)에 의한 의존성 교체 설정
+			- 영향을 받는 버전 : 2.0-beta 부터 2.14.1 까지
+			- 다음 중 하나를 적용하여 문제 해결
+				- 최신버전(2.15.0)으로 교체하여 문제되는 부분의 수정 버전 적용
+				- JndiLookup 클래스를 수동으로 제거
+				- Runtime 실행변수 추가
+					-Dlog4j2.formatMsgNoLookups=TRUE
+		-->
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-core</artifactId>
+		    <version>2.15.0</version>
+		</dependency>
+
+		<!-- @Inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+				
+		<!-- Servlet -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>4.0.1</version>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>javax.servlet.jsp</groupId>
+		    <artifactId>javax.servlet.jsp-api</artifactId>
+		    <version>2.3.3</version>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+	
+		<!-- 
+			테스트를 위한 의존성 추가
+			- junit : 자바의 독립적인 테스트 프레임워크
+			- spring-test : junit 등을 spring에 맞게 사용할 수 있도록 도와주는 어댑터 의존성
+		 -->
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.13.2</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <version>${org.springframework-version}</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- 데이터베이스 사용 관련 의존성 -->
+		<dependency>
+		    <groupId>com.oracle.database.jdbc</groupId>
+		    <artifactId>ojdbc8</artifactId>
+		    <version>21.3.0.0</version>
+		</dependency>
+		
+		<!-- 스프링 JDBC 의존성 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-jdbc</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+				
+		<!-- DBCP 의존성 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-dbcp2</artifactId>
+		    <version>2.9.0</version>
+		</dependency>
+				
+		<!-- 
+			myBatis 의존성
+			- org.mybatis.mybatis : 마이바티스 코어 의존성
+			- org.mybatis.mybatis-spring : 스프링을 위한 마이바티스 변환 의존성
+		 -->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis</artifactId>
+		    <version>3.5.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis-spring</artifactId>
+		    <version>2.0.6</version>
+		</dependency>
+		
+		<!-- 
+			롬복 : 클래스 코드 자동화 라이브러리
+			- 의존성 추가를 통해 롬복이 제공하는 기능 사용 가능
+			- 이클립스에 추가 설정을 통해 이클립스가 코드가 있다고 믿게 만들어야 한다.
+				1. 해당하는 의존성의 실제 위치를 찾아가야 한다.
+		 -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.22</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- 스프링 시큐리티 코어(암호화) 의존성 -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>5.6.0</version>
+		</dependency>
+		
+		<!-- 
+			파일 업로드 처리 의존성
+			- commons-io : 아파치에서 제공하는 파일 입출력 제어 의존성
+			- commons-fileupload :  아파치에서 제공하는 파일 업로드 다운로드 제어 의존성(multipart)
+		-->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.11.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		
+		<!-- 
+			이메일 발송 관련 의존성
+			- com.sun.mail.javax.mail : 코어 의존성
+			- javax.mail.javax.mail-api : 자바 API 의존성
+			- org.springframework.spring-context-support : 스프링 어댑터 의존성
+			
+			(참고) Java Mail 1.5 미만은 com.sun.mail.javax.mail을 추가할 필요가 없다(통합되어 있음)
+			- java.mail.mail : 코어 의존성 및 자바 의존성
+			- org.springframework.spring-context-support : 스프링 어댑터 의존성
+		 -->
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>javax.mail-api</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- 
+			데이터 변환 라이브러리
+			= 의존성만 추가하면 모든 @RestController의 반환값을 변환 처리한다 
+		-->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.13.0</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<!-- 
+		프로젝트 완성 후 빌드(build)를 통해 결과물을 만들어내기 위해 필요한 정보 선언 영역
+		= 기본 설정 사용
+	 -->
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                	<!-- maven에서 컴파일을 수행할 때 사용할 자바 버전을 명시 -->
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>org.test.int1.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

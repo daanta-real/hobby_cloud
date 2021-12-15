@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	이 프로젝트가 Web Application Server에서 어떻게 운영되어야 하는지를 설정하는 파일
+	= 스프링은 자바를 기반으로한 확장팩이다
+	= 과거에 만들었던 Java EE 프로젝트에 스프링 관련 도구들을 추가하여 운영하는 형태이다.
+	= 스프링과 관련된 설정 또는 도구 등을 여기에 추가한다.
+ -->
+<web-app version="4.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- 
+		한글(및 유니코드) 변환을 위한 필터를 등록
+		- 스프링에서 제공하는 필터를 사용
+		- org.springframework.web.filter.CharacterEncodingFilter
+	 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		
+		<!-- 
+			부가 설정
+			1. (encoding=UTF-8) 인코딩 방식을 UTF-8로 설정 
+			2. (forceEncoding=true) 요청뿐만 아니라 응답까지도 강제로 UTF-8 처리하도록 설정
+		-->
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 
+		모든 스프링 서블릿에 공유되는 전역(Global) 설정 파일
+		- 설정파일을 등록할 때의 이름은 무조건 contextConfigLocation이라고 지어야 함
+		- 설정파일의 위치를 context 이후 부터의 절대경로로 작성
+	 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+	</context-param>
+	
+	<!-- 
+		전역 설정파일(root-context.xml)과 서블릿 설정파일(servlet-context.xml)을 연결하는 도구 등록
+		= 전역 설정파일의 내용을 서블릿 설정파일에서 사용할 수 있다 (Y/N)? Y
+		= 서블릿 설정파일의 내용을 전역 설정파일에서 사용할 수 있다 (Y/N)? N
+		= 전역 설정파일이 상위 설정파일임을 이해해야 한다.
+	 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<!-- 
+		Spring proxy filter 등록
+		= root-context.xml에 등록한 필터의 bean을 이곳에 필터로 등록
+		= filter-name은 등록된 spring bean의 id를 작성해야 한다.
+		= Filter class는 지정된 클래스를 등록해야 한다(DelegatingFilterProxy)
+		
+		<filter>
+			<filter-name>springFilter</filter-name>
+			<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		</filter>
+		<filter-mapping>
+			<filter-name>springFilter</filter-name>
+			<url-pattern>/*</url-pattern>
+		</filter-mapping>
+	 -->
+	
+
+	<!-- 
+		DispatcherServlet 등록 설정
+		= 스프링에서 제공해주는 모든 요청을 처리하는 서블릿
+		= 스프링에서는 사용자가 직접 서블릿을 만드는 것이 아니라 DispatcherServlet에 부탁하는 구조
+		= 이름은 appServlet이며, spring 내부에 같은 이름의 폴더가 반드시 존재해야 한다.
+		= DispatcherServlet은 스프링 관련 의존성에 존재한다(spring-webmvc).
+		= 이 서블릿을 등록하면서 "서블릿 설정 파일"도 같이 등록한다.
+		= load-on-startup 설정을 통해 실행 우선순위를 지정(1순위)
+		= url-pattern에 /로 설정하여 "설정을 제외한 나머지"를 처리하도록 지정한다.
+	 -->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+</web-app>
+
+
+
+
