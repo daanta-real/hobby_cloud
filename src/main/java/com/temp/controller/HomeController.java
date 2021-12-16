@@ -1,4 +1,4 @@
-package com.kh.spring00;
+package com.temp.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
