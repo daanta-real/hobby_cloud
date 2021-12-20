@@ -1,4 +1,4 @@
-package com.temp.repository;
+package com.kh.hobbycloud.repository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.temp.entity.UserDto;
+import com.kh.hobbycloud.entity.UserDto;
 
 //@Repository
 public class UserDaoImpl implements UserDao{

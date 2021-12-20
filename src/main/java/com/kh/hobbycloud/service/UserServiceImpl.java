@@ -1,4 +1,4 @@
-package com.temp.service;
+package com.kh.hobbycloud.service;
 
 import java.io.IOException;
 
@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.temp.entity.UserDto;
-import com.temp.entity.UserProfileDto;
-import com.temp.repository.UserDao;
-import com.temp.repository.UserProfileDao;
-import com.temp.vo.UserJoinVO;
+import com.kh.hobbycloud.entity.UserDto;
+import com.kh.hobbycloud.entity.UserProfileDto;
+import com.kh.hobbycloud.repository.UserDao;
+import com.kh.hobbycloud.repository.UserProfileDao;
+import com.kh.hobbycloud.vo.UserJoinVO;
 
 @Service
 public class UserServiceImpl implements UserService{

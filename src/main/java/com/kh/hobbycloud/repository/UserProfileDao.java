@@ -1,10 +1,10 @@
-package com.temp.repository;
+package com.kh.hobbycloud.repository;
 
 import java.io.IOException;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.temp.entity.UserProfileDto;
+import com.kh.hobbycloud.entity.UserProfileDto;
 
 public interface UserProfileDao {
 	void save(UserProfileDto UserProfileDto, MultipartFile multipartFile) throws IllegalStateException, IOException;

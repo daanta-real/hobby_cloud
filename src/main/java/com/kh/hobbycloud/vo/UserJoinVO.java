@@ -1,4 +1,4 @@
-package com.temp.vo;
+package com.kh.hobbycloud.vo;
 
 import org.springframework.web.multipart.MultipartFile;
 

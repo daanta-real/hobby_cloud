@@ -18,9 +18,9 @@
 		- version : 프로젝트의 현재 버전(major.minor.release)
 	-->
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>여기</groupId>
-	<artifactId>안바꾸면</artifactId>
-	<name>바보</name>
+	<groupId>com.kh</groupId>
+	<artifactId>hobbycloud</artifactId>
+	<name>hobbycloud</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	

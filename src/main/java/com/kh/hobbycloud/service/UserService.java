@@ -1,8 +1,8 @@
-package com.temp.service;
+package com.kh.hobbycloud.service;
 
 import java.io.IOException;
 
-import com.temp.vo.UserJoinVO;
+import com.kh.hobbycloud.vo.UserJoinVO;
 
 public interface UserService {
 	void join(UserJoinVO memberJoinVO) throws IllegalStateException, IOException;

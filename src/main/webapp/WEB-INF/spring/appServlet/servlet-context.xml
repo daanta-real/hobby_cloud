@@ -39,7 +39,7 @@
 		= annotation-driven 설정을 해야 annotation이 활성화된다
 	 -->
 	<mvc:annotation-driven></mvc:annotation-driven>
-	<context:component-scan base-package="안바꾸면바보" use-default-filters="false">
+	<context:component-scan base-package="com.kh.hobbycloud" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	

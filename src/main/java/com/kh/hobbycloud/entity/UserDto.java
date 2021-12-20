@@ -1,4 +1,4 @@
-package com.temp.entity;
+package com.kh.hobbycloud.entity;
 
 import java.sql.Date;
 

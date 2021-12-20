@@ -1,6 +1,6 @@
-package com.temp.repository;
+package com.kh.hobbycloud.repository;
 
-import com.temp.entity.UserDto;
+import com.kh.hobbycloud.entity.UserDto;
 
 public interface UserDao {
 
