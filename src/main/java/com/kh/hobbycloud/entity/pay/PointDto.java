@@ -4,7 +4,7 @@ import lombok.Data;
 
 // 포인트상품 정보 DTO
 @Data
-public class Point {
+public class PointDto {
 	private Integer pointIdx;   // 포인트상품 idx
 	private String pointName;  // 포인트상품 이름
 	private Integer pointPrice; // 포인트상품 판매가
