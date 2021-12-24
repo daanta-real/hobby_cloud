@@ -31,7 +31,7 @@
 			(ex) <package name="com.kh.spring10.entity"/>
 	-->
 	<typeAliases>
-		
+<!-- 		<package name=""/> -->
 	</typeAliases>
 	
 	
