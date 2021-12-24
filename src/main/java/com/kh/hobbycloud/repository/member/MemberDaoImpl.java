@@ -1,4 +1,4 @@
-package com.kh.hobbycloud.repository;
+package com.kh.hobbycloud.repository.member;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,22 +6,23 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.kh.hobbycloud.entity.UserDto;
+import com.kh.hobbycloud.entity.member.MemberDto;
+
 
 //@Repository
-public class UserDaoImpl implements UserDao{
+public class MemberDaoImpl implements MemberDao{
 
 	@Autowired
 	private SqlSession sqlSession;
 
 	@Override
-	public UserDto get(String UserId) {
+	public MemberDto get(String UserId) {
 		return sqlSession.selectOne("User.get", UserId);
 	}
 
 	@Override
-	public UserDto login(UserDto UserDto) {
-		UserDto findDto = sqlSession.selectOne("User.get", UserDto.getUserId());
+	public MemberDto login(MemberDto UserDto) {
+		MemberDto findDto = sqlSession.selectOne("User.get", UserDto.getUserId());
 
 		//해당 아이디의 회원정보가 존재 && 입력 비밀번호와 조회된 비밀번호가 같다면 => 로그인 성공(객체를 반환)
 		if(findDto != null && UserDto.getUserPw().equals(findDto.getUserPw())) {
@@ -33,7 +34,7 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public void join(UserDto UserDto) {
+	public void join(MemberDto UserDto) {
 		sqlSession.insert("User.insert", UserDto);
 	}
 
@@ -48,7 +49,7 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public boolean changeInformation(UserDto UserDto) {
+	public boolean changeInformation(MemberDto UserDto) {
 		int count = sqlSession.update("User.changeInformation", UserDto);
 		return count > 0;
 	}
@@ -60,7 +61,7 @@ public class UserDaoImpl implements UserDao{
 //		param.put("UserPw", UserPw);
 //		int count = sqlSession.delete("User.quit", param);
 
-		UserDto UserDto = new UserDto();
+		MemberDto UserDto = new MemberDto();
 		UserDto.setUserId(UserId);
 		UserDto.setUserPw(UserPw);
 		int count = sqlSession.delete("User.quit", UserDto);

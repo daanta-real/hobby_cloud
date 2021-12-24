@@ -1,9 +1,9 @@
-package com.kh.hobbycloud.entity;
+package com.kh.hobbycloud.entity.member;
 
 import lombok.Data;
 
 @Data
-public class UserProfileDto {
+public class MemberProfileDto {
 	private int userProfileNo;
 	private String userId;
 	private String userProfileUploadname;

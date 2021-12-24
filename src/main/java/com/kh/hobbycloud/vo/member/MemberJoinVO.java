@@ -1,4 +1,4 @@
-package com.kh.hobbycloud.vo;
+package com.kh.hobbycloud.vo.member;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  *	회원정보(MemberDto)와 프로필 이미지(attach)를 저장한다
  */
 @Data
-public class UserJoinVO {
+public class MemberJoinVO {
 	private String userId;
 	private String userPw;
 	private String userNick;

@@ -1,4 +1,4 @@
-package com.kh.hobbycloud.repository;
+package com.kh.hobbycloud.repository.member;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.hobbycloud.entity.UserProfileDto;
+import com.kh.hobbycloud.entity.member.MemberProfileDto;
 
 @Repository
-public class UserProfileDaoImpl implements UserProfileDao{
+public class MemberProfileDaoImpl implements MemberProfileDao{
 
 	@Autowired
 	private SqlSession sqlSession;
@@ -27,7 +27,7 @@ public class UserProfileDaoImpl implements UserProfileDao{
 	 * 3. 파일 정보를 DB에 저장한다.
 	 */
 	@Override
-	public void save(UserProfileDto userProfileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
+	public void save(MemberProfileDto userProfileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
 		//1
 		int sequence = sqlSession.selectOne("userProfile.seq");
 
@@ -42,7 +42,7 @@ public class UserProfileDaoImpl implements UserProfileDao{
 	}
 
 	@Override
-	public UserProfileDto get(int userProfileNo) {
+	public MemberProfileDto get(int userProfileNo) {
 		return sqlSession.selectOne("userProfile.get", userProfileNo);
 	}
 
@@ -54,7 +54,7 @@ public class UserProfileDaoImpl implements UserProfileDao{
 	}
 
 	@Override
-	public UserProfileDto get(String userId) {
+	public MemberProfileDto get(String userId) {
 		return sqlSession.selectOne("userProfile.getById", userId);
 	}
 

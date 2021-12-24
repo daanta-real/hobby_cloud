@@ -1,4 +1,4 @@
-package com.kh.hobbycloud.service;
+package com.kh.hobbycloud.service.member;
 
 import java.io.IOException;
 
@@ -6,26 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.hobbycloud.entity.UserDto;
-import com.kh.hobbycloud.entity.UserProfileDto;
-import com.kh.hobbycloud.repository.UserDao;
-import com.kh.hobbycloud.repository.UserProfileDao;
-import com.kh.hobbycloud.vo.UserJoinVO;
+import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.entity.member.MemberProfileDto;
+import com.kh.hobbycloud.repository.member.MemberDao;
+import com.kh.hobbycloud.repository.member.MemberProfileDao;
+import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class MemberServiceImpl implements MemberService{
 
 	@Autowired
-	private UserDao userDao;
+	private MemberDao userDao;
 
 	@Autowired
-	private UserProfileDao userProfileDao;
+	private MemberProfileDao userProfileDao;
 
 	@Override
-	public void join(UserJoinVO userJoinVO) throws IllegalStateException, IOException {
+	public void join(MemberJoinVO userJoinVO) throws IllegalStateException, IOException {
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
 		//= userJoinVO에서 정보를 뽑아서 userDto를 생성하고 설정
-		UserDto userDto = new UserDto();
+		MemberDto userDto = new MemberDto();
 		userDto.setUserId(userJoinVO.getUserId());
 		userDto.setUserPw(userJoinVO.getUserPw());
 		userDto.setUserNick(userJoinVO.getUserNick());
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService{
 		//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
 		MultipartFile multipartFile = userJoinVO.getAttach();
 		if(!multipartFile.isEmpty()) {//파일이 있으면
-			UserProfileDto userProfileDto = new UserProfileDto();
+			MemberProfileDto userProfileDto = new MemberProfileDto();
 			userProfileDto.setUserId(userJoinVO.getUserId());
 			userProfileDto.setUserProfileUploadname(multipartFile.getOriginalFilename());
 			userProfileDto.setUserProfileType(multipartFile.getContentType());

@@ -19,25 +19,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.hobbycloud.entity.UserDto;
-import com.kh.hobbycloud.entity.UserProfileDto;
-import com.kh.hobbycloud.repository.UserDao;
-import com.kh.hobbycloud.repository.UserProfileDao;
-import com.kh.hobbycloud.service.UserService;
-import com.kh.hobbycloud.vo.UserJoinVO;
+import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.entity.member.MemberProfileDto;
+import com.kh.hobbycloud.repository.member.MemberDao;
+import com.kh.hobbycloud.repository.member.MemberProfileDao;
+import com.kh.hobbycloud.service.member.MemberService;
+import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class MemberController {
 
 	@Autowired
-	private UserDao userDao;
+	private MemberDao userDao;
 
 	@Autowired
-	private UserService userService;
+	private MemberService userService;
 
 	@Autowired
-	private UserProfileDao userProfileDao;
+	private MemberProfileDao userProfileDao;
 
 	// 1. 로그인 페이지 - 첫 페이지
 	@GetMapping("/login")
@@ -47,9 +47,9 @@ public class UserController {
 
 	// 2. 로그인 페이지 - 입력값이 넘어왔을 때 처리
 	@PostMapping("/login")
-	public String login(@ModelAttribute UserDto userDto, HttpSession session) {
+	public String login(@ModelAttribute MemberDto userDto, HttpSession session) {
 		//회원정보 단일조회 및 비밀번호 일치판정
-		UserDto findDto = userDao.login(userDto);
+		MemberDto findDto = userDao.login(userDto);
 		if(findDto != null) {
 			//세션에 user, grade를 설정하고 root로 리다이렉트
 			session.setAttribute("userId", findDto.getUserId());
@@ -78,7 +78,7 @@ public class UserController {
 	}
 
 	@PostMapping("/join")
-	public String join(@ModelAttribute UserJoinVO userJoinVO) throws IllegalStateException, IOException {
+	public String join(@ModelAttribute MemberJoinVO userJoinVO) throws IllegalStateException, IOException {
 		userService.join(userJoinVO);
 //		return "redirect:/user/join_success";
 		return "redirect:join_success";
@@ -94,8 +94,8 @@ public class UserController {
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
 		String userId = (String)session.getAttribute("ses");
-		UserDto userDto = userDao.get(userId);
-		UserProfileDto userProfileDto = userProfileDao.get(userId);
+		MemberDto userDto = userDao.get(userId);
+		MemberProfileDto userProfileDto = userProfileDao.get(userId);
 
 		model.addAttribute("userDto", userDto);
 		model.addAttribute("userProfileDto", userProfileDto);
@@ -136,7 +136,7 @@ public class UserController {
 	@GetMapping("/edit")
 	public String edit(HttpSession session, Model model) {
 		String userId = (String) session.getAttribute("ses");
-		UserDto userDto = userDao.get(userId);
+		MemberDto userDto = userDao.get(userId);
 
 		model.addAttribute("userDto", userDto);
 
@@ -145,7 +145,7 @@ public class UserController {
 	}
 
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute UserDto userDto, HttpSession session) {
+	public String edit(@ModelAttribute MemberDto userDto, HttpSession session) {
 		String userId = (String)session.getAttribute("ses");
 		userDto.setUserId(userId);
 
@@ -204,7 +204,7 @@ public class UserController {
 			) throws IOException {
 
 		//프로필번호(userProfileNo)로 프로필 이미지 파일정보를 구한다.
-		UserProfileDto userProfileDto = userProfileDao.get(userProfileNo);
+		MemberProfileDto userProfileDto = userProfileDao.get(userProfileNo);
 
 		//프로필번호(userProfileNo)로 실제 파일 정보를 불러온다
 		byte[] data = userProfileDao.load(userProfileNo);
