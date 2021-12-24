@@ -1,5 +1,5 @@
 package com.kh.hobbycloud.repository.lec;
 
-public class LecDao {
+public interface LecDao {
 
 }

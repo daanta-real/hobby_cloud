@@ -1,5 +1,5 @@
 package com.kh.hobbycloud.repository.etc;
 
-public class EtcDao {
+public interface EtcDao {
 
 }
