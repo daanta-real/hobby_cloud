@@ -1,5 +1,5 @@
 package com.kh.hobbycloud.repository.gather;
 
-public class GatherDao {
+public interface GatherDao {
 
 }

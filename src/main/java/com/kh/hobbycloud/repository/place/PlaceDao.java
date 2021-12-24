@@ -1,5 +1,5 @@
 package com.kh.hobbycloud.repository.place;
 
-public class PlaceDao {
+public interface PlaceDao {
 
 }
