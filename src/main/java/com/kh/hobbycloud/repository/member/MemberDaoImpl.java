@@ -15,11 +15,13 @@ public class MemberDaoImpl implements MemberDao{
 	@Autowired
 	private SqlSession sqlSession;
 
+	//단일조회
 	@Override
 	public MemberDto get(String memberId) {
 		return sqlSession.selectOne("member.get", memberId);
 	}
-
+	
+	//비밀번호 검사까지 통과 로그인
 	@Override
 	public MemberDto login(MemberDto memberDto) {
 		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
@@ -32,12 +34,14 @@ public class MemberDaoImpl implements MemberDao{
 			return null;
 		}
 	}
-
+	
+	//가입
 	@Override
 	public void join(MemberDto memberDto) {
 		sqlSession.insert("member.insert", memberDto);
 	}
 
+	//비밀번호 변경
 	@Override
 	public boolean changePassword(String memberId, String memberPw, String changePw) {
 		Map<String, Object> param = new HashMap<>();
@@ -47,13 +51,15 @@ public class MemberDaoImpl implements MemberDao{
 		int count = sqlSession.update("member.changePassword", param);
 		return count > 0;
 	}
-
+	
+	//개인정보 변경
 	@Override
 	public boolean changeInformation(MemberDto memberDto) {
 		int count = sqlSession.update("member.changeInformation", memberDto);
 		return count > 0;
 	}
 
+	//회원 탈퇴
 	@Override
 	public boolean quit(String memberId, String memberPw) {
 //		Map<String, Object> param = new HashMap<>();

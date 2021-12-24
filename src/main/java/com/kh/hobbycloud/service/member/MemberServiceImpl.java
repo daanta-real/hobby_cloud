@@ -29,7 +29,6 @@ public class MemberServiceImpl implements MemberService{
 		memberDto.setMemberId(memberJoinVO.getMemberId());
 		memberDto.setMemberPw(memberJoinVO.getMemberPw());
 		memberDto.setMemberNick(memberJoinVO.getMemberNick());
-		memberDto.setMemberBirth(memberJoinVO.getMemberBirth());
 		memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
 		memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
 		memberDao.join(memberDto);

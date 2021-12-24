@@ -53,7 +53,6 @@ public class MemberController {
 		if(findDto != null) {
 			//세션에 member, grade를 설정하고 root로 리다이렉트
 			session.setAttribute("memberId", findDto.getMemberId());
-			session.setAttribute("memberGrade", findDto.getMemberGrade());
 			return "redirect:/";
 		}
 		else {

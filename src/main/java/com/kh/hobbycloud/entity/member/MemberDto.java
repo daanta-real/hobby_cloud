@@ -6,19 +6,16 @@ import lombok.Data;
 
 @Data
 public class MemberDto {
+	private int memberIdx;
+	private String memberGradeName;
 	private String memberId;
 	private String memberPw;
 	private String memberNick;
-	private String memberBirth;
 	private String memberEmail;
 	private String memberPhone;
-	private Date memberJoin;
+	private Date member_registered;
 	private int memberPoint;
-	private String memberGrade;
-
-	public String getmemberBirthDay() {
-		return this.memberBirth.substring(0, 10);
-	}
+	private String member_region;
 }
 
 
