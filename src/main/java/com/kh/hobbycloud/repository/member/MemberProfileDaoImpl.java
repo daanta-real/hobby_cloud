@@ -18,7 +18,7 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 	private SqlSession sqlSession;
 
 	//저장용 폴더
-	private File directory = new File("D:/upload/user");
+	private File directory = new File("D:/upload/member");
 
 	/**
 	 * 등록 절차
@@ -27,35 +27,35 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 	 * 3. 파일 정보를 DB에 저장한다.
 	 */
 	@Override
-	public void save(MemberProfileDto userProfileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
+	public void save(MemberProfileDto memberProfileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
 		//1
-		int sequence = sqlSession.selectOne("userProfile.seq");
+		int sequence = sqlSession.selectOne("memberProfile.seq");
 
 		//2
 		File target = new File(directory, String.valueOf(sequence));
 		multipartFile.transferTo(target);
 
 		//3
-		userProfileDto.setUserProfileNo(sequence);
-		userProfileDto.setUserProfileSavename(String.valueOf(sequence));
-		sqlSession.insert("userProfile.save", userProfileDto);
+		memberProfileDto.setMemberProfileNo(sequence);
+		memberProfileDto.setMemberProfileSavename(String.valueOf(sequence));
+		sqlSession.insert("memberProfile.save", memberProfileDto);
 	}
 
 	@Override
-	public MemberProfileDto get(int userProfileNo) {
-		return sqlSession.selectOne("userProfile.get", userProfileNo);
+	public MemberProfileDto get(int memberProfileNo) {
+		return sqlSession.selectOne("memberProfile.get", memberProfileNo);
 	}
 
 	@Override
-	public byte[] load(int userProfileNo) throws IOException {
-		File target = new File(directory, String.valueOf(userProfileNo));
+	public byte[] load(int memberProfileNo) throws IOException {
+		File target = new File(directory, String.valueOf(memberProfileNo));
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 	}
 
 	@Override
-	public MemberProfileDto get(String userId) {
-		return sqlSession.selectOne("userProfile.getById", userId);
+	public MemberProfileDto get(String memberId) {
+		return sqlSession.selectOne("memberProfile.getById", memberId);
 	}
 
 }

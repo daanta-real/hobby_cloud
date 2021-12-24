@@ -16,33 +16,33 @@ import com.kh.hobbycloud.vo.member.MemberJoinVO;
 public class MemberServiceImpl implements MemberService{
 
 	@Autowired
-	private MemberDao userDao;
+	private MemberDao memberDao;
 
 	@Autowired
-	private MemberProfileDao userProfileDao;
+	private MemberProfileDao memberProfileDao;
 
 	@Override
-	public void join(MemberJoinVO userJoinVO) throws IllegalStateException, IOException {
+	public void join(MemberJoinVO memberJoinVO) throws IllegalStateException, IOException {
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
-		//= userJoinVO에서 정보를 뽑아서 userDto를 생성하고 설정
-		MemberDto userDto = new MemberDto();
-		userDto.setUserId(userJoinVO.getUserId());
-		userDto.setUserPw(userJoinVO.getUserPw());
-		userDto.setUserNick(userJoinVO.getUserNick());
-		userDto.setUserBirth(userJoinVO.getUserBirth());
-		userDto.setUserEmail(userJoinVO.getUserEmail());
-		userDto.setUserPhone(userJoinVO.getUserPhone());
-		userDao.join(userDto);
+		//= memberJoinVO에서 정보를 뽑아서 memberDto를 생성하고 설정
+		MemberDto memberDto = new MemberDto();
+		memberDto.setMemberId(memberJoinVO.getMemberId());
+		memberDto.setMemberPw(memberJoinVO.getMemberPw());
+		memberDto.setMemberNick(memberJoinVO.getMemberNick());
+		memberDto.setMemberBirth(memberJoinVO.getMemberBirth());
+		memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
+		memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
+		memberDao.join(memberDto);
 
 		//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
-		MultipartFile multipartFile = userJoinVO.getAttach();
+		MultipartFile multipartFile = memberJoinVO.getAttach();
 		if(!multipartFile.isEmpty()) {//파일이 있으면
-			MemberProfileDto userProfileDto = new MemberProfileDto();
-			userProfileDto.setUserId(userJoinVO.getUserId());
-			userProfileDto.setUserProfileUploadname(multipartFile.getOriginalFilename());
-			userProfileDto.setUserProfileType(multipartFile.getContentType());
-			userProfileDto.setUserProfileSize(multipartFile.getSize());
-			userProfileDao.save(userProfileDto, multipartFile);
+			MemberProfileDto memberProfileDto = new MemberProfileDto();
+			memberProfileDto.setMemberId(memberJoinVO.getMemberId());
+			memberProfileDto.setMemberProfileUploadname(multipartFile.getOriginalFilename());
+			memberProfileDto.setMemberProfileType(multipartFile.getContentType());
+			memberProfileDto.setMemberProfileSize(multipartFile.getSize());
+			memberProfileDao.save(memberProfileDto, multipartFile);
 		}
 	}
 

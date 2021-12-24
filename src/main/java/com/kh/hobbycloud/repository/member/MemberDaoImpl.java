@@ -16,16 +16,16 @@ public class MemberDaoImpl implements MemberDao{
 	private SqlSession sqlSession;
 
 	@Override
-	public MemberDto get(String UserId) {
-		return sqlSession.selectOne("User.get", UserId);
+	public MemberDto get(String memberId) {
+		return sqlSession.selectOne("member.get", memberId);
 	}
 
 	@Override
-	public MemberDto login(MemberDto UserDto) {
-		MemberDto findDto = sqlSession.selectOne("User.get", UserDto.getUserId());
+	public MemberDto login(MemberDto memberDto) {
+		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
 
 		//해당 아이디의 회원정보가 존재 && 입력 비밀번호와 조회된 비밀번호가 같다면 => 로그인 성공(객체를 반환)
-		if(findDto != null && UserDto.getUserPw().equals(findDto.getUserPw())) {
+		if(findDto != null && memberDto.getMemberPw().equals(findDto.getMemberPw())) {
 			return findDto;
 		}
 		else {//아니면 null을 반환
@@ -34,37 +34,37 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
-	public void join(MemberDto UserDto) {
-		sqlSession.insert("User.insert", UserDto);
+	public void join(MemberDto memberDto) {
+		sqlSession.insert("member.insert", memberDto);
 	}
 
 	@Override
-	public boolean changePassword(String UserId, String UserPw, String changePw) {
+	public boolean changePassword(String memberId, String memberPw, String changePw) {
 		Map<String, Object> param = new HashMap<>();
-		param.put("UserId", UserId);
-		param.put("UserPw", UserPw);
+		param.put("memberId", memberId);
+		param.put("memberPw", memberPw);
 		param.put("changePw", changePw);
-		int count = sqlSession.update("User.changePassword", param);
+		int count = sqlSession.update("member.changePassword", param);
 		return count > 0;
 	}
 
 	@Override
-	public boolean changeInformation(MemberDto UserDto) {
-		int count = sqlSession.update("User.changeInformation", UserDto);
+	public boolean changeInformation(MemberDto memberDto) {
+		int count = sqlSession.update("member.changeInformation", memberDto);
 		return count > 0;
 	}
 
 	@Override
-	public boolean quit(String UserId, String UserPw) {
+	public boolean quit(String memberId, String memberPw) {
 //		Map<String, Object> param = new HashMap<>();
-//		param.put("UserId", UserId);
-//		param.put("UserPw", UserPw);
-//		int count = sqlSession.delete("User.quit", param);
+//		param.put("memberId", memberId);
+//		param.put("memberPw", memberPw);
+//		int count = sqlSession.delete("member.quit", param);
 
-		MemberDto UserDto = new MemberDto();
-		UserDto.setUserId(UserId);
-		UserDto.setUserPw(UserPw);
-		int count = sqlSession.delete("User.quit", UserDto);
+		MemberDto memberDto = new MemberDto();
+		memberDto.setMemberId(memberId);
+		memberDto.setMemberPw(memberPw);
+		int count = sqlSession.delete("member.quit", memberDto);
 		return count > 0;
 	}
 
