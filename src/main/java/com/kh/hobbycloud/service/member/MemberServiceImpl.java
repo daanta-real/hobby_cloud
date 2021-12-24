@@ -37,7 +37,6 @@ public class MemberServiceImpl implements MemberService{
 		MultipartFile multipartFile = memberJoinVO.getAttach();
 		if(!multipartFile.isEmpty()) {//파일이 있으면
 			MemberProfileDto memberProfileDto = new MemberProfileDto();
-			memberProfileDto.setMemberId(memberJoinVO.getMemberId());
 			memberProfileDto.setMemberProfileUploadname(multipartFile.getOriginalFilename());
 			memberProfileDto.setMemberProfileType(multipartFile.getContentType());
 			memberProfileDto.setMemberProfileSize(multipartFile.getSize());

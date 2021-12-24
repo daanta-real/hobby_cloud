@@ -36,7 +36,7 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 		multipartFile.transferTo(target);
 
 		//3
-		memberProfileDto.setMemberProfileNo(sequence);
+		memberProfileDto.setMemberProfileIdx(sequence);
 		memberProfileDto.setMemberProfileSavename(String.valueOf(sequence));
 		sqlSession.insert("memberProfile.save", memberProfileDto);
 	}
