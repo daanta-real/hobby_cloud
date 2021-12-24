@@ -14,6 +14,100 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="구분을위한이름(테이블명)">
+<mapper namespace="member">
 	
+	<!-- 단일조회 -->
+	<select id="get" parameterType="String" resultType="MemberDto">
+		select * from member where member_id = #{memberId}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insert" parameterType="MemberDto">
+		insert into member(
+			member_id, member_pw, member_nick,
+			member_birth, member_email, member_phone
+		)
+		values(
+			#{memberId}, #{memberPw}, #{memberNick},
+			#{memberBirth}, #{memberEmail}, #{memberPhone}
+		)
+	</insert>
+	
+	<insert id="insert2" parameterType="MemberDto">
+		insert into member
+		values(
+			#{memberId}, #{memberPw}, #{memberNick},
+			#{memberBirth}, #{memberEmail}, #{memberPhone},
+			sysdate, 100, '준회원'
+		)
+	</insert>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changePassword" parameterType="map">
+		update member set member_pw = #{changePw}
+		where member_id = #{memberId}
+	</update>
+	
+	<!-- 
+		개인정보 변경
+		- changeInformation1 : 자기자신의 정보 수정
+		- changeInformation2 : 관리자의 정보 수정
+		- chagneInformation : 통합 정보 수정 
+	-->
+	
+	<update id="changeInformation1" parameterType="MemberDto">
+		update member 
+		set
+			member_nick = #{memberNick},
+			member_birth = to_date(#{memberBirth}, 'YYYY-MM-DD'),
+			member_email = #{memberEmail},
+			member_phone = #{memberPhone}
+		where
+			member_id = #{memberId}
+	</update>
+	
+	<update id="changeInformation2" parameterType="MemberDto">
+		update member
+		set
+			member_nick = #{memberNick},
+			member_birth = to_date(#{memberBirth}, 'YYYY-MM-DD'),
+			member_email = #{memberEmail},
+			member_phone = #{memberPhone},
+			member_point = #{memberPoint},
+			member_grade = #{memberGrade}
+		where
+			member_id = #{memberId}
+	</update>
+	
+	<update id="changeInformation" parameterType="MemberDto">
+		update member
+		
+		<!-- set을 이용하여 수정항목을 동적으로 배치(단 마지막 콤마는 반드시 작성) -->
+		<set>
+			<if test="memberNick != null">
+				member_nick = #{memberNick},
+			</if>
+			<if test="memberBirth != null">
+				member_birth = #{memberBirth},
+			</if>
+			<if test="memberEmail != null">
+				member_email = #{memberEmail},
+			</if>
+			<if test="memberPhone != null">
+				member_phone = #{memberPhone},
+			</if>
+			<if test="memberPoint != null">
+				member_point = #{memberPoint},
+			</if>
+			<if test="memberGrade != null">
+				member_grade = #{memberGrade},
+			</if>
+		</set>
+		where member_id = #{memberId}
+	</update>
+	
+	<delete id="quit" parameterType="String">
+		delete member where member_id = #{memberId}
+	</delete>
+		
 </mapper>

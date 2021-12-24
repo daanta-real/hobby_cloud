@@ -22,10 +22,11 @@ public class MemberDaoWithEncrypt implements MemberDao{
 	private PasswordEncoder encoder;
 
 	@Override
-	public MemberDto get(String memberId) {
-		return sqlSession.selectOne("member.get", memberId);
+	public MemberDto get(int memberIdx) {
+		return sqlSession.selectOne("member.get", memberIdx);
 	}
-
+	
+	//로그인
 	@Override
 	public MemberDto login(MemberDto memberDto) {
 		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
@@ -38,7 +39,8 @@ public class MemberDaoWithEncrypt implements MemberDao{
 			return null;
 		}
 	}
-
+	
+	//가입
 	@Override
 	public void join(MemberDto memberDto) {
 		//memberDto 안에 들어있는 원본 비밀번호를 BCrypt로 암호화 하여 다시 설정
@@ -48,7 +50,8 @@ public class MemberDaoWithEncrypt implements MemberDao{
 		//변경된 정보를 가진 memberDto를 기존처럼 등록
 		sqlSession.insert("member.insert", memberDto);
 	}
-
+	
+	//비밀번호 변경
 	@Override
 	public boolean changePassword(String memberId, String memberPw, String changePw) {
 		//변경해야 할 내용
@@ -67,7 +70,8 @@ public class MemberDaoWithEncrypt implements MemberDao{
 			return false;
 		}
 	}
-
+	
+	//개인정보변경
 	@Override
 	public boolean changeInformation(MemberDto memberDto) {
 		//비밀번호 검사를 DAO에서 PasswordEncoder를 이용하여 수행하도록 변경
@@ -81,7 +85,8 @@ public class MemberDaoWithEncrypt implements MemberDao{
 			return false;
 		}
 	}
-
+	
+	//회원탈퇴
 	@Override
 	public boolean quit(String memberId, String memberPw) {
 		MemberDto findDto = sqlSession.selectOne("member.get", memberId);

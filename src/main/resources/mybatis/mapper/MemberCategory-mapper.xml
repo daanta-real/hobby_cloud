@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberCategory">
+
+	<!-- 등록 -->
+	<insert id="insert" parameterType="memberCategoryDto">
+		insert into member_category(
+			member_idx, lec_category_name
+		)
+		values(
+			#{memberIdx}, #{lecCategoryName}
+		)
+	</insert>
+	
+	<select id="get" parameterType="int" resultType="memberCategoryDto">
+		select * from member_profile where member_profile_no = #{memberProfileNo}
+	</select>
+
+	<select id="getById" parameterType="String" resultType="memberCategoryDto">
+		select * from member_profile where member_id = #{memberId}
+	</select>
+
+</mapper>

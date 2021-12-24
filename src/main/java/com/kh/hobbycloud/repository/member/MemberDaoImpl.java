@@ -17,8 +17,8 @@ public class MemberDaoImpl implements MemberDao{
 
 	//단일조회
 	@Override
-	public MemberDto get(String memberId) {
-		return sqlSession.selectOne("member.get", memberId);
+	public MemberDto get(int memberIdx) {
+		return sqlSession.selectOne("member.get", memberIdx);
 	}
 	
 	//비밀번호 검사까지 통과 로그인

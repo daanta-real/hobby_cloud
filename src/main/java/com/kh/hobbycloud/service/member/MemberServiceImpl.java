@@ -1,6 +1,7 @@
 package com.kh.hobbycloud.service.member;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,11 @@ public class MemberServiceImpl implements MemberService{
 		memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
 		memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
 		memberDao.join(memberDto);
+		
+		//회원관심분야 정보 뽑아서 회원 테이블에 저장
+		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
+		List<String> categoryList = memberJoinVO.getLecCategoryName();
+		memberCategoryDao.join(categoryList);
 
 		//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
 		MultipartFile multipartFile = memberJoinVO.getAttach();

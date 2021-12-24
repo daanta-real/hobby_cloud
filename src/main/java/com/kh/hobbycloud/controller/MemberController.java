@@ -92,9 +92,9 @@ public class MemberController {
 	//내정보
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
-		String memberId = (String)session.getAttribute("ses");
-		MemberDto memberDto = memberDao.get(memberId);
-		MemberProfileDto memberProfileDto = memberProfileDao.get(memberId);
+		int memberIdx = (int) session.getAttribute("ses");
+		MemberDto memberDto = memberDao.get(memberIdx);
+		MemberProfileDto memberProfileDto = memberProfileDao.get(memberIdx);
 
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberProfileDto", memberProfileDto);
@@ -134,8 +134,8 @@ public class MemberController {
 
 	@GetMapping("/edit")
 	public String edit(HttpSession session, Model model) {
-		String memberId = (String) session.getAttribute("ses");
-		MemberDto memberDto = memberDao.get(memberId);
+		int memberIdx = (int) session.getAttribute("ses");
+		MemberDto memberDto = memberDao.get(memberIdx);
 
 		model.addAttribute("memberDto", memberDto);
 
