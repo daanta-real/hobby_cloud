@@ -3,6 +3,6 @@ package com.kh.hobbycloud.entity.lec;
 import lombok.Data;
 
 @Data
-public class lecCategoryDto {
+public class LecCategoryDto {
 	private String lecCategoryName;
 }

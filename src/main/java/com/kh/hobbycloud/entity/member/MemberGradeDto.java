@@ -5,6 +5,6 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class memberGradeDto {
+public class MemberGradeDto {
 	private String memberGradeName;
 }
