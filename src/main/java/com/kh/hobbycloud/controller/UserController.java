@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.UserDto;
 import com.kh.hobbycloud.entity.UserProfileDto;
-import com.kh.hobbycloud.repository.UserDao;
-import com.kh.hobbycloud.repository.UserProfileDao;
+import com.kh.hobbycloud.repository.member.UserDao;
+import com.kh.hobbycloud.repository.member.UserProfileDao;
 import com.kh.hobbycloud.service.UserService;
 import com.kh.hobbycloud.vo.UserJoinVO;
 

@@ -1,4 +1,4 @@
-package com.kh.hobbycloud.repository;
+package com.kh.hobbycloud.repository.member;
 
 import com.kh.hobbycloud.entity.UserDto;
 

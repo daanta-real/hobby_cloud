@@ -8,8 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.UserDto;
 import com.kh.hobbycloud.entity.UserProfileDto;
-import com.kh.hobbycloud.repository.UserDao;
-import com.kh.hobbycloud.repository.UserProfileDao;
+import com.kh.hobbycloud.repository.member.UserDao;
+import com.kh.hobbycloud.repository.member.UserProfileDao;
 import com.kh.hobbycloud.vo.UserJoinVO;
 
 @Service

@@ -32,6 +32,8 @@
 	-->
 	<typeAliases>
 <!-- 		<package name=""/> -->
+<package name="com.kh.hobbycloud.entity.gather"/>
+<package name="com.kh.hobbycloud.entity.lec"/>
 	</typeAliases>
 	
 	
