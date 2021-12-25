@@ -1,14 +1,14 @@
 package com.kh.hobbycloud.controller;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.kh.hobbycloud.entity._test._TestDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,17 +17,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/_TEST")
 public class _TestController {
 
-	@GetMapping("/1")
-	public String testStart() {
+	@GetMapping("/")
+	public String testForm() {
 		return "_TEST/_test";
 	}
 
-	@PostMapping("/1")
+	@PostMapping("/")
 	@ResponseBody
-	public String a(@ModelAttribute("testform") _TestDto testDto, Model model) {
-		String result = testDto.toString();
-		log.warn(result);
-		model.addAttribute("dto", testDto);
+	public String testFormReceiver(@RequestParam Map<String, Object> map, Model model) {
+		log.debug("◆◆◆◆◆◆◆◆◆◆◆◆◆" + map);
+		model.addAttribute("map", map);
 		return "_TEST/_test";
 	}
 
