@@ -12,21 +12,28 @@ public class PayController {
 	@ResponseBody
 	@RequestMapping("/")
 	public String index() {
-		return "진입";
+		return "pay/home";
+	}
+
+	// 카카오페이 결제내용 선확인 페이지
+	@ResponseBody
+	@RequestMapping("/confirm")
+	public String confirm() {
+		return "pay/confirm";
 	}
 
 	// 카카오페이 성공 페이지
 	@ResponseBody
 	@RequestMapping("/success")
 	public String success() {
-		return "성공";
+		return "pay/success";
 	}
 
 	// 카카오페이 실패 페이지
 	@ResponseBody
 	@RequestMapping("/fail")
 	public String fail() {
-		return "실패";
+		return "pay/fail";
 	}
 
 }
