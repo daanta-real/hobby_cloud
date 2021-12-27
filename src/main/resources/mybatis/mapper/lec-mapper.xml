@@ -17,7 +17,16 @@
 <mapper namespace="lec">
 	
 	<!-- 강좌 등록 -->
-	<insert id="register" parameterType="LecDto">
+	<insert id="registerDto" parameterType="LecDto">
+		insert into lec
+		values (
+			lec_seq.nextval, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
+			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
+			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitue}, #{lecLocLongitude},
+			0, 0, 0
+		)
+	</insert>
+	<insert id="registerVO" parameterType="LecRegisterVO">
 		insert into lec
 		values (
 			lec_seq.nextval, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},

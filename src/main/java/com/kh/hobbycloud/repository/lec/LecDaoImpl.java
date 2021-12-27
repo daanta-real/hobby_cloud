@@ -14,6 +14,6 @@ public class LecDaoImpl implements LecDao{
 	
 	@Override
 	public void register(LecDto lecDto) {
-		sqlSession.insert("lec.register", lecDto);
+		sqlSession.insert("lec.registerDto", lecDto);
 	}
 }
