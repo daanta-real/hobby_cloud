@@ -19,46 +19,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.hobbycloud.entity.UserDto;
-import com.kh.hobbycloud.entity.UserProfileDto;
-import com.kh.hobbycloud.repository.member.UserDao;
-import com.kh.hobbycloud.repository.member.UserProfileDao;
-import com.kh.hobbycloud.service.UserService;
-import com.kh.hobbycloud.vo.UserJoinVO;
+import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.entity.member.MemberProfileDto;
+import com.kh.hobbycloud.repository.member.MemberDao;
+import com.kh.hobbycloud.repository.member.MemberProfileDao;
+import com.kh.hobbycloud.service.member.MemberService;
+import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/member")
+public class MemberController {
 
 	@Autowired
-	private UserDao userDao;
+	private MemberDao memberDao;
 
 	@Autowired
-	private UserService userService;
+	private MemberService memberService;
 
 	@Autowired
-	private UserProfileDao userProfileDao;
+	private MemberProfileDao memberProfileDao;
 
 	// 1. 로그인 페이지 - 첫 페이지
 	@GetMapping("/login")
 	public String login() {
-		return "user/login";
+		return "member/login";
 	}
 
 	// 2. 로그인 페이지 - 입력값이 넘어왔을 때 처리
 	@PostMapping("/login")
-	public String login(@ModelAttribute UserDto userDto, HttpSession session) {
+	public String login(@ModelAttribute MemberDto memberDto, HttpSession session) {
 		//회원정보 단일조회 및 비밀번호 일치판정
-		UserDto findDto = userDao.login(userDto);
+		MemberDto findDto = memberDao.login(memberDto);
 		if(findDto != null) {
-			//세션에 user, grade를 설정하고 root로 리다이렉트
-			session.setAttribute("userId", findDto.getUserId());
-			session.setAttribute("userGrade", findDto.getUserGrade());
+			//세션에 member, grade를 설정하고 root로 리다이렉트
+			session.setAttribute("memberId", findDto.getMemberId());
 			return "redirect:/";
 		}
 		else {
 			//로그인 페이지에 오류 표시와 함께 리다이렉트
-			//return "redirect:/user/login?error";//절대
+			//return "redirect:/member/login?error";//절대
 			return "redirect:login?error";//상대
 		}
 	}
@@ -73,52 +72,52 @@ public class UserController {
 
 	@GetMapping("/join")
 	public String join() {
-//		return "/WEB-INF/views/user/join.jsp";
-		return "user/join";
+//		return "/WEB-INF/views/member/join.jsp";
+		return "member/join";
 	}
 
 	@PostMapping("/join")
-	public String join(@ModelAttribute UserJoinVO userJoinVO) throws IllegalStateException, IOException {
-		userService.join(userJoinVO);
-//		return "redirect:/user/join_success";
+	public String join(@ModelAttribute MemberJoinVO memberJoinVO) throws IllegalStateException, IOException {
+		memberService.join(memberJoinVO);
+//		return "redirect:/member/join_success";
 		return "redirect:join_success";
 	}
 
 	@RequestMapping("/join_success")
 	public String joinSuccess() {
-//		return "/WEB-INF/views/user/join_success.jsp";
-		return "user/join_success";
+//		return "/WEB-INF/views/member/join_success.jsp";
+		return "member/join_success";
 	}
 
 	//내정보
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
-		String userId = (String)session.getAttribute("ses");
-		UserDto userDto = userDao.get(userId);
-		UserProfileDto userProfileDto = userProfileDao.get(userId);
+		String memberId = (String)session.getAttribute("ses");
+		MemberDto memberDto = memberDao.get(memberId);
+		MemberProfileDto memberProfileDto = memberProfileDao.get(memberId);
 
-		model.addAttribute("userDto", userDto);
-		model.addAttribute("userProfileDto", userProfileDto);
+		model.addAttribute("memberDto", memberDto);
+		model.addAttribute("memberProfileDto", memberProfileDto);
 
-//		return "/WEB-INF/views/user/mypage.jsp";
-		return "user/mypage";
+//		return "/WEB-INF/views/member/mypage.jsp";
+		return "member/mypage";
 	}
 
 //	비밀번호 변경
 	@GetMapping("/password")
 	public String password() {
-//		return "/WEB-INF/views/user/password.jsp";
-		return "user/password";
+//		return "/WEB-INF/views/member/password.jsp";
+		return "member/password";
 	}
 
 	@PostMapping("/password")
 	public String password(
-			@RequestParam String userPw,
+			@RequestParam String memberPw,
 			@RequestParam String changePw,
 			HttpSession session) {
-		String userId = (String) session.getAttribute("ses");
+		String memberId = (String) session.getAttribute("ses");
 
-		boolean result = userDao.changePassword(userId, userPw, changePw);
+		boolean result = memberDao.changePassword(memberId, memberPw, changePw);
 		if(result) {
 			return "redirect:password_success";
 		}
@@ -129,27 +128,27 @@ public class UserController {
 
 	@RequestMapping("/password_success")
 	public String passwordSuccess() {
-//		return "/WEB-INF/views/user/password_success.jsp";
-		return "user/password_success";
+//		return "/WEB-INF/views/member/password_success.jsp";
+		return "member/password_success";
 	}
 
 	@GetMapping("/edit")
 	public String edit(HttpSession session, Model model) {
-		String userId = (String) session.getAttribute("ses");
-		UserDto userDto = userDao.get(userId);
+		String memberId = (String) session.getAttribute("ses");
+		MemberDto memberDto = memberDao.get(memberId);
 
-		model.addAttribute("userDto", userDto);
+		model.addAttribute("memberDto", memberDto);
 
-//		return "/WEB-INF/views/user/edit.jsp";
-		return "user/edit";
+//		return "/WEB-INF/views/member/edit.jsp";
+		return "member/edit";
 	}
 
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute UserDto userDto, HttpSession session) {
-		String userId = (String)session.getAttribute("ses");
-		userDto.setUserId(userId);
+	public String edit(@ModelAttribute MemberDto memberDto, HttpSession session) {
+		String memberId = (String)session.getAttribute("ses");
+		memberDto.setMemberId(memberId);
 
-		boolean result = userDao.changeInformation(userDto);
+		boolean result = memberDao.changeInformation(memberDto);
 		if(result) {
 			return "redirect:edit_success";
 		}
@@ -160,21 +159,21 @@ public class UserController {
 
 	@RequestMapping("/edit_success")
 	public String editSuccess() {
-//		return "/WEB-INF/views/user/edit_success.jsp";
-		return "user/edit_success";
+//		return "/WEB-INF/views/member/edit_success.jsp";
+		return "member/edit_success";
 	}
 
 	@GetMapping("/quit")
 	public String quit() {
-//		return "/WEB-INF/views/user/quit.jsp";
-		return "user/quit";
+//		return "/WEB-INF/views/member/quit.jsp";
+		return "member/quit";
 	}
 
 	@PostMapping("/quit")
-	public String quit(HttpSession session, @RequestParam String userPw) {
-		String userId = (String)session.getAttribute("ses");
+	public String quit(HttpSession session, @RequestParam String memberPw) {
+		String memberId = (String)session.getAttribute("ses");
 
-		boolean result = userDao.quit(userId, userPw);
+		boolean result = memberDao.quit(memberId, memberPw);
 		if(result) {
 			session.removeAttribute("ses");
 			session.removeAttribute("grade");
@@ -188,8 +187,8 @@ public class UserController {
 
 	@RequestMapping("/quit_success")
 	public String quitSuccess() {
-//		return "/WEB-INF/views/user/quit_success";
-		return "user/quit_success";
+//		return "/WEB-INF/views/member/quit_success";
+		return "member/quit_success";
 	}
 
 //	프로필 다운로드에 대한 요청 처리
@@ -200,17 +199,17 @@ public class UserController {
 	@GetMapping("/profile")
 	@ResponseBody//이 메소드만큼은 뷰 리졸버를 쓰지 않겠다
 	public ResponseEntity<ByteArrayResource> profile(
-				@RequestParam int userProfileNo
+				@RequestParam int memberProfileNo
 			) throws IOException {
 
-		//프로필번호(userProfileNo)로 프로필 이미지 파일정보를 구한다.
-		UserProfileDto userProfileDto = userProfileDao.get(userProfileNo);
+		//프로필번호(memberProfileNo)로 프로필 이미지 파일정보를 구한다.
+		MemberProfileDto memberProfileDto = memberProfileDao.get(memberProfileNo);
 
-		//프로필번호(userProfileNo)로 실제 파일 정보를 불러온다
-		byte[] data = userProfileDao.load(userProfileNo);
+		//프로필번호(memberProfileNo)로 실제 파일 정보를 불러온다
+		byte[] data = memberProfileDao.load(memberProfileNo);
 		ByteArrayResource resource = new ByteArrayResource(data);
 
-		String encodeName = URLEncoder.encode(userProfileDto.getUserProfileUploadname(), "UTF-8");
+		String encodeName = URLEncoder.encode(memberProfileDto.getMemberProfileUploadname(), "UTF-8");
 		encodeName = encodeName.replace("+", "%20");
 
 		return ResponseEntity.ok()
@@ -220,8 +219,8 @@ public class UserController {
 									.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+encodeName+"\"")
 									//.header("Content-Encoding", "UTF-8")
 									.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
-									//.header("Content-Length", String.valueOf(userProfileDto.getuserProfileSize()))
-									.contentLength(userProfileDto.getUserProfileSize())
+									//.header("Content-Length", String.valueOf(memberProfileDto.getmemberProfileSize()))
+									.contentLength(memberProfileDto.getMemberProfileSize())
 								.body(resource);
 	}
 }

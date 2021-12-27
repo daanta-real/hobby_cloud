@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hobbycloud.entity.gather.GatherDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
@@ -28,13 +30,14 @@ public class GatherController {
 		return "gather/list";
 	}
 
-	@PostMapping("/search")
-	public String search(@ModelAttribute("abc") Map<String ,Object> param, Model model) {
-		System.out.println(param+"ㅡㅡㅡㅡㅡㅡㅡㅡ");
-		List<GatherDto> list = gatherDao.listSearch(param);
-		model.addAttribute("list",list);
-		return "gather/search";
-	}
+//	@RequestMapping("/search")
+//	public ModelAndView search(@RequestParam Map<String ,Object> param, Model model) {
+//		System.out.println(param+"ㅡㅡㅡㅡㅡㅡㅡㅡ");
+//		List<GatherDto> list = gatherDao.listSearch(param);
+//
+//		model.addAttribute("list",list);
+//		return "gather/search";
+//	}
 
 	@GetMapping("/insert")
 	public String insert() {
