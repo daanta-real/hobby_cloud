@@ -24,10 +24,10 @@
 select * from gather 
 <where>
 <if test="gatherName != null">
- and where instr(gather_name, #{gatherName}) >0
+ and  instr(gather_name, #{gatherName}) >0
 </if>
 <if test="gatherLocRegion != null">
-and where instr(gather_loc_region, #{gatherLocRegion))>0
+and  instr(gather_loc_region, #{gatherLocRegion})  >0
 </if>
 </where>
 </select>

@@ -23,21 +23,20 @@ public class GatherController {
 	@Autowired
 	private GatherDao gatherDao;
 
-	@RequestMapping("/list")
+	@GetMapping("/list")
 	public String list(Model model) {
 		List<GatherDto> list = gatherDao.list();
 		model.addAttribute("list", list);
 		return "gather/list";
 	}
 
-//	@RequestMapping("/search")
-//	public ModelAndView search(@RequestParam Map<String ,Object> param, Model model) {
-//		System.out.println(param+"ㅡㅡㅡㅡㅡㅡㅡㅡ");
-//		List<GatherDto> list = gatherDao.listSearch(param);
-//
-//		model.addAttribute("list",list);
-//		return "gather/search";
-//	}
+	@PostMapping("/list")
+	public String search(@RequestParam Map<String ,Object> param, Model model) {
+		List<GatherDto> list = gatherDao.listSearch(param);
+		System.out.println(param+"ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+		model.addAttribute("list",list);
+		return "gather/list";
+	}
 
 	@GetMapping("/insert")
 	public String insert() {
