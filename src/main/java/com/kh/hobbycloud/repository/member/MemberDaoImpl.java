@@ -5,17 +5,18 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
 
 
-//@Repository
+@Repository
 public class MemberDaoImpl implements MemberDao{
 
 	@Autowired
 	private SqlSession sqlSession;
 
-	//단일조회
+//	단일조회
 	@Override
 	public MemberDto get(int memberIdx) {
 		return sqlSession.selectOne("member.get", memberIdx);
@@ -62,10 +63,6 @@ public class MemberDaoImpl implements MemberDao{
 	//회원 탈퇴
 	@Override
 	public boolean quit(String memberId, String memberPw) {
-//		Map<String, Object> param = new HashMap<>();
-//		param.put("memberId", memberId);
-//		param.put("memberPw", memberPw);
-//		int count = sqlSession.delete("member.quit", param);
 
 		MemberDto memberDto = new MemberDto();
 		memberDto.setMemberId(memberId);

@@ -24,23 +24,15 @@
 	<!-- 등록 -->
 	<insert id="insert" parameterType="MemberDto">
 		insert into member(
-			member_id, member_pw, member_nick,
-			member_birth, member_email, member_phone
+			member_idx,member_id, member_pw, 
+			member_nick, member_email, member_phone
 		)
 		values(
-			#{memberId}, #{memberPw}, #{memberNick},
-			#{memberBirth}, #{memberEmail}, #{memberPhone}
+			member_seq.nextval, #{member_id}, #{member_pw}, #{member_nick},
+			#{member_email}, #{member_phone}, #{memberPhone}
 		)
 	</insert>
 	
-	<insert id="insert2" parameterType="MemberDto">
-		insert into member
-		values(
-			#{memberId}, #{memberPw}, #{memberNick},
-			#{memberBirth}, #{memberEmail}, #{memberPhone},
-			sysdate, 100, '준회원'
-		)
-	</insert>
 	
 	<!-- 비밀번호 변경 -->
 	<update id="changePassword" parameterType="map">

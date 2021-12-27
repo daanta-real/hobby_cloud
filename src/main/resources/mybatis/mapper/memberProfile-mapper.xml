@@ -36,11 +36,11 @@
 	</insert>
 	
 	<select id="get" parameterType="int" resultType="MemberProfileDto">
-		select * from member_profile where member_profile_no = #{memberProfileNo}
+		select * from member_profile where member_profile_idx = #{memberProfileIdx}
 	</select>
 
-	<select id="getById" parameterType="String" resultType="MemberProfileDto">
-		select * from member_profile where member_id = #{memberId}
+	<select id="getById" parameterType="int" resultType="MemberProfileDto">
+		select * from member_profile where member_idx = #{memberIdx}
 	</select>
 
 </mapper>

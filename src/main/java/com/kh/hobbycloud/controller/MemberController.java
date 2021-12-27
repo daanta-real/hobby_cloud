@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,13 +50,15 @@ public class MemberController {
 		//회원정보 단일조회 및 비밀번호 일치판정
 		MemberDto findDto = memberDao.login(memberDto);
 		if(findDto != null) {
-			//세션에 member, grade를 설정하고 root로 리다이렉트
+			//세션에 Idx, Id, Nick, grade를 설정하고 root로 리다이렉트
+			session.setAttribute("memberIdx", findDto.getMemberIdx());
 			session.setAttribute("memberId", findDto.getMemberId());
+			session.setAttribute("memberNick", findDto.getMemberNick());
+			session.setAttribute("memberGrade",findDto.getMemberGradeName());
+
 			return "redirect:/";
 		}
 		else {
-			//로그인 페이지에 오류 표시와 함께 리다이렉트
-			//return "redirect:/member/login?error";//절대
 			return "redirect:login?error";//상대
 		}
 	}
@@ -72,41 +73,38 @@ public class MemberController {
 
 	@GetMapping("/join")
 	public String join() {
-//		return "/WEB-INF/views/member/join.jsp";
 		return "member/join";
 	}
 
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberJoinVO memberJoinVO) throws IllegalStateException, IOException {
 		memberService.join(memberJoinVO);
-//		return "redirect:/member/join_success";
+		
 		return "redirect:join_success";
 	}
 
 	@RequestMapping("/join_success")
 	public String joinSuccess() {
-//		return "/WEB-INF/views/member/join_success.jsp";
 		return "member/join_success";
 	}
 
-	//내정보
-	@RequestMapping("/mypage")
-	public String mypage(HttpSession session, Model model) {
-		int memberIdx = (int) session.getAttribute("ses");
-		MemberDto memberDto = memberDao.get(memberIdx);
-		MemberProfileDto memberProfileDto = memberProfileDao.get(memberIdx);
-
-		model.addAttribute("memberDto", memberDto);
-		model.addAttribute("memberProfileDto", memberProfileDto);
-
-//		return "/WEB-INF/views/member/mypage.jsp";
-		return "member/mypage";
-	}
+//	/*
+//	 * //내정보
+//	 * 
+//	 * @RequestMapping("/mypage") public String mypage(HttpSession session, Model
+//	 * model) { int memberIdx = (int) session.getAttribute("ses"); MemberDto
+//	 * memberDto = memberDao.get(memberIdx); MemberProfileDto memberProfileDto =
+//	 * memberProfileDao.getMemberProfileIdx(memberIdx);
+//	 * 
+//	 * model.addAttribute("memberDto", memberDto);
+//	 * model.addAttribute("memberProfileDto", memberProfileDto);
+//	 * 
+//	 * // return "/WEB-INF/views/member/mypage.jsp"; return "member/mypage"; }
+//	 */
 
 //	비밀번호 변경
 	@GetMapping("/password")
 	public String password() {
-//		return "/WEB-INF/views/member/password.jsp";
 		return "member/password";
 	}
 
@@ -128,20 +126,18 @@ public class MemberController {
 
 	@RequestMapping("/password_success")
 	public String passwordSuccess() {
-//		return "/WEB-INF/views/member/password_success.jsp";
 		return "member/password_success";
 	}
 
-	@GetMapping("/edit")
-	public String edit(HttpSession session, Model model) {
-		int memberIdx = (int) session.getAttribute("ses");
-		MemberDto memberDto = memberDao.get(memberIdx);
-
-		model.addAttribute("memberDto", memberDto);
-
-//		return "/WEB-INF/views/member/edit.jsp";
-		return "member/edit";
-	}
+//	@GetMapping("/edit")
+//	public String edit(HttpSession session, Model model) {
+//		int memberIdx = (int) session.getAttribute("ses");
+//		MemberDto memberDto = memberDao.get(memberIdx);
+//
+//		model.addAttribute("memberDto", memberDto);
+//
+//		return "member/edit";
+//	}
 
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute MemberDto memberDto, HttpSession session) {
@@ -191,22 +187,18 @@ public class MemberController {
 		return "member/quit_success";
 	}
 
-//	프로필 다운로드에 대한 요청 처리
-//	= (주의) 뷰 리졸버가 적용되면 안된다. @ResponseBody 를 사용하면 무시 처리된다
-//	= 문자열이 아니라 파일 정보를 반환해서 스프링으로 하여금 다운로드 처리할 수 있도록 부탁
-//	= ResponseEntity는 데이터와 정보(헤더)를 같이 설정할 수 있도록 만들어진 Spring 도구
-//	= ByteArrayResource는 바이트 배열 형태의 자원을 담을 수 있는 Spring 도구
+
 	@GetMapping("/profile")
-	@ResponseBody//이 메소드만큼은 뷰 리졸버를 쓰지 않겠다
+	@ResponseBody
 	public ResponseEntity<ByteArrayResource> profile(
-				@RequestParam int memberProfileNo
+				@RequestParam int memberProfileIdx
 			) throws IOException {
 
-		//프로필번호(memberProfileNo)로 프로필 이미지 파일정보를 구한다.
-		MemberProfileDto memberProfileDto = memberProfileDao.get(memberProfileNo);
+		//프로필번호(memberProfileIdx)로 프로필 이미지 파일정보를 구한다.
+		MemberProfileDto memberProfileDto = memberProfileDao.getMemberProfileIdx(memberProfileIdx);
 
 		//프로필번호(memberProfileNo)로 실제 파일 정보를 불러온다
-		byte[] data = memberProfileDao.load(memberProfileNo);
+		byte[] data = memberProfileDao.load(memberProfileIdx);
 		ByteArrayResource resource = new ByteArrayResource(data);
 
 		String encodeName = URLEncoder.encode(memberProfileDto.getMemberProfileUploadname(), "UTF-8");

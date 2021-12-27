@@ -15,12 +15,4 @@
 		)
 	</insert>
 	
-	<select id="get" parameterType="int" resultType="memberCategoryDto">
-		select * from member_profile where member_profile_no = #{memberProfileNo}
-	</select>
-
-	<select id="getById" parameterType="String" resultType="memberCategoryDto">
-		select * from member_profile where member_id = #{memberId}
-	</select>
-
 </mapper>

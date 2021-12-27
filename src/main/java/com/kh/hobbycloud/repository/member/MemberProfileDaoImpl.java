@@ -28,6 +28,7 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 	 */
 	@Override
 	public void save(MemberProfileDto memberProfileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
+		
 		//1
 		int sequence = sqlSession.selectOne("memberProfile.seq");
 
@@ -40,11 +41,18 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 		memberProfileDto.setMemberProfileSavename(String.valueOf(sequence));
 		sqlSession.insert("memberProfile.save", memberProfileDto);
 	}
-
+	
+	
 	@Override
-	public MemberProfileDto get(int memberProfileNo) {
-		return sqlSession.selectOne("memberProfile.get", memberProfileNo);
+	public MemberProfileDto getMemberProfileIdx(int memberProfileIdx) {
+		return sqlSession.selectOne("memberProfile.get", memberProfileIdx);
 	}
+	
+	@Override
+	public MemberProfileDto getMemberIdx(int memberIdx) {
+		return sqlSession.selectOne("memberProfile.getById", memberIdx);
+	}
+	
 
 	@Override
 	public byte[] load(int memberProfileNo) throws IOException {
@@ -52,11 +60,7 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 	}
-
-	@Override
-	public MemberProfileDto get(String memberId) {
-		return sqlSession.selectOne("memberProfile.getById", memberId);
-	}
+	
 
 }
 

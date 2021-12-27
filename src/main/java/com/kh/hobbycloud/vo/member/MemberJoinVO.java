@@ -18,6 +18,6 @@ public class MemberJoinVO {
 	private String memberBirth;
 	private String memberEmail;
 	private String memberPhone;
-	private List<String> lecCategoryName;
+	private List<Integer> lecCategoryName;
 	private MultipartFile attach;
 }

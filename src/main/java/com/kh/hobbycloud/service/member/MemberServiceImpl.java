@@ -32,12 +32,12 @@ public class MemberServiceImpl implements MemberService{
 		memberDto.setMemberNick(memberJoinVO.getMemberNick());
 		memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
 		memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
-		memberDao.join(memberDto);
+		//memberDao.join(memberDto);
 		
 		//회원관심분야 정보 뽑아서 회원 테이블에 저장
 		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
-		List<String> categoryList = memberJoinVO.getLecCategoryName();
-		memberCategoryDao.join(categoryList);
+		List<Integer> categoryList = memberJoinVO.getLecCategoryName();
+//		categoryList.add()
 
 		//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
 		MultipartFile multipartFile = memberJoinVO.getAttach();
