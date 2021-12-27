@@ -116,3 +116,4 @@ buildNumber.properties
 
 ### 추가 설정: properties ignore 설정 ###
 src/main/resources/properties/
+src/test
