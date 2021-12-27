@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+	myBatis 매퍼 파일
+	- DBMS에서 실행할 SQL 구문을 저장하는 XML 파일
+	- namespace를 통해서 여러 개의 매퍼를 구분한다
+	- 테이블 당 1개씩 만드는 것이 일반적이며, 따라서 namespace를 테이블명으로 작성하면 구분이 용이하다.
+	- <insert> , <select> , <update> , <delete>를 이용해서 CRUD 구문을 작성한다.
+	- 각 구문은 외부에서 호출이 가능하도록 반드시 ID를 겹치지 않게 부여해야 한다.
+	- parameterType 은 구문을 실행하기 위해 필요한 데이터의 형태를 말한다.
+	- resultType은 구문을 실행한 결과를 어떤 형태로 변환해야 하는지를 말한다.
+ -->
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lec">
+	
+	<!-- 강좌 등록 -->
+	<insert id="register" parameterType="LecDto">
+		insert into lec
+		values (
+			lec_seq.nextval, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
+			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
+			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitue}, #{lecLocLongitude},
+			0, 0, 0
+		)
+	</insert>
+	
+	<!-- 강좌 상세 -->
+	<select id="get" parameterType="int" resultType="LecDto">
+		select * from lec
+		where lec_idx = #{lecIdx}
+	</select>
+	
+	
+	
+	<!-- 강좌 목록 및 검색 -->
+	<select id="perfectSearch" parameterType="map" resultType="LecDto">
+		select * from lec
+		
+		<where>
+			<if test="lecIdx != null">
+			and lec_idx = #{lecIdx}
+			</if>
+			<if test="name != null">
+			and instr(name, #{name}) > 0
+			</if>
+			<if test="type != null">
+			and type = #{type}
+			</if>
+
+			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->
+			
+			<choose>
+				<when test="minPrice != null and maxPrice != null">
+				and price between #{minPrice} and #{maxPrice}
+				</when>
+				<when test="minPrice != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and price >= #{minPrice}
+				]]>
+				</when>
+				<when test="maxPrice != null">
+				<![CDATA[			
+				and price <= #{maxPrice}
+				]]>
+				</when>
+			</choose>
+			
+			
+			<if test="madeStart != null and madeFinish != null">
+			and made between 
+				to_date(#{madeStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+				and 
+				to_date(#{madeFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="expireStart != null and expireFinish != null">
+			and expire between 
+				to_date(#{expireStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+				and 
+				to_date(#{expireFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+		</where>
+		
+		<if test="orders != null and orders.size() > 0">
+			order by 
+			<foreach item="vo" collection="orders" separator=",">
+				${vo.order} ${vo.sort}
+			</foreach>
+		</if>
+	</select>
+	
+</mapper>
