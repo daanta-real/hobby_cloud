@@ -18,8 +18,8 @@ public class MemberDaoImpl implements MemberDao{
 
 //	단일조회
 	@Override
-	public MemberDto get(int memberIdx) {
-		return sqlSession.selectOne("member.get", memberIdx);
+	public MemberDto get(String memberId) {
+		return sqlSession.selectOne("member.get", memberId);
 	}
 	
 	//비밀번호 검사까지 통과 로그인
@@ -36,13 +36,13 @@ public class MemberDaoImpl implements MemberDao{
 		}
 	}
 	
-	//가입
-	@Override
-	public void join(MemberDto memberDto) {
-		sqlSession.insert("member.insert", memberDto);
-	}
+//	가입
+@Override
+public void join(MemberDto memberDto) {
+	sqlSession.insert("member.insert", memberDto);
+}
 
-	//비밀번호 변경
+//	비밀번호 변경
 	@Override
 	public boolean changePassword(String memberId, String memberPw, String changePw) {
 		Map<String, Object> param = new HashMap<>();

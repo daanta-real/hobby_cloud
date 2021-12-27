@@ -25,9 +25,9 @@ public class loginTest {
 	
 	@Test
 	public void loginTest() {
-		String memberId = "testmember", memberPw = "testmember";
+		String memberIdx = "1", memberPw = "testmember";
 		
-		MemberDto memberDto = sqlSession.selectOne("member.get", memberId);
+		MemberDto memberDto = sqlSession.selectOne("member.get", memberIdx);
 		boolean isLogin = memberDto != null && memberPw.equals(memberDto.getMemberPw());
 		assertTrue(isLogin);		
 	}

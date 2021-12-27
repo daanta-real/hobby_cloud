@@ -25,14 +25,13 @@
 	<insert id="insert" parameterType="MemberDto">
 		insert into member(
 			member_idx,member_id, member_pw, 
-			member_nick, member_email, member_phone
+			member_nick, member_email, member_phone, member_region
 		)
 		values(
-			member_seq.nextval, #{member_id}, #{member_pw}, #{member_nick},
-			#{member_email}, #{member_phone}, #{memberPhone}
+			member_seq.nextval, #{memberId}, #{memberPw}, #{memberNick},
+			#{memberEmail}, #{memberPhone}, #{memberRegion}
 		)
-	</insert>
-	
+	</insert>	
 	
 	<!-- 비밀번호 변경 -->
 	<update id="changePassword" parameterType="map">
@@ -51,9 +50,9 @@
 		update member 
 		set
 			member_nick = #{memberNick},
-			member_birth = to_date(#{memberBirth}, 'YYYY-MM-DD'),
 			member_email = #{memberEmail},
 			member_phone = #{memberPhone}
+			member_region = #{memberRegion}
 		where
 			member_id = #{memberId}
 	</update>
@@ -62,11 +61,11 @@
 		update member
 		set
 			member_nick = #{memberNick},
-			member_birth = to_date(#{memberBirth}, 'YYYY-MM-DD'),
 			member_email = #{memberEmail},
-			member_phone = #{memberPhone},
+			member_phone = #{memberPhone}
+			member_region = #{memberRegion}
 			member_point = #{memberPoint},
-			member_grade = #{memberGrade}
+			member_grade_name = #{memberGradeName}
 		where
 			member_id = #{memberId}
 	</update>
@@ -79,20 +78,20 @@
 			<if test="memberNick != null">
 				member_nick = #{memberNick},
 			</if>
-			<if test="memberBirth != null">
-				member_birth = #{memberBirth},
-			</if>
 			<if test="memberEmail != null">
 				member_email = #{memberEmail},
 			</if>
 			<if test="memberPhone != null">
 				member_phone = #{memberPhone},
 			</if>
+			<if test="memberRegion != null">
+				member_region = #{memberRegion},
+			</if>
 			<if test="memberPoint != null">
 				member_point = #{memberPoint},
 			</if>
-			<if test="memberGrade != null">
-				member_grade = #{memberGrade},
+			<if test="memberGradeName != null">
+				member_grade_name = #{memberGradeName},
 			</if>
 		</set>
 		where member_id = #{memberId}

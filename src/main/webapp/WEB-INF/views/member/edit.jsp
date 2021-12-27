@@ -35,6 +35,12 @@
 				</td>
 			</tr>
 			<tr>
+				<th>지역</th>
+				<td>
+					<input type="text" name="memberRegion" value="${memberDto.memberRegion}">
+				</td>
+			</tr>
+			<tr>
 				<td colspan="2" align="right">
 					<input type="submit" value="수정">
 				</td>
