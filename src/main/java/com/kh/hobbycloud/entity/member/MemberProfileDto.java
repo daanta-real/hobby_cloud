@@ -6,7 +6,6 @@ import lombok.Data;
 public class MemberProfileDto {
 	private int memberProfileIdx;
 	private int memberIdx;
-	private String memberGradeName;
 	private String memberProfileUploadname;
 	private String memberProfileSavename;
 	private long memberProfileSize;

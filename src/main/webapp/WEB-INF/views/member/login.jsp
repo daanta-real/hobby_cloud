@@ -1,6 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <script>
+    	$(function(){
+    		$("form").submit(function(e){
+    			e.preventDefault();
+    			
+    			$(this).find("input[type=password]").each(function(){
+    				var origin = $(this).val();
+    				var hash = CryptoJS.SHA1(origin);
+    				var encrypt = CryptoJS.enc.Hex.stringify(hash);
+    				$(this).val(encrypt);
+    			});
+    			
+    			this.submit();
+    		});
+    	});
+    </script>
 
 <form method="post">
 

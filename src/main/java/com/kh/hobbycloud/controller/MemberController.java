@@ -1,5 +1,7 @@
 package com.kh.hobbycloud.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberDao;
+import com.kh.hobbycloud.repository.member.MemberProfileDao;
+import com.kh.hobbycloud.service.member.MemberService;
+import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
 
 	@Autowired
-	private MemberDao memberDao;
+	private MemberDao memberDao;	
+
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private MemberProfileDao memberProfileDao;
 
 	@GetMapping("/login")
 	public String login() {
@@ -60,8 +72,8 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public String join(@ModelAttribute MemberDto memberDto) {
-		memberDao.join(memberDto);
+	public String join(@ModelAttribute MemberJoinVO memberJoinVO) throws IllegalStateException, IOException {
+		memberService.join(memberJoinVO);
 		return "redirect:join_success";
 	}
 
@@ -73,8 +85,9 @@ public class MemberController {
 	//내정보
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
-		String memberId = (String)session.getAttribute("memberId");
-		MemberDto memberDto = memberDao.get(memberId);
+		int memberIdx = (int)session.getAttribute("memberIdx");
+		MemberDto memberDto = memberDao.get(memberIdx);
+		MemberProfileDto memberProfileDto = memberProfileDao.getMemberIdx(memberIdx);
 		model.addAttribute("memberDto", memberDto);
 		return "member/mypage";
 	}
@@ -148,8 +161,10 @@ public class MemberController {
 
 		boolean result = memberDao.quit(memberId, memberPw);
 		if(result) {
-			session.removeAttribute("ses");
-			session.removeAttribute("grade");
+			session.removeAttribute("memberIdx");
+			session.removeAttribute("memberId");
+			session.removeAttribute("memberNick");
+			session.removeAttribute("memberGrade");
 
 			return "redirect:quit_success";
 		}

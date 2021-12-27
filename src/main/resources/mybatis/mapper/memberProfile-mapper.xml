@@ -24,14 +24,14 @@
 	<!-- 등록을 할 때 시퀀스를 생성하면 안된다 -->
 	<insert id="save" parameterType="MemberProfileDto">
 		insert into member_profile(
-			member_profile_idx, member_idx, member_grade_name, 
+			member_profile_idx, member_idx,
 			member_profile_uploadname, member_profile_savename, 
 			member_profile_size, member_profile_type
 		)
 		values(
-			#{memberProfileIdx}, #{memberIdx}, #{memberGradeName},
-			#{memberProfileUploadname}, #{memberProfileSavename}, #{memberProfileSize}
-			#{memberProfileType}
+			#{memberProfileIdx}, #{memberIdx},
+			#{memberProfileUploadname}, #{memberProfileSavename}, 
+			#{memberProfileSize},#{memberProfileType}
 		)
 	</insert>
 	
