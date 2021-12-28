@@ -26,7 +26,7 @@
 	<tfoot>
 		<tr>
 			<td colspan="2" align="right">
-				<input type="submit" value="등록2">
+				<input type="submit" value="등록">
 			</td>
 		</tr>
 		
