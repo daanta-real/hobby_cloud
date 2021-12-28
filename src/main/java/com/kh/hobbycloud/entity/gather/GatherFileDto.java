@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class GatherFileDto {
-private int GatherFileIdx, GatherIdx, GatherFileSize;
+private int GatherFileIdx, GatherIdx;
 private String GatherFileUserName, GatherFileServerName, GatherFileType;
+private long GatherFileSize;
 }

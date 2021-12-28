@@ -15,19 +15,32 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gather">
-	<select id="list" resultType="GatherDto">
-	select * from gather
-	</select>
+
+<select id="getSequence" resultType="int">
+select gather_seq.nextval from dual
+</select>
+
+<select id="list" resultType="GatherVO">
+select g.*, m.member_nick ,f.gather_file_idx
+from gather g  
+left outer join
+member m  
+ON g.member_idx = m.member_idx
+left outer join
+gather_file f
+on g.gather_idx= f.gather_idx
+order by g.gather_idx desc	
+</select>
 	
-<select id ="listSearch" parameterType="map" resultType="GatherDto">
+<select id ="listSearch" parameterType="map" resultType="GatherVO">
 <!-- 장소 + 제목    유사 검색이 둘다 가능하다.-->
-select * from gather 
+select * from gather
 <where>
-<if test="gatherName != null">
- and  instr(gather_name, #{gatherName}) >0
+<if test="!gatherName.equals('')">
+and instr(gather_name, #{gatherName}) > 0
 </if>
-<if test="gatherLocRegion != null">
-and  instr(gather_loc_region, #{gatherLocRegion})  >0
+<if test="gatherLocRegion!=null">
+and instr(gather_loc_region, #{gatherLocRegion}) > 0
 </if>
 </where>
 </select>
@@ -41,11 +54,22 @@ insert into gather(gather_idx, member_idx, lec_category_name,
  
  gather_max, gather_status)
 values(#{gatherIdx},#{memberIdx},#{lecCategoryName},
-#{placeIdx},#{gatherName},#{gatherDetail},#{gatherRegistered},
+#{placeIdx},#{gatherName},#{gatherDetail},sysdate,
 #{gatherHeadCount},#{gatherLocRegion},#{gatherLocLatitude},
 #{gatherLocLogitude},#{gatherStart},#{gatherEnd},
 #{gatherMax},#{gatherStaus}
 )
 </insert>
+<select id="get" parameterType="int" resultType="GatherVO">
+select g.*, m.member_nick 
+from gather g  
+left outer join
+member m  
+ON g.member_idx = m.member_idx
+ where gather_idx=#{gatherIdx}
+</select>
 
+<delete id="delete" parameterType="int">
+delete  gather where gather_idx= #{gatherIdx}
+</delete>
 </mapper>
