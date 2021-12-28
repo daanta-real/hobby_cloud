@@ -31,11 +31,6 @@
 			(ex) <package name="com.kh.spring10.entity"/>
 	-->
 	<typeAliases>
-<<<<<<< HEAD
-<!-- 		<package name=""/> -->
-  <package name="com.kh.hobbycloud.entity.notice"/>
-  <package name="com.kh.hobbycloud.entity.petitions"/>
-=======
 		<package name="com.kh.hobbycloud.entity.chat"/>
 		<package name="com.kh.hobbycloud.entity.etc"/>
 		<package name="com.kh.hobbycloud.entity.gather"/>
@@ -45,7 +40,6 @@
 		<package name="com.kh.hobbycloud.entity.pay"/>
 		<package name="com.kh.hobbycloud.entity.petitions"/>
 		<package name="com.kh.hobbycloud.entity.place"/>
->>>>>>> refs/remotes/origin/main
 	</typeAliases>
 	
 	
