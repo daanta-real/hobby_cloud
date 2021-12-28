@@ -1,16 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<h1>강좌 검색</h1>
 
-<h2>테마추천</h2>
-
-<h2>상세검색</h2>
-
-<h2>강좌목록</h2>
-<c:forEach var="" items=""></c:forEach>
-
+<form  method="post">
 <div class="container-900 container-center">
+	
+ 	장소 : <input type="text" name="lecLocRegion">
+ 	강좌 제목 :	<input type="text" name="lecName"> 
+ 	<input type="submit" value="검색하기">
+ 	
 	<div class="row">
 		<h2>강좌 검색</h2>
 	</div>
@@ -22,26 +20,25 @@
 					<th>이름</th>
 					<th>분류</th>
 					<th>강사</th>
-					<th>과목</th>
-					<th>대상</th>
-					<th>강좌 구성</th>
-					<th>수강 기간</th>
+					<th>강좌 수강 인원</th>
+					<th>강좌 지역</th>
 					<th>수강료</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="lecDto" items="${lecList}">
+				<c:forEach var="lecDto" items="${list}">
 				<tr>
 					<td>${lecDto.lecIdx}</td>
 					<td>${lecDto.lecName}</td>
 					<td>${lecDto.lecCategoryName}</td>
-					<td>${lecDto.tutoridx}</td>
-					<td>${historyDto.historyMemo}</td>
-					<td>${historyDto.cancel}</td>
-					<td></td>
+					<td>${lecDto.tutorIdx}</td>
+					<td>${lecDto.lecHeadCount}</td>
+					<td>${lecDto.lecLocRegion}</td>
+					<td>${lecDto.lecPrice}</td>
 				</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
 </div>
+</form>

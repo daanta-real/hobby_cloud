@@ -17,24 +17,24 @@
 <mapper namespace="lec">
 	
 	<!-- 강좌 등록 -->
-	<insert id="registerDto" parameterType="LecDto">
+	<insert id="register" parameterType="LecDto">
 		insert into lec
 		values (
-			lec_seq.nextval, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
+			lec_seq.nextval, 1, #{lecCategoryName}, #{placeIdx}, #{lecName},
 			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
-			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitue}, #{lecLocLongitude},
+			#{lecStart}, #{lecEnd}, null, null, null,
 			0, 0, 0
 		)
 	</insert>
-	<insert id="registerVO" parameterType="LecRegisterVO">
-		insert into lec
-		values (
-			lec_seq.nextval, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
-			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
-			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitue}, #{lecLocLongitude},
-			0, 0, 0
-		)
-	</insert>
+<!-- 	<insert id="registerVO" parameterType="LecDto"> -->
+<!-- 		insert into lec -->
+<!-- 		values ( -->
+<!-- 			lec_seq.nextval, 1, #{lecCategoryName}, #{placeIdx}, #{lecName}, -->
+<!-- 			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount}, -->
+<!-- 			#{lecStart}, #{lecEnd}, #{lecLocRegion}, null, null, -->
+<!-- 			0, 0, 0 -->
+<!-- 		) -->
+<!-- 	</insert> -->
 	
 	<!-- 강좌 상세 -->
 	<select id="get" parameterType="int" resultType="LecDto">
@@ -42,50 +42,73 @@
 		where lec_idx = #{lecIdx}
 	</select>
 	
-	
+	<!-- 강좌 목록 -->
+	<select id="list" resultType="LecDto">
+		select * from lec order by lec_idx desc
+	</select>
 	
 	<!-- 강좌 목록 및 검색 -->
-	<select id="perfectSearch" parameterType="map" resultType="LecDto">
+	<select id="listSearch" parameterType="map" resultType="LecDto">
 		select * from lec
 		
 		<where>
 			<if test="lecIdx != null">
 			and lec_idx = #{lecIdx}
 			</if>
-			<if test="name != null">
-			and instr(name, #{name}) > 0
+			<if test="lecName != null">
+			and instr(lec_name, #{lecName}) > 0
+			</if>
+			<if test="lecLocRegion != null">
+			and instr(lec_loc_region, #{lecLocRegion}) > 0
 			</if>
 			<if test="type != null">
-			and type = #{type}
+			and lec_category_name = #{lecCategoryName}
 			</if>
 
 			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->
 			
 			<choose>
 				<when test="minPrice != null and maxPrice != null">
-				and price between #{minPrice} and #{maxPrice}
+				and lec_price between #{minPrice} and #{maxPrice}
 				</when>
 				<when test="minPrice != null">
 				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
 				<![CDATA[			
-				and price >= #{minPrice}
+				and lec_price >= #{minPrice}
 				]]>
 				</when>
 				<when test="maxPrice != null">
 				<![CDATA[			
-				and price <= #{maxPrice}
+				and lec_price <= #{maxPrice}
+				]]>
+				</when>
+			</choose>
+			
+			<choose>
+				<when test="minPrice != null and maxPrice != null">
+				and lec_head_count between #{minCount} and #{maxCount}
+				</when>
+				<when test="minPrice != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and lec_head_count >= #{minCount}
+				]]>
+				</when>
+				<when test="maxPrice != null">
+				<![CDATA[			
+				and lec_head_count <= #{maxCount}
 				]]>
 				</when>
 			</choose>
 			
 			
-			<if test="madeStart != null and madeFinish != null">
-			and made between 
-				to_date(#{madeStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+			<if test="lecStartTime != null and lecFinishTime != null">
+			and lec_start between 
+				to_date(#{lecStartTime}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
 				and 
-				to_date(#{madeFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				to_date(#{lecFinishTime}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
 			</if>
-			<if test="expireStart != null and expireFinish != null">
+			<if test="lecEnd != null and lecEnd != null">
 			and expire between 
 				to_date(#{expireStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
 				and 

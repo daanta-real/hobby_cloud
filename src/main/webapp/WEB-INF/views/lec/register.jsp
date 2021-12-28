@@ -177,6 +177,7 @@ $(function(){
 <!-- 		</select> -->
 		<!-- 상단의 select box에서 '직접입력'을 선택하면 나타날 인풋박스 -->
 <!-- 		<input type="text" id="selboxDirect" name="lecLocRegion"/> -->
+		<input type="number" name="placeIdx" required class="form-input">
 		<div id="selboxDirect" style="width:500px;height:400px;"></div>
 		
 	</div>
