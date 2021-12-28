@@ -3,6 +3,8 @@ package com.kh.hobbycloud.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,11 @@ public class MemberController {
 	}
 
 	@PostMapping("/login")
-	public String login(@ModelAttribute MemberDto memberDto, HttpSession session) {
+	public String login(
+			@ModelAttribute MemberDto memberDto,//회원정보
+			@RequestParam(required = false) String saveId,//아이디 저장(선택)
+			HttpServletResponse response,//쿠키 생성을 위한 응답객체
+			HttpSession session) {//세션객체
 		//회원정보 단일조회 및 비밀번호 일치판정
 		MemberDto findDto = memberDao.login(memberDto);
 		if(findDto != null) {
@@ -54,6 +60,19 @@ public class MemberController {
 			session.setAttribute("memberId", findDto.getMemberId());
 			session.setAttribute("memberNick", findDto.getMemberNick());
 			session.setAttribute("memberGrade",findDto.getMemberGradeName());
+			
+			//쿠키와 관련된 아이디 저장하기 처리
+			if(saveId != null) {
+				Cookie c = new Cookie("saveId", findDto.getMemberId());
+				c.setMaxAge(2 * 7 * 24 * 60 * 60);//2주
+				response.addCookie(c);
+			}
+			else {
+				Cookie c = new Cookie("saveId", findDto.getMemberId());
+				c.setMaxAge(0);
+				response.addCookie(c);
+			}
+			
 			return "redirect:/";
 		}
 		else {
