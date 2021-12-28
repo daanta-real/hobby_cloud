@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberCategory">
+
+	<!-- 등록 -->
+	<insert id="insert" parameterType="memberCategoryDto">
+		insert into member_category(
+			member_idx, lec_category_name
+		)
+		values(
+			#{memberIdx}, #{lecCategoryName}
+		)
+	</insert>
+	
+</mapper>

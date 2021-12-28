@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+	myBatis 매퍼 파일
+	- DBMS에서 실행할 SQL 구문을 저장하는 XML 파일
+	- namespace를 통해서 여러 개의 매퍼를 구분한다
+	- 테이블 당 1개씩 만드는 것이 일반적이며, 따라서 namespace를 테이블명으로 작성하면 구분이 용이하다.
+	- <insert> , <select> , <update> , <delete>를 이용해서 CRUD 구문을 작성한다.
+	- 각 구문은 외부에서 호출이 가능하도록 반드시 ID를 겹치지 않게 부여해야 한다.
+	- parameterType 은 구문을 실행하기 위해 필요한 데이터의 형태를 말한다.
+	- resultType은 구문을 실행한 결과를 어떤 형태로 변환해야 하는지를 말한다.
+ -->
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+	<!-- 등록을 하려면 시퀀스번호를 얻어내야 한다 -->
+	<select id="seq" resultType="int">
+		select member_seq.nextval from dual
+	</select>
+	
+	<!-- 단일조회 -->
+	<select id="get" parameterType="String" resultType="MemberDto">
+		select * from member where member_id = #{memberId}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insert" parameterType="MemberDto">
+		insert into member(
+			member_idx,member_id, member_pw, 
+			member_nick, member_email, member_phone, member_region
+		)
+		values(
+			#{memberIdx}, #{memberId}, #{memberPw}, #{memberNick},
+			#{memberEmail}, #{memberPhone}, #{memberRegion}
+		)
+	</insert>	
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changePassword" parameterType="map">
+		update member set member_pw = #{changePw}
+		where member_id = #{memberId}
+	</update>
+	
+	<!-- 
+		개인정보 변경
+		- changeInformation1 : 자기자신의 정보 수정
+		- changeInformation2 : 관리자의 정보 수정
+		- chagneInformation : 통합 정보 수정 
+	-->
+	
+	<update id="changeInformation1" parameterType="MemberDto">
+		update member 
+		set
+			member_nick = #{memberNick},
+			member_email = #{memberEmail},
+			member_phone = #{memberPhone}
+			member_region = #{memberRegion}
+		where
+			member_id = #{memberId}
+	</update>
+	
+	<update id="changeInformation2" parameterType="MemberDto">
+		update member
+		set
+			member_nick = #{memberNick},
+			member_email = #{memberEmail},
+			member_phone = #{memberPhone}
+			member_region = #{memberRegion}
+			member_point = #{memberPoint},
+			member_grade_name = #{memberGradeName}
+		where
+			member_id = #{memberId}
+	</update>
+	
+	<update id="changeInformation" parameterType="MemberDto">
+		update member
+		
+		<!-- set을 이용하여 수정항목을 동적으로 배치(단 마지막 콤마는 반드시 작성) -->
+		<set>
+			<if test="memberNick != null">
+				member_nick = #{memberNick},
+			</if>
+			<if test="memberEmail != null">
+				member_email = #{memberEmail},
+			</if>
+			<if test="memberPhone != null">
+				member_phone = #{memberPhone},
+			</if>
+			<if test="memberRegion != null">
+				member_region = #{memberRegion},
+			</if>
+			<if test="memberPoint != null">
+				member_point = #{memberPoint},
+			</if>
+			<if test="memberGradeName != null">
+				member_grade_name = #{memberGradeName},
+			</if>
+		</set>
+		where member_id = #{memberId}
+	</update>
+	
+	<delete id="quit" parameterType="String">
+		delete member where member_id = #{memberId}
+	</delete>
+		
+</mapper>

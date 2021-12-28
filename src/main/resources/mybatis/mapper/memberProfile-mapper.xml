@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+	myBatis 매퍼 파일
+	- DBMS에서 실행할 SQL 구문을 저장하는 XML 파일
+	- namespace를 통해서 여러 개의 매퍼를 구분한다
+	- 테이블 당 1개씩 만드는 것이 일반적이며, 따라서 namespace를 테이블명으로 작성하면 구분이 용이하다.
+	- <insert> , <select> , <update> , <delete>를 이용해서 CRUD 구문을 작성한다.
+	- 각 구문은 외부에서 호출이 가능하도록 반드시 ID를 겹치지 않게 부여해야 한다.
+	- parameterType 은 구문을 실행하기 위해 필요한 데이터의 형태를 말한다.
+	- resultType은 구문을 실행한 결과를 어떤 형태로 변환해야 하는지를 말한다.
+ -->
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberProfile">
+
+	<!-- 등록을 하려면 시퀀스번호를 얻어내야 한다 -->
+	<select id="seq" resultType="int">
+		select member_profile_seq.nextval from dual
+	</select>
+	
+	<!-- 등록을 할 때 시퀀스를 생성하면 안된다 -->
+	<insert id="save" parameterType="MemberProfileDto">
+		insert into member_profile(
+			member_profile_idx, member_idx,
+			member_profile_uploadname, member_profile_savename, 
+			member_profile_size, member_profile_type
+		)
+		values(
+			#{memberProfileIdx}, #{memberIdx},
+			#{memberProfileUploadname}, #{memberProfileSavename}, 
+			#{memberProfileSize},#{memberProfileType}
+		)
+	</insert>
+	
+	<select id="get" parameterType="int" resultType="MemberProfileDto">
+		select * from member_profile where member_profile_idx = #{memberProfileIdx}
+	</select>
+
+	<select id="getById" parameterType="int" resultType="MemberProfileDto">
+		select * from member_profile where member_idx = #{memberIdx}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
