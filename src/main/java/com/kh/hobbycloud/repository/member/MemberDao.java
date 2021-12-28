@@ -9,6 +9,7 @@ public interface MemberDao {
 	
 	//단일조회
 	MemberDto get(String memberId);
+	MemberDto get(int memberIdx);
 	
 	//비밀번호 검사까지 통과 로그인
 	MemberDto login(MemberDto memberDto);

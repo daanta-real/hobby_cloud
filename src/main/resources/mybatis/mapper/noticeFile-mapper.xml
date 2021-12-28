@@ -14,6 +14,24 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="구분을위한이름(테이블명)">
+<mapper namespace="noticeFile">
+	<!--등록을 하려면 시퀀스 번호를 얻어내야 한다 -->
+	<select id="seq" resultType="int">
+		select notice_file_seq.nextval from dual
+	</select>
+	
+<!-- 등록을 할 때 시퀀스를 생성하면 안된다 -->
+	<insert id="save" parameterType="NoticeFileDto">
+		insert into notice_file
+		values(
+			#{noticeFileIdx}, #{noticeIdx}, #{noticeFileMemberName},
+			#{noticeFileServerName}, #{noticeFileSize}, #{noticeFileType}
+		)
+	</insert>
+	
+	<select id="get" parameterType="int" resultType="MemberProfileDto">
+		select * from notice_file where notice_file_idx = #{notice_file_idx}
+	</select>
+
 	
 </mapper>

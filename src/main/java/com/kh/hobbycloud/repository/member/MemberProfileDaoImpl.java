@@ -19,48 +19,39 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 
 	//저장용 폴더
 	private File directory = new File("D:/upload/member");
-
-	/**
-	 * 등록 절차
-	 * 1. 시퀀스 번호를 구해온다.
-	 * 2. 실제 파일을 시퀀스 번호로 저장한다.
-	 * 3. 파일 정보를 DB에 저장한다.
-	 */
+	
 	@Override
-	public void save(MemberProfileDto memberProfileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
-		//1
+	public void save(MemberProfileDto memberProfileDto, MultipartFile multipartFile)
+			throws IllegalStateException, IOException {
+		
+		//1. 시퀀스 번호 불러오기
 		int sequence = sqlSession.selectOne("memberProfile.seq");
 
-		//2
+		//2. 실제 파일 시퀀스 번호로 저장
 		File target = new File(directory, String.valueOf(sequence));
 		multipartFile.transferTo(target);
 
-		//3
+		//3. 파일 정보를 DB에 저장한다.
 		memberProfileDto.setMemberProfileIdx(sequence);
 		memberProfileDto.setMemberProfileSavename(String.valueOf(sequence));
 		sqlSession.insert("memberProfile.save", memberProfileDto);
 	}
 
 	@Override
-	public MemberProfileDto get(int memberProfileNo) {
-		return sqlSession.selectOne("memberProfile.get", memberProfileNo);
+	public MemberProfileDto getMemberProfileIdx(int memberProfileIdx) {
+		return sqlSession.selectOne("memberProfile.get", memberProfileIdx);
 	}
 
+	@Override
+	public MemberProfileDto getMemberIdx(int memberIdx) {
+		return sqlSession.selectOne("memberProfile.getById", memberIdx);
+	}
+	
 	@Override
 	public byte[] load(int memberProfileNo) throws IOException {
 		File target = new File(directory, String.valueOf(memberProfileNo));
 		byte[] data = FileUtils.readFileToByteArray(target);
-		return data;
-	}
+		return data;}
 
-	@Override
-	public MemberProfileDto get(String memberId) {
-		return sqlSession.selectOne("memberProfile.getById", memberId);
-	}
 
 }
-
-
-
-
-

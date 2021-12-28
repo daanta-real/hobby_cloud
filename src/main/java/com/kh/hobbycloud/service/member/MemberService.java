@@ -6,4 +6,4 @@ import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
 public interface MemberService {
 	void join(MemberJoinVO memberJoinVO) throws IllegalStateException, IOException;
-}
+	}
