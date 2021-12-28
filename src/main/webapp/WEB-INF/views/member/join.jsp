@@ -18,6 +18,7 @@
     	
     </script>
 
+
 <form method="post" enctype="multipart/form-data">
 
 <div class="container-400 container-center">
@@ -56,7 +57,7 @@
 		<label>관심분야</label>
 		<input type="checkbox" name="lecCategoryName"  value="sports">스포츠
 		<input type="checkbox" name="lecCategoryName"  value="music">음악
-		<input type="checkbox" name="lecCategoryName"  value="painting">그림
+		<input type="checkbox" name="lecCategoryName"  value="painting">그림	   		 
 	</div>
 	<div class="row">
 		<input type="submit" value="가입" class="form-btn">

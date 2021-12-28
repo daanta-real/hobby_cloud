@@ -245,5 +245,8 @@ public class MemberController {
 									.contentLength(memberProfileDto.getMemberProfileSize())
 								.body(resource);
 	}
+	
+	//관심분야
+
 
 }
