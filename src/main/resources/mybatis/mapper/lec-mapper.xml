@@ -16,11 +16,16 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lec">
 	
+	<!-- 등록을 하려면 시퀀스번호를 얻어내야 한다 -->
+	<select id="seq" resultType="int">
+		select lec_seq.nextval from dual
+	</select>
+	
 	<!-- 강좌 등록 -->
 	<insert id="register" parameterType="LecDto">
 		insert into lec
 		values (
-			lec_seq.nextval, 1, #{lecCategoryName}, #{placeIdx}, #{lecName},
+			#{lecIdx}, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
 			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
 			#{lecStart}, #{lecEnd}, null, null, null,
 			0, 0, 0
@@ -102,26 +107,26 @@
 			</choose>
 			
 			
-			<if test="lecStartTime != null and lecFinishTime != null">
+			<if test="lecStartStart != null and lecStartFinish != null">
 			and lec_start between 
-				to_date(#{lecStartTime}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+				to_date(#{lecStartStartTime}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
 				and 
-				to_date(#{lecFinishTime}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				to_date(#{lecStartFinishTime}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
 			</if>
-			<if test="lecEnd != null and lecEnd != null">
+			<if test="lecEndStart != null and lecEndFinish != null">
 			and expire between 
-				to_date(#{expireStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+				to_date(#{lecEndStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
 				and 
-				to_date(#{expireFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				to_date(#{lecEndFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
 			</if>
 		</where>
 		
-		<if test="orders != null and orders.size() > 0">
-			order by 
-			<foreach item="vo" collection="orders" separator=",">
-				${vo.order} ${vo.sort}
-			</foreach>
-		</if>
+<!-- 		<if test="orders != null and orders.size() > 0"> -->
+<!-- 			order by  -->
+<!-- 			<foreach item="vo" collection="orders" separator=","> -->
+<!-- 				${vo.order} ${vo.sort} -->
+<!-- 			</foreach> -->
+<!-- 		</if> -->
 	</select>
 	
 </mapper>

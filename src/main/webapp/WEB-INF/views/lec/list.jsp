@@ -23,6 +23,9 @@
 					<th>강좌 수강 인원</th>
 					<th>강좌 지역</th>
 					<th>수강료</th>
+					<c:if test="${memberGrade == admin">
+						<th>메뉴</th>
+					</c:if>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,6 +38,12 @@
 					<td>${lecDto.lecHeadCount}</td>
 					<td>${lecDto.lecLocRegion}</td>
 					<td>${lecDto.lecPrice}</td>
+					<td>
+					<c:if test="${memberGrade == admin">
+						<a href="edit?lecNo=${lecDto.lecNo}">수정</a>
+						<a href="delete?lecNo=${lecDto.lecNo}">삭제</a>
+					</c:if>
+					</td>
 				</tr>
 				</c:forEach>
 			</tbody>

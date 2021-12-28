@@ -1,5 +1,7 @@
 package com.kh.hobbycloud.vo.lec;
 
+import java.sql.Date;
+
 import lombok.Data;
 
 /**
@@ -14,4 +16,7 @@ public class LecListVO {
 	private int lecPrice;//가격
 	private int lecHeadCount;//수강 인원
 	private int lecContainsCount;//강좌 강의수
+	private Date lecStart;//강좌 시작
+	private Date lecEnd;//강좌 종료
+	private String lecLocRegion;//강좌 지역
 }

@@ -40,7 +40,6 @@ public class LecController {
 	@PostMapping("/list")
 	public String search(@RequestParam Map<String ,Object> param, Model model) {
 		List<LecDto> list = lecDao.listSearch(param);
-		System.out.println(param+"ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 		model.addAttribute("list", list);
 		return "lec/list";
 	}
@@ -51,10 +50,38 @@ public class LecController {
 	}
 	
 	@PostMapping("/register")
-	public String register(@ModelAttribute LecRegisterVO lecRegisterVO, HttpSession session) throws IllegalStateException, IOException {
-		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
+	public String register(@ModelAttribute LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
+//		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
 		lecService.register(lecRegisterVO);
-		return "redirect:join_success";
+		return "redirect:register_success";
 	}
+	
+	@GetMapping("/register_success")
+	public String register_success() {
+		return "lec/register_success";
+	}
+//	//강좌 수정
+//	@GetMapping("/edit")
+//	public String edit(@RequestParam int lecIdx, Model model) {
+//		LecDto lecDto = lecDao.get(lecIdx);
+//		
+//		model.addAttribute("lecDto", lecDto);
+//		
+////		return "WEB-INF/views/member/edit.jsp";
+//		return "lec/edit";
+//	}
+//	
+//	@PostMapping("/edit")
+//	public String edit(@ModelAttribute LecDto lecDto, HttpSession session) {
+//		lecDto.setMemberId((String)session.getAttribute("ses"));
+//		boolean result = memberDao.changeInformation(memberDto);
+//		if(result) {
+//			return "redirect:edit_success";
+//		}
+//		else {
+//			return "redirect:edit?error";
+//		}
+//		
+//	}
 
 }

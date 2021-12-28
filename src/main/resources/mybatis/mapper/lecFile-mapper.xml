@@ -14,7 +14,7 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="LecFile">
+<mapper namespace="lecFile">
 	
 	<!-- 등록을 하려면 시퀀스번호를 얻어내야 한다 -->
 	<select id="seq" resultType="int">
@@ -29,7 +29,7 @@
 			lec_file_size, lec_file_type
 		)
 		values(
-			#{lecFileIdx}, #{lec_idx}, #{lecFileUserName},
+			#{lecFileIdx}, #{lecIdx}, #{lecFileUserName},
 			#{lecFileServerName}, #{lecFileSize}, #{lecFileType}
 		)
 	</insert>
