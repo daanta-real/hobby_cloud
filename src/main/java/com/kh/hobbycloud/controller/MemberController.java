@@ -1,10 +1,15 @@
 package com.kh.hobbycloud.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
@@ -85,12 +91,12 @@ public class MemberController {
 	//내정보
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
-		int memberIdx = (int)session.getAttribute("memberIdx");
-		MemberDto memberDto = memberDao.get(memberIdx);
-		MemberProfileDto memberProfileDto = memberProfileDao.getMemberIdx(memberIdx);
+		String memberId = (String)session.getAttribute("ses");
+		MemberDto memberDto = memberDao.get(memberId);
 		model.addAttribute("memberDto", memberDto);
 		return "member/mypage";
 	}
+	
 	
 //	비밀번호 변경
 	@GetMapping("/password")
@@ -176,6 +182,35 @@ public class MemberController {
 	@RequestMapping("/quit_success")
 	public String quitSuccess() {
 		return "member/quit_success";
+	}
+	
+	//프로필 다운로드
+	@GetMapping("/profile")
+	@ResponseBody//이 메소드만큼은 뷰 리졸버를 쓰지 않겠다
+	public ResponseEntity<ByteArrayResource> profile(
+				@RequestParam int memberProfileIdx
+			) throws IOException {
+
+		//프로필번호(memberProfileIdx)로 프로필 이미지 파일정보를 구한다.
+		MemberProfileDto memberProfileDto = memberProfileDao.getMemberProfileIdx(memberProfileIdx);
+
+		//프로필번호(memberProfileIdx)로 실제 파일 정보를 불러온다
+		byte[] data = memberProfileDao.load(memberProfileIdx);
+		ByteArrayResource resource = new ByteArrayResource(data);
+
+		String encodeName = URLEncoder.encode(memberProfileDto.getMemberProfileUploadname(), "UTF-8");
+		encodeName = encodeName.replace("+", "%20");
+
+		return ResponseEntity.ok()
+									//.header("Content-Type", "application/octet-stream")
+									.contentType(MediaType.APPLICATION_OCTET_STREAM)
+									//.header("Content-Disposition", "attachment; filename=\""+이름+"\"")
+									.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+encodeName+"\"")
+									//.header("Content-Encoding", "UTF-8")
+									.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
+									//.header("Content-Length", String.valueOf(memberProfileDto.getMemberProfileSize()))
+									.contentLength(memberProfileDto.getMemberProfileSize())
+								.body(resource);
 	}
 
 }

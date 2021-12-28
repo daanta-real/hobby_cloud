@@ -14,8 +14,7 @@
     			
     			this.submit();
     		});
-    	});
-    	
+    	}); 	
     	
     </script>
 

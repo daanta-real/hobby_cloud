@@ -14,6 +14,7 @@
 <a href="${root}/hobbycloud/member/password" class="link-btn-block">change pw</a>
 <a href="${root}/hobbycloud/member/edit">edit</a>
 <a href="${root}/hobbycloud/member/quit">quit</a>
+<a href="${root}/hobbycloud/member/mypage">mypage</a>
 
 <P>  The time on the server is ${serverTime}. </P>
 </body>

@@ -9,6 +9,6 @@ import com.kh.hobbycloud.entity.member.MemberProfileDto;
 public interface MemberProfileDao {
 	void save(MemberProfileDto memberProfileDto, MultipartFile multipartFile) throws IllegalStateException, IOException;
 	MemberProfileDto getMemberProfileIdx(int memberProfileNo);
-	MemberProfileDto getMemberIdx(int memberId);
+	MemberProfileDto getMemberIdx(int memberIdx);
 	byte[] load(int memberProfileNo) throws IOException;
 }

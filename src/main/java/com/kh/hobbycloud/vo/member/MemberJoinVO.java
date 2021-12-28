@@ -14,7 +14,6 @@ import lombok.Data;
 @Data
 public class MemberJoinVO {
 	private int memberIdx;
-	private String memberGradeName;
 	private String memberId;
 	private String memberPw;
 	private String memberNick;
