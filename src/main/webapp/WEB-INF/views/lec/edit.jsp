@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	테스트용 JSP 파일
+
 </body>
 </html>
