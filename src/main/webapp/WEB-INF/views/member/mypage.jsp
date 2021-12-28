@@ -21,7 +21,6 @@
 		<h2>회원 상세 정보</h2>
 	</div>
 	<div class="row float-container">
-	91310100024929
 		<!-- 1단 -->
 		<div class="float-item-left">
 			<!-- 회원 프로필 이미지 -->
@@ -31,7 +30,7 @@
 					<img src="https://via.placeholder.com/300x300?text=User" width="100%" class="image image-round image-border">
 					</c:when>
 					<c:otherwise>
-					<img src="profile?memberProfileIdx=${memberProfileDto.memberProfileIdx}" width="100%" class="image image-round image-border">
+					<img src="profile?memberIdx=${memberProfileDto.memberIdx}" width="100%" class="image image-round image-border">
 					</c:otherwise>
 				</c:choose>
 			

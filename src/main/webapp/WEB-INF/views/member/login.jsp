@@ -26,12 +26,27 @@
 	</div>
 	<div class="row"> 
 		<label>아이디</label>
-		<input type="text" name="memberId" required class="form-input" autocomplete="off">
+		<input type="text" name="memberId" required class="form-input" autocomplete="off" value="${cookie.saveId.value}">
 	</div>
 	<div class="row">
 		<label>비밀번호</label>
 		<input type="password" name="memberPw" required class="form-input">
 	</div>
+	
+		<div class="row">
+		<label>
+			<c:choose>
+				<c:when test="${cookie.saveId == null}">
+					<input type="checkbox" name="saveId">
+				</c:when>
+				<c:otherwise>
+					<input type="checkbox" name="saveId" checked>
+				</c:otherwise>
+			</c:choose>
+			아이디 저장
+		</label>
+	</div>
+	
 	<div class="row right">
 		<input type="submit" value="로그인" class="form-btn form-inline">
 	</div>
