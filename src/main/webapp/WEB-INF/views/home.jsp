@@ -190,6 +190,7 @@ const debug_rainbowQueryRun = () => {
 			<li class="row m-1">전화번호 : 1355-4533</li>
 			<li class="row m-1">전자우편주소 : welcome@hobbycloud.kr</li>
 			<li class="row m-1">Copyright HobbyCloud Corp. All rights reserved</li>
+			<li class="row m-1">로그인 정보: No. <%=request.getSession().getAttribute("memberIdx")%> <%=request.getSession().getAttribute("memberNick")%>님 (<%=request.getSession().getAttribute("memberId")%> - <%=request.getSession().getAttribute("memberGrade")%>등급)</li>
 		</ul>
 	</div>
 </FOOTER>
