@@ -2,14 +2,12 @@ package com.kh.hobbycloud.repository.notice;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.notice.NoticeDto;
-import com.kh.hobbycloud.entity.notice.NoticeVO;
+import com.kh.hobbycloud.vo.notice.NoticeVO;
 @Repository
 public class NoticeDaoImpl implements NoticeDao{
 	

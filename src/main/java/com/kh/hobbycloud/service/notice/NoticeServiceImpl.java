@@ -1,4 +1,4 @@
-package com.kh.hobbycloud.service;
+package com.kh.hobbycloud.service.notice;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ import com.kh.hobbycloud.entity.notice.NoticeDto;
 import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.repository.notice.NoticeFileDao;
-import com.kh.hobbycloud.vo.NoticeFileVO;
+import com.kh.hobbycloud.vo.notice.NoticeVO;
 
 @Service
 public class NoticeServiceImpl implements NoticeService{
@@ -25,23 +25,25 @@ public class NoticeServiceImpl implements NoticeService{
 	
 
 	@Override
-	public void insert(NoticeFileVO noticeFileVO) throws IllegalStateException, IOException {
-		//(필수) 글작성 정보 뽑아서 회원테이블에 저장
-				//= MemberJoinVO에서 정보를 뽑아서 MemberDto를 생성하고 설정
+	public void insert(NoticeVO noticeVO) throws IllegalStateException, IOException {
+		
 		NoticeDto noticeDto = new NoticeDto();
-		noticeDto.setNoticeIdx(noticeFileVO.getNoticeIdx());
-		noticeDto.setMemberIdx(noticeFileVO.getMemberIdx());
-		noticeDto.setNoticeName(noticeFileVO.getNoticeName());
-		noticeDto.setNoticeDetail(noticeFileVO.getNoticeDetail());
-		noticeDto.setNoticeRegistered(noticeFileVO.getNoticeRegistered());
-		noticeDto.setNoticeReplies(noticeFileVO.getNoticeReplies());
-		noticeDto.setNoticeView(noticeFileVO.getNoticeView());
+		
+		noticeDto.setNoticeIdx(noticeVO.getNoticeIdx());
+	
+		noticeDto.setMemberIdx(noticeVO.getMemberIdx());
+		noticeDto.setNoticeName(noticeVO.getNoticeName());
+		noticeDto.setNoticeDetail(noticeVO.getNoticeDetail());
+		noticeDto.setNoticeRegistered(noticeVO.getNoticeRegistered());
+		noticeDto.setNoticeReplies(noticeVO.getNoticeReplies());
+		noticeDto.setNoticeView(noticeVO.getNoticeViews());
 		noticeDao.insert(noticeDto);
 		
-		MultipartFile multipartFile = noticeFileVO.getAttach();
+		MultipartFile multipartFile = noticeVO.getAttach();
 		if(!multipartFile.isEmpty()) {
 			NoticeFileDto noticeFileDto = new NoticeFileDto();
-			noticeFileDto.setNoticeIdx(noticeFileVO.getNoticeIdx());
+			
+			noticeFileDto.setNoticeIdx(noticeVO.getNoticeIdx());
 			noticeFileDto.setNoticeFileMemberName(multipartFile.getOriginalFilename());
 			noticeFileDto.setNoticeFileType(multipartFile.getContentType());
 			noticeFileDto.setNoticeFileSize(multipartFile.getSize());

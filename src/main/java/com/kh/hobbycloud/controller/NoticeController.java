@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.hobbycloud.entity.notice.NoticeDto;
-import com.kh.hobbycloud.entity.notice.NoticeVO;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
-import com.kh.hobbycloud.service.NoticeService;
-import com.kh.hobbycloud.vo.NoticeFileVO;
+import com.kh.hobbycloud.service.notice.NoticeService;
+import com.kh.hobbycloud.vo.notice.NoticeVO;
 
 @Controller
 @RequestMapping("/notice")
@@ -55,12 +54,12 @@ public class NoticeController {
 //		
 //	}
 	@PostMapping("/write")
-	public String write(@ModelAttribute NoticeFileVO noticeFileVO,@ModelAttribute NoticeDto noticeDto) throws IllegalStateException, IOException {
+	public String write(@ModelAttribute NoticeVO noticeVO) throws IllegalStateException, IOException {
 		int noticeIdx=noticeDao.getsequences();
-		noticeDto.setNoticeIdx(noticeIdx);
-		noticeDto.setMemberIdx(99996);
-		noticeService.insert(noticeFileVO);
-		return "redircet:detail?noticeIdx=+noticeIdx";
+		noticeVO.setNoticeIdx(noticeIdx);
+		noticeVO.setMemberIdx(99996);
+		noticeService.insert(noticeVO);
+		return "redirect:detail?noticeIdx="+noticeIdx;
 		
 	}
 	//글삭제

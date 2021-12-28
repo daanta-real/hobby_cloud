@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.notice.NoticeFileDto;
+import com.kh.hobbycloud.vo.notice.NoticeVO;
 
 @Repository
 public class NoticeFileDaoImpl implements NoticeFileDao{
@@ -34,5 +35,7 @@ public class NoticeFileDaoImpl implements NoticeFileDao{
 		sqlSession.insert("noticeFile.save",noticeFileDto);
 		
 	}
+
+	
 
 }

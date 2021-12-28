@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 
 public interface NoticeFileDao {
-	void save(NoticeFileDto noticeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException;
+	void save(NoticeFileDto noticeFielDto, MultipartFile multipartFile) throws IllegalStateException, IOException;
 
 }
