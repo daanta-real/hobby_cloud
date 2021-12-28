@@ -10,7 +10,6 @@ import com.kh.hobbycloud.vo.gather.GatherVO;
 
 
 public interface GatherDao {
-
 	 List<GatherVO> listSearch(Map<String,Object> param);
 	 List<GatherVO> list();
 	 void insert(GatherDto gatherDto);
