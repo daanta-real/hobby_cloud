@@ -32,6 +32,8 @@
 	-->
 	<typeAliases>
 <!-- 		<package name=""/> -->
+  <package name="com.kh.hobbycloud.entity.notice"/>
+  <package name="com.kh.hobbycloud.entity.petitions"/>
 	</typeAliases>
 	
 	
