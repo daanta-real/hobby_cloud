@@ -203,7 +203,7 @@ $(function(){
 	</div>
 	<div class="row">
 		<label>첨부 파일</label>
-		<input type="file" name="attach" class="form-btn">
+		<input type="file" name="attach" class="form-btn" multiple>
 	</div>
 	<div class="row">
 		<input type="submit" value="등록" class="form-btn">

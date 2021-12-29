@@ -42,8 +42,11 @@
 <!-- 	</insert> -->
 	
 	<!-- 강좌 상세 -->
-	<select id="get" parameterType="int" resultType="LecDto">
-		select * from lec
+	<select id="get" parameterType="int" resultType="LecDetailVO">
+		select L.*, T.tutor_detail, T.tutor_registered , M.member_nick, M.member_email, M.member_phone, P.place_name, P.place_detail from lec L 
+		inner join tutor T on L.tutor_idx = T.tutor_idx
+		inner join place P on L.place_idx = P.place_idx
+		inner join member M on T.member_idx = M.member_idx
 		where lec_idx = #{lecIdx}
 	</select>
 	
@@ -156,7 +159,9 @@
 	</select>
 	
 	<!-- 강좌 수정 -->
-	<update id="edit" parameterType="lecDetailVO"></update>
+	<update id="edit" parameterType="lecDetailVO">
+	
+	</update>
 	
 	<!--  강좌 삭제 -->
 	<delete id="delete" parameterType="int">
