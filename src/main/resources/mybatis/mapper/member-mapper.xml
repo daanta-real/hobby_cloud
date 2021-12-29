@@ -17,14 +17,14 @@
 <mapper namespace="member">
 
 	<!-- 등록을 하려면 시퀀스번호를 얻어내야 한다 -->
-	<select id="seq" resultType="int">
+	<select id="seq" resultType="integer">
 		SELECT member_seq.nextval FROM DUAL
 	</select>
 	
 	<!-- 단일조회 -->
-	<select id="get" parameterType="Integer" resultType="MemberDto">
+	<select id="get" parameterType="string" resultType="MemberDto">
 		SELECT * FROM member
-		WHERE member_idx = #{memberIdx}
+		WHERE member_id = #{memberId}
 	</select>
 	
 	<!-- 등록 -->
@@ -102,7 +102,7 @@
 		WHERE member_idx = #{memberIdx}
 	</update>
 	
-	<delete id="quit" parameterType="Integer">
+	<delete id="quit" parameterType="integer">
 		delete member WHERE member_idx = #{memberIdx}
 	</delete>
 		

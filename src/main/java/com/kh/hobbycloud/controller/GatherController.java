@@ -82,15 +82,14 @@ public class GatherController {
 
 		// 데이터 획득: VO 및 DTO
 		GatherVO gatherVO = gatherDao.get(gatherIdx);
-		GatherFileDto gatherFileDto = gatherFileDao.getIdx(gatherIdx);
 
 		// 획득된 데이터를 Model에 지정
+		List<GatherFileDto> list = gatherFileDao.getIdx(gatherIdx);
 		model.addAttribute("GatherVO", gatherVO);
-		model.addAttribute("gatherFileDto", gatherFileDto);
+		model.addAttribute("list", list);
 
 		// 페이지 리다이렉트 처리
 		return "gather/detail/" + gatherIdx;
-
 	}
 
 	// 글 삭제 실시

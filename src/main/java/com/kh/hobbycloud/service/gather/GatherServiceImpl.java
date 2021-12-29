@@ -1,6 +1,7 @@
 package com.kh.hobbycloud.service.gather;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,8 +55,8 @@ public class GatherServiceImpl implements GatherService {
 
 		// 2. 모임글 파일 저장
 		// 실제 파일 업로드 시도 → 성공 시 파일정보를 DB에 저장
-		MultipartFile[] files = gatherFileVO.getAttach();
-		for(MultipartFile file: files) {
+		List<MultipartFile> attach = gatherFileVO.getAttach();
+		for(MultipartFile file: attach) {
 
 			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
 			if(file.isEmpty()) continue;
@@ -72,11 +73,8 @@ public class GatherServiceImpl implements GatherService {
 		}
 
 
-
 		// 3. 모임글 번호를 회신
 		return gatherIdx;
-
 	}
 
 }
-

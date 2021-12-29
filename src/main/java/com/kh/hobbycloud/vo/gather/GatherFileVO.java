@@ -1,10 +1,11 @@
 package com.kh.hobbycloud.vo.gather;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
-//소모임 게시판에 파일을 저장하기 위한 VO
 @Data
 public class GatherFileVO {
 
@@ -19,7 +20,7 @@ public class GatherFileVO {
 	private String gatherRegistered, gatherStart, gatherEnd;
 
 	// 2. gather_file 테이블 관련
-	private MultipartFile[] attach;
+	private List<MultipartFile> attach;
 
 	// 3. member 테이블 관련
 	private int memberIdx;
