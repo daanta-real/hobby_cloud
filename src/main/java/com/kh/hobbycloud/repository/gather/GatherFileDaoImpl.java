@@ -16,27 +16,31 @@ public class GatherFileDaoImpl  implements GatherFileDao{
 
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	//임의로 멤버로 생성해놓음
-	private File directory = new File("D:/upload/member");
-	
-	
+	private File directory = new File("C:/work_sts/hobbycloud_stored_files");
+
+	// 파일 정보를 DB로 저장한 뒤, 저장된 파일의 gatherFileIdx를 회신
 	@Override
-	public void save(GatherFileDto gatherFileDto,MultipartFile multipartFile) throws IllegalStateException, IOException {
+	public void save(GatherFileDto gatherFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
+
+		// 0. 시퀀스 획득
 		int sequence = sqlSession.selectOne("gatherFile.getSequence");
-		
-		File target = new File(directory,String.valueOf(sequence));
+
+		// 1. 실제 파일을 업로드 폴더에 저장
+		File target = new File(directory, String.valueOf(sequence));
 		multipartFile.transferTo(target);
-		
+
+		// 2. 파일의 정보를 DB에 저장
 		gatherFileDto.setGatherFileIdx(sequence);
 		gatherFileDto.setGatherFileServerName(String.valueOf(sequence));
 		sqlSession.insert("gatherFile.save",gatherFileDto);
-	}
 
+	}
 
 	@Override
 	public GatherFileDto getNo(int gatherFileIdx) {
-		
+
 		return sqlSession.selectOne("gatherFile.getNo", gatherFileIdx);
 	}
 
