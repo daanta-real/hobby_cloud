@@ -6,6 +6,6 @@ import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 public interface LecService {
 
-	void register(LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException;
+	int register(LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException;
 
 }

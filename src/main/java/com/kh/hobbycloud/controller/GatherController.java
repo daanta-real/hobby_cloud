@@ -93,7 +93,7 @@ public class GatherController {
 	}
 
 	// 글 삭제 실시
-	@GetMapping("/delete/")
+	@GetMapping("/delete")
 	public String delete(@RequestParam int gatherIdx) {
 		gatherDao.delete(gatherIdx);
 		return "redirect:list";

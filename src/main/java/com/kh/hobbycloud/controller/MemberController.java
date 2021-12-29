@@ -128,15 +128,17 @@ public class MemberController {
 	}
 
 	// 마이페이지 (임시용)
-	@RequestMapping("/mypage")
-	public String mypage(HttpSession session, Model model) {
-		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
-		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
-		MemberDto memberDto = memberDao.get(memberIdx);
-		model.addAttribute("memberDto", memberDto);
-		model.addAttribute("memberProfileDto", memberProfileDto);
-		return "member/mypage";
-	}
+    @RequestMapping("/mypage")
+    public String mypage(HttpSession session, Model model) {
+        log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
+        String memberId = (String)session.getAttribute("memberId");
+        int memberIdx = (int) session.getAttribute("memberIdx");
+        MemberDto memberDto = memberDao.get(memberId);
+        MemberProfileDto memberProfileDto = memberProfileDao.getIdx(memberIdx);
+        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("memberProfileDto", memberProfileDto);
+        return "member/mypage";
+    }
 
 
 	// 비밀번호 변경 폼 페이지

@@ -10,7 +10,42 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=04960945d1766f88ab55dee4b1108961&libraries=services"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
+	//tern-eclpse 플러그인을 설치하면 자바스크립트 자동완성이 어느정도 지원됨
+	$(function(){
+		$("button").click(function(){
+			//목록을 불러와서 #result에 출력
+			$.ajax({
+				url:"${pageContext.request.contextPath}/place/list",
+				type:"get",
+				//data:{}
+				dataType:"json",
+				success:function(resp){
+					console.log("성공", resp);
+					
+					for(var i=0; i < resp.length; i++){
+						var template = $("#placedto-template").html();
+						
+						template = template.replace("{{examId}}", resp[i].examId);
+						template = template.replace("{{student}}", resp[i].student);
+						template = template.replace("{{subject}}", resp[i].subject);
+						template = template.replace("{{type}}", resp[i].type);
+						template = template.replace("{{score}}", resp[i].score);
+						
+						$("#result").append(template);
+					}
+				},
+				error:function(e){
+					console.log("실패", e);
+				}
+			});
+		});
+	});
+</script>
+
+<script>
+
     $(function() {
     
         //지도 생성 준비 코드
@@ -155,6 +190,17 @@
 		<!-- 1. 장소 리스트에 있는 곳을 고를 경우  -->
 		<!-- 2. 직접 장소를 고를 경우(지도 api에서 클릭) -->
 		<!-- 3. 온라인 or null -->
+		<div id="result"></div>
+
+		<template id="placedto-template">
+			<div class="item">
+				<span>{{placeIdx}}</span>
+				<span>{{placeName}}</span>
+				<span>{{placeLocRegion}}</span>
+				<span>{{placeLocLatitude}}</span>
+				<span>{{placeLocLongitude}}</span>
+			</div>
+		</template>
 <!-- 		<select name="placeIdx" required class="form-input" id="selbox"> -->
 <%-- 		<c:forEach var="placeDto" items="${placeList}"> --%>
 <%-- 			<option>${placeDto.placeName}</option> --%>

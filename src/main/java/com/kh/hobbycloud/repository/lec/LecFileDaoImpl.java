@@ -2,6 +2,7 @@ package com.kh.hobbycloud.repository.lec;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -17,8 +18,11 @@ public class LecFileDaoImpl implements LecFileDao {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	@Autowired
+	private String STOREPATH_LEC;
+	
 	//저장용 폴더
-	private File directory = new File("D:/upload/lec");
+	private File directory = new File(STOREPATH_LEC);
 	
 	@Override
 	public void save(LecFileDto lecFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
@@ -42,8 +46,8 @@ public class LecFileDaoImpl implements LecFileDao {
 	}
 	
 	@Override
-	public LecFileDto getByIdx(int lecIdx) {
-		return sqlSession.selectOne("lecFile.getByLecIdx", lecIdx);
+	public List<LecFileDto> getByIdx(int lecIdx) {
+		return sqlSession.selectList("lecFile.getByLecIdx", lecIdx);
 	}
 
 	@Override

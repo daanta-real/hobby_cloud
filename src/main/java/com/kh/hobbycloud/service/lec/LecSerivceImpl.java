@@ -2,8 +2,8 @@ package com.kh.hobbycloud.service.lec;
 
 
 import java.io.IOException;
+import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,21 +21,18 @@ import lombok.extern.slf4j.Slf4j;
 public class LecSerivceImpl implements LecService{
 
 	@Autowired
-	private SqlSession sqlSession;
-	
-	@Autowired
 	private LecDao lecDao;
 	
 	@Autowired
 	private LecFileDao lecFileDao;
 	
 	@Override
-	public void register(LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
+	public int register(LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
 		//= MemberJoinVO에서 정보를 뽑아서 MemberDto를 생성
-		int sequence = sqlSession.selectOne("lec.seq");
+		int lecIdx = lecDao.getSequence();
 		LecDto lecDto = new LecDto();
-		lecDto.setLecIdx(sequence);
+		lecDto.setLecIdx(lecIdx);
 		lecDto.setTutorIdx(1);
 		lecDto.setLecCategoryName(lecRegisterVO.getLecCategoryName());
 		lecDto.setPlaceIdx(lecRegisterVO.getPlaceIdx());//보류
@@ -53,15 +50,23 @@ public class LecSerivceImpl implements LecService{
 		lecDao.register(lecDto);
 		
 		//(선택) 강사 파일을 파일 테이블과 실제 하드디스크에 저장
-		MultipartFile multipartFile = lecRegisterVO.getAttach();
-		if(!multipartFile.isEmpty()) {//파일이 있으면
+		List<MultipartFile> attach = lecRegisterVO.getAttach();
+		for(MultipartFile file: attach) {
+
+			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
+			if(file.isEmpty()) continue;
+
+			// 파일 정보에 대한 DTO 생성
 			LecFileDto lecFileDto = new LecFileDto();
-			lecFileDto.setLecIdx(sequence);
-			lecFileDto.setLecFileUserName(multipartFile.getOriginalFilename());
-			lecFileDto.setLecFileType(multipartFile.getContentType());
-			lecFileDto.setLecFileSize(multipartFile.getSize());
+			lecFileDto.setLecIdx(lecIdx);
+			lecFileDto.setLecFileUserName(file.getOriginalFilename());
+			lecFileDto.setLecFileType(file.getContentType());
+			lecFileDto.setLecFileSize(file.getSize());
+			// 파일 업로드 후, 파일정보를 DB에 저장
+			lecFileDao.save(lecFileDto, file);	
 			
-			lecFileDao.save(lecFileDto, multipartFile);
 		}
+		
+		return lecIdx;
 	}
 }

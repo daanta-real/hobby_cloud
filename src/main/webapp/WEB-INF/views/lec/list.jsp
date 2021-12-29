@@ -50,7 +50,7 @@
 				<tr>
 					<td>${lecListVO.lecIdx}</td>
 					<td>${lecListVO.lecCategoryName}</td>
-					<td>${lecListVO.lecName}</td>
+					<td><a href="detail/${lecListVO.lecIdx}">${lecListVO.lecName}</a></td>
 					<td>${lecListVO.memberNick}</td>
 					<td>${lecListVO.lecPrice}</td>
 					<td>${lecListVO.lecHeadCount}</td>

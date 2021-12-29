@@ -38,11 +38,14 @@
 <h2>강좌 상세</h2>
 <div class="row">
 	<c:choose>
-		<c:when test="${lecFileDto == null}">
+		<c:when test="${list == null}">
 		<img src="https://via.placeholder.com/300x500?text=User" width="50%" class="image">
 		</c:when>
 		<c:otherwise>
-		<img src="lecfile?lecIdx=${lecFileDto.lecIdx}" width="100%" class="image">
+		<c:forEach var="LecFileDto" items="${list}"> 
+			<img src="${pageContext.request.contextPath}/lec/lecFile/${LecFileDto.lecFileIdx}" width="50%" 
+			class="image image-round image-border">
+		</c:forEach>
 		</c:otherwise>
 	</c:choose>
 </div>
