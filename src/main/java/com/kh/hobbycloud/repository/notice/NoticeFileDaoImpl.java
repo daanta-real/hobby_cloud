@@ -17,9 +17,12 @@ public class NoticeFileDaoImpl implements NoticeFileDao{
 	
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Autowired
+	private String STOREPATH_NOTICE;
 
 	//저장용 폴더
-	private File directory = new File("C:\\Users\\gptjd\\upload");
+	private File directory = new File(STOREPATH_NOTICE);
 
 	public void save(NoticeFileDto noticeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
 		//1. 시퀀스 획득
