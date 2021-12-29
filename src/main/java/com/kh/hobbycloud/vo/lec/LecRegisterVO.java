@@ -25,7 +25,7 @@ public class LecRegisterVO {
 	private Date lecStart;//강좌 시작 시간
 	private Date lecEnd;//강좌 종료 시간
 	private String lecLocRegion;//강좌 주소 지역
-	private int lecLocLatitude;//강좌 주소 위도
-	private int lecLocLongitude;//강좌 주소 경도
+	private String lecLocLatitude;//강좌 주소 위도
+	private String lecLocLongitude;//강좌 주소 경도
 	private MultipartFile attach;//파일
 }

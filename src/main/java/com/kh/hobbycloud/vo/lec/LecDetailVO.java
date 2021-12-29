@@ -22,8 +22,8 @@ public class LecDetailVO {
 	private Date lecStart;//강좌 시작 날짜
 	private Date lecEnd;//강좌 종료 날짜
 	private String lecLocRegion;//강좌 주소 지역
-	private int lecLocLatitude;//강좌 주소 위도
-	private int lecLocLongitude;//강좌 주소 경도
+	private String lecLocLatitude;//강좌 주소 위도
+	private String lecLocLongitude;//강좌 주소 경도
 	private int lecEnrolled;//강좌 수강이력수
 	private int lecViews;//강좌 조회수
 	private int lecReplies;//강좌 댓글수
@@ -34,6 +34,6 @@ public class LecDetailVO {
 	private String memberPhone;//강사 번호
 	private String placeName;//장소 이름
 	private String placeDetail;//장소 소개
-//	private int placeLocLatitude;//장소 위도
-//	private int placeLocLongitude;//장소 경도
+//	private String placeLocLatitude;//장소 위도
+//	private String placeLocLongitude;//장소 경도
 }
