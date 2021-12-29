@@ -14,56 +14,60 @@ import com.kh.hobbycloud.entity.member.MemberDto;
 @Repository
 public class MemberDaoImpl implements MemberDao{
 
+	// 변수선언부
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	@Autowired
 	private PasswordEncoder encoder;
 
-//	단일조회
+	// 단일조회 - ID 기준
 	@Override
 	public MemberDto get(String memberId) {
 		return sqlSession.selectOne("member.get", memberId);
 	}
-	
+
+	// 단일조회 - IDX 기준
 	@Override
-	public MemberDto get(int memberIdx) {
+	public MemberDto get(Integer memberIdx) {
 		return sqlSession.selectOne("member.get", memberIdx);
 	}
-	
-	//비밀번호 검사까지 통과 로그인
+
+	// 비밀번호 검사 후 로그인까지 처리하는 메소드
 	@Override
 	public MemberDto login(MemberDto memberDto) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
 
-		//해당 아이디의 회원정보가 존재 && 입력 비밀번호와 조회된 비밀번호가 같다면 => 로그인 성공(객체를 반환)
-		if(findDto != null && encoder.matches(memberDto.getMemberPw(), findDto.getMemberPw())) {
-			return findDto;
+		// ID와 비밀번호를 입력하였으므로, IDX가 아니라 ID로 조회해야 함
+		MemberDto foundDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
+
+		// 해당 아이디의 회원정보가 존재 && 입력 비밀번호와 조회된 비밀번호가 같다면 => 로그인 성공(객체를 반환)
+		if(foundDto != null && encoder.matches(memberDto.getMemberPw(), foundDto.getMemberPw())) {
+			return foundDto;
 		}
 		else {//아니면 null을 반환
 			return null;
 		}
 	}
-	
-//	가입
-@Override
-public void join(MemberDto memberDto) {
-	String origin = memberDto.getMemberPw();
-	String encrypt = encoder.encode(origin);
-	memberDto.setMemberPw(encrypt);
-	
-	sqlSession.insert("member.insert", memberDto);
-}
 
-//	비밀번호 변경
+	// 가입 처리
 	@Override
-	public boolean changePassword(String memberId, String memberPw, String changePw) {
-		MemberDto memberDto = sqlSession.selectOne("member.get", memberId);
+	public void join(MemberDto memberDto) {
+		String origin = memberDto.getMemberPw();
+		String encrypt = encoder.encode(origin);
+		memberDto.setMemberPw(encrypt);
+
+		sqlSession.insert("member.insert", memberDto);
+	}
+
+	// 비밀번호 변경
+	@Override
+	public boolean changePassword(Integer memberIdx, String memberPw, String changePw) {
+		MemberDto memberDto = sqlSession.selectOne("member.get", memberIdx);
 		if(encoder.matches(memberPw, memberDto.getMemberPw())) {
 			Map<String, Object> param = new HashMap<>();
-			param.put("memberId", memberId);
-			param.put("changePw", encoder.encode(changePw));//변경할 비밀번호 암호화
-			
+			param.put("memberIdx", memberIdx);
+			param.put("changePw", encoder.encode(changePw)); // 변경할 비밀번호 암호화
+
 			int count = sqlSession.update("member.changePassword", param);
 			return count > 0;
 		}
@@ -71,11 +75,11 @@ public void join(MemberDto memberDto) {
 			return false;
 		}
 	}
-	
-	//개인정보 변경
+
+	// 개인정보 변경 (비밀번호 제외)
 	@Override
 	public boolean changeInformation(MemberDto memberDto) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
+		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberIdx());
 		if(encoder.matches(memberDto.getMemberPw(), findDto.getMemberPw())) {
 			int count = sqlSession.update("member.changeInformation", memberDto);
 			return count > 0;
@@ -85,18 +89,18 @@ public void join(MemberDto memberDto) {
 		}
 	}
 
-	//회원 탈퇴
+	// 회원 탈퇴
 	@Override
-	public boolean quit(String memberId, String memberPw) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberId);
+	public boolean quit(Integer memberIdx, String memberPw) {
+		MemberDto findDto = sqlSession.selectOne("member.get", memberIdx);
 		if(encoder.matches(memberPw, findDto.getMemberPw())) {
-			int count = sqlSession.delete("member.quit", memberId);
+			int count = sqlSession.delete("member.quit", memberIdx);
 			return count > 0;
 		}
 		else {
 			return false;
 		}
-	}	
+	}
 }
 
 

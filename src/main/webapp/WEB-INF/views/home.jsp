@@ -35,6 +35,8 @@
 .flexAli { align-items:center; }
 
 /* 엘레멘트별 속성 */
+#topProfileBox { cursor:pointer; }
+#topProfileImage { width:2rem; height:2rem; object-fit:cover; }
 NAV .navbar-brand { font-size:25px; padding-top:0; text-transform: capitalize; line-height: 40px; }
 HEADER .subject { font-weight:900; box-sizing: border-box; width:fit-content; margin:-3px; }
 FOOTER { background:var(--bs-gray-400); }
@@ -108,11 +110,11 @@ const debug_rainbowQueryRun = () => {
 
 <BODY>
 
-<NAV class="navbar navbar-expand-lg navbar-dark bg-primary">
+<NAV class="navbar navbar-expand-md navbar-dark bg-primary">
     <div class="container-fluid">
 
         <!-- 사이트명, 항상 표시 -->
-        <a class="navbar-brand" href="#">HobbyCloud.</a>
+        <a class="navbar-brand" href="/">HobbyCloud.</a>
 
         <!-- 햄버거, 모바일에서만 표시 -->
         <button class="navbar-toggler" type="button"
@@ -147,17 +149,30 @@ const debug_rainbowQueryRun = () => {
             </ul>
 
             <form class="d-flex">
-                <input class="form-control me-sm-1" type="text"
-                    placeholder="Search">
+                <input class="form-control me-sm-1" type="text" placeholder="Search">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
-
-            <form class="d-flex">
-                <input class="form-control me-sm-1" type="text" placeholder="ID">
-                <input class="form-control me-sm-1" type="password" placeholder="Password">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
-            </form>
-            
+            <c:choose>
+                <%-- 로그인했을 경우 내 회원정보 표시 --%>
+                <c:when test="${not empty sessionScope.memberId}">
+               		<div id="topProfileBox" class="d-flex flex-row align-items-center" style="color:white !important;"
+               			onclick="location.href='${pageContext.request.contextPath}/member/mypage'">
+                        <img id="topProfileImage" class="rounded-circle" src="https://cdn.pixabay.com/photo/2021/12/04/15/54/santa-claus-6845491_960_720.jpg" /><%--${sessionScope.memberProfileSavename}" alt="프로필 사진"/>--%>
+                        <span class="d-flex flex-column">
+                        	<small class="fs-5">${sessionScope.memberNick}</small>
+                        	<small class="fs-6">(${sessionScope.memberId})</small>
+                        </span>
+                   	</div>
+                </c:when>
+                <%-- 로그인하지 않았을 경우 ID/PW 입력창 표시 --%>
+                <c:otherwise>
+                    <form class="d-flex" action="${pageContext.request.contextPath}/member/login" method="post">
+                        <input class="form-control me-sm-1" type="text" name="memberId" required class="form-input" placeholder="ID" /> 
+                        <input class="form-control me-sm-1" type="password" name="memberPw" required class="form-input" placeholder="Password" />
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
+                    </form>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </NAV>
@@ -174,7 +189,9 @@ const debug_rainbowQueryRun = () => {
 
 <SECTION class='container p-3'>
 <!-- 페이지 내용 시작 -->
-본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내용본내
+<p>품에 그림자는 뼈 있으랴? 이상의 맺어, 것이 없는 미인을 청춘을 끓는 듣기만 하는 칼이다. 현저하게 밥을 고동을 만물은 새가 피어나는 있다. 살았으며, 불러 꽃 풀이 안고, 약동하다. 대중을 얼마나 구하지 것은 튼튼하며, 뭇 말이다. 커다란 산야에 그들은 귀는 더운지라 있으랴? 구하지 충분히 그들은 이상 천자만홍이 피는 위하여 품고 약동하다. 밝은 바이며, 몸이 하였으며, 이상이 위하여서. 뼈 어디 피가 위하여, 놀이 풀이 철환하였는가? 목숨을 않는 인간의 되는 끓는다. 이상은 노래하며 자신과 이것은 기관과 얼마나 그들은 꾸며 놀이 있는가?</p>
+<p>소리다.이것은 황금시대를 그들을 이상이 황금시대다. 용감하고 놀이 설산에서 없으면, 품에 꽃이 튼튼하며, 꾸며 새 것이다. 끝까지 있는 스며들어 날카로우나 곳으로 할지니, 우리 웅대한 튼튼하며, 운다. 크고 피가 예가 피가 이상의 피다. 곳으로 가슴에 오아이스도 그리하였는가? 찬미를 인생의 하는 석가는 것은 운다. 길을 인생의 모래뿐일 설레는 과실이 끓는 그것은 이것이다. 새가 할지니, 있을 끓는 속잎나고, 그리하였는가? 찾아 새 속에서 몸이 위하여서. 광야에서 못하다 실현에 이상을 우리 위하여서. 있는 인간의 구하지 이상이 고동을 밝은 쓸쓸하랴?</p>
+<p>품었기 동력은 그들에게 부패를 때문이다. 오직 무엇을 피는 얼음과 예가 현저하게 황금시대의 부패를 황금시대다. 이는 듣기만 인생에 것이다. 수 피고 커다란 피어나는 있는가? 같이, 어디 원질이 평화스러운 이상 행복스럽고 소금이라 피가 것이다. 가슴에 영원히 대고, 풀이 얼마나 뼈 타오르고 스며들어 뿐이다. 것이 않는 이상은 능히 가지에 물방아 위하여, 사라지지 이것이다. 웅대한 할지니, 않는 타오르고 새가 그들에게 그러므로 부패뿐이다. 영원히 얼마나 위하여서, 없으면, 것은 피가 인간의 옷을 것은 말이다. 행복스럽고 청춘이 보이는 되는 힘차게 평화스러운 봄바람이다.</p>
 <!-- 페이지 내용 끝. -->
 </SECTION>
 
@@ -190,7 +207,7 @@ const debug_rainbowQueryRun = () => {
 			<li class="row m-1">전화번호 : 1355-4533</li>
 			<li class="row m-1">전자우편주소 : welcome@hobbycloud.kr</li>
 			<li class="row m-1">Copyright HobbyCloud Corp. All rights reserved</li>
-			<li class="row m-1">로그인 정보: No. <%=request.getSession().getAttribute("memberIdx")%> <%=request.getSession().getAttribute("memberNick")%>님 (<%=request.getSession().getAttribute("memberId")%> - <%=request.getSession().getAttribute("memberGrade")%>등급)</li>
+			<li class="row m-1">로그인 정보: No. ${sessionScope.memberIdx} ${sessionScope.memberNick}님 (${sessionScope.memberId} - ${sessionScope.memberGrade}등급)</li>
 		</ul>
 	</div>
 </FOOTER>

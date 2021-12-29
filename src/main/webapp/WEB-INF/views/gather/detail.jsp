@@ -29,8 +29,16 @@
 		<tr height="250" valign="top">
 			<td>
 				<pre>${GatherVO.gatherDetail}</pre>
-				${gatherFileDto.gatherFileIdx}ㅡㅡㅡㅡㅡㅡㅡ
-				<img src="file?gatherFileIdx=${gatherFileDto.gatherFileIdx}" width="50%" class="image image-round image-border">
+			
+				
+			<c:forEach var="GatherFileDto" items="${list}"> 
+<img src="file?gatherFileIdx=${GatherFileDto.gatherFileIdx}" width="50%" 
+class="image image-round image-border">
+</c:forEach>
+			
+			
+<%-- 	<img src="file?gatherFileIdx=${gatherFileDto.gatherFileIdx}" width="50%"  --%>
+<!-- 	class="image image-round image-border"> -->
 			</td>
 		</tr>
 		<tr>

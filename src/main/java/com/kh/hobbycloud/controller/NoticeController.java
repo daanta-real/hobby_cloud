@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kh.hobbycloud.entity.notice.NoticeDto;
-import com.kh.hobbycloud.entity.notice.NoticeVO;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
-import com.kh.hobbycloud.service.NoticeService;
-import com.kh.hobbycloud.vo.NoticeFileVO;
+import com.kh.hobbycloud.service.notice.NoticeService;
+import com.kh.hobbycloud.vo.notice.NoticeVO;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("/notice")
 public class NoticeController {
@@ -26,12 +26,18 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 	//공지게시판 목록조회
-	@RequestMapping("/list")
+	@GetMapping("/list")
     public String list(Model model) {
     	
     	model.addAttribute("list",noticeDao.list());
     	return "notice/list";
     }
+	//검색
+	@PostMapping("/list")
+	public String search(@RequestParam String column, @RequestParam String keyword, Model model) {
+		model.addAttribute("list",noticeDao.search(column, keyword));
+		return "notice/list";
+	}
 	
 	//게시판 상세조회
 	@RequestMapping("/detail")
@@ -55,12 +61,13 @@ public class NoticeController {
 //		
 //	}
 	@PostMapping("/write")
-	public String write(@ModelAttribute NoticeFileVO noticeFileVO,@ModelAttribute NoticeDto noticeDto) throws IllegalStateException, IOException {
+	public String write(@ModelAttribute NoticeVO noticeVO) throws IllegalStateException, IOException {
+		log.debug("---------------------{}",noticeVO);
 		int noticeIdx=noticeDao.getsequences();
-		noticeDto.setNoticeIdx(noticeIdx);
-		noticeDto.setMemberIdx(99996);
-		noticeService.insert(noticeFileVO);
-		return "redircet:detail?noticeIdx=+noticeIdx";
+		noticeVO.setNoticeIdx(noticeIdx);
+		noticeVO.setMemberIdx(99996);
+		noticeService.insert(noticeVO);
+		return "redirect:detail?noticeIdx="+noticeIdx;
 		
 	}
 	//글삭제
@@ -83,6 +90,7 @@ public class NoticeController {
 		noticeDao.edit(noticeVO);
 		return "redirect:detail?noticeIdx="+noticeIdx;
 	}
+	
 	
 	
 
