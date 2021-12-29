@@ -42,8 +42,8 @@ public class LecFileDaoImpl implements LecFileDao {
 	}
 	
 	@Override
-	public LecFileDto getbyIdx(int lecIdx) {
-		return sqlSession.selectOne("lecFile.getByLec", lecIdx);
+	public LecFileDto getByIdx(int lecIdx) {
+		return sqlSession.selectOne("lecFile.getByLecIdx", lecIdx);
 	}
 
 	@Override

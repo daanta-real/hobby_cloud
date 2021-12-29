@@ -38,7 +38,7 @@
 		select * from lec_file where lec_file_idx = #{lecFileIdx}
 	</select>
 	
-	<select id="getByLec" parameterType="int" resultType="LecFileDto">
+	<select id="getByLecIdx" parameterType="int" resultType="LecFileDto">
 		select * from lec_file where lec_idx = #{lecIdx}
 	</select>
 	

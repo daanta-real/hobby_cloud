@@ -2,11 +2,25 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<form  method="post">
+<form method="post">
 <div class="container-900 container-center">
+
+<input type="checkbox" name="lecLocRegion" value="서울">
+서울
+<input type="checkbox" name="lecLocRegion" value="경기도">
+경기도
+<input type="checkbox" name="lecLocRegion" value="제주도">
+제주도
+<input type="checkbox" name="lecLocRegion" value="강원도">
+강원도
+<input type="checkbox" name="lecLocRegion" value="인천">
+인천
 	
  	장소 : <input type="text" name="lecLocRegion">
+ 	<select></select>
+ 	
  	강좌 제목 :	<input type="text" name="lecName"> 
+ 	강사 이름 : <input type="text" name="memberNick">
  	<input type="submit" value="검색하기">
  	
 	<div class="row">
@@ -17,31 +31,37 @@
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>이름</th>
-					<th>분류</th>
+					<th>카테고리</th>
+					<th>강좌 이름</th>
 					<th>강사</th>
-					<th>강좌 수강 인원</th>
-					<th>강좌 지역</th>
 					<th>수강료</th>
-					<c:if test="${memberGrade == admin">
+					<th>수강 인원</th>
+					<th>강의수</th>
+					<th>강좌시작날짜</th>
+					<th>강좌종료날짜</th>
+					<th>지역</th>
+					<c:if test="${memberGrade == admin}">
 						<th>메뉴</th>
 					</c:if>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="lecDto" items="${list}">
+				<c:forEach var="lecListVO" items="${listSearch}">
 				<tr>
-					<td>${lecDto.lecIdx}</td>
-					<td>${lecDto.lecName}</td>
-					<td>${lecDto.lecCategoryName}</td>
-					<td>${lecDto.tutorIdx}</td>
-					<td>${lecDto.lecHeadCount}</td>
-					<td>${lecDto.lecLocRegion}</td>
-					<td>${lecDto.lecPrice}</td>
+					<td>${lecListVO.lecIdx}</td>
+					<td>${lecListVO.lecCategoryName}</td>
+					<td>${lecListVO.lecName}</td>
+					<td>${lecListVO.memberNick}</td>
+					<td>${lecListVO.lecPrice}</td>
+					<td>${lecListVO.lecHeadCount}</td>
+					<td>${lecListVO.lecContainsCount}</td>
+					<td>${lecListVO.lecStart}</td>
+					<td>${lecListVO.lecEnd}</td>
+					<td>${lecListVO.lecLocRegion}</td>
 					<td>
-					<c:if test="${memberGrade == admin">
-						<a href="edit?lecNo=${lecDto.lecNo}">수정</a>
-						<a href="delete?lecNo=${lecDto.lecNo}">삭제</a>
+					<c:if test="${memberGrade == admin}">
+						<a href="edit?lecIdx=${lecDto.lecIdx}">수정</a>
+						<a href="delete?lecIdx=${lecDto.lecIdx}">삭제</a>
 					</c:if>
 					</td>
 				</tr>
