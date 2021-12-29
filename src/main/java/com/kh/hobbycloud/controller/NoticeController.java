@@ -26,12 +26,18 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 	//공지게시판 목록조회
-	@RequestMapping("/list")
+	@GetMapping("/list")
     public String list(Model model) {
     	
     	model.addAttribute("list",noticeDao.list());
     	return "notice/list";
     }
+	//검색
+	@PostMapping("/list")
+	public String search(@RequestParam String column, @RequestParam String keyword, Model model) {
+		model.addAttribute("list",noticeDao.search(column, keyword));
+		return "notice/list";
+	}
 	
 	//게시판 상세조회
 	@RequestMapping("/detail")
@@ -84,6 +90,7 @@ public class NoticeController {
 		noticeDao.edit(noticeVO);
 		return "redirect:detail?noticeIdx="+noticeIdx;
 	}
+	
 	
 	
 

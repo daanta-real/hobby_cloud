@@ -12,6 +12,7 @@ public interface NoticeDao {
 	void delete(int noticeIdx);
 	boolean edit(NoticeVO noticeVO);
 	int getsequences();
+	List<NoticeVO>search(String column,String keyword);
 	
 	
 
