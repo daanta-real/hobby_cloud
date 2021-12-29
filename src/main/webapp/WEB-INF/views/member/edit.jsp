@@ -51,9 +51,23 @@
 				</td>
 			</tr>
 			<tr>
-				<th>지역</th>
+				<th>주소</th>
 				<td>
 					<input type="text" name="memberRegion" value="${memberDto.memberRegion}">
+				</td>
+			</tr>
+			<tr>
+				<th>프로필 이미지</th>
+				<td>
+					<input type="file" name="attach" accept="image/*">
+				</td>
+			</tr>
+			<tr>
+				<th>관심분야</th>
+				<td>
+					<input type="checkbox" name="lecCategoryName"  value="sports">스포츠
+					<input type="checkbox" name="lecCategoryName"  value="music">음악
+					<input type="checkbox" name="lecCategoryName"  value="painting">그림
 				</td>
 			</tr>
 			<tr>

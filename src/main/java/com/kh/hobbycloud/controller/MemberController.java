@@ -130,9 +130,12 @@ public class MemberController {
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
 		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
-		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
-		MemberDto memberDto = memberDao.get(memberIdx);
+		String memberId = (String)session.getAttribute("memberId");
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		MemberDto memberDto = memberDao.get(memberId);
+		MemberProfileDto memberProfileDto = memberProfileDao.getIdx(memberIdx);
 		model.addAttribute("memberDto", memberDto);
+		model.addAttribute("memberProfileDto", memberProfileDto);
 		return "member/mypage";
 	}
 
@@ -246,7 +249,7 @@ public class MemberController {
 	@ResponseBody
 	public ResponseEntity<ByteArrayResource> profile(
 				@RequestParam int memberIdx
-			) throws IOException { 
+			) throws IOException {
 		
 		// 0. 매개변수로 memberIdx가 넘어와 있다.
 		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 memberIdx : " + memberIdx);
