@@ -1,6 +1,8 @@
 package com.kh.hobbycloud.service.gather;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,9 @@ import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class GatherServiceImpl implements GatherService {
 
@@ -41,22 +46,21 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherMax(gatherFileVO.getGatherMax());
 		gatherDto.setGatherStaus(gatherFileVO.getGatherMax());
 		gatherDao.insert(gatherDto);
-		
 
 		// 파일 선택시
-		MultipartFile multipartFile = gatherFileVO.getAttach();
-		if (!multipartFile.isEmpty()) {				
-			GatherFileDto gatherFileDto = new GatherFileDto();
-			gatherFileDto.setGatherIdx(gatherIdx);
-			gatherFileDto.setGatherFileUserName(multipartFile.getOriginalFilename());
-			gatherFileDto.setGatherFileType(multipartFile.getContentType());
-			gatherFileDto.setGatherFileSize(multipartFile.getSize());
+		List<MultipartFile> attach = gatherFileVO.getAttach();
+		
+		GatherFileDto gatherFileDto = new GatherFileDto();
+		for (MultipartFile file : attach) {
+			if (!file.isEmpty()) {
+				gatherFileDto.setGatherIdx(gatherIdx);
+				gatherFileDto.setGatherFileUserName(file.getOriginalFilename());
+				gatherFileDto.setGatherFileType(file.getContentType());
+				gatherFileDto.setGatherFileSize(file.getSize());
+				gatherFileDao.save(gatherFileDto, file);	
+			}
 			
-			gatherFileDao.save(gatherFileDto, multipartFile);
 		}
-			return gatherIdx;
-		}
-
+		return gatherIdx;
 	}
-
-
+}

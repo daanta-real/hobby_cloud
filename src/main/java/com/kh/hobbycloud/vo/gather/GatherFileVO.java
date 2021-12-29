@@ -1,5 +1,7 @@
 package com.kh.hobbycloud.vo.gather;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -11,5 +13,6 @@ public class GatherFileVO {
 	gatherLocLatitude, gatherLocLogitude, gatherMax, gatherStaus;
 	private String lecCategoryName, gatherName, gatherDetail, gatherLocRegion;
 	private String gatherRegistered, gatherStart,gatherEnd;
-	private MultipartFile attach;
+	//private MultipartFile[] attach;
+	private List<MultipartFile> attach;
 }
