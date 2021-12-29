@@ -74,9 +74,9 @@ public class GatherController {
 	@RequestMapping("/detail")
 	public String detail(@RequestParam int gatherIdx, Model model) {
 		GatherVO gatherVO = gatherDao.get(gatherIdx);
-		GatherFileDto gatherFileDto = gatherFileDao.getIdx(gatherIdx);
+		List<GatherFileDto> list = gatherFileDao.getIdx(gatherIdx);
 		model.addAttribute("GatherVO", gatherVO);
-		model.addAttribute("gatherFileDto", gatherFileDto);
+		model.addAttribute("list", list);
 		return "gather/detail";
 	}
 
