@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 <table border="0">
 	<tbody>
 		<tr>
@@ -19,7 +19,7 @@
 		<tr>
 			<th>첨부</th>
 			<td>
-				<input type="file" name="attach">
+				<input type="file" name="attach" multiple>
 			</td>
 		</tr>
 		</tbody>

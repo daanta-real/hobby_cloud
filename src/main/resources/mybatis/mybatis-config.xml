@@ -46,6 +46,7 @@
 		<package name="com.kh.hobbycloud.entity.petitions"/>
 		<package name="com.kh.hobbycloud.entity.place"/>
 		<package name="com.kh.hobbycloud.vo.gather"/>
+		<package name="com.kh.hobbycloud.vo.notice"/>
 	</typeAliases>
 	
 	

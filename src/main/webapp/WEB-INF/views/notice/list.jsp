@@ -33,3 +33,18 @@
 </table>
 <br>
 <a href="write">글쓰기</a>
+
+<!-- 검색창 -->
+<form method="post">
+	
+	<select name="column">
+		<option value="notice_name" selected>제목</option>
+		<option value="notice_detail">내용</option>
+		<option value="member_nick">작성자</option>
+	</select>
+	
+	<input type="search" name="keyword" placeholder="검색어 입력" required >
+	
+	<input type="submit" value="검색">
+	
+</form>
