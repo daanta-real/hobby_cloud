@@ -20,20 +20,26 @@ public class NoticeFileDaoImpl implements NoticeFileDao{
 	//저장용 폴더
 	private File directory = new File("C:\\Users\\gptjd\\upload");
 
-	@Override
-	public void save(NoticeFileDto noticeFileDto, List<MultipartFile> multipartFile) throws IllegalStateException, IOException {
-		/*//1
+	public void save(NoticeFileDto noticeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
+		//1
 		int sequence = sqlSession.selectOne("noticeFile.seq");
 		
 		//2
 		File target = new File(directory,String.valueOf(sequence));
-		( multipartFile).transferTo(target);
-		
-		//3
+		multipartFile.transferTo(target);
 		noticeFileDto.setNoticeFileIdx(sequence);
 		noticeFileDto.setNoticeFileServerName(String.valueOf(sequence));
 		sqlSession.insert("noticeFile.save",noticeFileDto);
-	*/	
+		
+		//3
+		
+	}
+
+	@Override
+	public void save(NoticeFileDto noticeFielDto, List<MultipartFile> multipartFile)
+			throws IllegalStateException, IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

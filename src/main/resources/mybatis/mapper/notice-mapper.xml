@@ -69,5 +69,10 @@ member m
 ON n.member_idx = m.member_idx
 where instr(${column},#{keyword})> 0 order by notice_idx desc
 </select>
+
+<!-- 조회수 증가 -->
+<update id="view" parameterType="int">
+update notice set notice_views=notice_views+1 where notice_idx=${notice_idx}
+</update>
 	
 </mapper>

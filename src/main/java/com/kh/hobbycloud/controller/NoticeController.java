@@ -90,6 +90,12 @@ public class NoticeController {
 		noticeDao.edit(noticeVO);
 		return "redirect:detail?noticeIdx="+noticeIdx;
 	}
+	//조회수 증가
+	@RequestMapping("/view")
+	public String view(@RequestParam int noticeIdx,Model model) {
+		model.addAttribute("list",noticeDao.view(noticeIdx));
+		return "notice/list";
+	}
 	
 	
 	

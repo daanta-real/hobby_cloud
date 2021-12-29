@@ -22,7 +22,9 @@ public class NoticeServiceImpl implements NoticeService{
 	@Autowired
 	private NoticeFileDao noticeFileDao;
 	
-	NoticeDto noticeDto = new NoticeDto();
+
+	
+	
 	
 
 	@Override
@@ -40,23 +42,24 @@ public class NoticeServiceImpl implements NoticeService{
 		noticeDto.setNoticeView(noticeVO.getNoticeViews());
 		noticeDao.insert(noticeDto);
 		
-		List<MultipartFile> multipartFile = noticeVO.getAttach();
+		// 파일 선택시
+		List<MultipartFile> attach = noticeVO.getAttach();
 		
-		 /*if(!multipartFile.isEmpty()) { 
 		NoticeFileDto noticeFileDto = new NoticeFileDto();
-		  
-		  noticeFileDto.setNoticeIdx(noticeVO.getNoticeIdx());
+		for(MultipartFile file : attach) {
+		if(!file.isEmpty()) { 
+		  noticeFileDto.setNoticeIdx(noticeIdx);
 		  noticeFileDto.setNoticeFileMemberName(multipartFile.getOriginalFilename());
 		  noticeFileDto.setNoticeFileType(multipartFile.getContentType());
 		  noticeFileDto.setNoticeFileSize(multipartFile.getSize());
 		  noticeFileDao.save(noticeFileDto, multipartFile);
 		  
 		 
-		  }*/
+		  }
 		
-		
-	}
+		}
+	return noticeIdx;
 	
 	
 
-}
+
