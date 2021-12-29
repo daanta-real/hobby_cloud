@@ -43,15 +43,20 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 	}
 
 	@Override
-	public MemberProfileDto getMemberIdx(int memberIdx) {
+	public MemberProfileDto getByMemberIdx(int memberIdx) {
 		return sqlSession.selectOne("memberProfile.getById", memberIdx);
 	}
 	
 	@Override
-	public byte[] load(int memberProfileNo) throws IOException {
-		File target = new File(directory, String.valueOf(memberProfileNo));
+	public byte[] load(String memberProfileSavename) throws IOException {
+		File target = new File(directory, String.valueOf(memberProfileSavename));
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;}
+
+	@Override
+	public MemberProfileDto getIdx(int memberIdx) {
+		return sqlSession.selectOne("memberProfile.getIdx", memberIdx);
+	}
 
 
 }

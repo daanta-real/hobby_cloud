@@ -30,12 +30,11 @@
 			- 해당 패키지의 모든 클래스는 경로 없이 이름을 직접 작성할 수 있다.
 			(ex) <package name="com.kh.spring10.entity"/>
 	-->
+  <!-- MyBatis에 쓸 테이블 정보 -->
 	<typeAliases>
-
-<!-- 		<package name=""/> -->
-<package name="com.kh.hobbycloud.entity.gather"/>
-<package name="com.kh.hobbycloud.entity.lec"/>
-
+    <!-- 엔티티들 -->
+		<package name="com.kh.hobbycloud.entity.gather"/>
+		<package name="com.kh.hobbycloud.entity.lec"/>
 		<package name="com.kh.hobbycloud.entity.chat"/>
 		<package name="com.kh.hobbycloud.entity.etc"/>
 		<package name="com.kh.hobbycloud.entity.gather"/>
@@ -45,14 +44,10 @@
 		<package name="com.kh.hobbycloud.entity.pay"/>
 		<package name="com.kh.hobbycloud.entity.petitions"/>
 		<package name="com.kh.hobbycloud.entity.place"/>
+    <!-- VO들 -->
 		<package name="com.kh.hobbycloud.vo.gather"/>
+		<package name="com.kh.hobbycloud.vo.lec"/>
 		<package name="com.kh.hobbycloud.vo.notice"/>
 	</typeAliases>
 	
-	
 </configuration>
-
-
-
-
-

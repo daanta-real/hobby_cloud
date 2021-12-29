@@ -3,6 +3,8 @@ package com.kh.hobbycloud.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +77,6 @@ public class MemberController {
 			session.setAttribute("memberId"   , foundDto.getMemberId());
 			session.setAttribute("memberNick" , foundDto.getMemberNick());
 			session.setAttribute("memberGrade", foundDto.getMemberGradeName());
-
 			return "redirect:/";
 
 		}
@@ -133,6 +134,7 @@ public class MemberController {
 		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
 		MemberDto memberDto = memberDao.get(memberIdx);
 		model.addAttribute("memberDto", memberDto);
+		model.addAttribute("memberProfileDto", memberProfileDto);
 		return "member/mypage";
 	}
 
@@ -243,22 +245,31 @@ public class MemberController {
 
 	// 프로필 다운로드 처리 페이지
 	@GetMapping("/profile")
-	@ResponseBody //이 메소드만큼은 뷰 리졸버를 쓰지 않겠다
+	@ResponseBody
 	public ResponseEntity<ByteArrayResource> profile(
-				@RequestParam Integer memberProfileIdx
+				@RequestParam int memberIdx
 			) throws IOException {
-		log.debug("ㅡㅡMemberController - /member/profile GET> 프로필 다운로드");
-
-		// 프로필 idx(memberProfileIdx)로 프로필 이미지 파일 정보를 구한다.
-		MemberProfileDto memberProfileDto = memberProfileDao.getMemberProfileIdx(memberProfileIdx);
-
-		// 프로필번호(memberProfileIdx)로 실제 파일 정보를 불러옴
-		byte[] data = memberProfileDao.load(memberProfileIdx);
+		
+		// 0. 매개변수로 memberIdx가 넘어와 있다.
+		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 memberIdx : " + memberIdx);
+		
+		// 1. memberIdx를 이용하여, 프로필 이미지 파일정보 전체를 DTO로 갖고 온다.
+		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 memberProfileDto : "+memberProfileDto);
+		
+		// 2. 갖고 온 DTO에서 실제 저장 파일명(save name)을 찾아낸다.
+		String savename = memberProfileDto.getMemberProfileSavename();
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 2. 찾아낸 파일명: " + savename);
+		
+		// 3-1. 프로필번호(memberProfileIdx)로 실제 파일 정보를 불러온다
+		byte[] data = memberProfileDao.load(savename);
 		ByteArrayResource resource = new ByteArrayResource(data);
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 3-1. 불러낸 파일 크기: " + data.length);
 
-		// 불러온 파일 이름의 인코딩 에러가 나지 않도록 URLEncode 처리
+		// 3-2. 불러낸 파일명을 실제 다운로드 가능한 파일명으로 바꾼다.
 		String encodeName = URLEncoder.encode(memberProfileDto.getMemberProfileUploadname(), "UTF-8");
 		encodeName = encodeName.replace("+", "%20");
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 3-2. 변경된 파일명: " + encodeName);
 
 		// 실제 이미지를 스트림으로 전송
 		return ResponseEntity.ok()
