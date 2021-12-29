@@ -246,7 +246,7 @@ public class MemberController {
 	@ResponseBody
 	public ResponseEntity<ByteArrayResource> profile(
 				@RequestParam int memberIdx
-			) throws IOException {
+			) throws IOException { 
 		
 		// 0. 매개변수로 memberIdx가 넘어와 있다.
 		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 memberIdx : " + memberIdx);
