@@ -22,7 +22,7 @@ public class LecFileDaoImpl implements LecFileDao {
 	private String STOREPATH_LEC;
 	
 	//저장용 폴더
-	private File directory = new File(STOREPATH_LEC);
+//	private File directory = new File(STOREPATH_LEC);
 	
 	@Override
 	public void save(LecFileDto lecFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
@@ -30,7 +30,7 @@ public class LecFileDaoImpl implements LecFileDao {
 		int sequence = sqlSession.selectOne("lecFile.seq");
 
 		//2
-		File target = new File(directory, String.valueOf(sequence));
+		File target = new File(STOREPATH_LEC, String.valueOf(sequence));
 		multipartFile.transferTo(target);
 
 		//3
@@ -52,7 +52,7 @@ public class LecFileDaoImpl implements LecFileDao {
 
 	@Override
 	public byte[] load(int lecFileIdx) throws IOException {
-		File target = new File(directory, String.valueOf(lecFileIdx));
+		File target = new File(STOREPATH_LEC, String.valueOf(lecFileIdx));
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 	}
