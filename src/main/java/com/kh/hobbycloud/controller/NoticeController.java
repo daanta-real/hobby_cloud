@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kh.hobbycloud.entity.notice.NoticeDto;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.service.notice.NoticeService;
 import com.kh.hobbycloud.vo.notice.NoticeVO;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("/notice")
 public class NoticeController {
@@ -55,6 +56,7 @@ public class NoticeController {
 //	}
 	@PostMapping("/write")
 	public String write(@ModelAttribute NoticeVO noticeVO) throws IllegalStateException, IOException {
+		log.debug("---------------------{}",noticeVO);
 		int noticeIdx=noticeDao.getsequences();
 		noticeVO.setNoticeIdx(noticeIdx);
 		noticeVO.setMemberIdx(99996);

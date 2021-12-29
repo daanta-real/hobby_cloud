@@ -1,6 +1,7 @@
 package com.kh.hobbycloud.service.notice;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,16 +40,20 @@ public class NoticeServiceImpl implements NoticeService{
 		noticeDto.setNoticeView(noticeVO.getNoticeViews());
 		noticeDao.insert(noticeDto);
 		
-		MultipartFile multipartFile = noticeVO.getAttach();
-		if(!multipartFile.isEmpty()) {
-			NoticeFileDto noticeFileDto = new NoticeFileDto();
-			
-			noticeFileDto.setNoticeIdx(noticeVO.getNoticeIdx());
-			noticeFileDto.setNoticeFileMemberName(multipartFile.getOriginalFilename());
-			noticeFileDto.setNoticeFileType(multipartFile.getContentType());
-			noticeFileDto.setNoticeFileSize(multipartFile.getSize());
-			noticeFileDao.save(noticeFileDto, multipartFile);
-		}
+		List<MultipartFile> multipartFile = noticeVO.getAttach();
+		
+		 /*if(!multipartFile.isEmpty()) { 
+		NoticeFileDto noticeFileDto = new NoticeFileDto();
+		  
+		  noticeFileDto.setNoticeIdx(noticeVO.getNoticeIdx());
+		  noticeFileDto.setNoticeFileMemberName(multipartFile.getOriginalFilename());
+		  noticeFileDto.setNoticeFileType(multipartFile.getContentType());
+		  noticeFileDto.setNoticeFileSize(multipartFile.getSize());
+		  noticeFileDao.save(noticeFileDto, multipartFile);
+		  
+		 
+		  }*/
+		
 		
 	}
 	

@@ -19,7 +19,7 @@
 		<tr>
 			<th>첨부</th>
 			<td>
-				<input type="file" name="attach">
+				<input type="file" name="attach" multiple>
 			</td>
 		</tr>
 		</tbody>

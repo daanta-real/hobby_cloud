@@ -1,6 +1,7 @@
 package com.kh.hobbycloud.vo.notice;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,6 @@ public class NoticeVO {
 	private Date noticeRegistered;
 	private int noticeViews;
 	private int noticeReplies;
-	private MultipartFile attach;
+	private List<MultipartFile> attach;
 
 }
