@@ -5,22 +5,22 @@
 <input type="hidden" name="noticeIdx" value="${noticeVO.noticeIdx }">
 <input type="hidden" name="noticeIdx" value="${noticeDto.noticeIdx }">
 
-<h2>${noticeVO.noticeIdx}번 게시글</h2>
+<h2>${NoticeVO.noticeIdx}번 게시글</h2>
 
 <table border="1" width="80%">
 	<tbody>
 		<tr>
 			<td>
-				<h3>${noticeVO.noticeName }</h3>
+				<h3>${NoticeVO.noticeName }</h3>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				등록일 : ${noticeVO.noticeRegistered}
+				등록일 : ${NoticeVO.noticeRegistered}
 				|
-				작성자 : ${noticeVO.memberNick}
+				작성자 : ${NoticeVO.memberNick}
 				|
-				조회수 : ${noticeVO.noticeViews}
+				조회수 : ${NoticeVO.noticeViews}
 			</td>
 		</tr>
 		<!-- 답답해 보이지 않도록 기본높이를 부여 -->
@@ -30,15 +30,20 @@
 		-->
 		<tr height="250" valign="top">
 			<td>
-				<pre>${noticeVO.noticeDetail }</pre>
+				<pre>${NoticeVO.noticeDetail }</pre>
+				<c:forEach var="NoticeFileDto" items="${list}"> 
+<img src="${pageContext.request.contextPath}/notice/file/${NoticeFileDto.noticeFileIdx}
+" width="30%" 
+class="image image-round image-border">
+</c:forEach>
 			</td>
 		</tr>
 		<tr>
 			<td align="right">
 				<a href="write">글쓰기</a>
-				<a href="list">목록보기</a>
-				<a href="edit?noticeIdx=${noticeVO.noticeIdx }">수정하기</a>
-				<a href="delete?noticeIdx=${noticeVO.noticeIdx }">삭제하기</a>
+				<a href="${pageContext.request.contextPath}/notice/list">목록보기</a>
+				<a href="${pageContext.request.contextPath}/notice/edit?noticeIdx=${NoticeVO.noticeIdx }">수정하기</a>
+				<a href="${pageContext.request.contextPath}/notice/delete?noticeIdx=${NoticeVO.noticeIdx }">삭제하기</a>
 	
 	</tbody>
 </table>

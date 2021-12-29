@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,26 +22,41 @@ public class NoticeFileDaoImpl implements NoticeFileDao{
 	private File directory = new File("C:\\Users\\gptjd\\upload");
 
 	public void save(NoticeFileDto noticeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
-		//1
+		//1. 시퀀스 획득
 		int sequence = sqlSession.selectOne("noticeFile.seq");
 		
-		//2
+		//2. 실제파일을 폴더에저장
 		File target = new File(directory,String.valueOf(sequence));
 		multipartFile.transferTo(target);
 		noticeFileDto.setNoticeFileIdx(sequence);
 		noticeFileDto.setNoticeFileServerName(String.valueOf(sequence));
 		sqlSession.insert("noticeFile.save",noticeFileDto);
 		
-		//3
+		
 		
 	}
 
 	@Override
-	public void save(NoticeFileDto noticeFielDto, List<MultipartFile> multipartFile)
-			throws IllegalStateException, IOException {
-		// TODO Auto-generated method stub
+	public NoticeFileDto getNo(int noticeFileIdx) {
+		
+		return sqlSession.selectOne("noticeFile.getNo", noticeFileIdx);
+	}
+
+	@Override
+	public List<NoticeFileDto> getIdx(int noticeIdx) {
+		
+		return sqlSession.selectList("noticeFile.getIdx", noticeIdx);
+	}
+
+	@Override
+	public byte[] load(int noticeFileIdx) throws IOException {
+		File target = new File(directory, String.valueOf(noticeFileIdx));
+		byte[] data = FileUtils.readFileToByteArray(target);
+		return data;
 		
 	}
+
+	
 
 	
 
