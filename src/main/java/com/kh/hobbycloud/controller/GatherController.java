@@ -89,7 +89,7 @@ public class GatherController {
 		model.addAttribute("list", list);
 
 		// 페이지 리다이렉트 처리
-		return "gather/detail/" + gatherIdx;
+		return "gather/detail";
 	}
 
 	// 글 삭제 실시

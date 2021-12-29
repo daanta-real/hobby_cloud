@@ -23,7 +23,7 @@ public class GatherFileDaoImpl implements GatherFileDao {
 	@Autowired
 	private String STOREPATH_GATHER;
 	// 소모임 관련 첨부파일 저장소 파일 객체
-	private File directory = new File(STOREPATH_GATHER);
+	// private File directory = new File(STOREPATH_GATHER);
 
 	// 파일 정보를 DB로 저장한 뒤, 저장된 파일의 gatherFileIdx를 회신
 	@Override
@@ -33,7 +33,7 @@ public class GatherFileDaoImpl implements GatherFileDao {
 		int sequence = sqlSession.selectOne("gatherFile.getSequence");
 
 		// 1. 실제 파일을 업로드 폴더에 저장
-		File target = new File(directory, String.valueOf(sequence));
+		File target = new File(STOREPATH_GATHER, String.valueOf(sequence));
 		multipartFile.transferTo(target);
 
 		// 2. 파일의 정보를 DB에 저장
@@ -70,7 +70,7 @@ public class GatherFileDaoImpl implements GatherFileDao {
 	// 한 개의 파일 데이터를 회신 (파일명이 idx와 같다)
 	@Override
 	public byte[] load(int gatherFileIdx) throws IOException {
-		File target = new File(directory, String.valueOf(gatherFileIdx));
+		File target = new File(STOREPATH_GATHER, String.valueOf(gatherFileIdx));
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 	}

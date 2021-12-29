@@ -42,12 +42,12 @@
 			<tr>
 			
 			<td>
-			<img src="file?gatherFileIdx=${GatherVO.gatherFileIdx}" width="20%">
+			<img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%">
 			</td>
 			
 				<td>${GatherVO.gatherIdx}</td>
 				<td align="left">
-				<a href="detail?gatherIdx=${GatherVO.gatherIdx }">${GatherVO.gatherName }</a>
+				<a href="${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx }">${GatherVO.gatherName }</a>
 				</td>
 				<td>${GatherVO.memberNick }</td>
 				<td>${GatherVO.gatherLocRegion }</td>
