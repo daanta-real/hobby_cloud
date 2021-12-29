@@ -35,6 +35,8 @@
 .flexAli { align-items:center; }
 
 /* 엘레멘트별 속성 */
+#topProfileBox { cursor:pointer; }
+#topProfileImage { width:2rem; height:2rem; object-fit:cover; }
 NAV .navbar-brand { font-size:25px; padding-top:0; text-transform: capitalize; line-height: 40px; }
 HEADER .subject { font-weight:900; box-sizing: border-box; width:fit-content; margin:-3px; }
 FOOTER { background:var(--bs-gray-400); }
@@ -108,11 +110,11 @@ const debug_rainbowQueryRun = () => {
 
 <BODY>
 
-<NAV class="navbar navbar-expand-lg navbar-dark bg-primary">
+<NAV class="navbar navbar-expand-md navbar-dark bg-primary">
     <div class="container-fluid">
 
         <!-- 사이트명, 항상 표시 -->
-        <a class="navbar-brand" href="#">HobbyCloud.</a>
+        <a class="navbar-brand" href="/">HobbyCloud.</a>
 
         <!-- 햄버거, 모바일에서만 표시 -->
         <button class="navbar-toggler" type="button"
@@ -147,17 +149,30 @@ const debug_rainbowQueryRun = () => {
             </ul>
 
             <form class="d-flex">
-                <input class="form-control me-sm-1" type="text"
-                    placeholder="Search">
+                <input class="form-control me-sm-1" type="text" placeholder="Search">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
-
-            <form class="d-flex">
-                <input class="form-control me-sm-1" type="text" placeholder="ID">
-                <input class="form-control me-sm-1" type="password" placeholder="Password">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
-            </form>
-            
+            <c:choose>
+                <%-- 로그인했을 경우 내 회원정보 표시 --%>
+                <c:when test="${not empty sessionScope.memberId}">
+               		<div id="topProfileBox" class="d-flex flex-row align-items-center" style="color:white !important;"
+               			onclick="location.href='${pageContext.request.contextPath}/member/mypage'">
+                        <img id="topProfileImage" class="rounded-circle" src="https://cdn.pixabay.com/photo/2021/12/04/15/54/santa-claus-6845491_960_720.jpg" /><%--${sessionScope.memberProfileSavename}" alt="프로필 사진"/>--%>
+                        <span class="d-flex flex-column">
+                        	<small class="fs-5">${sessionScope.memberNick}</small>
+                        	<small class="fs-6">(${sessionScope.memberId})</small>
+                        </span>
+                   	</div>
+                </c:when>
+                <%-- 로그인하지 않았을 경우 ID/PW 입력창 표시 --%>
+                <c:otherwise>
+                    <form class="d-flex" action="${pageContext.request.contextPath}/member/login" method="post">
+                        <input class="form-control me-sm-1" type="text" name="memberId" required class="form-input" placeholder="ID" /> 
+                        <input class="form-control me-sm-1" type="password" name="memberPw" required class="form-input" placeholder="Password" />
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
+                    </form>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </NAV>
@@ -190,7 +205,7 @@ const debug_rainbowQueryRun = () => {
 			<li class="row m-1">전화번호 : 1355-4533</li>
 			<li class="row m-1">전자우편주소 : welcome@hobbycloud.kr</li>
 			<li class="row m-1">Copyright HobbyCloud Corp. All rights reserved</li>
-			<li class="row m-1">로그인 정보: No. <%=request.getSession().getAttribute("memberIdx")%> <%=request.getSession().getAttribute("memberNick")%>님 (<%=request.getSession().getAttribute("memberId")%> - <%=request.getSession().getAttribute("memberGrade")%>등급)</li>
+			<li class="row m-1">로그인 정보: No. ${sessionScope.memberIdx} ${sessionScope.memberNick}님 (${sessionScope.memberId} - ${sessionScope.memberGrade}등급)</li>
 		</ul>
 	</div>
 </FOOTER>
