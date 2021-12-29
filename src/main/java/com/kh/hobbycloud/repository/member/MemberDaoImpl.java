@@ -38,11 +38,11 @@ public class MemberDaoImpl implements MemberDao{
 	public MemberDto login(MemberDto memberDto) {
 
 		// ID와 비밀번호를 입력하였으므로, IDX가 아니라 ID로 조회해야 함
-		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
+		MemberDto foundDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
 
 		// 해당 아이디의 회원정보가 존재 && 입력 비밀번호와 조회된 비밀번호가 같다면 => 로그인 성공(객체를 반환)
-		if(findDto != null && encoder.matches(memberDto.getMemberPw(), findDto.getMemberPw())) {
-			return findDto;
+		if(foundDto != null && encoder.matches(memberDto.getMemberPw(), foundDto.getMemberPw())) {
+			return foundDto;
 		}
 		else {//아니면 null을 반환
 			return null;
