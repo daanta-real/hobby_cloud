@@ -17,31 +17,32 @@
 <mapper namespace="member">
 
 	<!-- 등록을 하려면 시퀀스번호를 얻어내야 한다 -->
-	<select id="seq" resultType="int">
-		select member_seq.nextval from dual
+	<select id="seq" resultType="integer">
+		SELECT member_seq.nextval FROM DUAL
 	</select>
 	
 	<!-- 단일조회 -->
-	<select id="get" parameterType="String" resultType="MemberDto">
-		select * from member where member_id = #{memberId}
+	<select id="get" parameterType="string" resultType="MemberDto">
+		SELECT * FROM member
+		WHERE member_id = #{memberId}
 	</select>
 	
 	<!-- 등록 -->
 	<insert id="insert" parameterType="MemberDto">
-		insert into member(
-			member_idx,member_id, member_pw, 
+		INSERT INTO member (
+			member_idx, member_id, member_pw, 
 			member_nick, member_email, member_phone, member_region
 		)
-		values(
+		VALUES (
 			#{memberIdx}, #{memberId}, #{memberPw}, #{memberNick},
 			#{memberEmail}, #{memberPhone}, #{memberRegion}
 		)
-	</insert>	
+	</insert>
 	
 	<!-- 비밀번호 변경 -->
 	<update id="changePassword" parameterType="map">
-		update member set member_pw = #{changePw}
-		where member_id = #{memberId}
+		UPDATE member SET member_pw = #{changePw}
+		WHERE member_idx = #{memberIdx}
 	</update>
 	
 	<!-- 
@@ -52,32 +53,31 @@
 	-->
 	
 	<update id="changeInformation1" parameterType="MemberDto">
-		update member 
-		set
+		UPDATE member
+		SET
 			member_nick = #{memberNick},
 			member_email = #{memberEmail},
 			member_phone = #{memberPhone}
 			member_region = #{memberRegion}
-		where
-			member_id = #{memberId}
+		WHERE
+			member_idx = #{memberIdx}
 	</update>
 	
 	<update id="changeInformation2" parameterType="MemberDto">
-		update member
-		set
+		UPDATE member
+		SET
 			member_nick = #{memberNick},
 			member_email = #{memberEmail},
 			member_phone = #{memberPhone}
 			member_region = #{memberRegion}
 			member_point = #{memberPoint},
 			member_grade_name = #{memberGradeName}
-		where
-			member_id = #{memberId}
+		WHERE
+			member_idx = #{memberIdx}
 	</update>
 	
 	<update id="changeInformation" parameterType="MemberDto">
-		update member
-		
+		UPDATE member
 		<!-- set을 이용하여 수정항목을 동적으로 배치(단 마지막 콤마는 반드시 작성) -->
 		<set>
 			<if test="memberNick != null">
@@ -99,11 +99,11 @@
 				member_grade_name = #{memberGradeName},
 			</if>
 		</set>
-		where member_id = #{memberId}
+		WHERE member_idx = #{memberIdx}
 	</update>
 	
-	<delete id="quit" parameterType="String">
-		delete member where member_id = #{memberId}
+	<delete id="quit" parameterType="integer">
+		delete member WHERE member_idx = #{memberIdx}
 	</delete>
 		
 </mapper>
