@@ -1,7 +1,6 @@
 package com.kh.hobbycloud.service.gather;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,6 @@ import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class GatherServiceImpl implements GatherService {
 
@@ -28,6 +24,12 @@ public class GatherServiceImpl implements GatherService {
 
 	@Override
 	public int save(GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
+
+
+
+		// 1. 모임글 등록
+
+		// 모임글 DTO 설정
 		GatherDto gatherDto = new GatherDto();
 		int gatherIdx = gatherDao.getSequence();
 		gatherDto.setGatherIdx(gatherIdx);
@@ -45,22 +47,34 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherEnd(gatherFileVO.getGatherEnd());
 		gatherDto.setGatherMax(gatherFileVO.getGatherMax());
 		gatherDto.setGatherStaus(gatherFileVO.getGatherMax());
+
+		// Gather DTO를 테이블에 삽입
 		gatherDao.insert(gatherDto);
 
-		// 파일 선택시
+
+
+		// 2. 모임글 파일 저장
+		// 실제 파일 업로드 시도 → 성공 시 파일정보를 DB에 저장
 		List<MultipartFile> attach = gatherFileVO.getAttach();
-		
-		GatherFileDto gatherFileDto = new GatherFileDto();
-		for (MultipartFile file : attach) {
-			if (!file.isEmpty()) {
-				gatherFileDto.setGatherIdx(gatherIdx);
-				gatherFileDto.setGatherFileUserName(file.getOriginalFilename());
-				gatherFileDto.setGatherFileType(file.getContentType());
-				gatherFileDto.setGatherFileSize(file.getSize());
-				gatherFileDao.save(gatherFileDto, file);	
-			}
-			
+		for(MultipartFile file: attach) {
+
+			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
+			if(file.isEmpty()) continue;
+
+			// 파일 정보에 대한 DTO 생성
+			GatherFileDto gatherFileDto = new GatherFileDto();
+			gatherFileDto.setGatherIdx(gatherIdx);
+			gatherFileDto.setGatherFileUserName(file.getOriginalFilename());
+			gatherFileDto.setGatherFileType(file.getContentType());
+			gatherFileDto.setGatherFileSize(file.getSize());
+			// 파일 업로드 후, 파일정보를 DB에 저장
+			gatherFileDao.save(gatherFileDto, file);
+
 		}
+
+
+		// 3. 모임글 번호를 회신
 		return gatherIdx;
 	}
+
 }

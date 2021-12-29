@@ -12,39 +12,44 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.gather.GatherFileDto;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Repository
 public class GatherFileDaoImpl implements GatherFileDao {
 
 	@Autowired
 	private SqlSession sqlSession;
 
-	// 임의로 멤버로 생성해놓음
+	//임의로 멤버로 생성해놓음
 	private File directory = new File("D:/upload/member");
 
-	public void save(GatherFileDto gatherFileDto,MultipartFile multipartFile)
-			throws IllegalStateException, IOException {
-		
-	
-			int sequence = sqlSession.selectOne("gatherFile.getSequence");
-			File target = new File(directory, String.valueOf(sequence));
-			multipartFile.transferTo(target);
-			gatherFileDto.setGatherFileIdx(sequence);
-			gatherFileDto.setGatherFileServerName(String.valueOf(sequence));
-			sqlSession.insert("gatherFile.save", gatherFileDto);
-		
+	// 파일 정보를 DB로 저장한 뒤, 저장된 파일의 gatherFileIdx를 회신
+	@Override
+	public void save(GatherFileDto gatherFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
+
+		// 0. 시퀀스 획득
+		int sequence = sqlSession.selectOne("gatherFile.getSequence");
+
+		// 1. 실제 파일을 업로드 폴더에 저장
+		File target = new File(directory, String.valueOf(sequence));
+		multipartFile.transferTo(target);
+
+		// 2. 파일의 정보를 DB에 저장
+		gatherFileDto.setGatherFileIdx(sequence);
+		gatherFileDto.setGatherFileServerName(String.valueOf(sequence));
+		sqlSession.insert("gatherFile.save",gatherFileDto);
+
+		/*
+		for(MultipartFile file : attach) {
+		int sequence = sqlSession.selectOne("gatherFile.getSequence");
+		File target = new File(directory, String.valueOf(sequence));
+		file.transferTo(target);
+		gatherFileDto.setGatherFileIdx(sequence);
+		gatherFileDto.setGatherFileServerName(String.valueOf(sequence));
+		sqlSession.insert("gatherFile.save", gatherFileDto);
+			}
+		}
+	 	*/
+
 	}
-//		for(MultipartFile file : attach) {
-//		int sequence = sqlSession.selectOne("gatherFile.getSequence");
-//		File target = new File(directory, String.valueOf(sequence));
-//		file.transferTo(target);
-//		gatherFileDto.setGatherFileIdx(sequence);
-//		gatherFileDto.setGatherFileServerName(String.valueOf(sequence));
-//		sqlSession.insert("gatherFile.save", gatherFileDto);
-//			}
-//		}
 
 	@Override
 	public GatherFileDto getNo(int gatherFileIdx) {
