@@ -124,5 +124,14 @@
 	-->
 	<task:annotation-driven/>	
 	
+	<!-- 첨부파일 폴더 경로값 설정 -->
+	<bean id="STOREPATH"          class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}"></constructor-arg></bean>
+	<bean id="STOREPATH_MEMBER"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/member" /></bean>
+	<bean id="STOREPATH_PLACE"    class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/place" /></bean>
+	<bean id="STOREPATH_GATHER"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/gather" /></bean>
+	<bean id="STOREPATH_NOTICE"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/notice" /></bean>
+	<bean id="STOREPATH_PETITION" class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/petition" /></bean>
+	<bean id="STOREPATH_LEC"      class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/lec" /></bean>
+	<bean id="STOREPATH_AD"       class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/ad" /></bean>
 	
 </beans>

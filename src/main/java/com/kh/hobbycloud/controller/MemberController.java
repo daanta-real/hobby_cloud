@@ -3,8 +3,6 @@ package com.kh.hobbycloud.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,16 +126,17 @@ public class MemberController {
 	}
 
 	// 마이페이지 (임시용)
-	@RequestMapping("/mypage")
-	public String mypage(HttpSession session, Model model) {
-		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
-		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
-		MemberDto memberDto = memberDao.get(memberIdx);
-		model.addAttribute("memberDto", memberDto);
-		model.addAttribute("memberProfileDto", memberProfileDto);
-		return "member/mypage";
-	}
-
+    @RequestMapping("/mypage")
+    public String mypage(HttpSession session, Model model) {
+        log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
+        String memberId = (String)session.getAttribute("memberId");
+        int memberIdx = (int) session.getAttribute("memberIdx");
+        MemberDto memberDto = memberDao.get(memberId);
+        MemberProfileDto memberProfileDto = memberProfileDao.getIdx(memberIdx);
+        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("memberProfileDto", memberProfileDto);
+        return "member/mypage";
+    }
 
 	// 비밀번호 변경 폼 페이지
 	@GetMapping("/password")
@@ -249,18 +248,18 @@ public class MemberController {
 	public ResponseEntity<ByteArrayResource> profile(
 				@RequestParam int memberIdx
 			) throws IOException {
-		
+
 		// 0. 매개변수로 memberIdx가 넘어와 있다.
 		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 memberIdx : " + memberIdx);
-		
+
 		// 1. memberIdx를 이용하여, 프로필 이미지 파일정보 전체를 DTO로 갖고 온다.
 		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 memberProfileDto : "+memberProfileDto);
-		
+
 		// 2. 갖고 온 DTO에서 실제 저장 파일명(save name)을 찾아낸다.
 		String savename = memberProfileDto.getMemberProfileSavename();
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 2. 찾아낸 파일명: " + savename);
-		
+
 		// 3-1. 프로필번호(memberProfileIdx)로 실제 파일 정보를 불러온다
 		byte[] data = memberProfileDao.load(savename);
 		ByteArrayResource resource = new ByteArrayResource(data);
