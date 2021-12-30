@@ -9,7 +9,7 @@ import com.kh.hobbycloud.vo.pay.subvo.SelectedCardInfo;
 import lombok.Data;
 
 @Data
-public class KakaoPaySearchResponseVO {
+public class KakaoPayVO {
 
 	// 가맹점 관련
 	private String cid; // 가맹점 코드
