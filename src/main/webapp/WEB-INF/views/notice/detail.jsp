@@ -32,8 +32,7 @@
 			<td>
 				<pre>${NoticeVO.noticeDetail }</pre>
 				<c:forEach var="NoticeFileDto" items="${list}"> 
-<img src="${pageContext.request.contextPath}/notice/file/${NoticeFileDto.noticeFileIdx}
-" width="30%" 
+<img src="${pageContext.request.contextPath}/notice/file/${NoticeFileDto.noticeFileIdx}" width="30%" 
 class="image image-round image-border">
 </c:forEach>
 			</td>

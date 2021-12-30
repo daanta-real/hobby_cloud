@@ -13,7 +13,7 @@ public interface NoticeDao {
 	boolean edit(NoticeVO noticeVO);
 	int getsequences();
 	List<NoticeVO>search(String column,String keyword);
-	boolean view(int noticeIdx);
+	void views(int noticeIdx);
 	
 	
 

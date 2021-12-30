@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.repository.notice.NoticeFileDao;
@@ -63,6 +62,7 @@ public class NoticeController {
 	@RequestMapping("/detail/{noticeIdx}")
 	public String detail(@PathVariable int noticeIdx, Model model) {
 		// 데이터 획득: VO 및 DTO
+		        noticeDao.views(noticeIdx);
 				NoticeVO noticeVO = noticeDao.get(noticeIdx);
 
 				// 획득된 데이터를 Model에 지정
@@ -98,7 +98,7 @@ public class NoticeController {
 		noticeVO.setNoticeIdx(noticeIdx);
 		noticeVO.setMemberIdx(99996);
 		noticeService.save(noticeVO);
-		return "redirect:detail?noticeIdx="+noticeIdx;
+		return "redirect:detail/"+noticeIdx;
 		
 	}
 	//글삭제
@@ -115,27 +115,14 @@ public class NoticeController {
 	    
 	return "notice/edit";
 	}
-	//@PostMapping("/edit")
-	//public String edit(@ModelAttribute NoticeVO noticeVO ,@RequestParam int noticeIdx) {
-	//	noticeVO.setNoticeIdx(noticeIdx);
-	//	noticeDao.edit(noticeVO);
-	//	return "redirect:detail?noticeIdx="+noticeIdx;
-	//}
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute NoticeVO noticeVO,@RequestParam int noticeIdx) throws IllegalStateException, IOException {
-		log.debug("---------------------{}",noticeVO);
+	public String edit(@ModelAttribute NoticeVO noticeVO ,@RequestParam int noticeIdx) {
 		noticeVO.setNoticeIdx(noticeIdx);
-		noticeVO.setMemberIdx(99996);
-		noticeService.save(noticeVO);
+		noticeDao.edit(noticeVO);
 		return "redirect:detail?noticeIdx="+noticeIdx;
-		
 	}
-	//조회수 증가
-	@RequestMapping("/view")
-	public String view(@RequestParam int noticeIdx,Model model) {
-		model.addAttribute("list",noticeDao.view(noticeIdx));
-		return "notice/list";
-	}
+	
+	
 	
 	// 파일 전송 실시
 		@GetMapping("/file/{noticeFileIdx}")

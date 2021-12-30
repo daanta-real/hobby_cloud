@@ -22,14 +22,14 @@ public class NoticeFileDaoImpl implements NoticeFileDao{
 	private String STOREPATH_NOTICE;
 
 	//저장용 폴더
-	private File directory = new File(STOREPATH_NOTICE);
+	//private File directory = new File(STOREPATH_NOTICE);
 
 	public void save(NoticeFileDto noticeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
 		//1. 시퀀스 획득
 		int sequence = sqlSession.selectOne("noticeFile.seq");
 		
 		//2. 실제파일을 폴더에저장
-		File target = new File(directory,String.valueOf(sequence));
+		File target = new File(STOREPATH_NOTICE,String.valueOf(sequence));
 		multipartFile.transferTo(target);
 		noticeFileDto.setNoticeFileIdx(sequence);
 		noticeFileDto.setNoticeFileServerName(String.valueOf(sequence));
@@ -53,7 +53,7 @@ public class NoticeFileDaoImpl implements NoticeFileDao{
 
 	@Override
 	public byte[] load(int noticeFileIdx) throws IOException {
-		File target = new File(directory, String.valueOf(noticeFileIdx));
+		File target = new File(STOREPATH_NOTICE, String.valueOf(noticeFileIdx));
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 		

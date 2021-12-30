@@ -64,9 +64,13 @@ public class NoticeDaoImpl implements NoticeDao {
 	}
 
 	@Override
-	public boolean view(int noticeIdx) {
-		int result=sqlSession.update("notice.view");
-		return result>0;
+	public void views(int noticeIdx) {
+		sqlSession.update("notice.views",noticeIdx);
+		
 	}
+
+	
+
+	
 
 }

@@ -59,4 +59,13 @@ public class NoticeServiceImpl implements NoticeService {
 		// 3. 모임글 번호를 회신
 
 	}
+
+	
+
+	
+	
+
+	
+
+	
 }
