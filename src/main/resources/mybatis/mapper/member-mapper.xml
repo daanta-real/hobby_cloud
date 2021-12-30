@@ -27,15 +27,16 @@
 		WHERE member_id = #{memberId}
 	</select>
 	
+  	
 	<!-- 등록 -->
 	<insert id="insert" parameterType="MemberDto">
 		INSERT INTO member (
-			member_idx, member_id, member_pw, 
-			member_nick, member_email, member_phone, member_region
+			member_idx, member_id, member_pw,member_nick, 
+			member_email, member_phone, member_region, member_gender
 		)
 		VALUES (
 			#{memberIdx}, #{memberId}, #{memberPw}, #{memberNick},
-			#{memberEmail}, #{memberPhone}, #{memberRegion}
+			#{memberEmail}, #{memberPhone}, #{memberRegion}, #{memberGender}
 		)
 	</insert>
 	
@@ -102,8 +103,15 @@
 		WHERE member_idx = #{memberIdx}
 	</update>
 	
+	<!-- 탈퇴 -->
 	<delete id="quit" parameterType="integer">
 		delete member WHERE member_idx = #{memberIdx}
 	</delete>
+	
+	<!-- 닉네임 중복 조회 -->
+	<select id="findNick" parameterType="string" resultType="MemberDto">
+		SELECT * FROM member
+		WHERE member_nick = #{memberNick}
+	</select>
 		
 </mapper>

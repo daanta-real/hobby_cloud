@@ -20,6 +20,9 @@ public class MemberDaoImpl implements MemberDao{
 
 	@Autowired
 	private PasswordEncoder encoder;
+	
+	@Autowired
+	private MemberDao memberDao;
 
 	// 단일조회 - ID 기준
 	@Override
@@ -58,6 +61,7 @@ public class MemberDaoImpl implements MemberDao{
 
 		sqlSession.insert("member.insert", memberDto);
 	}
+	
 
 	// 비밀번호 변경
 	@Override
@@ -101,6 +105,24 @@ public class MemberDaoImpl implements MemberDao{
 			return false;
 		}
 	}
+	
+	//아이디 중복 검사
+	@Override
+	public MemberDto checkId(String memberId) throws Exception {
+		System.out.println(">> DAO checkId() 메소드 실행");
+		return sqlSession.selectOne("member.get", memberId);
+	}
+
+	//닉네임 중복 검사
+	@Override
+	public MemberDto checkNick(String memberNick) throws Exception {
+		System.out.println(">> DAO checkNick() 메소드 실행");
+		return sqlSession.selectOne("member.findNick",memberNick);
+	}
+	
+
+
+
 }
 
 

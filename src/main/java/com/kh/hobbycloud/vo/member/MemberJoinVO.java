@@ -21,7 +21,8 @@ public class MemberJoinVO {
 	private String memberPhone;
 	private Date memberRegistered;
 	private int memberPoint;
-	private String memberRegion;	
+	private String memberRegion;
+	private String memberGender;
 	private MultipartFile attach;		
 	private List<Integer> lecCategoryName;
 }

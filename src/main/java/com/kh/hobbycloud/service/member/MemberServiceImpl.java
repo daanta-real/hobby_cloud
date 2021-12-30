@@ -43,6 +43,7 @@ public class MemberServiceImpl implements MemberService{
 		memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
 		memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
 		memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
+		memberDto.setMemberGender(memberJoinVO.getMemberGender());
 		memberDao.join(memberDto);
 		
 		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
@@ -62,6 +63,21 @@ public class MemberServiceImpl implements MemberService{
 			memberProfileDto.setMemberProfileSize(multipartFile.getSize());
 			memberProfileDao.save(memberProfileDto, multipartFile);
 		}
+		
+		
+	}
+	//아이디 중복 확인
+	@Override
+	public MemberDto checkId(String memberId) throws Exception {
+		System.out.println("serviceImpl: " + memberId);
+		return memberDao.checkId(memberId);
+	}
+	
+	//닉네임 중복 확인
+	@Override
+	public MemberDto checkNick(String memberNick) throws Exception {
+		System.out.println("serviceImpl: " + memberNick);
+		return memberDao.checkNick(memberNick);
 	}
 
 }

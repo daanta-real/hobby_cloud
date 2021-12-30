@@ -16,6 +16,7 @@ public class MemberDto {
 	private Date memberRegistered;
 	private int memberPoint;
 	private String memberRegion;
+	private String memberGender;
 }
 
 

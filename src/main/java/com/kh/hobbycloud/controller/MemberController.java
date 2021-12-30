@@ -10,6 +10,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.member.MemberProfileDao;
+import com.kh.hobbycloud.service.member.MailSendService;
 import com.kh.hobbycloud.service.member.MemberService;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
@@ -42,6 +44,12 @@ public class MemberController {
 
 	@Autowired
 	private MemberProfileDao memberProfileDao;
+	
+	@Autowired
+	private JavaMailSender mailSender;
+	
+	@Autowired
+    private MailSendService mailSendService;
 
 	// 로그인 폼 페이지
 	@GetMapping("/login")
@@ -77,7 +85,6 @@ public class MemberController {
 			session.setAttribute("memberGrade", foundDto.getMemberGradeName());
 			
 			return "redirect:/";
-
 		}
 
 		// 2-2. 일치하는 것이 없으면, 로그인 폼 페이지로 돌아감
@@ -125,6 +132,47 @@ public class MemberController {
 		log.debug("ㅡㅡMemberController - /member/join_success REQUEST> 회원가입 성공");
 		return "member/join_success";
 	}
+
+	// 아이디 중복 검사
+		@PostMapping("/memberIdChk")
+		@ResponseBody
+		public String checkId(String memberId) throws Exception{
+			
+			log.info("memberIdChk() 실행");
+			log.info("memberId :"+ memberId);
+			MemberDto result = memberDao.checkId(memberId);
+			log.info("String checkId () result : "+ result); 
+
+			if(result != null) {
+				//중복아이디
+				return "fail";	
+
+			} else {
+				//중복 아이디 x
+				return "success";		
+			}					
+		}
+		
+		// 닉네임 중복 검사
+		@PostMapping("/memberNickChk")
+		@ResponseBody
+		public String checkNick(String memberNick) throws Exception{
+			
+			log.info("memberNickChk() 실행");
+			log.info("memberNick :"+ memberNick);
+			MemberDto result = memberDao.checkNick(memberNick);
+			log.info("String memberNick () result : "+ result); 
+
+			if(result != null) {
+				//중복닉네임
+				return "fail";	
+
+			} else {
+				//중복 닉네임 x
+				return "success";		
+			}					
+		}
+
 
 	// 마이페이지 (임시용)
 	@RequestMapping("/mypage")
@@ -283,5 +331,14 @@ public class MemberController {
 									.contentLength(memberProfileDto.getMemberProfileSize())
 								.body(resource);
 	}
+	
+	// 이메일인증
+	@PostMapping("/sendMail")
+    @ResponseBody
+    public String sendMail(@RequestParam String email) {
+    	String result = mailSendService.sendAuthMail(email);
+    	
+    	return result;
+    }
 
 }

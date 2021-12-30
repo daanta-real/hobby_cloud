@@ -22,5 +22,10 @@ public interface MemberDao {
 
 	//회원 탈퇴
 	boolean quit(Integer memberIdx, String memberPw);
-
+	
+	//	아이디 중복 검사 
+	MemberDto checkId(String memberId) throws Exception;
+	
+	//닉네임 중복 검사
+	MemberDto checkNick(String memberNick) throws Exception;
 }
