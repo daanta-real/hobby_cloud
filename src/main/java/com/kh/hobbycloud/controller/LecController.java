@@ -60,7 +60,7 @@ public class LecController {
 	public String register(@ModelAttribute LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
 //		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
 		int lecIdx = lecService.register(lecRegisterVO);
-		return "redirect:detail?lecIdx=" + lecIdx;
+		return "redirect:detail/" + lecIdx;
 	}
 	
 	@GetMapping("/register_success")
@@ -84,7 +84,7 @@ public class LecController {
 //	@GetMapping("/edit")
 //	public String edit(@RequestParam int lecIdx, Model model) {
 //		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-//		
+//		List<LecFileDto> list = lecFileDao.getByIdx(lecIdx);
 //		model.addAttribute("lecDto", lecDto);
 //		
 ////		return "WEB-INF/views/member/edit.jsp";
@@ -93,7 +93,7 @@ public class LecController {
 //	
 //	@PostMapping("/edit")
 //	public String edit(@ModelAttribute LecDto lecDto, HttpSession session) {
-//		lecDto.setMemberId((String)session.getAttribute("ses"));
+////		lecDto.setMemberId((String)session.getAttribute("ses"));
 //		boolean result = memberDao.changeInformation(memberDto);
 //		if(result) {
 //			return "redirect:edit_success";
