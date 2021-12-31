@@ -29,6 +29,7 @@ https://developers.kakao.com/docs/latest/ko/kakaopay/single-payment
 @Data
 public class KakaoPayReadyResponseVO {
 	private String tid; // 결제 시리얼 번호
-	private String next_redirect_pc_url; //
-	private String created_at;
+	private String next_redirect_pc_url; // QR코드 주소 (PC)
+	private String next_redirect_app_url; // QR코드 주소 (모바일)
+	private String created_at; // 결제 준비 요청 시간
 }
