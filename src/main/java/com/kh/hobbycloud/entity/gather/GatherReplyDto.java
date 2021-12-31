@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class GatherReplyDto {
-private int GatherReplyIdx, MemberIdx,GatherIdx,GatherReplySuperIdx,GatherGroupNo, GatherReplyDepth;
-private String GatherReplyDetail;
-private Date GatherReplyDate;
+private int gatherReplyIdx, memberIdx,gatherIdx,gatherReplySuperIdx,gatherGroupNo, gatherReplyDepth;
+private String gatherReplyDetail;
+private Date gatherReplyDate;
 }

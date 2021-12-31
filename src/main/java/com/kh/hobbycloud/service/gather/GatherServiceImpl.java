@@ -25,8 +25,6 @@ public class GatherServiceImpl implements GatherService {
 	@Override
 	public int save(GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
 
-
-
 		// 1. 모임글 등록
 
 		// 모임글 DTO 설정
@@ -51,15 +49,14 @@ public class GatherServiceImpl implements GatherService {
 		// Gather DTO를 테이블에 삽입
 		gatherDao.insert(gatherDto);
 
-
-
 		// 2. 모임글 파일 저장
 		// 실제 파일 업로드 시도 → 성공 시 파일정보를 DB에 저장
 		List<MultipartFile> attach = gatherFileVO.getAttach();
-		for(MultipartFile file: attach) {
+		for (MultipartFile file : attach) {
 
 			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
-			if(file.isEmpty()) continue;
+			if (file.isEmpty())
+				continue;
 
 			// 파일 정보에 대한 DTO 생성
 			GatherFileDto gatherFileDto = new GatherFileDto();
@@ -72,9 +69,56 @@ public class GatherServiceImpl implements GatherService {
 
 		}
 
-
 		// 3. 모임글 번호를 회신
 		return gatherIdx;
 	}
 
+	@Override
+	public void update(GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
+		// 1. 모임글 수정
+
+		// 모임글 DTO 설정
+		GatherDto gatherDto = new GatherDto();
+
+		gatherDto.setGatherIdx(gatherFileVO.getGatherIdx());
+		gatherDto.setMemberIdx(gatherFileVO.getMemberIdx());
+		gatherDto.setLecCategoryName(gatherFileVO.getLecCategoryName());
+		gatherDto.setPlaceIdx(gatherFileVO.getPlaceIdx());
+		gatherDto.setGatherName(gatherFileVO.getGatherName());
+		gatherDto.setGatherDetail(gatherFileVO.getGatherDetail());
+		gatherDto.setGatherRegistered(gatherFileVO.getGatherRegistered());
+		gatherDto.setGatherHeadCount(gatherFileVO.getGatherHeadCount());
+		gatherDto.setGatherLocRegion(gatherFileVO.getGatherLocRegion());
+		gatherDto.setGatherLocLatitude(gatherFileVO.getGatherLocLatitude());
+		gatherDto.setGatherLocLogitude(gatherFileVO.getGatherLocLogitude());
+		gatherDto.setGatherStart(gatherFileVO.getGatherStart());
+		gatherDto.setGatherEnd(gatherFileVO.getGatherEnd());
+		gatherDto.setGatherMax(gatherFileVO.getGatherMax());
+		gatherDto.setGatherStaus(gatherFileVO.getGatherMax());
+
+		// Gather DTO를 테이블에 삽입
+		gatherDao.update(gatherDto);
+
+		List<MultipartFile> attach = gatherFileVO.getAttach();
+		if(attach==null) {
+			System.out.println("헬로우헬로우"+attach);
+			gatherFileDao.delete(gatherFileVO.getGatherIdx());
+		}
+		for (MultipartFile file : attach) {
+
+			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
+			if (file.isEmpty())
+				continue;
+
+			// 파일 정보에 대한 DTO 생성
+			GatherFileDto gatherFileDto = new GatherFileDto();
+			gatherFileDto.setGatherIdx(gatherFileVO.getGatherIdx());
+			gatherFileDto.setGatherFileUserName(file.getOriginalFilename());
+			gatherFileDto.setGatherFileType(file.getContentType());
+			gatherFileDto.setGatherFileSize(file.getSize());
+			// 파일 업로드 후, 파일정보를 DB에 저장
+			gatherFileDao.save(gatherFileDto, file);
+
+		}
+	}
 }

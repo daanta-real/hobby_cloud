@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.hobbycloud.entity.gather.GatherDto;
 import com.kh.hobbycloud.entity.gather.GatherFileDto;
-import com.kh.hobbycloud.entity.gather.GatherSearchDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.service.gather.GatherService;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
+import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,10 +54,10 @@ public class GatherController {
 
 	// 검색결과 목록 페이지
 	@PostMapping("/list")
-	public String search(@ModelAttribute GatherSearchDto gatherSearchDto, Model model) {
-//		Map<String , Object> map
-		log.debug("param.toString()   " + gatherSearchDto.toString());
-//		List<GatherVO> list = gatherDao.listSearch(param);
+	public String search(@ModelAttribute List<GatherSearchVO> categorys, Model model) {
+//		log.debug("param.toString()   " + gatherSearchDto.toString());
+		log.debug("category={}", categorys);
+		List<GatherVO> list = gatherDao.listSearch(categorys);
 
 //		model.addAttribute("list",list);
 		return "gather/list";
@@ -73,7 +74,7 @@ public class GatherController {
 	public String insert(@ModelAttribute GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
 		System.out.println("ㅡㅡ 모임글 등록 실시. 모임 정보: " + gatherFileVO);
 		int gatherIdx = gatherService.save(gatherFileVO);
-		return "redirect:detail?gatherIdx=" + gatherIdx;
+		return "redirect:detail/" + gatherIdx;
 	}
 
 	// 상세 보기 페이지
@@ -93,25 +94,38 @@ public class GatherController {
 	}
 
 	// 글 삭제 실시
-	@GetMapping("/delete/")
+	@GetMapping("/delete")
 	public String delete(@RequestParam int gatherIdx) {
 		gatherDao.delete(gatherIdx);
 		return "redirect:list";
 	}
 
-	// 글 수정 폼 페이지
-	@GetMapping("/edit")
-	public String edit() {
-		return "gather/edit";
+	// 글 수정 폼 페이지/update/123
+	@GetMapping("/update/{gatherIdx}")
+	public String update(@PathVariable int gatherIdx, Model model) {
+
+		// 데이터 획득: VO 및 DTO
+		GatherVO gatherVO = gatherDao.get(gatherIdx);
+
+		// 획득된 데이터를 Model에 지정
+		List<GatherFileDto> list = gatherFileDao.getIdx(gatherIdx);
+		model.addAttribute("GatherVO", gatherVO);
+		model.addAttribute("list", list);
+
+		return "gather/update";
 	}
 
 	// 글 수정 실시
-	@PostMapping("/edit")
-	public String edit(@ModelAttribute GatherVO gatherVO) {
-		//gatherDao.edit(gatherVO);
-		int idx = gatherVO.getGatherIdx();
-		return "redirect:detail/" + idx;
+	@PostMapping("/update/{gatherIdx}")
+	public String update2(@ModelAttribute GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
+
+		// 수정
+		gatherService.update(gatherFileVO);
+		int gatherIdx = gatherFileVO.getGatherIdx();
+		return "redirect:/gather/detail/" + gatherIdx;
+		
 	}
+
 
 	// 파일 전송 실시
 	@GetMapping("/file/{gatherFileIdx}")
@@ -131,12 +145,12 @@ public class GatherController {
 
 		// 실제 파일 전송
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM)
-			// .header("Content-Disposition", "attachment; filename=\""+이름+"\"")
-			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodeName + "\"")
-			.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
-			// .header("Content-Length",
-			// String.valueOf(memberProfileDto.getMemberProfileSize()))
-			.contentLength(gatherFileDto.getGatherFileSize()).body(resource);
+				// .header("Content-Disposition", "attachment; filename=\""+이름+"\"")
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodeName + "\"")
+				.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
+				// .header("Content-Length",
+				// String.valueOf(memberProfileDto.getMemberProfileSize()))
+				.contentLength(gatherFileDto.getGatherFileSize()).body(resource);
 
 	}
 
