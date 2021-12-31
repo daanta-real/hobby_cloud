@@ -2,8 +2,11 @@ package com.kh.hobbycloud.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -20,15 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.entity.lec.LecFileDto;
-import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
+import com.kh.hobbycloud.vo.lec.LecReplyVO;
 
 @Controller
 @RequestMapping("/lec")
@@ -137,5 +139,10 @@ public class LecController {
 			.contentLength(lecFileDto.getLecFileSize()).body(resource);
 
 	}
+	
+//	@GetMapping("/replyList")
+//	public String replyList(@RequestParam int lecIdx, HttpSession session){
+//		ReplyVO 
+//	}
 
 }

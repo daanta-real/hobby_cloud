@@ -3,6 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script>
+	const ReplyList = function(lecIdx){
+		$.ajax({
+			url : "${pageContext.request.contextPath}/lec/replyList",
+		});
+	}
+</script>
 
  
 <h2>${lecDetailVO.lecName} 강좌 상세 </h2>
@@ -89,4 +96,22 @@
 	 </tbody>
 </table>
 
+
+<!-- 댓글 -->
+<div class="collapse" id="reply_card${tmp.no}">
+	<div class="card card-body">
+		<!-- 댓글 목록 -->
+		<div class="reply-list reply-list${tmp.no}">
+			<!-- 댓글 목록이 들어가는 곳 -->
+		</div>
+		<!-- 댓글 작성 => 로그인 상태여야만 댓글 작성칸 나옴 -->
+		<c:if test="${sessionScope.memberNick != null}">
+			<div class="row reply_write">
+				<div class="col-1">
+					<a href=""
+				</div>
+			</div>
+		</c:if>
+	</div>
+</div>
 
