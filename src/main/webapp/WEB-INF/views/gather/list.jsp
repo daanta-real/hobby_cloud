@@ -4,19 +4,22 @@
 
 <form  method="post">
 
-<input type="checkbox" name="location" value="서울">
-서울
-<input type="checkbox" name="location" value="경기도">
-경기도
-<input type="checkbox" name="location" value="제주도">
-제주도
-<input type="checkbox" name="location" value="강원도">
-강원도
-<input type="checkbox" name="location" value="인천">
-인천
+<!-- <input type="checkbox" name="location" value="서울"> -->
+<!-- 서울 -->
+<!-- <input type="checkbox" name="location" value="경기도"> -->
+<!-- 경기도 -->
+<!-- <input type="checkbox" name="location" value="제주도"> -->
+<!-- 제주도 -->
+<!-- <input type="checkbox" name="location" value="강원도"> -->
+<!-- 강원도 -->
+<!-- <input type="checkbox" name="location" value="인천"> -->
+<!-- 인천 -->
 	
- 제목 검색:	<input type="text" name="title"> 
+<!--  제목 검색:	<input type="text" name="title">  -->
+ <input type="checkbox" name="category" value="운동">
+ <input type="checkbox" name="category" value="미술">
  <input type="submit" value="검색하기">
+ <a href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
 </form>
 
 
