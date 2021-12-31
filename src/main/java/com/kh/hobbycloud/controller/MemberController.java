@@ -24,7 +24,6 @@ import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.member.MemberProfileDao;
-import com.kh.hobbycloud.service.member.MailSendService;
 import com.kh.hobbycloud.service.member.MemberService;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
@@ -48,8 +47,6 @@ public class MemberController {
 	@Autowired
 	private JavaMailSender mailSender;
 	
-	@Autowired
-    private MailSendService mailSendService;
 
 	// 로그인 폼 페이지
 	@GetMapping("/login")
@@ -83,7 +80,6 @@ public class MemberController {
 			session.setAttribute("memberId"   , foundDto.getMemberId());
 			session.setAttribute("memberNick" , foundDto.getMemberNick());
 			session.setAttribute("memberGrade", foundDto.getMemberGradeName());
-			
 			return "redirect:/";
 		}
 
@@ -175,6 +171,7 @@ public class MemberController {
 
 
 	// 마이페이지 (임시용)
+
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
 		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
@@ -291,25 +288,26 @@ public class MemberController {
 		return "member/quit_success";
 		// views/member/quit_success.jsp 페이지에 메인페이지로 가는 버튼도 제공했으면 좋겠네요
 	}
-	
-	//프로필 다운로드
+
+
+	// 프로필 다운로드 처리 페이지
 	@GetMapping("/profile")
 	@ResponseBody
 	public ResponseEntity<ByteArrayResource> profile(
 				@RequestParam int memberIdx
 			) throws IOException {
-		
+
 		// 0. 매개변수로 memberIdx가 넘어와 있다.
 		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 memberIdx : " + memberIdx);
-		
+
 		// 1. memberIdx를 이용하여, 프로필 이미지 파일정보 전체를 DTO로 갖고 온다.
 		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 memberProfileDto : "+memberProfileDto);
-		
+
 		// 2. 갖고 온 DTO에서 실제 저장 파일명(save name)을 찾아낸다.
 		String savename = memberProfileDto.getMemberProfileSavename();
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 2. 찾아낸 파일명: " + savename);
-		
+
 		// 3-1. 프로필번호(memberProfileIdx)로 실제 파일 정보를 불러온다
 		byte[] data = memberProfileDao.load(savename);
 		ByteArrayResource resource = new ByteArrayResource(data);
@@ -317,6 +315,7 @@ public class MemberController {
 
 		// 3-2. 불러낸 파일명을 실제 다운로드 가능한 파일명으로 바꾼다.
 		String encodeName = URLEncoder.encode(memberProfileDto.getMemberProfileSavename(), "UTF-8");
+
 		encodeName = encodeName.replace("+", "%20");
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 3-2. 변경된 파일명: " + encodeName);
 
@@ -332,13 +331,6 @@ public class MemberController {
 								.body(resource);
 	}
 	
-	// 이메일인증
-	@PostMapping("/sendMail")
-    @ResponseBody
-    public String sendMail(@RequestParam String email) {
-    	String result = mailSendService.sendAuthMail(email);
-    	
-    	return result;
-    }
+
 
 }

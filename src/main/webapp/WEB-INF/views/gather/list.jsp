@@ -12,20 +12,49 @@
 제주도
 <input type="checkbox" name="location" value="강원도">
 강원도
-<input type="checkbox" name="location" value="2">
+<input type="checkbox" name="location" value="인천">
 인천
 	
  제목 검색:	<input type="text" name="title"> 
  <input type="submit" value="검색하기">
 </form>
-<c:forEach var="GatherVO" items="${list}"> 
-1
-<h1>
-<a href="detail?gatherIdx=${GatherVO.gatherIdx}">번호 :${GatherVO.gatherIdx}</a>
-<img src="file?gatherFileIdx=${GatherVO.gatherFileIdx}" width="50%" class="image image-round image-border">
-회원 : ${GatherVO.memberIdx}
-장소 : ${GatherVO.gatherLocRegion}
-작성자: ${GatherVO.memberNick}
-</h1>
-</c:forEach>
+
+
+
+
+
+<table border="1" width="90%">
+	<thead>
+		<tr>
+		<th width="30%">사진></th>
+			<th>번호</th>
+			<th >제목</th>
+			<th>작성자</th>
+			<th>지역</th>
+			<th>인원</th>
+			<th>제목</th>
+		</tr>
+	</thead>
+
+
+	<tbody align="center">
+		<c:forEach var="GatherVO" items="${list}">
+			<tr>
+			
+			<td>
+			<img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%">
+			</td>
+			
+				<td>${GatherVO.gatherIdx}</td>
+				<td align="left">
+				<a href="${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx }">${GatherVO.gatherName }</a>
+				</td>
+				<td>${GatherVO.memberNick }</td>
+				<td>${GatherVO.gatherLocRegion }</td>
+				<td>${GatherVO.gatherHeadCount }</td>
+				<td>${GatherVO.gatherName }</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
 <tr>

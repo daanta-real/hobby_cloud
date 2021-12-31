@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
 
+// 기능 테스트용 컨트롤러입니다.
+// 컨트롤러 관련 테스트하실 분들은 여기서 하세요
+
 @Slf4j
 @Controller
-@RequestMapping("/_TEST")
+@RequestMapping("/test")
 public class _TestController {
 
 	@GetMapping("/")
@@ -29,5 +32,7 @@ public class _TestController {
 		model.addAttribute("map", map);
 		return "_TEST/_test";
 	}
+
+
 
 }

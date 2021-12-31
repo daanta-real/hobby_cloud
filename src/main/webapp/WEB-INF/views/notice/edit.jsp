@@ -5,7 +5,7 @@
 
 <h2>게시글 수정</h2>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 <input type="hidden" name="noticeIdx" value="${noticeVO.noticeIdx }">
 
 <table border="0">
@@ -20,6 +20,12 @@
 			<td>
 				<textarea name="noticeDetail" required 
 					rows="10" cols="60">${noticeVO.noticeDetail }</textarea>
+			</td>
+		</tr>
+		<tr>
+			<th>첨부</th>
+			<td>
+				<input type="file" name="attach" enctype="multipart/form-data" multiple>
 			</td>
 		</tr>
 	</tbody>

@@ -3,7 +3,7 @@ package com.kh.hobbycloud.repository.notice;
 import java.util.List;
 
 import com.kh.hobbycloud.entity.notice.NoticeDto;
-import com.kh.hobbycloud.entity.notice.NoticeVO;
+import com.kh.hobbycloud.vo.notice.NoticeVO;
 
 public interface NoticeDao {
 	List<NoticeVO>list();
@@ -12,6 +12,8 @@ public interface NoticeDao {
 	void delete(int noticeIdx);
 	boolean edit(NoticeVO noticeVO);
 	int getsequences();
+	List<NoticeVO>search(String column,String keyword);
+	void views(int noticeIdx);
 	
 	
 

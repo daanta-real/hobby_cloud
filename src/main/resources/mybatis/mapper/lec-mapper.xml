@@ -42,33 +42,46 @@
 <!-- 	</insert> -->
 	
 	<!-- 강좌 상세 -->
-	<select id="get" parameterType="int" resultType="LecDto">
-		select * from lec
+	<select id="get" parameterType="int" resultType="LecDetailVO">
+		select L.*, T.tutor_detail, T.tutor_registered , M.member_nick, M.member_email, M.member_phone, P.place_name, P.place_detail from lec L 
+		inner join tutor T on L.tutor_idx = T.tutor_idx
+		inner join place P on L.place_idx = P.place_idx
+		inner join member M on T.member_idx = M.member_idx
 		where lec_idx = #{lecIdx}
 	</select>
 	
 	<!-- 강좌 목록 -->
-	<select id="list" resultType="LecDto">
-		select * from lec order by lec_idx desc
+	<select id="list" resultType="LecListVO">
+		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
+			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region from lec L
+		left outer join tutor T on L.tutor_idx = T.tutor_idx
+		left outer join member M on T.member_idx = M.member_idx
 	</select>
 	
 	<!-- 강좌 목록 및 검색 -->
-	<select id="listSearch" parameterType="map" resultType="LecDto">
-		select * from lec
+	<select id="listSearch" parameterType="map" resultType="LecListVO">
+		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
+			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region from lec L
+		left outer join tutor T on L.tutor_idx = T.tutor_idx
+		left outer join member M on T.member_idx = M.member_idx
 		
 		<where>
-			<if test="lecIdx != null">
+			<if test="lecIdx != '' and lecIdx != null">
 			and lec_idx = #{lecIdx}
 			</if>
-			<if test="lecName != null">
+			<if test="lecCategoryName != '' and lecCategoryName != null">
+			and instr(lec_category_name, #{lecCategoryName}) > 0
+			</if>
+			<if test="lecName != '' and lecName != null">
 			and instr(lec_name, #{lecName}) > 0
 			</if>
-			<if test="lecLocRegion != null">
+			<if test="memberNick != '' and memberNick != null">
+			and instr(member_nick, #{memberNick}) > 0
+			</if>
+			<if test="lecLocRegion != '' and lecLocRegion != null">
 			and instr(lec_loc_region, #{lecLocRegion}) > 0
 			</if>
-			<if test="type != null">
-			and lec_category_name = #{lecCategoryName}
-			</if>
+			
 
 			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->
 			
@@ -90,28 +103,44 @@
 			</choose>
 			
 			<choose>
-				<when test="minPrice != null and maxPrice != null">
+				<when test="minCount != null and maxCount != null">
 				and lec_head_count between #{minCount} and #{maxCount}
 				</when>
-				<when test="minPrice != null">
+				<when test="minCount != null">
 				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
 				<![CDATA[			
 				and lec_head_count >= #{minCount}
 				]]>
 				</when>
-				<when test="maxPrice != null">
+				<when test="maxCount != null">
 				<![CDATA[			
 				and lec_head_count <= #{maxCount}
 				]]>
 				</when>
 			</choose>
 			
+			<choose>
+				<when test="minConCount != null and maxConCount != null">
+				and lec_contains_count between #{minConCount} and #{maxConCount}
+				</when>
+				<when test="minConCount != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and lec_contains_count >= #{minConCount}
+				]]>
+				</when>
+				<when test="maxConCount != null">
+				<![CDATA[			
+				and lec_contains_count <= #{maxConCount}
+				]]>
+				</when>
+			</choose>
 			
 			<if test="lecStartStart != null and lecStartFinish != null">
 			and lec_start between 
-				to_date(#{lecStartStartTime}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+				to_date(#{lecStartStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
 				and 
-				to_date(#{lecStartFinishTime}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				to_date(#{lecStartFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
 			</if>
 			<if test="lecEndStart != null and lecEndFinish != null">
 			and expire between 
@@ -128,5 +157,15 @@
 <!-- 			</foreach> -->
 <!-- 		</if> -->
 	</select>
+	
+	<!-- 강좌 수정 -->
+	<update id="edit" parameterType="lecDetailVO">
+	
+	</update>
+	
+	<!--  강좌 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete lec where lec_idx = #{lecIdx}
+	</delete>
 	
 </mapper>

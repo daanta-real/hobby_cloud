@@ -58,5 +58,21 @@ delete notice where notice_idx=#{noticeIdx}
 <update id="edit" parameterType="NoticeVO">
 update notice set notice_name=#{noticeName},notice_detail=#{noticeDetail} where notice_idx=#{noticeIdx}
 </update>
+
+<!-- 검색 -->
+<select id="search" parameterType="map" resultType="NoticeVO">
+SELECT n.notice_idx, n.notice_name,n.notice_detail,
+n.notice_registered,n.notice_views,n.notice_replies, m.member_idx, m.member_nick
+FROM notice n
+LEFT OUTER JOIN
+member m
+ON n.member_idx = m.member_idx
+where instr(${column},#{keyword})> 0 order by notice_idx desc
+</select>
+
+<!-- 조회수 증가 -->
+<update id="views" parameterType="int">
+update notice set notice_views=notice_views+1 where notice_idx=${notice_idx}
+</update>
 	
 </mapper>
