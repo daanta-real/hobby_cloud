@@ -1,8 +1,10 @@
 package com.kh.hobbycloud.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.member.MemberProfileDao;
+import com.kh.hobbycloud.service.member.EmailService;
 import com.kh.hobbycloud.service.member.MemberService;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
@@ -46,6 +49,9 @@ public class MemberController {
 	
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	@Autowired
+	private EmailService service;
 	
 
 	// 로그인 폼 페이지
@@ -331,6 +337,53 @@ public class MemberController {
 								.body(resource);
 	}
 	
-
-
+	
+	// 메일보내기	
+	@PostMapping("/sendMail")// AJAX와 URL을 매핑
+    @ResponseBody//AJAX후 값을 리턴하기위해 필요
+    public String sendMail(@RequestParam String email) throws FileNotFoundException, MessagingException, IOException {
+    	String result = service.sendCertification(email);
+    	return result;
+    }
+	
+//	// 아이디찾기(이메일)	
+//	@PostMapping("/idfindMail")
+//	@ResponseBody
+//	public String idFindMail(MemberDto memberDto) {
+//		System.out.println("idFindMail");
+//		System.out.println("idFindUserVO vo : " + memberDto);
+//		MemberDto idFind = memberService.idFindMail(memberDto.getMemberId(), memberDto.getMemberEmail());
+//		System.out.println("idFind : " + idFind);
+//		
+//		if(idFind != null) {
+//			String id = idFind.getMemberId();
+//			System.out.println("id: " + id);
+//			return id;
+//		} else {
+//			return "fail";
+//		}
+//	}
+		
+//		// 비밀번호 재설정(메일)
+//		@PostMapping("/pwfind")
+//		@ResponseBody
+//		@Transactional(rollbackFor = Exception.class) 
+//		public String pwFindMail(MemberDto vo) {
+//			System.out.println("pwFindMail");
+//			System.out.println("pwFindMail vo : " + vo);
+//			System.out.println("v"+ vo.getName());
+//			MemberDto pwFind = memberService.pwFindMail(vo.getMemberId(), vo.getName(), vo.getEmail());
+//			System.out.println("pwFind : " + pwFind);
+//			if(pwFind != null) {
+//				String tempPw = mailSendService.sendTempPwMail(pwFind.getEmail());
+//				System.out.println("tempPw : "  + tempPw);
+//				pwFind.setPassword(tempPw);
+//				System.out.println("pwFind.setPassword(tempPw); : " + pwFind);
+//				int result = userService.updateUser(pwFind);
+//				System.out.println("result: " + result);
+//				return "success";
+//			} else {
+//				return "fail";
+//			}
+//		}
 }

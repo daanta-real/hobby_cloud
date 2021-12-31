@@ -77,7 +77,7 @@
  		 var mailnumCheck = false;		// 이메일 인증번호 확인
  		 var addressCheck = false 		// 주소
 		 
-$(function(){	
+$(document).ready(function(){
 		
 		/* 입력값 변수 */
 		var addr = $('.address_input').val();		// 주소 입력란
@@ -98,54 +98,54 @@ $(function(){
      		         $("#idCheck").text("");
      		         $("#idCheck").css("color", "red");
      		         $("#idCheck").html("아이디는 영문, 숫자 4~16자리만 가능합니다.");
+     		         
 					idCheck = false;
+					
      	         } else {
      	        	 console.log("사용가능" + $("#userId").val());
      		         $("#idCheck").text("");
      		         $("#idCheck").css("color", "green");
      		         $("#idCheck").html("사용가능한 아이디입니다.");
+     		         
      		         idOverlap();
+     		        
 					idCheck = true;
      	         }
-     	  }); 
-		
-		
-		/* 비밀번호 확인 유효성 검사 */
-     		 $("#pwd").keyup(function(){
-     		      if(!password.test($("#pwd").val())){
-     		         console.log("사용불가능" + $("#pwd").val());
-     			         $("#pwComm").text("");
-     			         $("#pwComm").css("color", "red");
-     			         $("#pwComm").html("영문,숫자,특수문자 8자 이상 16자 이내로 입력하세요");     			         
-     			         
-     			         $("#joinclick").prop("disabled", true);
-     			         $("#joinclick").css("color", "gray");
-			pwCheck = false;
-     		         } else {
-     		         console.log("사용가능" + $("#pwd").val());
-     			         $("#pwComm").text("");
-     			         $("#pwComm").css("color", "green");
-     			         $("#pwComm").html("사용가능한 비밀번호입니다.");
-     			         
-     			         $("#joinclick").prop("disabled", false);
-			pwCheck = true;
-     		         }   
-     		  });
+     	  });
+     		
+  		/* 비밀번호 유효성 검사 */
+  		 $("#pw").keyup(function(){
+  		      if(!password.test($("#pw").val())){
+  		         console.log("사용불가능" + $("#pw").val());
+  			         $("#pwComm").text("");
+  			         $("#pwComm").css("color", "red");
+  			         $("#pwComm").html("영문,숫자,특수문자 8자 이상 16자 이내로 입력하세요");
+  			         
+  			         pwCheck = false;
+  			         
+  		         } else {
+  		         console.log("사용가능" + $("#pw").val());
+  			         $("#pwComm").text("");
+  			         $("#pwComm").css("color", "green");
+  			         $("#pwComm").html("사용가능한 비밀번호입니다.");     
+  			              			        
+					pwCheck = true;
+  		         }   
+  		  });
 
 	// 비밀번호 동일한지 여부
-	 $("#pwdCh").keyup(function(){
-	      if($("#pwdCh").val() != $("#pwd").val()){
+	 $("#pwCh").keyup(function(){
+	      if($("#pwCh").val() != $("#pwCh").val()){
 		         $("#pwComm2").text("");
 		         $("#pwComm2").css("color", "red");
 		         $("#pwComm2").html("비밀번호가 동일하지 않습니다.");
-		         
-		         $("#btnclick").prop("disabled", true);
-		         $("#btnclick").css("color", "gray");
-		pwckcorCheck = false;
+		         		         
+		         pwchCkeck = false;
+				
 	         } else {
 		         $("#pwComm2").html("");
-		         $("#btnclick").prop("disabled", false);
-		pwckcorCheck = true;
+		         
+		         pwchCkeck = true;
 	         }   
 	  });
 		
@@ -156,17 +156,17 @@ $(function(){
      		         $("#nickCheck").text("");
      		         $("#nickCheck").css("color", "red");
      		         $("#nickCheck").html("닉네임은 대소문자, 한글 숫자로 이루어진 2~10자리만 가능합니다.");
-     	          	
-     		         $("#joinclick").prop("disabled", true);
-     		         $("#joinclick").css("color", "gray");
+     		         
 					nickCheck = false;
+					
      	         } else {
      	        	 console.log("사용가능" + $("#userNick").val());
      		         $("#nickCheck").text("");
      		         $("#nickCheck").css("color", "green");
      		         $("#nickCheck").html("사용가능한 닉네임입니다.");
-     		         nickOverlap();
-     		         $("#joinclick").prop("disabled", false);
+     		         
+     		        nickOverlap();
+     		        
 					nickCheck = true;
      	         }
      	  });
@@ -178,13 +178,12 @@ $(function(){
 		         $("#mailComm").css("color", "red");
 		         $("#mailComm").html("이메일 형식이 맞지 않습니다.");
 		         
-		         $("#btnclick").prop("disabled", true);
-		         $("#btnclick").css("color", "gray");
-		mailCheck = false;
+				mailCheck = false;
+			
 	         } else {
 	        	 $("#mailComm").html("");
-	        	 $("#btnclick").prop("disabled", false);
-		mailCheck = true;
+	        	 
+				mailCheck = true;
 	         }
 	  });
 	
@@ -201,11 +200,12 @@ $(function(){
 		                    $("#mailComm").css("color", "red");
 		                    $("#mailComm").html("이메일 형식이 맞지 않습니다.");
 		                    
-		                    $("#btnclick").prop("disabled", true);
-		                    $("#btnclick").css("color", "gray");
+		                    mailBoxCheck = false;
+		                    
                      } else {
                          $("#mailComm").html("");
-                         $("#btnclick").prop("disabled", false);
+                         
+                         mailBoxCheck = true;
                      }
                   });
          }  else {
@@ -213,17 +213,15 @@ $(function(){
              $("#inputMail").attr("readonly", true);
          }
      });
+	
+	
     $("#emailCheck").click(function(){
      	console.log("이메일 인증 id : " + $("#idMail").val());
      	console.log("이메일 인증 domain : " + $("#inputMail").val());
      	console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
+     	
      	sendMail();
-     });      
- 
-      $("#reKey").keyup(function(){
-     	$("#btnclick").css("color", "gray");
-     	$("#btnclick").prop("disabled", true);
-     });      
+     });       
      
 
 	// 폰번호 유효성 검사
@@ -233,13 +231,12 @@ $(function(){
 		         $("#phComm").css("color", "red");
 		         $("#phComm").html("숫자만 입력해주세요");
 		         
-		         $("#btnclick").prop("disabled", true);
-		         $("#btnclick").css("color", "gray");
-			phoneCheck = false;
+				phoneCheck = false;
+				
 	         } else {
 	        	 $("#phComm").html("");
-	        	 $("#btnclick").prop("disabled", false);
-			phoneCheck = true;
+	        	 
+				phoneCheck = true;
 	         }
 	  });		
 	
@@ -272,17 +269,20 @@ $(function(){
 	   		$('input[name="memberEmail"]').val(email);
 	   		console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
    	})
+   	
+	$("#btnclick").click(function(){	
+	      	//최종 유효성 검사
+	   		if(idCheck&&idckCheck&&pwCheck&&pwchCkeck&&nickCheck&&nickckCheck&&
+	   			mailCheck&&mailBoxCheck&&phoneCheck &&nickCheck&&mailCheck){
+	   			
+	   			$("#btnclick").prop("disabled", false);
+	   		}		
+	   		return false;
+	 	});
 	
-   	//최종 유효성 검사
-	$(".join_button").mouseenter(function(){	
-		if(idCheck&&idckCheck&&pwCheck&&pwckCheck&&pwckcorCheck&&nickCheck&&
-			mailCheck&&mailnumCheck&&phoneCheck &&addressCheck ){
-			$("#btnclick").prop("disabled", false);
-		}		
-		
-		return false;
-	});
 });
+
+    	
  		 
  	//아이디 중복검사
  	function idOverlap(){
@@ -304,16 +304,14 @@ $(function(){
  		        	$("#idCheck").text("");
  			        $("#idCheck").css("color", "red");
  			        $("#idCheck").html("중복된 아이디입니다.");
- 			   
- 			        $("#btnclick").prop("disabled", true);
- 			        $("#btnclick").css("color", "red");
+ 			        
  					idckCheck = true;
+ 					
  				} else {
  	        		$("#idCheck").text("");
  	    	        $("#idCheck").css("color", "green");
  	    	        $("#idCheck").html("사용가능한 아이디입니다.");
- 	    	        
- 	    	        $("#btnclick").prop("disabled", false);
+
  					idckCheck = false;
  	        	}
  	        }
@@ -338,18 +336,16 @@ $(function(){
 	   				if(result == 'fail'){
 	   		        	$("#nickCheck").text("");
 	   			        $("#nickCheck").css("color", "red");
-	   			        $("#nickCheck").html("중복된 닉네임입니다.");
-	   			   
-	   			        $("#btnclick").prop("disabled", true);
-	   			        $("#btnclick").css("color", "red");
-	   					nickCheck = true;
+	   			        $("#nickCheck").html("중복된 닉네임입니다.");	
+	 			        
+	   					nickckCheck = true;
+	   					
 	   				} else {
 	   	        		$("#nickCheck").text("");
 	   	    	        $("#nickCheck").css("color", "green");
 	   	    	        $("#nickCheck").html("사용가능한 닉네임입니다.");
-   	    	        
-	   	    	        $("#btnclick").prop("disabled", false);
-	   					nickCheck = false;
+	   	    	        
+	   	    	     	nickckCheck = false;
 	   	        	}
 	   	        }
 	   	    })    
@@ -360,7 +356,7 @@ $(function(){
 	   		var mailAddr = $("#idMail").val() +"@"+ $("#inputMail").val();
 	   		$.ajax({
 	   	    	type : "post",
-	   	        url : "sendMail.do",
+	   	        url : "sendMail",
 	   	        data : {"email" : mailAddr},
 	   	        success : function(resp){
 	   	        	alert("메일이 성공적으로 보내졌습니다.  " + resp);
@@ -368,13 +364,13 @@ $(function(){
 	   	        		if(resp == $("#reKey").val()) {
 	   	        		
 	   	        			alert("인증이 완료되었습니다.");
-	   	            		$("#btnclick").prop("disabled", false);
-	   	    		        $("#btnclick").css("color", "green");
+	   	        			
+	   	        			mailCheck = true;
 	   	            	} else {
 	   	            		alert("인증번호가 다릅니다. 다시 인증해주세요");
 	   	            		$("#reKey").focus();
-	   	            		$("#btnclick").prop("disabled", true);
-	   	    		        $("#btnclick").css("color", "gray");
+	   	            		
+	   	            		mailCheck = false;
 	   	            	}
 	   	        	});
 	   	        },
@@ -406,8 +402,8 @@ $(function(){
 	<div class="pw_wrap">
 		<div class="pw_name">비밀번호</div>
 		<div class="pw_input_box">
-		<input type="password" name="memberPw"  class="pw_input"required
-		placeholder="특수문자, 영문, 숫자, 6자 이상 20자 이내로 입력하세요" id="pwd">
+		<input type="password" name="memberPw"  class="pw_input" required
+		placeholder="특수문자, 영문, 숫자, 6자 이상 20자 이내로 입력하세요" id="pw">
 		</div>
 		<div id="pwComm"></div>
 	</div>
@@ -415,7 +411,7 @@ $(function(){
 	<div class="pwck_wrap">
 		<div class="pwck_name">비밀번호 확인</div>
 		<div class="pwck_input_box">
-		<input type="password" name="memberPw2" required id="pwdCh"
+		<input type="password" name="memberPw2" required id="pwch"
 		placeholder="비밀번호를 한번 더 입력하세요" class="pwck_input">
 		</div>
 		<div id="pwComm2"></div>

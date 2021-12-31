@@ -113,5 +113,6 @@
 		SELECT * FROM member
 		WHERE member_nick = #{memberNick}
 	</select>
-		
+
+
 </mapper>

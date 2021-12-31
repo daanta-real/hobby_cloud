@@ -119,6 +119,26 @@ public class MemberDaoImpl implements MemberDao{
 		System.out.println(">> DAO checkNick() 메소드 실행");
 		return sqlSession.selectOne("member.findNick",memberNick);
 	}
+//	
+//	// 아이디찾기(이메일)
+//	@Override
+//	public MemberDto idFindMail(String memberId, String memberEmail) {
+//		Map<String, String> map = new HashMap<>();
+//		map.put("memberId", memberId);
+//		map.put("memberEmail", memberEmail);
+//		return sqlSession.selectOne("memberDao.idFindMail", map);
+//	}
+//
+//	
+//	// 비밀번호 찾기(이메일)
+//	@Override
+//	public MemberDto pwFindMail(String memberId, String memberNick, String memberEmail) {
+//		Map<String, String> map = new HashMap<>();
+//		map.put("memberId", memberId);
+//		map.put("memberNick", memberNick);
+//		map.put("memberEmail", memberEmail);
+//		return sqlSession.selectOne("memberDao.pwFindMail", map);
+//	}
 	
 
 

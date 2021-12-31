@@ -28,4 +28,10 @@ public interface MemberDao {
 	
 	//닉네임 중복 검사
 	MemberDto checkNick(String memberNick) throws Exception;
+	/*
+	 * // 아이디찾기(이메일) MemberDto idFindMail(String memberId, String memberEmail);
+	 * 
+	 * // 비밀번호 찾기(이메일) MemberDto pwFindMail(String memberId, String memberNick,
+	 * String memberEmail);
+	 */
 }
