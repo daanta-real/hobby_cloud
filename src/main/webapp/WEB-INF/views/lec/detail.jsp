@@ -2,14 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script src="https://code.jquery.com/jquery-latest.js"></script>
-<script>
-	const ReplyList = function(lecIdx){
-		$.ajax({
-			url : "${pageContext.request.contextPath}/lec/replyList",
-		});
-	}
-</script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 
  
 <h2>${lecDetailVO.lecName} 강좌 상세 </h2>
@@ -102,16 +96,31 @@
 	<div class="card card-body">
 		<!-- 댓글 목록 -->
 		<div class="reply-list reply-list${tmp.no}">
-			<!-- 댓글 목록이 들어가는 곳 -->
+			<!-- 댓글 목록이 들어감 -->
 		</div>
-		<!-- 댓글 작성 => 로그인 상태여야만 댓글 작성칸 나옴 -->
-		<c:if test="${sessionScope.memberNick != null}">
+		<!-- 댓글 작성 => 로그인 상태여야 나옴 -->
+		<c:if test="${memberIdx != null}">
 			<div class="row reply_write">
+				<!-- 프로필 이미지 넣을건데 잘 모르겟음 -->
 				<div class="col-1">
-					<a href=""
+					<a href="">
+						<img id="reply_profileImage" src="몰겟">
+					</a>
+				</div>
+				<div class="col-8" class="input_reply_div">
+					<input class="w-100 form-control" id="input_reply${tmp.no}"
+						type="text" placeholder="댓글입력">
+				</div>
+				<div class="col-3">
+					<button type="button" id="${tmp.no}"
+						class="btn btn-success mb-1 write_reply">댓글&nbsp;달기</button>
 				</div>
 			</div>
 		</c:if>
 	</div>
 </div>
 
+<a href="insert">글쓰기</a>
+<a href="list">목록보기</a>
+<a href="#">수정</a>			
+<a href="delete?lecIdx=${lecDetailVO.lecIdx}">삭제</a>	

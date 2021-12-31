@@ -2,7 +2,6 @@ package com.kh.hobbycloud.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
+import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
@@ -44,6 +44,9 @@ public class LecController {
 	
 	@Autowired
 	private LecFileDao lecFileDao;
+	
+	@Autowired
+	private LecReplyDao lecReplyDao;
 	
 	//목록(검색 가능)
 	@RequestMapping("/list")
@@ -140,9 +143,48 @@ public class LecController {
 
 	}
 	
-//	@GetMapping("/replyList")
-//	public String replyList(@RequestParam int lecIdx, HttpSession session){
-//		ReplyVO 
-//	}
+	//댓글 리스트
+	@GetMapping("/replyList")
+	@ResponseBody
+	public List<LecReplyVO> replyList(@RequestParam int lecIdx, HttpSession session){
+		List<LecReplyVO> list = lecReplyDao.replyList(lecIdx);
+		return list;
+	}
+
+	//모댓글 작성
+	@PostMapping("/replyWrite")
+	@ResponseBody
+	public LecDto replyWrite(@RequestParam LecReplyVO lecReplyVO, HttpSession session) {
+		lecReplyVO.setMemberIdx((Integer)(session.getAttribute("memberIdx")));
+		LecDto lecDto = lecReplyDao.lecWriteReply(lecReplyVO);
+		return lecDto;
+	}
+	
+	//답글 작성
+	@PostMapping("/rereplyWrite")
+	@ResponseBody
+	public LecDto rereplyWrite(@RequestParam LecReplyVO lecReplyVO, HttpSession session) {
+//		lecReplyVO.setMemberNick((String)session.getAttribute("memberNick"));
+		lecReplyVO.setMemberIdx((Integer)(session.getAttribute("memberIdx")));
+		LecDto lecDto = lecReplyDao.lecWriteReReply(lecReplyVO);
+		return lecDto;
+	}
+	
+	//모댓글 삭제
+	@RequestMapping("/replyDelete")
+	@ResponseBody
+	public LecDto lecReplyDelete(@RequestParam LecReplyVO lecReplyVO) {
+		LecDto lecDto = lecReplyDao.lecDeleteReply(lecReplyVO);
+		return lecDto;
+	}
+	
+	//답글 삭제
+	@RequestMapping("/rereplyDelete")
+	@ResponseBody
+	public LecDto rereplyWrite(@RequestParam LecReplyVO lecReplyVO) {
+		LecDto lecDto = lecReplyDao.lecDeleteReReply(lecReplyVO);
+		return lecDto;
+	}
+	
 
 }
