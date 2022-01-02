@@ -96,26 +96,23 @@
 		<bean id="springFilter" class="com.kh.spring15.filter.SpringFilter"></bean>	
 	-->
 	
-	<!-- 
-	이메일 전송 도구(필요할 경우 아래의 구문을 등록 해제하여 사용)
-	-->
-		
-<!-- 	<bean id="sender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> -->
-<!-- 		<property name="host" value="${email.host}"></property> -->
-<!-- 		<property name="port" value="${email.port}"></property> -->
-<!-- 		<property name="username" value="${email.username}"></property> -->
-<!-- 		<property name="password" value="${email.password}"></property> -->
-		
-<!-- 		<property name="javaMailProperties"> -->
-<!-- 			<props> -->
-<!-- 				<prop key="mail.smtp.auth">true</prop> -->
-<!-- 				<prop key="mail.smtp.debug">true</prop> -->
-<!-- 				<prop key="mail.smtp.starttls.enable">true</prop> -->
-<!-- 				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop> -->
-<!-- 				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop> -->
-<!-- 			</props> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
+	<!-- 이메일 전송 도구(필요할 경우 아래의 구문을 등록 해제하여 사용) -->
+ 	<bean id="sender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+ 		<property name="host" value="${email.host}"></property>
+ 		<property name="port" value="${email.port}"></property>
+ 		<property name="username" value="${email.username}"></property>
+ 		<property name="password" value="${email.password}"></property>
+	
+ 		<property name="javaMailProperties">
+ 			<props>
+ 				<prop key="mail.smtp.auth">true</prop>
+ 				<prop key="mail.smtp.debug">true</prop>
+ 				<prop key="mail.smtp.starttls.enable">true</prop>
+ 				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+ 				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+ 			</props>
+ 		</property>
+ 	</bean>
 	
 	<!-- 
 		Task 관련 설정 
