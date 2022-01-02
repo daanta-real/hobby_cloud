@@ -6,4 +6,5 @@ import com.kh.hobbycloud.vo.gather.GatherFileVO;
 
 public interface GatherService {
 	int save(GatherFileVO gatherFileVO) throws IllegalStateException, IOException;
+	void update(GatherFileVO gatherFileVO) throws IllegalStateException, IOException;
 }
