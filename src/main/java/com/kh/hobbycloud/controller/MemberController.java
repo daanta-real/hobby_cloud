@@ -12,8 +12,8 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,9 +46,6 @@ public class MemberController {
 
 	@Autowired
 	private MemberProfileDao memberProfileDao;
-	
-	@Autowired
-	private JavaMailSender mailSender;
 	
 	@Autowired
 	private EmailService service;
@@ -346,44 +343,60 @@ public class MemberController {
     	return result;
     }
 	
-//	// 아이디찾기(이메일)	
-//	@PostMapping("/idfindMail")
-//	@ResponseBody
-//	public String idFindMail(MemberDto memberDto) {
-//		System.out.println("idFindMail");
-//		System.out.println("idFindUserVO vo : " + memberDto);
-//		MemberDto idFind = memberService.idFindMail(memberDto.getMemberId(), memberDto.getMemberEmail());
-//		System.out.println("idFind : " + idFind);
-//		
-//		if(idFind != null) {
-//			String id = idFind.getMemberId();
-//			System.out.println("id: " + id);
-//			return id;
-//		} else {
-//			return "fail";
-//		}
-//	}
+	// 아이디찾기 폼 페이지
+	@GetMapping("/idfindMail")
+	public String findId() {
+		log.debug("ㅡㅡMemberController - /member/idfindMail GET> 아이디찾기");
+		return "member/idfindMail";
+	}
+	
+	// 아이디찾기(이메일)	
+	@PostMapping("/idfindMail")
+	@ResponseBody
+	public String idFindMail(MemberDto memberDto) {
+		System.out.println("idFindMail");
+		System.out.println("idFindMail memberDto : " + memberDto);
+		MemberDto idFind = memberService.idFindMail(memberDto.getMemberNick(), memberDto.getMemberEmail());
+		System.out.println("idFind : " + idFind);
 		
-//		// 비밀번호 재설정(메일)
-//		@PostMapping("/pwfind")
-//		@ResponseBody
-//		@Transactional(rollbackFor = Exception.class) 
-//		public String pwFindMail(MemberDto vo) {
-//			System.out.println("pwFindMail");
-//			System.out.println("pwFindMail vo : " + vo);
-//			System.out.println("v"+ vo.getName());
-//			MemberDto pwFind = memberService.pwFindMail(vo.getMemberId(), vo.getName(), vo.getEmail());
-//			System.out.println("pwFind : " + pwFind);
-//			if(pwFind != null) {
-//				String tempPw = mailSendService.sendTempPwMail(pwFind.getEmail());
-//				System.out.println("tempPw : "  + tempPw);
-//				pwFind.setPassword(tempPw);
-//				System.out.println("pwFind.setPassword(tempPw); : " + pwFind);
-//				int result = userService.updateUser(pwFind);
-//				System.out.println("result: " + result);
-//				return "success";
-//			} else {
-//				return "fail";
-//			}
-//		}
+		if(idFind != null) {
+			String id = idFind.getMemberId();
+			System.out.println("id: " + id);
+			return id;
+		} else {
+			return "fail";
+		}
+	}
+	//
+	
+	// 비밀번호 찾기 폼 페이지
+	@GetMapping("/pwFindMail")
+	public String findPw() {
+		log.debug("ㅡㅡMemberController - /member/pwFindMail GET> 비밀번호 찾기");
+		return "member/pwFindMail";
+	}
+		
+	// 비밀번호 재설정(이메일)
+	@PostMapping("/pwFindMail")
+	@ResponseBody
+	@Transactional(rollbackFor = Exception.class) 
+	public String pwFindMail(MemberDto memberDto) throws FileNotFoundException, MessagingException, IOException {
+		System.out.println("pwFindMail");
+		System.out.println("pwFindMail memberDto : " + memberDto);
+		System.out.println("memberDto"+ memberDto.getMemberNick());
+		MemberDto pwFind = memberService.pwFindMail(memberDto.getMemberId(), memberDto.getMemberNick(), memberDto.getMemberEmail());
+		System.out.println("pwFind : " + pwFind);
+		if(pwFind != null) {
+			String changePw = service.sendTempPwMail(pwFind.getMemberEmail());
+			System.out.println("changePw : "  + changePw);
+			pwFind.setMemberPw(changePw);
+			System.out.println("pwFind.setMemberPw(changePw); : " + changePw);
+			boolean result = memberDao.tempPw(memberDto, changePw);
+			System.out.println("result: " + result);
+			
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
 }

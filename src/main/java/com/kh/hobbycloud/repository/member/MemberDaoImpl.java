@@ -21,9 +21,6 @@ public class MemberDaoImpl implements MemberDao{
 	@Autowired
 	private PasswordEncoder encoder;
 	
-	@Autowired
-	private MemberDao memberDao;
-
 	// 단일조회 - ID 기준
 	@Override
 	public MemberDto get(String memberId) {
@@ -119,29 +116,45 @@ public class MemberDaoImpl implements MemberDao{
 		System.out.println(">> DAO checkNick() 메소드 실행");
 		return sqlSession.selectOne("member.findNick",memberNick);
 	}
-//	
-//	// 아이디찾기(이메일)
-//	@Override
-//	public MemberDto idFindMail(String memberId, String memberEmail) {
-//		Map<String, String> map = new HashMap<>();
-//		map.put("memberId", memberId);
-//		map.put("memberEmail", memberEmail);
-//		return sqlSession.selectOne("memberDao.idFindMail", map);
-//	}
-//
-//	
-//	// 비밀번호 찾기(이메일)
-//	@Override
-//	public MemberDto pwFindMail(String memberId, String memberNick, String memberEmail) {
-//		Map<String, String> map = new HashMap<>();
-//		map.put("memberId", memberId);
-//		map.put("memberNick", memberNick);
-//		map.put("memberEmail", memberEmail);
-//		return sqlSession.selectOne("memberDao.pwFindMail", map);
-//	}
 	
+	// 아이디찾기(이메일)
+	@Override
+	public MemberDto idFindMail(String memberNick, String memberEmail) {
+		Map<String, String> map = new HashMap<>();
+		map.put("memberNick", memberNick);
+		map.put("memberEmail", memberEmail);
+		return sqlSession.selectOne("member.idFindMail", map);
+	}
 
-
+	
+	// 비밀번호 찾기(이메일)
+	@Override
+	public MemberDto pwFindMail(String memberId, String memberNick, String memberEmail) {
+		
+		Map<String, String> map = new HashMap<>();		
+		map.put("memberId", memberId);
+		map.put("memberNick", memberNick);
+		map.put("memberEmail", memberEmail);		
+		return sqlSession.selectOne("member.pwFindMail", map);
+	}
+	
+	@Override
+	public boolean tempPw(MemberDto memberDto,String ChangePw) {
+		
+		Map<String ,Object> param = new HashMap<>();		
+		String origin =	ChangePw;
+		String encrypt = encoder.encode(origin);
+		memberDto.setMemberPw(encrypt);		
+		param.put("memberEmail", memberDto.getMemberEmail());
+		param.put("memberNick", memberDto.getMemberNick());
+		param.put("memberPhone",memberDto.getMemberPhone());
+		param.put("memberPw",memberDto.getMemberPw());
+		
+		// 임시 비밀번호 저장
+		int result=sqlSession.update("member.tempPw",param);
+		
+		return result>0;
+	}
 
 }
 

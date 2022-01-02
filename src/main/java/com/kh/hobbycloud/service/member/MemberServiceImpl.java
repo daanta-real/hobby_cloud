@@ -81,19 +81,19 @@ public class MemberServiceImpl implements MemberService{
 		System.out.println("serviceImpl: " + memberNick);
 		return memberDao.checkNick(memberNick);
 	}
-//	
-//	//아이디 찾기(이메일)
-//	@Override
-//	public MemberDto idFindMail(String memberId, String memberEmail) {
-//		return memberDao.idFindMail(memberId, memberEmail);
-//	}
-//	
-//	// 비밀번호 찾기(이메일)
-//	@Override
-//	public MemberDto pwFindMail(String memberId, String memberNick, String memberEmail) {
-//		return memberDao.pwFindMail(memberId, memberNick, memberEmail);
-//	}	
-
+	
+	//아이디 찾기(이메일)
+	@Override
+	public MemberDto idFindMail(String memberNick, String memberEmail) {
+		return memberDao.idFindMail(memberNick, memberEmail);
+	}
+	
+	// 비밀번호 찾기(이메일)
+	@Override
+	public MemberDto pwFindMail(String memberId, String memberNick, String memberEmail) {
+		return memberDao.pwFindMail(memberId, memberNick, memberEmail);
+	}
+	
 
 }
 
