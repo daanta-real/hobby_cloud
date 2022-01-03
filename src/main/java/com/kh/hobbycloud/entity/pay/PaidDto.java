@@ -7,6 +7,7 @@ import lombok.Data;
 // 결제이력 DTO
 @Data
 public class PaidDto {
+
 	private Integer paidIdx;     // 결제이력 idx
 	private Integer memberIdx;   // 회원 idx
 	private String paidTid;      // 결제 tid
