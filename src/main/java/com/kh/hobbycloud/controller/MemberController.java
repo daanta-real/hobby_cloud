@@ -138,6 +138,7 @@ public class MemberController {
         return "member/mypage";
     }
 
+
 	// 비밀번호 변경 폼 페이지
 	@GetMapping("/password")
 	public String password() {

@@ -63,4 +63,14 @@ public class NoticeDaoImpl implements NoticeDao {
 		return sqlSession.selectList("notice.search", param);
 	}
 
+	@Override
+	public void views(int noticeIdx) {
+		sqlSession.update("notice.views",noticeIdx);
+		
+	}
+
+	
+
+	
+
 }

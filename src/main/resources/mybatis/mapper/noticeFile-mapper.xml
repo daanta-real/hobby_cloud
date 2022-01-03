@@ -29,12 +29,17 @@
 		)
 	</insert>
 	
-	<select id="get" parameterType="int" resultType="NoticeFileDto">
-		select * from notice_file where notice_file_idx = #{notice_file_idx}
+	<!-- 공지 첨부파일 DTO 획득 by 파일번호 -->
+	<select id="getNo" parameterType="int" resultType="NoticeFileDto">
+		select * from notice_file where notice_file_idx = #{noticeFileIdx}
 	</select>
 	
-	<select id="list">
+	<!-- 공지 첨부파일 DTO 획득 by idx -->
+	<select id="getIdx" parameterType="int" resultType="NoticeFileDto">
+		SELECT * FROM notice_file
+		WHERE notice_idx = #{noticeIdx}
 	</select>
+	
 
 	
 </mapper>

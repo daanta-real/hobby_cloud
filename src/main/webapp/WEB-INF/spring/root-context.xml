@@ -96,26 +96,23 @@
 		<bean id="springFilter" class="com.kh.spring15.filter.SpringFilter"></bean>	
 	-->
 	
-	<!-- 
-	이메일 전송 도구(필요할 경우 아래의 구문을 등록 해제하여 사용)
-	-->
-		
-<!-- 	<bean id="sender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> -->
-<!-- 		<property name="host" value="${email.host}"></property> -->
-<!-- 		<property name="port" value="${email.port}"></property> -->
-<!-- 		<property name="username" value="${email.username}"></property> -->
-<!-- 		<property name="password" value="${email.password}"></property> -->
-		
-<!-- 		<property name="javaMailProperties"> -->
-<!-- 			<props> -->
-<!-- 				<prop key="mail.smtp.auth">true</prop> -->
-<!-- 				<prop key="mail.smtp.debug">true</prop> -->
-<!-- 				<prop key="mail.smtp.starttls.enable">true</prop> -->
-<!-- 				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop> -->
-<!-- 				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop> -->
-<!-- 			</props> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
+	<!-- 이메일 전송 도구(필요할 경우 아래의 구문을 등록 해제하여 사용) -->
+ 	<bean id="sender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+ 		<property name="host" value="${email.host}"></property>
+ 		<property name="port" value="${email.port}"></property>
+ 		<property name="username" value="${email.username}"></property>
+ 		<property name="password" value="${email.password}"></property>
+	
+ 		<property name="javaMailProperties">
+ 			<props>
+ 				<prop key="mail.smtp.auth">true</prop>
+ 				<prop key="mail.smtp.debug">true</prop>
+ 				<prop key="mail.smtp.starttls.enable">true</prop>
+ 				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+ 				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+ 			</props>
+ 		</property>
+ 	</bean>
 	
 	<!-- 
 		Task 관련 설정 
@@ -124,6 +121,8 @@
 	-->
 	<task:annotation-driven/>	
 	
+	<!-- 서버 주소 관련 설정 -->
+	<bean id="SERVER_PORT"  class="java.lang.String"><constructor-arg index="0" value="${CONFIG.SERVER_PORT}"/></bean>
 	<!-- 첨부파일 폴더 경로값 설정 -->
 	<bean id="STOREPATH"          class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}" /></bean>
 	<bean id="STOREPATH_MEMBER"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/member" /></bean>
@@ -133,5 +132,8 @@
 	<bean id="STOREPATH_PETITION" class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/petition" /></bean>
 	<bean id="STOREPATH_LEC"      class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/lec" /></bean>
 	<bean id="STOREPATH_AD"       class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/ad" /></bean>
+	<!-- 카카오페이 결제용 키와 업체 CID 설정 -->
+	<bean id="KAKAOPAY_ADMIN_KEY" class="java.lang.String"><constructor-arg index="0" value="${CONFIG.KAKAOPAY_ADMIN_KEY}" /></bean>
+	<bean id="KAKAOPAY_CID"       class="java.lang.String"><constructor-arg index="0" value="${CONFIG.KAKAOPAY_CID}" /></bean>
 	
 </beans>
