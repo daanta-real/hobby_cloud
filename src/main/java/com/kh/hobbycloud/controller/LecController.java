@@ -29,9 +29,13 @@ import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
+import com.kh.hobbycloud.vo.lec.LecEditVO;
+import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
-import com.kh.hobbycloud.vo.lec.LecReplyVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/lec")
 public class LecController {
@@ -75,39 +79,61 @@ public class LecController {
 	
 	//상세
 	@RequestMapping("/detail/{lecIdx}")
-	public String detail(@PathVariable int lecIdx, Model model) {
+	public String detail(@PathVariable int lecIdx, HttpSession session, Model model) {
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
 		
 		List<LecFileDto> list = lecFileDao.getByIdx(lecIdx);
 		model.addAttribute("lecDetailVO", lecDetailVO);
 		model.addAttribute("list", list);
 		
+		//좋아요 구현
+		
+		LecLikeVO lecLikeVO = new LecLikeVO();
+		lecLikeVO.setLecIdx(lecIdx);
+		lecLikeVO.setMemberIdx((Integer)session.getAttribute("memberIdx"));
+		
+		int isLike = 0;
+		
+		int check = lecService.likeCount(lecLikeVO);
+		
+		if(check ==0) {
+			
+			lecService.likeInsert(lecLikeVO);
+			
+		}else if(check==1) {
+			
+			isLike = lecService.likeGetInfo(lecLikeVO);
+		}
+		
+		model.addAttribute("isLike", isLike);	
+		
+		
 		return "lec/detail";
 	}
 	
 	//강좌 수정
-//	@GetMapping("/edit")
-//	public String edit(@RequestParam int lecIdx, Model model) {
-//		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-//		List<LecFileDto> list = lecFileDao.getByIdx(lecIdx);
-//		model.addAttribute("lecDto", lecDto);
-//		
-////		return "WEB-INF/views/member/edit.jsp";
-//		return "lec/edit";
-//	}
-//	
-//	@PostMapping("/edit")
-//	public String edit(@ModelAttribute LecDto lecDto, HttpSession session) {
-////		lecDto.setMemberId((String)session.getAttribute("ses"));
-//		boolean result = memberDao.changeInformation(memberDto);
-//		if(result) {
-//			return "redirect:edit_success";
-//		}
-//		else {
-//			return "redirect:edit?error";
-//		}
-//		
-//	}
+	@GetMapping("/edit/{lecIdx}")
+	public String update(@PathVariable int lecIdx, Model model) {
+
+		// 데이터 획득: VO 및 DTO
+		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
+
+		// 획득된 데이터를 Model에 지정
+		List<LecFileDto> list = lecFileDao.getByIdx(lecIdx);
+		model.addAttribute("lecDetailVO", lecDetailVO);
+		model.addAttribute("list", list);
+
+		return "lec/edit";
+	}
+
+	// 글 수정 실시
+	@PostMapping("/edit/{lecIdx}")
+	public String update(@ModelAttribute LecEditVO lecEditVO) throws IllegalStateException, IOException {
+		// 수정
+		lecService.edit(lecEditVO);
+		int lecIdx = lecEditVO.getLecIdx();
+		return "redirect:/lec/detail/" + lecIdx;
+	}
 
 	// 강좌 삭제
 	@GetMapping("/delete")
@@ -143,5 +169,5 @@ public class LecController {
 
 	}
 	
-
+	
 }
