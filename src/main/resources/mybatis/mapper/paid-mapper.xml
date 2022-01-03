@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="paid">
+
+	<!-- 새 시퀀스 획득 -->
+	<select id="getSequence" resultType="integer">
+		SELECT paid_seq.NEXTVAL FROM DUAL
+	</select>
+		
+	<!-- 단일조회 BY IDX(Integer)-->
+	<select id="getByIdx" parameterType="integer" resultType="PaidDto">
+		SELECT * FROM paid
+		WHERE paid_idx = #{paidIdx}
+	</select>
+	
+	<!-- 결제이력 등록.
+	여기에 없는 컬럼은 아래와 같다.
+	paid_registered = 기본 SYSDATE
+	paid_status = 기본 1(성공)
+	-->
+	<insert id="insert" parameterType="PaidDto">
+		INSERT INTO paid ( paid_idx, member_idx, paid_tid, paid_price )
+		VALUES ( #{paidIdx}, #{memberIdx}, #{paidTid}, #{paidPrice} )
+	</insert>
+	
+	<!-- 결제 취소처리. 삭제하지 않는 대신, 결제상태를 0(취소)로 돌린다.
+	사이트 내에 부분취소가 없으므로 부분취소는 구현하지 않아도 된다. -->
+	<delete id="cancel" parameterType="integer">
+		UPDATE paid
+		SET paid_status = 0
+		WHERE paid_idx = #{paidIdx}
+	</delete>
+	
+	<!-- 관리자용: 결제이력 목록 조회 -->
+	<select id="search"
+			resultType="com.kh.hobbycloud.entity.pay.PaidDto"
+			parameterType="com.kh.hobbycloud.vo.pay.PaidSearchVO">
+		SELECT * FROM paid
+		<where>
+			<if test="memberIdx != null">AND member_idx = #{memberIdx}</if>
+			<if test="paidRegistered_start != null">
+				AND paid_registered <![CDATA[>=]]> to_date(#{paidRegistered_start}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="paidRegistered_end != null">
+				AND paid_registered <![CDATA[<=]]> to_date(#{paidRegistered_end}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="paidPrice_min != null">AND paid_price <![CDATA[>=]]> #{paidPrice_min}</if>
+			<if test="paidPrice_max != null">AND paid_price <![CDATA[<=]]> #{paidPrice_max}</if>
+			<if test="paidStatusList != null">AND paid_status in
+				<foreach item="statOne" collection="paidStatusList" open="(" close=")" separator="," >#{statOne}</foreach>
+			</if>
+		</where>
+		ORDER BY paid_idx DESC
+	</select>
+	
+	<!-- 관리자용: 결제이력 자체 삭제 -->
+	<delete id="delete" parameterType="integer">
+		DELETE FROM paid
+		WHERE paid_idx = #{paidIdx};
+	</delete>
+		
+</mapper>

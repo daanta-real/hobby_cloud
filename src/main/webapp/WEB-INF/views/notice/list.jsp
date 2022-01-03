@@ -21,7 +21,7 @@
 			<tr>
 				<td>${NoticeVO.noticeIdx}</td>
 				<td align="left">
-				<a href="detail?noticeIdx=${NoticeVO.noticeIdx }">${NoticeVO.noticeName }</a>
+				<a href="detail/${NoticeVO.noticeIdx }">${NoticeVO.noticeName }</a>
 				</td>
 				<td>${NoticeVO.memberNick }</td>
 				<td>${NoticeVO.noticeRegistered }</td>
