@@ -2,8 +2,7 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 
-<input type="hidden" name="noticeIdx" value="${noticeVO.noticeIdx }">
-<input type="hidden" name="noticeIdx" value="${noticeDto.noticeIdx }">
+
 
 <h2>${NoticeVO.noticeIdx}번 게시글</h2>
 

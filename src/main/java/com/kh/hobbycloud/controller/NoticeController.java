@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.hobbycloud.entity.notice.NoticeDto;
 import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.repository.notice.NoticeFileDao;
@@ -38,6 +41,8 @@ public class NoticeController {
 	
 	@Autowired
 	private NoticeFileDao noticeFileDao;
+	
+	
 	
 	//공지게시판 목록조회
 	@GetMapping("/list")
@@ -59,16 +64,26 @@ public class NoticeController {
 	//	model.addAttribute("noticeVO",noticeDao.get(noticeIdx));
 	//	return "notice/detail";
 	//}
+	
+	
 	@RequestMapping("/detail/{noticeIdx}")
-	public String detail(@PathVariable int noticeIdx, Model model) {
-		// 데이터 획득: VO 및 DTO
-		        noticeDao.views(noticeIdx);
+	public String detail(@PathVariable int noticeIdx, Model model,HttpSession session) {
+		 //데이터 획득: VO 및 DTO
+		       // noticeDao.views(noticeIdx);
+		NoticeDto noticeDto = new NoticeDto();
+		noticeDto.setNoticeIdx(noticeIdx);
+		int memberIdx=(int)session.getAttribute("memberIdx");
+		noticeDto.setMemberIdx(memberIdx);
+		noticeDao.read(noticeDto);
+		
 				NoticeVO noticeVO = noticeDao.get(noticeIdx);
 
 				// 획득된 데이터를 Model에 지정
 				List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
 				model.addAttribute("NoticeVO", noticeVO);
 				model.addAttribute("list", list);
+				
+			
 
 				// 페이지 리다이렉트 처리
 				return "notice/detail"; 
@@ -92,11 +107,13 @@ public class NoticeController {
 //		
 //	}
 	@PostMapping("/write")
-	public String write(@ModelAttribute NoticeVO noticeVO) throws IllegalStateException, IOException {
+	public String write(@ModelAttribute NoticeVO noticeVO,HttpSession session) throws IllegalStateException, IOException {
 		log.debug("---------------------{}",noticeVO);
 		int noticeIdx=noticeDao.getsequences();
+		int memberIdx=(int)session.getAttribute("memberIdx");
 		noticeVO.setNoticeIdx(noticeIdx);
-		noticeVO.setMemberIdx(99996);
+		noticeVO.setMemberIdx(memberIdx);
+		//noticeVO.setMemberIdx(99996);
 		noticeService.save(noticeVO);
 		return "redirect:detail/"+noticeIdx;
 		
