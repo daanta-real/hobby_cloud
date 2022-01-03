@@ -56,5 +56,17 @@ public class LecFileDaoImpl implements LecFileDao {
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 	}
+	
+	@Override
+	public boolean delete(int lecIdx) {
+		int count = sqlSession.delete("lecFile.delete",lecIdx);
+		return count > 0;
+	}
+	
+	@Override
+	public boolean deleteAjax(int lecFileIdx) {
+		int count =sqlSession.delete("lecFile.deleteAjax",lecFileIdx);
+		return count > 0;
+	}
 
 }
