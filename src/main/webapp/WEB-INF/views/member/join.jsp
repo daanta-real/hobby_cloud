@@ -270,7 +270,7 @@
 	   		console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
    	})
    	
- 	$("#btnclick").click(function(){	
+/*  	$("#btnclick").click(function(){	
 	      	//최종 유효성 검사
 	   		if(idCheck&&idckCheck&&pwCheck&&pwchCkeck&&nickCheck&&nickckCheck&&
 	   			mailCheck&&mailBoxCheck&&phoneCheck &&nickCheck&&mailCheck){
@@ -278,7 +278,7 @@
 	   			$("#btnclick").prop("disabled", false);
 	   		}		
 	   		return false;
-	 	}); 
+	 	});  */
 	
 });
 

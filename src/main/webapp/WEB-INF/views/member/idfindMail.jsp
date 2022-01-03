@@ -32,6 +32,33 @@ window.addEventListener("load", function wrapclear(){
 	
 	$('.modal').css('opacity','0').css('display','none');
 	
+	// 이메일 유효성 검사
+	
+    $("#emailBox").change(function() {
+        if ($("#emailBox").val() == "directly") {
+            $("#inputMail").attr("readonly", false);
+            $("#inputMail").val("");
+            $("#inputMail").focus();
+             $("#inputMail").keyup(function(){
+                 if(!email_domail.test($("#inputMail").val())){
+		                    $("#mailComm").text("");
+		                    $("#mailComm").css("color", "red");
+		                    $("#mailComm").html("이메일 형식이 맞지 않습니다.");
+		                    
+		                    mailBoxCheck = false;
+		                    
+                    } else {
+                        $("#mailComm").html("");
+                        
+                        mailBoxCheck = true;
+                    }
+                 });
+        }  else {
+            $('#inputMail').val($('#emailBox').val());
+            $("#inputMail").attr("readonly", true);
+        }
+    });
+	
     // 모달 변수 정의
     window.modal = new bootstrap.Modal(document.getElementById("modal"), {
         keyboard: false
@@ -53,6 +80,7 @@ $(function(){
 		    // 이벤트 버블링 막기
 		    stopEvent();
 		    
+		    //닉네임 이메일 (닉네임 이메일 전달)
 			var memberNick = $("#memberNick").val();
 			var memberEmail = $("#idMail").val() + "@" + $("#inputMail").val();
 			 console.log("memberNick : " + memberNick);
@@ -134,9 +162,18 @@ $(function(){
 				<input type="text" id="memberNick" class="input form-control" name="memberNick" placeholder="닉네임">
 				<br>
 				<div class="inputag">
-				   <input type="text"  id="idMail" name="email_id" class="input form-control"  placeholder="EMAIL" >
+				   <input type="text"  id="idMail" name="email_id" class="input form-control"  placeholder="EMAIL" required>
 					@
-					<input type="text" id="inputMail" name="email_domain" class="input form-control" placeholder="EMAIL" >						
+					<input type="text" id="inputMail" name="email_domain" class="input form-control" required readonly placeholder="EMAIL" >
+					<select id="emailBox" name="emailBox" required>
+						<option value="" class="pickMail">이메일 선택</option>
+						<option value="directly">직접입력</option>
+						<option value="naver.com">naver.com</option>
+						<option value="gmail.com">gmail.com</option>
+						<option value="daum.net">daum.net</option>
+						<option value="hanmail.net">hanmail.net</option>
+						<option value="nate.com">nate.com</option>
+					</select>				
 				 </div>					 
 				</div>
                </div>

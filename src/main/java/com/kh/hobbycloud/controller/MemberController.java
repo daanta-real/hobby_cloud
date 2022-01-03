@@ -408,4 +408,29 @@ public class MemberController {
 			return "fail";
 		}
 	}
+	
+	// 이메일 변경 폼 페이지
+	@GetMapping("/updateMail")
+	public String updateMail() {
+		log.debug("ㅡㅡMemberController - /member/updateMail GET> 이메일 변경");
+		return "member/updateMail";
+	}
+	
+	//이메일 변경 처리
+	@PostMapping("/modifyPw.")
+	@ResponseBody
+	public String updatePw(@ModelAttribute("memberDto") MemberDto memberDto) {
+		System.out.println("updatePw 실행 ");
+		System.out.println("MemberDto memberDto 실행 :" + memberDto);
+		
+		boolean result = memberDao.changeInformation(memberDto);
+		
+		if(result) {
+			return "success";
+		}
+		else {
+			log.debug("ㅡㅡMemberController - /member/edit?error GET> 이메일 변경 실패");
+			return "fail";
+		}		
+	}
 }
