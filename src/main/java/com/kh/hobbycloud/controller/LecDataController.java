@@ -37,7 +37,6 @@ public class LecDataController {
 	
 	//댓글 리스트
 	@GetMapping("/replyList")
-	@ResponseBody
 	public List<LecReplyVO> replyList(@RequestParam int lecIdx){
 		List<LecReplyVO> list = lecReplyDao.replyList(lecIdx);
 		return list;
@@ -45,7 +44,6 @@ public class LecDataController {
 
 	//모댓글 작성
 	@PostMapping("/replyWrite")
-	@ResponseBody
 	public LecDto replyWrite(@RequestParam LecReplyVO lecReplyVO, HttpSession session) {
 		lecReplyVO.setMemberIdx((Integer)(session.getAttribute("memberIdx")));
 		LecDto lecDto = lecReplyDao.lecWriteReply(lecReplyVO);
@@ -54,7 +52,6 @@ public class LecDataController {
 	
 	//답글 작성
 	@PostMapping("/rereplyWrite")
-	@ResponseBody
 	public LecDto rereplyWrite(@RequestParam LecReplyVO lecReplyVO, HttpSession session) {
 //		lecReplyVO.setMemberNick((String)session.getAttribute("memberNick"));
 		lecReplyVO.setMemberIdx((Integer)(session.getAttribute("memberIdx")));
@@ -64,7 +61,6 @@ public class LecDataController {
 	
 	//모댓글 삭제
 	@RequestMapping("/replyDelete")
-	@ResponseBody
 	public LecDto lecReplyDelete(@RequestParam LecReplyVO lecReplyVO) {
 		LecDto lecDto = lecReplyDao.lecDeleteReply(lecReplyVO);
 		return lecDto;
@@ -72,9 +68,28 @@ public class LecDataController {
 	
 	//답글 삭제
 	@RequestMapping("/rereplyDelete")
-	@ResponseBody
 	public LecDto rereplyWrite(@RequestParam LecReplyVO lecReplyVO) {
 		LecDto lecDto = lecReplyDao.lecDeleteReReply(lecReplyVO);
 		return lecDto;
 	}
+	
+   @RequestMapping("/selectBBScmt")
+	public List<Map<String,Object>> selectBBScmt(@RequestParam Map<String,Object> commandMap){
+	    logger.info("request: /selectBBScmt");
+	    List<Map<String,Object>> resultMap = null;
+	    int totalCmt = 0;
+	    try {
+	        int bbsidx = Integer.parseInt(commandMap.get("bbscmtidx").toString());
+	        
+	        resultMap = service.selectBBScmt(commandMap);
+	        totalCmt = service.getTotalCmt(bbsidx);//전체 댓글 개수
+	        resultMap.get(0).put("totalCmt", totalCmt);
+	    } catch (Exception e) {
+	        logger.debug(e.getMessage());
+	    }
+	    return resultMap;
+	}
+
+	
+	
 }

@@ -143,48 +143,5 @@ public class LecController {
 
 	}
 	
-	//댓글 리스트
-	@GetMapping("/replyList")
-	@ResponseBody
-	public List<LecReplyVO> replyList(@RequestParam int lecIdx, HttpSession session){
-		List<LecReplyVO> list = lecReplyDao.replyList(lecIdx);
-		return list;
-	}
-
-	//모댓글 작성
-	@PostMapping("/replyWrite")
-	@ResponseBody
-	public LecDto replyWrite(@RequestParam LecReplyVO lecReplyVO, HttpSession session) {
-		lecReplyVO.setMemberIdx((Integer)(session.getAttribute("memberIdx")));
-		LecDto lecDto = lecReplyDao.lecWriteReply(lecReplyVO);
-		return lecDto;
-	}
-	
-	//답글 작성
-	@PostMapping("/rereplyWrite")
-	@ResponseBody
-	public LecDto rereplyWrite(@RequestParam LecReplyVO lecReplyVO, HttpSession session) {
-//		lecReplyVO.setMemberNick((String)session.getAttribute("memberNick"));
-		lecReplyVO.setMemberIdx((Integer)(session.getAttribute("memberIdx")));
-		LecDto lecDto = lecReplyDao.lecWriteReReply(lecReplyVO);
-		return lecDto;
-	}
-	
-	//모댓글 삭제
-	@RequestMapping("/replyDelete")
-	@ResponseBody
-	public LecDto lecReplyDelete(@RequestParam LecReplyVO lecReplyVO) {
-		LecDto lecDto = lecReplyDao.lecDeleteReply(lecReplyVO);
-		return lecDto;
-	}
-	
-	//답글 삭제
-	@RequestMapping("/rereplyDelete")
-	@ResponseBody
-	public LecDto rereplyWrite(@RequestParam LecReplyVO lecReplyVO) {
-		LecDto lecDto = lecReplyDao.lecDeleteReReply(lecReplyVO);
-		return lecDto;
-	}
-	
 
 }

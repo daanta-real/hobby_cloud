@@ -18,16 +18,38 @@
 	
 	<!-- 댓글 리스트 -->
 	<select id="replyList" parameterType="int" resultType="LecReplyVO">
-		
+		select * from (
+			select rownum rn, TMP.* from (
+				select * from lec_reply where lec_idx = #{lecIdx}
+				connect by prior lec_reply_idx = lec_reply_superidx
+				start with lec_reply_superidx is null 
+				order siblings by lec_reply_groupno desc, lec_reply_idx asc
+				)TMP
+		) where rn between 1 and 10
 	</select>
 	
 	<!-- 댓글 쓰기 -->
+	<!-- lecReplyIdx와 lecReplyGroupno가 같아야한다 -->
+	<!-- lecReplyGroupno 자리에 lecReplyIdx를 넣기 -->
 	<insert id="replyWrite" parameterType="LecReplyVO">
+		<selectKey resultType="int" keyProperty="lecReplyIdx" order="BEFORE">
+			select lec_reply_seq.nextval from dual
+		</selectKey>
 		insert into lec_reply
 		values(
-		lec_reply_seq.nextval , #{memberIdx}, #{lecIdx},
-		#{lecReplyDetail}, sysdate, 0,
-		#{lecReplyGroupno}, 0
+		#{lecReplyIdx}, #{memberIdx}, #{lecIdx},
+		#{lecReplyDetail}, sysdate, null,
+		#{lecReplyIdx}, 0
+		)
+	</insert>
+	
+	<!-- 대댓글 쓰기 -->
+	<insert id="rereplyWrite" parameterType="LecReplyVO">
+		insert into lec_reply
+		values(
+		0, #{memberIdx}, #{lecIdx},
+		#{lecReplyDetail}, sysdate, 1,
+		#{lecReplyGroupno}, #{lecReplyDepth}
 		)
 	</insert>
 	
@@ -39,9 +61,58 @@
 	
 	<!-- 모댓글이 삭제된 댓글일때 그에 딸린 답글들도 모두 삭제되면 테이블에서 완전 삭제 -->
 	<delete id="replyDeleteAfterRereplyDelete" parameterType="LecReplyVO">
-		delete
+		delete from lec_reply
+		where lec_reply_detail="" and lec_reply_groupno = #{lecReplyGroupno}
 	</delete>
 	
 	
+	
+	<!-- 답글의 그룹내 댓글 순(superidx)가 원글 + 1 이 되어야함 -->
+	<update id="superidxUpdate">
+		update lec_reply set lec_reply_superidx = lec_reply_superidx + 1 
+		where lec_reply_groupno = #{lecReplyGroupno} and lec_reply_superidx > #{lecReplySuperidx}
+	</update>
+	
+	<!-- lec에 댓글수 증가 -->
+	<update id="replyUp" parameterType="LecDto">
+		update lec set lec_replies = lecReplies + 1
+		where lec_idx = #{lecIdx}
+	</update>
+	
+	<!-- 댓글 추가/삭제시 댓글 개수 가져오기  -->
+	<select id="replyCount" parameterType="LecDto" resultType="LecDto">
+		select lec_replies from lec
+		where lec_idx = #{lecIdx}
+	</select>
+	
+	<!-- 모댓글의 답글수 카운트 -->
+	<select id="countRereply" parameterType="LecReplyVO" resultType="int">
+		select count(lec_reply_idx) from lec_reply
+		where lec_reply_idx = #{lecReplyIdx} and lec_reply_groupno = #{lecReplyIdx}
+	</select>
+	
+	<!-- 답글수를 카운트 -->
+	<select id="rereplyCountFromRereply" parameterType="LecReplyVO" resultType="int">
+		select count(lec_reply_idx) from lec_reply
+		where lec_reply_idx = #{lecReplyGroupno} and lec_reply_groupno = #{lecReplyGroupno}
+	</select>
+	
+	<!-- 모댓글 삭제 - 답글 없을때 -->
+	<delete id="replyDelete" parameterType="LecReplyVO">
+		delete from lec_reply
+		where lec_reply_idx = #{lecReplyIdx}
+	</delete>
+	
+	<!-- 모댓글 삭제 - 답글 있을때 -->
+	<update id="replyNotDelete" parameterType="LecReplyVO">
+		update lec_reply set lec_reply_detail = ""
+		where lec_reply_idx = #{lecReplyIdx}
+	</update>
+	
+	<!-- lec에 댓글수 감소 -->
+	<update id="replyDown" parameterType="LecDto">
+		update lec set lec_replies = lec_replies - 1
+		where lec_idx = #{lecIdx}
+	</update>
 	
 </mapper>
