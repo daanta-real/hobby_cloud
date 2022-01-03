@@ -30,4 +30,11 @@
 		WHERE gather_idx = #{gatherIdx}
 	</select>
 	
+	<delete id="delete" parameterType="int">
+	  delete from gather_file where gather_idx=#{gatherIdx}
+	</delete>
+	<delete id="deleteAjax" parameterType="int">
+	delete from gather_file where gather_file_idx=#{gatherFileIdx}
+	</delete>
+	
 </mapper>

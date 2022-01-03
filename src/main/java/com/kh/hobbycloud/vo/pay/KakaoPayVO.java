@@ -4,12 +4,12 @@ import java.util.Date;
 
 import com.kh.hobbycloud.vo.pay.subvo.Amount;
 import com.kh.hobbycloud.vo.pay.subvo.PaymentActionDetails;
-import com.kh.hobbycloud.vo.pay.subvo.SelectedCardInfo;
+import com.kh.hobbycloud.vo.pay.subvo.CardInfo;
 
 import lombok.Data;
 
 @Data
-public class KakaoPaySearchResponseVO {
+public class KakaoPayVO {
 
 	// 가맹점 관련
 	private String cid; // 가맹점 코드
@@ -33,7 +33,7 @@ public class KakaoPaySearchResponseVO {
 	private Amount amount; // 결제 금액
 	private Amount canceled_amount; // 취소된 금액
 	private Amount cancel_available_amount; // 취소 가능 금액
-	private SelectedCardInfo selected_card_info; // 결제 카드 정보
+	private CardInfo selected_card_info; // 결제 카드 정보
 	private PaymentActionDetails[] payment_action_details; // 결제 취소 상세정보
 
 }

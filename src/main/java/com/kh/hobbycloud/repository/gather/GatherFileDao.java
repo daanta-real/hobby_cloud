@@ -12,4 +12,9 @@ public interface GatherFileDao {
 	GatherFileDto getNo(int gatherFileIdx);
 	List<GatherFileDto> getIdx(int gatherIdx);
 	byte[] load(int gatherFileIdx) throws IOException;
+	//파일삭제
+	boolean delete(int gatherIdx);
+	//실시간삭제
+	boolean deleteAjax(int gatherFileIdx);
+	
 }

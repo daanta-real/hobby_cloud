@@ -1,33 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-	<script type="text/javascript"
+	pageEncoding="UTF-8"%>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b
 &libraries=services"></script>
 <!-- LINKS -->
 <!-- Bootstrap Theme -->
-<LINK rel="stylesheet" href="https://bootswatch.com/5/journal/bootstrap.css">
+<LINK rel="stylesheet"
+	href="https://bootswatch.com/5/journal/bootstrap.css">
 <!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
 <!-- Google Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap"
+	rel="stylesheet">
 <!-- JQuery 3.6.0 -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- XE Icon -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <
-	<style>
-		#map {
-			width:500px;
-			height:400px;
-		}
-	</style>
-	
+<style>
+#map {
+	width: 500px;
+	height: 400px;
+}
+</style>
+
 <script>
 	$(function() {
-	
+
 		//지도 생성 준비 코드
 		var container = document.querySelector("#map");
 		var options = {
@@ -134,138 +142,151 @@
 			if (status === kakao.maps.services.Status.OK) {
 				var infoDiv = document.getElementById('centerAddr');
 
-				
 			}
 		}
 	});
-</script>  
-    <script>
-    
-$(function(){
-	$("#hello").click(function(){
-		console.log("헬로");
-		 var radioVal = $('input[name="pratice"]:checked').val();
-		$("input[name=device]").val(radioVal);
-	});
-});
 </script>
-    
-    
 <script>
-$(function(){
-List a = new List();//담는 객체 
-
-//받는 객체 =  List  a = [ {"key":value,"key2":value2},{},{},{} , {}  ]
-// let val= a[0].key; (value) 
-	$("#showList").click(function(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/gatherData/gatherList",
-			type:"get",
-			dataType:"json",
-			success:function(resp){
-				console.log("성공",resp);
-				for(var i=0; i< resp.length; i++){
-					var template = $("#gather-template").html();
-					// 장소 목록 가져오기
-					template = template.replace("{{gatherIdx}}",resp[i].gatherIdx);
-					console.log(resp[i].gatherIdx);
-					template = template.replace("{{gatherLocRegion}}",resp[i].gatherLocRegion);
-					console.log(resp[i].gatherLocRegion);
-					
-					$("#result").append(template);
-				}
-			},
-			error:function(e){
-				console.log("실패",e);
-			}
-			
+	$(function() {
+		$("#hello").click(function() {
+			console.log("헬로");
+			var radioVal = $('input[name="pratice"]:checked').val();
+			$("input[name=device]").val(radioVal);
 		});
 	});
-});
-</script> 
+</script>
+
+
+
 <button id="hello">버튼</button>
-    
+
 <h1>소모임 등록창</h1>
 <div id="map"></div>
-<button onclick="window.open('list',
+<button
+	onclick="window.open('list',
 		'window_name','width=430,height=500,location=no,status=no,scrollbars=yes');">
-		button</button>
+	button</button>
 
 <form method="post" enctype="multipart/form-data">
 
 
-회원 idx<input type="text" name="memberIdx" value="99999">
-취미분류 이름<input type="text" name="lecCategoryName" value="운동">
-<br>
-장소 idx<input type="text" name="placeIdx" value="9999">
-제목<input type="text" name="gatherName" value="제목">
-상세내용<input type="text" name="gatherDetail" value="내용">
-<br>
-작성일<input type="date" name="gatherRegistered">
-인원<input type="text" name="gatherHeadCount" value="1">
-지역<input type="text" name="gatherLocRegion" value="지역">
-<br>
-위도<input type="text" name="gatherLocLatitude" value="123">
-경도<input type="text" name="gatherLocLogitude" value="456">
-시작시간<input type="date" name="gatherStart" >
-<br>
-종료시간<input type="date" name="gatherEnd">
-최대원인원수<input type="text" name="gatherMax" value="1">
-현재오픈여부<input type="text" name="gatherStaus" value="1">
-<br>
-<input type="file" name="attach" enctype="multipart/form-data" multiple>
-<input type="submit" value="전송하기">
-<br>
-자식에서 가져온 값:<input type="text" name="device">
+	회원 idx<input type="text" name="memberIdx" value="99999"> 취미분류
+	이름<input type="text" name="lecCategoryName" value="운동"> <br>
+	장소 idx<input id="placeIdxHolder" type="hidden" name="placeIdx"
+		value="9999"> 제목<input type="text" name="gatherName"
+		value="제목"> 상세내용<input type="text" name="gatherDetail"
+		value="내용"> <br> 작성일<input type="date"
+		name="gatherRegistered"> 인원<input type="text"
+		name="gatherHeadCount" value="1"> 지역<input type="text"
+		name="gatherLocRegion" value="지역"> <br> 위도<input
+		id="placeLatiHolder" type="text" name="gatherLocLatitude" value="123">
+	경도<input id="placeLongHolder" type="text" name="gatherLocLogitude"
+		value="456"> 시작시간<input type="date" name="gatherStart">
+	<br> 종료시간<input type="date" name="gatherEnd"> 최대원인원수<input
+		type="text" name="gatherMax" value="1"> 현재오픈여부<input
+		type="text" name="gatherStaus" value="1"> <br>
+		 <input type="file" name="attach" enctype="multipart/form-data" multiple>
+	<input type="submit" value="전송하기"> <br> 자식에서 가져온 값:<input
+		type="text" name="device">
 </form>
 
 <!-- Button trigger modal -->
-<button type="button" id="showList" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
+<button type="button" id="showList" class="btn btn-primary"
+	data-bs-toggle="modal" data-bs-target="#exampleModal">Launch
+	demo modal</button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">장소 찾기</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      
-     <!-- 모듈창 안의 내용 -->
-      <input type="text" name="pratice">2
-       <input type="radio" name="pratice" value="hello">장소1
-      <div class="modal-body">
-      <div id="result"></div>
-     <template id="gather-template">
-  	<div>
- 
-     <!--<span>{{gatherIdx}} {{gatherLocRegion}}}</span> -->
-    </div>
-     </div>
-     </template> 
-    
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button"  id="hello" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
+<div class="modal fade" id="exampleModal" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">장소 찾기</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+
+<script>
+	$(function() {
+		$("#showList").click(function() {
+						$.ajax({
+						url : "${pageContext.request.contextPath}/gatherData/gatherList",
+						type : "get",
+						dataType : "json",
+						success:function(resp){
+							console.log("성공", resp);
+							
+							for(var i=0; i < resp.length; i++){
+								var template = $("#gather-template").html();
+								
+								template = template.replace("{{gatherIdx}}", resp[i].gatherIdx);
+								
+								$("#result").append(template);
+							}
+						},
+						error : function(e) {
+						console.log("실패", e);
+									}
+								});
+						});
+	});
+</script>
+
+
+
+			<!-- 모듈창 안의 내용 -->
+			<div class="modal-body">	
+				<div id="result"></div>
+				<template id="gather-template">
+				<div onclick="">
+						<span>{{gatherIdx}}</span>
+				</div>
+				</template>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">Close</button>
+				<button type="button" id="hello" class="btn btn-primary">Save
+					changes</button>
+			</div>
+		</div>
+	</div>
 </div>
-<!-- 
-1.버튼 클릭 시 jquery 실행
-2.모달창 띄운 뒤 ajax로 내용 채우기 (function)
-3.목록에서 클릭 시 내용 가져오기
- -->
-
-
-<!--클릭하면 -->
-
-
-
-
-
-
  
+<script>
+function abc(){
+	
+}
+
+</script>
+
+
+
+<script> -->
+// 				function selector(e) {
+					
+// 					console.log("넘어온 값:",e);
+
+// 					// 엘리먼트 찾기
+// 					var target = e.target;
+// 					while (target.getAttribute('place_idx') == null)
+// 						target = target.parentNode;
+// 					console.log("찾아진 엘리먼트: ", target),
+
+// 					// 값 뽑아내기
+// 					var place_idx = target.getAttribute('place_idx');
+// 					var longitude = target.getAttribute('longitude');
+// 					var latitude = target.getAttribute('latitude');
+// 					console.log("뽑아낸 값: place_idx: " + place_idx + " - (" + longitude + ", " + latitude + ")");
+
+// 					// 폼 요소에 값 지정
+// 					console.log("반영할 타겟 엘리먼트: ", document.getElementById("placeIdxHolder"));
+// 					document.getElementById("placeIdxHolder").value = place_idx;
+// 					document.getElementById("placeLongHolder").value = longitude;
+// 					document.getElementById("placeLatiHolder").value = latitude;
+
+// 				}
+
+
+

@@ -75,4 +75,18 @@ public class GatherFileDaoImpl implements GatherFileDao {
 		return data;
 	}
 
+	//소모임 번호로 해당게시물의 사진 다 삭제
+	@Override
+	public boolean delete(int gatherIdx) {
+		int count = sqlSession.delete("gatherFile.delete",gatherIdx);
+		return count >0;
+	}
+
+	@Override
+	public boolean deleteAjax(int gatherFileIdx) {
+		int count =sqlSession.delete("gatherFile.deleteAjax",gatherFileIdx);
+		
+		return count >0;
+	}
+
 }

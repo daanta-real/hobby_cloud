@@ -16,26 +16,25 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/pay")
 public class PayController {
 
-	// 카카오페이 진입 페이지
+	// (아무 내용 없음) 카카오페이 초기 진입 페이지
 	@RequestMapping("/")
 	public String index() {
 		log.debug("================== index(GET)");
 		return "pay/home";
 	}
 
-	// 카카오페이 결제내용 선확인 페이지
+	// 결제 내용 확인 후 QR코드 찍으러 가는 페이지
 	@GetMapping("/confirm")
 	public String confirm() {
 		log.debug("================== confirm(GET)");
-		return "pay/confirm";
+		return "pay/confirm"; // QR코드 찍으러 카카오페이로 보낸 다음, TID를 받아와서 confirm을 호출하는 페이지
 	}
 
-	// 본격 결제 진행 페이지.
-	// 카카오페이 결제내용 선확인 페이지로부터 결제 내용이 넘어옴.
+	// QR코드 찍고
 	@PostMapping("/confirm")
 	public String confirm(@ModelAttribute KakaoPayReadyResponseVO requestVo) {
 		log.debug("================== confirm(POST) 진입. requestVo = {]", requestVo);
-		return "redirect:";
+		return "redirect:"; // test03으로 감. 여기서
 	}
 
 	// 카카오페이 성공 페이지
