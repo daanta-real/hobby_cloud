@@ -24,12 +24,17 @@
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
- 
+<c:set var="isLogin" value="${memberIdx != null}"/>
+
+<c:choose>
+<c:when test="${isLogin}">
+
+<h1>로그인</h1>
+</c:when>
+</c:choose>
+
 <h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번 게시글 </h2>
 
-<h1>${memberId}</h1>
-<h1>${join}</h1>
-<h1>join</h1>
 <table border="1" width="80%">
 	<tbody>
 		<tr>
@@ -52,10 +57,12 @@
 		<tr height="250" valign="top">
 			<td>
 								
-				<pre>${GatherVO.gatherDetail}</pre>
-			
+				<pre>${GatherVO.gatherDetail}23</pre>
+				
+			<!-- 참가자 리스트 반복문 -->
+		
 			<c:forEach var ="GatherHeadsVO" items="${list2}">
- 			<c:set var="join" value="${memberIdx eq GatherHeadsVO.memberIdx"></c:set>
+ 				<c:set var="join" value="${GatherHeadsVO.memberIdx eq memberIdx}"></c:set>
 			<h1>${memberIdx}</h1>
 			<h1>${GatherHeadsVO.memberIdx }</h1>
 			<tr>
@@ -65,18 +72,18 @@
 			<tr>
 			<td>${GatherHeadsVO.memberNick}</td>
 			<td>${GatherHeadsVO.gatherIdx}</td>
-<%-- 			<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}" width="1%" class="image image-round image-border"> --%>
-			<!-- 참가 취소 버튼 -->
+
 			
 			</tr>
-			<h1>${join}</h1>
-			</c:forEach>				
+			<h1>세션:${memberIdx}</h1>
+			<h1>아이디 :${GatherHeadsVO.memberIdx}</h1>
+			</c:forEach>			
+			
+		<!-- 게시판 사진 반복문 -->	
 			<c:forEach var="GatherFileDto" items="${list}"> 
 			<span><${GatherFileDto.gatherFileUserName}</span>
 			<br>
-			
-			<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}" width="30%" class="image image-round image-border">
-			
+			<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}" width="30%" class="image image-round image-border">			
 			</c:forEach>
 
 			
@@ -88,11 +95,17 @@
 			<tr>
 			<td>
 			<!-- 참가하기 버튼 -->
-
+			<c:choose>
+			<c:when test="${!join}">
 			<a class="btn btn-primary" href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
-			<a class="btn btn-secondary" href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기2</a>
+			</c:when>
+			<c:otherwise>
+			<a class="btn btn-secondary" href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
+			</c:otherwise>
+			</c:choose>
 			</td>
 			</tr>
+			
 			
  
 		<tr>

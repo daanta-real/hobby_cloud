@@ -25,7 +25,7 @@
 <!-- XE Icon -->
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<
+
 <style>
 #map {
 	width: 500px;
@@ -99,9 +99,9 @@
 					// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
 					infowindow.setContent(content);
 					infowindow.open(map, marker);
-					$("input[name=fgLocation]").val(
+					$("input[name=gatherLocRegion]").val(
 							result[0].address.address_name);
-					var address = $("input[name=fgLocation]").val();
+					var address = $("input[name=gatherLocRegion]").val();
 
 					//2. 카카오 장소변환 샘플 코드를 복사 후 일부 수정
 					// 주소-좌표 변환 객체를 생성합니다
@@ -112,8 +112,8 @@
 						var coords = new kakao.maps.LatLng(result[0].y,
 								result[0].x);
 
-						$("input[name=fgLatitude]").val(result[0].y);
-						$("input[name=fgLongitude]").val(result[0].x);
+						$("input[name=gatherLocLatitude]").val(result[0].y);
+						$("input[name=gatherLocLongitude]").val(result[0].x);
 
 					});
 				}
@@ -146,65 +146,126 @@
 		}
 	});
 </script>
-<script>
-	$(function() {
-		$("#hello").click(function() {
-			console.log("헬로");
-			var radioVal = $('input[name="pratice"]:checked').val();
-			$("input[name=device]").val(radioVal);
-		});
-	});
+
+<script type='text/javascript'>
+
+// 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+window.addEventListener("load", () => {
+
+    // 모달 변수 정의
+    window.modal = new bootstrap.Modal(document.getElementById("modal"), {
+        keyboard: false
+    });
+
+});
+
+// 라이브러리: 이벤트 버블링 막기
+function stopEvent() {
+    if(typeof window.event == 'undefined') return;
+    if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+}
+
+// TR로부터 지역/위도/경도값을 취해 FORM INPUT 안에 넣어주는 함수
+function setLoc(el) {
+
+    // 이벤트 버블링 막기
+    stopEvent();
+
+    // 내가 클릭한 TR 태그로부터 값 추출
+    const data = {
+        idx      : el.getAttribute("data-idx"),
+        region   : el.getAttribute("data-region"),
+        longitude: el.getAttribute("data-longitude"),
+        latitude : el.getAttribute("data-latitude")
+    };
+
+    // 추출된 값을 각 INPUT 태그에 넣어주기
+//     document.querySelector("input[name='loc_idx']"      ).value = data.idx;
+    document.querySelector("input[name='gatherLocRegion']"   ).value = data.region;
+    document.querySelector("input[name='gatherLocLogitude']").value = data.longitude;
+    document.querySelector("input[name='gatherLocLatitude']" ).value = data.latitude;
+    
+    // 모달 토글
+    modal.toggle();
+
+}
+
 </script>
 
 
 
-<button id="hello">버튼</button>
+
+
 
 <h1>소모임 등록창</h1>
 <div id="map"></div>
-<button
-	onclick="window.open('list',
-		'window_name','width=430,height=500,location=no,status=no,scrollbars=yes');">
-	button</button>
 
 <form method="post" enctype="multipart/form-data">
 
 
 	회원 idx<input type="text" name="memberIdx" value="99999"> 취미분류
 	이름<input type="text" name="lecCategoryName" value="운동"> <br>
-	장소 idx<input id="placeIdxHolder" type="hidden" name="placeIdx"
-		value="9999"> 제목<input type="text" name="gatherName"
-		value="제목"> 상세내용<input type="text" name="gatherDetail"
-		value="내용"> <br> 작성일<input type="date"
-		name="gatherRegistered"> 인원<input type="text"
-		name="gatherHeadCount" value="1"> 지역<input type="text"
-		name="gatherLocRegion" value="지역"> <br> 위도<input
-		id="placeLatiHolder" type="text" name="gatherLocLatitude" value="123">
-	경도<input id="placeLongHolder" type="text" name="gatherLocLogitude"
-		value="456"> 시작시간<input type="date" name="gatherStart">
-	<br> 종료시간<input type="date" name="gatherEnd"> 최대원인원수<input
-		type="text" name="gatherMax" value="1"> 현재오픈여부<input
-		type="text" name="gatherStaus" value="1"> <br>
+	장소 idx
+	<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999"> 제목
+		<input type="text" name="gatherName"value="제목"> 
+		상세내용<input type="text" name="gatherDetail" value="내용"> <br>
+		 작성일<input type="date"	name="gatherRegistered"> 
+		인원<input type="text"	name="gatherHeadCount" value="1">
+		 지역<input type="text"	name="gatherLocRegion" value="지역">
+		 <br> 
+		 위도<input	id="placeLatiHolder" type="text" name="gatherLocLatitude">
+		 경도<input id="placeLongHolder" type="text" name="gatherLocLogitude">
+		 시작시간<input type="date" name="gatherStart">
+	<br>
+		 종료시간<input type="date" name="gatherEnd"> 
+		 최대원인원수<input	type="text" name="gatherMax" value="1">
+		 현재오픈여부 <input	type="text" name="gatherStaus" value="1"> <br>
+		 
 		 <input type="file" name="attach" enctype="multipart/form-data" multiple>
-	<input type="submit" value="전송하기"> <br> 자식에서 가져온 값:<input
-		type="text" name="device">
-</form>
+		<input type="submit" value="전송하기">
+	 <br> 
+	
+	</form>
 
-<!-- Button trigger modal -->
-<button type="button" id="showList" class="btn btn-primary"
-	data-bs-toggle="modal" data-bs-target="#exampleModal">Launch
-	demo modal</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">장소 찾기</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
+
+<!-- 모달 여는 버튼 -->
+<button type="button" id="showList"class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">모달 열기</button>
+
+<!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
+<div id="modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <!-- 모달 제목 영역 -->
+            <div class="modal-header">
+                <!-- 모달 타이틀 -->
+                <h5 class="modal-title">장소를 고르세요.</h5>
+                <!-- 모달 닫기 버튼 -->
+                <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- 모달 본문 영역 -->
+            <table class="modal-body table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">순</th>
+                        <th scope="col" class="text-center">이름</th>
+                        <th scope="col" class="text-center">지역</th>
+                    </tr>
+                </thead>
+                <tbody class="locTBody">
+                 
+                </tbody>
+            </table>
+            <!-- 모달 꼬리말 영역 -->
+        </div>
+    </div>
+</div>
+
+
+
 
 
 <script>
@@ -215,15 +276,28 @@
 						type : "get",
 						dataType : "json",
 						success:function(resp){
-							console.log("성공", resp);
 							
-							for(var i=0; i < resp.length; i++){
-								var template = $("#gather-template").html();
-								
-								template = template.replace("{{gatherIdx}}", resp[i].gatherIdx);
-								
-								$("#result").append(template);
-							}
+							console.log("성공", resp);
+							var results = resp;
+							console.log(results);
+							var totalStr = "";
+							$.each(results, function(i) {
+								var jsonStr = results[i];
+								console.log(i + "번째 TR: ", jsonStr);
+								totalStr += '<tr scope="row" data-idx="' + jsonStr.gatherIdx + '"'
+									+ ' data-region="'+jsonStr.gatherLocRegion+'" data-longitude="'+jsonStr.gatherLocLongitude+'"'
+									+ ' data-latitude="' + jsonStr.gatherLocLatitude+'"'
+									+ ' onclick="setLoc(this)">'
+									+ '<td class="text-center">' + jsonStr.gatherIdx +'</td>'
+									+ '<td class="text-center">' + jsonStr.gatherName +'</td>'
+									+ '<td>' + jsonStr.gatherLocRegion +'</td></tr>';
+							});
+							console.log("전체 HTML: ", totalStr);
+							
+							var listTarget = document.querySelector(".locTBody");
+							console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
+							listTarget.innerHTML = totalStr;
+							
 						},
 						error : function(e) {
 						console.log("실패", e);
@@ -234,59 +308,6 @@
 </script>
 
 
-
-			<!-- 모듈창 안의 내용 -->
-			<div class="modal-body">	
-				<div id="result"></div>
-				<template id="gather-template">
-				<div onclick="">
-						<span>{{gatherIdx}}</span>
-				</div>
-				</template>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-				<button type="button" id="hello" class="btn btn-primary">Save
-					changes</button>
-			</div>
-		</div>
-	</div>
-</div>
- 
-<script>
-function abc(){
 	
-}
-
-</script>
-
-
-
-<script> -->
-// 				function selector(e) {
-					
-// 					console.log("넘어온 값:",e);
-
-// 					// 엘리먼트 찾기
-// 					var target = e.target;
-// 					while (target.getAttribute('place_idx') == null)
-// 						target = target.parentNode;
-// 					console.log("찾아진 엘리먼트: ", target),
-
-// 					// 값 뽑아내기
-// 					var place_idx = target.getAttribute('place_idx');
-// 					var longitude = target.getAttribute('longitude');
-// 					var latitude = target.getAttribute('latitude');
-// 					console.log("뽑아낸 값: place_idx: " + place_idx + " - (" + longitude + ", " + latitude + ")");
-
-// 					// 폼 요소에 값 지정
-// 					console.log("반영할 타겟 엘리먼트: ", document.getElementById("placeIdxHolder"));
-// 					document.getElementById("placeIdxHolder").value = place_idx;
-// 					document.getElementById("placeLongHolder").value = longitude;
-// 					document.getElementById("placeLatiHolder").value = latitude;
-
-// 				}
-
 
 

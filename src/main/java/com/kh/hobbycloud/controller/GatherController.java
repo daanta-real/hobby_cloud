@@ -60,12 +60,13 @@ public class GatherController {
 
 	// 검색결과 목록 페이지
 	@PostMapping("/list")
-	public String search(@ModelAttribute List<GatherSearchVO> categorys, Model model) {
+	public String search(@ModelAttribute GatherSearchVO gatherSearchVO, Model model) {
 //		log.debug("param.toString()   " + gatherSearchDto.toString());
-		log.debug("category={}", categorys);
-		List<GatherVO> list = gatherDao.listSearch(categorys);
+		log.debug("category={}", gatherSearchVO);
+		List<GatherVO> list = gatherDao.listSearch(gatherSearchVO);
+		
 
-//		model.addAttribute("list",list);
+		model.addAttribute("list",list);
 		return "gather/list";
 	}
 
@@ -85,7 +86,7 @@ public class GatherController {
 
 	// 상세 보기 페이지
 	@RequestMapping("/detail/{gatherIdx}")
-	public String detail(@PathVariable int gatherIdx, Model model) {
+	public String detail(@PathVariable int gatherIdx, Model model,HttpSession session) {
 
 		// 데이터 획득: VO 및 DTO
 		GatherVO gatherVO = gatherDao.get(gatherIdx);
@@ -98,6 +99,7 @@ public class GatherController {
 		
 		//소모임 참가자 조회
 		model.addAttribute("list2",list2);
+		
 		//게시판 정보 조회
 		model.addAttribute("GatherVO", gatherVO);
 		//게시판 사진 조회
