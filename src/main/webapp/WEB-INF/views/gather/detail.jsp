@@ -1,13 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<!-- LINKS -->
+<!-- Bootstrap Theme -->
+<LINK rel="stylesheet"
+	href="https://bootswatch.com/5/journal/bootstrap.css">
+<!-- Bootstrap -->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap"
+	rel="stylesheet">
+<!-- JQuery 3.6.0 -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- XE Icon -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
  
 <h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번 게시글 </h2>
 
-
+<h1>${memberId}</h1>
+<h1>${join}</h1>
+<h1>join</h1>
 <table border="1" width="80%">
 	<tbody>
 		<tr>
@@ -29,23 +51,54 @@
 		-->
 		<tr height="250" valign="top">
 			<td>
+								
 				<pre>${GatherVO.gatherDetail}</pre>
 			
-				
+			<c:forEach var ="GatherHeadsVO" items="${list2}">
+ 			<c:set var="join" value="${memberIdx eq GatherHeadsVO.memberIdx"></c:set>
+			<h1>${memberIdx}</h1>
+			<h1>${GatherHeadsVO.memberIdx }</h1>
+			<tr>
+			<th>닉네임</th>
+			<th>프로필</th>
+			</tr>
+			<tr>
+			<td>${GatherHeadsVO.memberNick}</td>
+			<td>${GatherHeadsVO.gatherIdx}</td>
+<%-- 			<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}" width="1%" class="image image-round image-border"> --%>
+			<!-- 참가 취소 버튼 -->
+			
+			</tr>
+			<h1>${join}</h1>
+			</c:forEach>				
 			<c:forEach var="GatherFileDto" items="${list}"> 
 			<span><${GatherFileDto.gatherFileUserName}</span>
 			<br>
-		
+			
 			<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}" width="30%" class="image image-round image-border">
+			
 			</c:forEach>
 
-
-			</td>
+			
+		</td>
+		
 		</tr>
+		<!-- 소모임 참가 /취소 버튼 -->
+
+			<tr>
+			<td>
+			<!-- 참가하기 버튼 -->
+
+			<a class="btn btn-primary" href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
+			<a class="btn btn-secondary" href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기2</a>
+			</td>
+			</tr>
+			
+ 
 		<tr>
 		<td>	
 				<a href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
-				<a href="list">목록보기</a>
+				<a href="${pageContext.request.contextPath}/gather/list">목록보기</a>
 				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}">수정</a>			
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}">삭제</a>	
 	
@@ -194,7 +247,12 @@ function deleteData(gatherReplyIdxValue){
 
 </script>
 
+<script>
 
+$.ajax({
+	
+})
+</script>
 
 
 
