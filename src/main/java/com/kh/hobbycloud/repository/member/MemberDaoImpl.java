@@ -138,21 +138,20 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectOne("member.pwFindMail", map);
 	}
 	
+	//임시 비밀번호 업데이트
 	@Override
 	public boolean tempPw(MemberDto memberDto,String ChangePw) {
 		
-		Map<String ,Object> param = new HashMap<>();		
+		Map<String ,Object> param = new HashMap<>();
+		//받은 난수를 암호화 하여 업데이트 진행
 		String origin =	ChangePw;
 		String encrypt = encoder.encode(origin);
 		memberDto.setMemberPw(encrypt);		
-		param.put("memberEmail", memberDto.getMemberEmail());
-		param.put("memberNick", memberDto.getMemberNick());
-		param.put("memberPhone",memberDto.getMemberPhone());
+		param.put("memberId", memberDto.getMemberId());
 		param.put("memberPw",memberDto.getMemberPw());
 		
-		// 임시 비밀번호 저장
+		//원래 비밀번호를 암호화 하여서 비밀번호 업데이트 
 		int result=sqlSession.update("member.tempPw",param);
-		
 		return result>0;
 	}
 

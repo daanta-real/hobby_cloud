@@ -5,7 +5,7 @@ import lombok.Data;
 // 카드 결제 시 들어오는 카드 관련 정보
 
 @Data
-public class SelectedCardInfo {
+public class CardInfo {
 
 	private String card_bin;              // 카드 BIN
 	private int install_month;            // 할부 개월 수

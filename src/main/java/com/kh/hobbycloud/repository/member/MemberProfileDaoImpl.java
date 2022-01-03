@@ -63,6 +63,11 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 	public MemberProfileDto getIdx(int memberIdx) {
 		return sqlSession.selectOne("memberProfile.getIdx", memberIdx);
 	}
+	@Override
+	public void delete(int memberIdx) {
+		sqlSession.delete("memberProfile.delete",memberIdx);
+		
+	}
 
 
 }

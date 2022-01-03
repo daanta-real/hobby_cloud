@@ -334,6 +334,17 @@ public class MemberController {
 								.body(resource);
 	}
 	
+	//프로필 이미지 삭제
+	@GetMapping("/profileDelete")
+	public String profileDelete(@RequestParam int memberIdx) {
+
+		memberProfileDao.delete(memberIdx);
+		
+		return "redirect:profileEdit";
+	}
+
+	
+	
 	
 	// 메일보내기	
 	@PostMapping("/sendMail")// AJAX와 URL을 매핑
@@ -389,12 +400,10 @@ public class MemberController {
 		if(pwFind != null) {
 			String changePw = service.sendTempPwMail(pwFind.getMemberEmail());
 			System.out.println("changePw : "  + changePw);
-			pwFind.setMemberPw(changePw);
-			System.out.println("pwFind.setMemberPw(changePw); : " + changePw);
 			boolean result = memberDao.tempPw(memberDto, changePw);
-			System.out.println("result: " + result);
-			
+			System.out.println("result: " + result);			
 			return "success";
+			
 		} else {
 			return "fail";
 		}

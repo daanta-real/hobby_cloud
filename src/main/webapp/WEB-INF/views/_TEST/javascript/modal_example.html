@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<HTML LANG="ko">
+
+<HEAD>
+
+<META charset="UTF-8">
+<META http-equiv="X-UA-Compatible" content="IE=edge">
+<META name="viewport" content="width=device-width, initial-scale=1.0">
+<TITLE>HobbyCloud - [여기다가 타이틀이름 쓰세요. []는 제거하시구요~]</TITLE>
+
+<!-- LINKS -->
+<!-- Bootstrap Theme -->
+<LINK rel="stylesheet" href="https://bootswatch.com/5/journal/bootstrap.css">
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!-- JQuery 3.6.0 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style type="text/css">
+
+tbody.locTBody { cursor:pointer; }
+
+</style>
+
+<script type='text/javascript'>
+
+// 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+window.addEventListener("load", () => {
+
+    // 모달 변수 정의
+    window.modal = new bootstrap.Modal(document.getElementById("modal"), {
+        keyboard: false
+    });
+
+});
+
+// 라이브러리: 이벤트 버블링 막기
+function stopEvent() {
+    if(typeof window.event == 'undefined') return;
+    if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+}
+
+// TR로부터 지역/위도/경도값을 취해 FORM INPUT 안에 넣어주는 함수
+function setLoc(el) {
+
+    // 이벤트 버블링 막기
+    stopEvent();
+
+    // 내가 클릭한 TR 태그로부터 값 추출
+    const data = {
+        idx      : el.getAttribute("data-idx"),
+        region   : el.getAttribute("data-region"),
+        longitude: el.getAttribute("data-longitude"),
+        latitude : el.getAttribute("data-latitude")
+    };
+
+    // 추출된 값을 각 INPUT 태그에 넣어주기
+    document.querySelector("input[name='loc_idx']"      ).value = data.idx;
+    document.querySelector("input[name='loc_region']"   ).value = data.region;
+    document.querySelector("input[name='loc_longitude']").value = data.longitude;
+    document.querySelector("input[name='log_latitude']" ).value = data.latitude;
+    
+    // 모달 토글
+    modal.toggle();
+
+}
+
+</script>
+
+</HEAD>
+
+<BODY>
+
+<!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
+<div id="modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <!-- 모달 제목 영역 -->
+            <div class="modal-header">
+                <!-- 모달 타이틀 -->
+                <h5 class="modal-title">장소를 고르세요.</h5>
+                <!-- 모달 닫기 버튼 -->
+                <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- 모달 본문 영역 -->
+            <table class="modal-body table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">순</th>
+                        <th scope="col" class="text-center">이름</th>
+                        <th scope="col" class="text-center">지역</th>
+                    </tr>
+                </thead>
+                <tbody class="locTBody">
+                    <tr scope="row" data-idx="1" data-region="강원도 강릉시"   data-longitude="11" data-latitude="12" onclick="setLoc(this)">
+                        <td class="text-center">1</td>
+                        <td class="text-center">강릉</td>
+                        <td>강원도 강릉시</td>
+                    </tr>
+                    <tr scope="row" data-idx="2" data-region="충청북도 청주시" data-longitude="21" data-latitude="22" onclick="setLoc(this)">
+                        <td class="text-center">2</td>
+                        <td class="text-center">청주</td>
+                        <td>충청북도 청주시</td>
+                    </tr>
+                    <tr scope="row" data-idx="3" data-region="충청북도 당진시" data-longitude="31" data-latitude="32" onclick="setLoc(this)">
+                        <td class="text-center">3</td>
+                        <td class="text-center">당진</td>
+                        <td>충청북도 당진시</td>
+                    </tr>
+                    <tr scope="row" data-idx="4" data-region="서울특별시"      data-longitude="41" data-latitude="42" onclick="setLoc(this)">
+                        <td class="text-center">4</td>
+                        <td class="text-center">서울</td>
+                        <td>서울특별시</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 모달 꼬리말 영역 -->
+        </div>
+    </div>
+</div>
+
+<!-- 폼 영역 -->
+<form name="gatherInsertForm" action="#" class="gatherInsertForm m-3 p-3">
+    <input name="loc_idx"       value="" type="hidden"/>
+    <input name="loc_region"    value="" type="text" class="m-3 p-3" placeholder="지역"/>
+    <input name="loc_longitude" value="" type="text" class="m-3 p-3" placeholder="위도"/>
+    <input name="log_latitude"  value="" type="text" class="m-3 p-3" placeholder="경도"/>
+</form>
+
+<!-- 모달 여는 버튼 -->
+<button type="button" class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">모달 열기</button>
+
+</BODY>
+
+</HTML>

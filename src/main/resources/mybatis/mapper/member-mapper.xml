@@ -25,8 +25,7 @@
 	<select id="get" parameterType="string" resultType="MemberDto">
 		SELECT * FROM member
 		WHERE member_id = #{memberId}
-	</select>
-	
+	</select>	
   	
 	<!-- 등록 -->
 	<insert id="insert" parameterType="MemberDto">
@@ -123,6 +122,11 @@
 	<select id="pwFindMail" parameterType="map" resultType="MemberDto">
 		SELECT * FROM MEMBER WHERE member_id = #{memberId} AND member_nick = #{memberNick} AND member_email = #{memberEmail} 
 	</select>
-
+	
+	<!-- 임시 비밀번호 업데이트 -->
+	<update id="tempPw" parameterType="map">
+		UPDATE member SET member_pw = #{memberPw}
+		WHERE member_id = #{memberId} 
+	</update>
 
 </mapper>

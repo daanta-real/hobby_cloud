@@ -12,4 +12,5 @@ public interface MemberProfileDao {
 	MemberProfileDto getByMemberIdx(int memberIdx);
 	byte[] load(String memberProfileSavename) throws IOException;
 	MemberProfileDto getIdx(int memberIdx);
+	void delete(int memberIdx);
 }

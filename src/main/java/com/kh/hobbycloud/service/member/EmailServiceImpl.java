@@ -80,7 +80,7 @@ public class EmailServiceImpl implements EmailService{
 				helper.setSubject("hobby cloud에서 임시 비밀번호를 발송했습니다");
 				
 				//파일을 읽어서 내용을 설정
-				ClassPathResource resource = new ClassPathResource("email/template.html");
+				ClassPathResource resource = new ClassPathResource("email/tempPw.html");
 				
 				StringBuffer buffer = new StringBuffer();
 				try(Scanner sc = new Scanner(resource.getFile());){

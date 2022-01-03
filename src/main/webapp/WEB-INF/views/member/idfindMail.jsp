@@ -1,94 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>아이디 찾기</title>
-</head>
+<!DOCTYPE HTML>
+<HTML LANG="ko">
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
+<HEAD>
 
-.popup-wrap .outer .inner .popup-content .buttons button.payment:hover{
-    background: #015B28; border: 2px solid #015B28; color: white;
-    }
-.button.reser{border-width: 2px; font-weight: 700; margin-right: 20px; margin-top: 10px; vertical-align: middle;}
-.popup-wrap .outer .inner .popup-content .buttons button.clear{width:143px;margin-left: 28px; background: white; border: 1px solid black; color: black;}
-.popup-wrap .outer .inner .popup-content .buttons button.clear:hover{color: #015B28; font-weight: 800;}
-.popup-wrap .outer .inner .popup-content button.popup-close{
-    background-color: #015B28;
-    opacity: 1;
-    width: 30px;
-    height: 30px;
-    right: 0px;
-    top: 0px;
-    border: 2px solid #015B28;
-    transition: .3s background-color;
-    display: block;
-    position: absolute;
-    z-index: 1;
-}
-.popup-wrap .outer .inner .popup-content button.popup-close:hover{
-    background-color: transparent;
-}
-.popup-wrap .outer .inner .popup-content button.popup-close::before,
-.popup-wrap .outer .inner .popup-content button.popup-close::after{
-    background-color: #fff;
-    margin-top: -1px;
-    height: 2px;
-    width: 33.3333%;
-    left: 50%;
-    margin-left: -16.66665%;
-    content: '';
-    display: block;
-    position: absolute;
-    top: 50%;
-    -webkit-transform: rotate(45deg);
-}
-.popup-wrap .outer .inner .popup-content button.popup-close:hover::before,
-.popup-wrap .outer .inner .popup-content button.popup-close:hover::after{
-    background-color: #000;
-}
-.popup-wrap .outer .inner .popup-content button.popup-close::after{
-    transform: rotate(-45deg);
-}
-.subGroup{
-	display: flex;
-	justify-content: center;
-	margin-top: 25px;
-}
-/* Style tab links */
-.tablink {
-	float: left;
-    outline: none;
-    cursor: pointer;
-    padding: 7px 16px;
-    font-size: 15px;
-    width: 50%;
-    vertical-align: middle;
-}
-.tablink:hover {
-  background-color: #015B28;
-  color: white;
-}
-#mal {
-  background-color: #015B28;
-  color: white;
-}
+<META charset="UTF-8">
+<META http-equiv="X-UA-Compatible" content="IE=edge">
+<META name="viewport" content="width=device-width, initial-scale=1.0">
+<TITLE>HobbyCloud - 아이디 찾기</TITLE>
+
+<!-- LINKS -->
+<!-- Bootstrap Theme -->
+<LINK rel="stylesheet" href="https://bootswatch.com/5/journal/bootstrap.css">
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!-- JQuery 3.6.0 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style type="text/css">
+
+tbody.locTBody { cursor:pointer; }
 
 </style>
-<script>
 
+<script type='text/javascript'>
 
-function wrapclear(){
-    $('.popup-wrap').css('opacity','0').css('display','none');
+// 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+window.addEventListener("load", function wrapclear(){
+	
+	$('.modal').css('opacity','0').css('display','none');
+	
+    // 모달 변수 정의
+    window.modal = new bootstrap.Modal(document.getElementById("modal"), {
+        keyboard: false
+    });
+});
+
+// 라이브러리: 이벤트 버블링 막기
+function stopEvent() {
+    if(typeof window.event == 'undefined') return;
+    if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
 }
-
-  $(function(){
+    
+$(function(){
 	$("#findbtn").click(function(){
 			alert("작동시작");
+			
+		    // 이벤트 버블링 막기
+		    stopEvent();
+		    
 			var memberNick = $("#memberNick").val();
 			var memberEmail = $("#idMail").val() + "@" + $("#inputMail").val();
 			 console.log("memberNick : " + memberNick);
@@ -103,91 +67,86 @@ function wrapclear(){
 			        	alert(resp);
 			        	console.log("resp : " + resp);
 			        	if(resp == "fail") {
-			        		$('.popup-wrap').css('opacity','1').css('display','block');
-			        		$(".popup-detail").text("");
-					        $(".popup-detail").html("일치하는 회원정보가 없습니다.");
-					        $('.popup-close').click(wrapclear);
-	
+			        		$('.modal').css('opacity','1').css('display','block');
+			        		$(".modal-detail").text("");
+					        $(".modal-detail").html("일치하는 회원정보가 없습니다.");	
 			        	} else {
-			        		$('.popup-wrap').css('opacity','1').css('display','block');
-			        		$(".popup-detail").text("");
-					        $(".popup-detail").html("회원님의 아이디는 " + resp + " 입니다");
-					        $('.popup-close').click(wrapclear);
+			        		$('.modal').css('opacity','1').css('display','block');
+			        		$(".modal-detail").text("");
+					        $(".modal-detail").html("회원님의 아이디는 " + resp + " 입니다");
 			        	}
 			        }, 
 			    });
+			    // 모달 토글
+			    modal.toggle();
 	 });
 });
-  
- 
- 
 
-</script>   
+</script>
 
-<body>
+</HEAD>
 
-	    <div class="wrap" >
-            <div id="cont1">
-                <div id = "panel" class="panel panel-default">
-                <div class="panel-heading">
-                    아이디 찾기
-                </div>
-                <div class="panel-body">
-                	<br><br>
-                	<div class="tabGroup">
-                	<button>Email</button>
-					</div>
-					<div id="cate1" class="tabcontent">
-					<input type="text" id="memberNick" class="input form-control" name="memberNick" placeholder="닉네임">
-					<br>
-					<div class="inputag">
-					   <input type="text"  id="idMail" name="email_id" class="input form-control"  placeholder="EMAIL" >
-						@
-						<input type="text" id="inputMail" name="email_domain" class="input form-control" placeholder="EMAIL" >						
-					 </div>					 
-					</div>
-                </div>
+<BODY>
+
+<!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
+<div id="modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <!-- 모달 제목 영역 -->
+            <div class="modal-header">
+                <!-- 모달 타이틀 -->
+                <h5 class="modal-title">아이디찾기</h5>
+                <!-- 모달 닫기 버튼 -->
+                <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                
             </div>
-            
-             <div class="button-box">
-	            <button type="button" id="findbtn" class="btn btn-default btn01">찾기</button>
-	            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<input type="button" class="btn btn-default btn01" value="뒤로가기" onclick="popUp()">    
-			</div>     
-			<br><br>
+            <!-- 모달 본문 영역 -->
+            <div class="modal-body table table-striped">
+                <div>
+                    <p class="modal-detail">
+						회원님의 아이디는 ${memberDto.memberId} 입니다.
+                   </p>
+                   <div class="buttons">
+                   <button class="button reser payment" onclick="location.href='login'">로그인</button>
+                   <button class="button reser clear" onclick="location.href='pwFindMail'">비밀번호 찾기</button>
+                   </div>
+                </div>
 
-
+            <!-- 모달 꼬리말 영역 -->
         </div>
-
     </div>
-	
-	     <div class="popup-wrap">
-             <div class="screen"></div>
-                <div class="outer">
-                    <div class="inner">
-                        <div class="container3">
-                            <div class="popup-content">
-                                <p>아이디찾기</p>
-                                <p class="popup-detail">
-                                    회원님의 아이디는 ${memberDto.memberId} 입니다.
-                                </p>
-                                <div class="buttons">
-                                    <button class="button reser payment" onclick="location.href='login'">로그인</button>
-                                    <button class="button reser clear" onclick="location.href='pwFindMail">비밀번호 찾기</button>
-                                </div>
-                                
-                                <button type="button" class="popup-close">
+</div>
+</div>
 
-                                </button>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="wrap" >
+           <div id="cont1">
+               <div id = "panel" class="panel panel-default">
+               <div class="panel-heading">
+                   아이디 찾기
+               </div>
+               <div class="panel-body">
+               	<br><br>
+               	<div class="tabGroup">
+               	<button>Email</button>
+				</div>
+				<div id="cate1" class="tabcontent">
+				<input type="text" id="memberNick" class="input form-control" name="memberNick" placeholder="닉네임">
+				<br>
+				<div class="inputag">
+				   <input type="text"  id="idMail" name="email_id" class="input form-control"  placeholder="EMAIL" >
+					@
+					<input type="text" id="inputMail" name="email_domain" class="input form-control" placeholder="EMAIL" >						
+				 </div>					 
+				</div>
+               </div>
+           </div>
+         </div>
+      </div>
 
-</body>
+<!-- 모달 여는 버튼 -->
+<button type="button" id="findbtn" class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">찾기</button>
 
+</BODY>
 
-
-</html>
+</HTML>
