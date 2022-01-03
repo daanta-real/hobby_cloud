@@ -17,9 +17,8 @@ public class GatherDaoImpl implements GatherDao {
 	private SqlSession sqlSession;
 
 	@Override
-	public List<GatherVO> listSearch(List<GatherSearchVO> categorys) {
-		System.out.println("카테고리"+categorys);
-		return sqlSession.selectList("gather.listSearch", categorys);
+	public List<GatherVO> listSearch(GatherSearchVO gatherSearchVO) {
+		return sqlSession.selectList("gather.listSearch", gatherSearchVO);
 	}
 
 	@Override
