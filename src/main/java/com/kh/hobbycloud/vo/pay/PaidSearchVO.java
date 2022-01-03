@@ -11,5 +11,5 @@ public class PaidSearchVO {
 	private String paidRegistered_end;
 	private String paidPrice_min;
 	private String paidPrice_max;
-	private List<String> paidStatusList;
+	private List<Character> paidStatusList;
 }

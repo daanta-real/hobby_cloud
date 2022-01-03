@@ -37,19 +37,22 @@
 	<select id="search"
 			resultType="com.kh.hobbycloud.entity.pay.PaidDto"
 			parameterType="com.kh.hobbycloud.vo.pay.PaidSearchVO">
-		SELECT FROM paid
+		SELECT * FROM paid
 		<where>
-			<if test="memberIdx != null">member_idx = #{memberIdx}</if>
-			<if test="paidRegistered_start != null">paid_registered <![CDATA[>=]]> #{paidRegistered_start}</if>
-			<if test="paidRegistered_end != null">paid_registered <![CDATA[<=]]> #{paidRegistered_end}</if>
-			<if test="paidPrice_min != null">paid_price <![CDATA[>=]]> #{paidPrice_min}</if>
-			<if test="paidPrice_max != null">paid_price <![CDATA[<=]]> #{paidPrice_max}</if>
-			<if test="paidStatus != null">
-				paid_status in
-				<foreach item="one" collection="paidStatusList" open="(" close=")" separator="," >#{one}</foreach>
+			<if test="memberIdx != null">AND member_idx = #{memberIdx}</if>
+			<if test="paidRegistered_start != null">
+				AND paid_registered <![CDATA[>=]]> to_date(#{paidRegistered_start}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="paidRegistered_end != null">
+				AND paid_registered <![CDATA[<=]]> to_date(#{paidRegistered_end}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="paidPrice_min != null">AND paid_price <![CDATA[>=]]> #{paidPrice_min}</if>
+			<if test="paidPrice_max != null">AND paid_price <![CDATA[<=]]> #{paidPrice_max}</if>
+			<if test="paidStatusList != null">AND paid_status in
+				<foreach item="statOne" collection="paidStatusList" open="(" close=")" separator="," >#{statOne}</foreach>
 			</if>
 		</where>
-		ORDER BY paid_idx DESC;
+		ORDER BY paid_idx DESC
 	</select>
 	
 	<!-- 관리자용: 결제이력 자체 삭제 -->
