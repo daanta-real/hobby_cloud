@@ -8,7 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
-<script>
+<script>  
 	$(function() {
 		//지도 생성 준비 코드
 		var container = document.querySelector("#map");
