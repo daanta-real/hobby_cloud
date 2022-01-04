@@ -42,7 +42,7 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherHeadCount(gatherFileVO.getGatherHeadCount());
 		gatherDto.setGatherLocRegion(gatherFileVO.getGatherLocRegion());
 		gatherDto.setGatherLocLatitude(gatherFileVO.getGatherLocLatitude());
-		gatherDto.setGatherLocLogitude(gatherFileVO.getGatherLocLogitude());
+		gatherDto.setGatherLocLongitude(gatherFileVO.getGatherLocLongitude());
 		gatherDto.setGatherStart(gatherFileVO.getGatherStart());
 		gatherDto.setGatherEnd(gatherFileVO.getGatherEnd());
 		gatherDto.setGatherMax(gatherFileVO.getGatherMax());
@@ -92,7 +92,7 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherHeadCount(gatherFileVO.getGatherHeadCount());
 		gatherDto.setGatherLocRegion(gatherFileVO.getGatherLocRegion());
 		gatherDto.setGatherLocLatitude(gatherFileVO.getGatherLocLatitude());
-		gatherDto.setGatherLocLogitude(gatherFileVO.getGatherLocLogitude());
+		gatherDto.setGatherLocLongitude(gatherFileVO.getGatherLocLongitude());
 		gatherDto.setGatherStart(gatherFileVO.getGatherStart());
 		gatherDto.setGatherEnd(gatherFileVO.getGatherEnd());
 		gatherDto.setGatherMax(gatherFileVO.getGatherMax());

@@ -111,9 +111,9 @@
 					geocoder.addressSearch(address, function(result, status) {
 						var coords = new kakao.maps.LatLng(result[0].y,
 								result[0].x);
-
-						$("input[name=gatherLocLatitude]").val(result[0].y);
-						$("input[name=gatherLocLongitude]").val(result[0].x);
+						
+						$("input[name=gatherLocLongitude]").val(result[0].y);
+						$("input[name=gatherLocLatitude]").val(result[0].x);
 
 					});
 				}
@@ -184,8 +184,8 @@ function setLoc(el) {
     // 추출된 값을 각 INPUT 태그에 넣어주기
 //     document.querySelector("input[name='loc_idx']"      ).value = data.idx;
     document.querySelector("input[name='gatherLocRegion']"   ).value = data.region;
-    document.querySelector("input[name='gatherLocLogitude']").value = data.longitude;
-    document.querySelector("input[name='gatherLocLatitude']" ).value = data.latitude;
+    document.querySelector("input[name='gatherLocLatitude']").value = data.longitude;
+    document.querySelector("input[name='gatherLocLongitude']" ).value = data.latitude;
     
     // 모달 토글
     modal.toggle();
@@ -216,7 +216,7 @@ function setLoc(el) {
 		 지역<input type="text"	name="gatherLocRegion" value="지역">
 		 <br> 
 		 위도<input	id="placeLatiHolder" type="text" name="gatherLocLatitude">
-		 경도<input id="placeLongHolder" type="text" name="gatherLocLogitude">
+		 경도<input id="placeLongHolder" type="text" name="gatherLocLongitude">
 		 시작시간<input type="date" name="gatherStart">
 	<br>
 		 종료시간<input type="date" name="gatherEnd"> 
