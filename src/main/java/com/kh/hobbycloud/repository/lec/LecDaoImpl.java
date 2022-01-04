@@ -35,4 +35,9 @@ public class LecDaoImpl implements LecDao{
 	public void delete(int lecIdx) {
 		sqlSession.delete("lec.delete", lecIdx);
 	}
+	
+	@Override
+	public int getSequence() {
+		return sqlSession.selectOne("lec.seq");
+	}
 }
