@@ -23,26 +23,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.hobbycloud.entity.notice.NoticeDto;
 import com.kh.hobbycloud.entity.notice.NoticeFileDto;
-import com.kh.hobbycloud.repository.notice.NoticeDao;
-import com.kh.hobbycloud.repository.notice.NoticeFileDao;
-import com.kh.hobbycloud.service.notice.NoticeService;
+import com.kh.hobbycloud.entity.petitions.PetitionsDto;
+import com.kh.hobbycloud.entity.petitions.PetitionsFileDto;
+import com.kh.hobbycloud.repository.petitions.PetitionsDao;
+import com.kh.hobbycloud.repository.petitions.PetitionsFileDao;
+import com.kh.hobbycloud.service.petitions.PetitionsService;
 import com.kh.hobbycloud.vo.notice.NoticeVO;
+import com.kh.hobbycloud.vo.petitions.PetitionsVO;
 
 import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Controller
-@RequestMapping("/notice")
-public class NoticeController {
+@RequestMapping("/petitions")
+public class PetitionsController {
 	@Autowired
-	private NoticeDao noticeDao;
+	private PetitionsDao petitionsDao;
 	
 	@Autowired
-	private NoticeService noticeService;
+	private PetitionsService petitionsService;
 	
 	@Autowired
-	private NoticeFileDao noticeFileDao;
+	private PetitionsFileDao petitionsFileDao;
 	
 	
 	
@@ -50,14 +53,14 @@ public class NoticeController {
 	@GetMapping("/list")
     public String list(Model model) {
     	
-    	model.addAttribute("list",noticeDao.list());
-    	return "notice/list";
+    	model.addAttribute("list",petitionsDao.list());
+    	return "petitions/list";
     }
 	//검색
 	@PostMapping("/list")
 	public String search(@RequestParam String column, @RequestParam String keyword, Model model) {
-		model.addAttribute("list",noticeDao.search(column, keyword));
-		return "notice/list";
+		model.addAttribute("list",petitionsDao.search(column, keyword));
+		return "petitions/list";
 	}
 	
 	//게시판 상세조회
@@ -68,13 +71,13 @@ public class NoticeController {
 	//}
 	
 	
-	@RequestMapping("/detail/{noticeIdx}")
-	public String detail(@PathVariable int noticeIdx, Model model, HttpSession session) {
+	@RequestMapping("/detail/{petitionsIdx}")
+	public String detail(@PathVariable int petitionsIdx, Model model, HttpSession session) {
 		int count = 1;
 		//데이터 획득: VO 및 DTO
 		// noticeDao.views(noticeIdx);
-		NoticeDto noticeDto = new NoticeDto();
-		noticeDto.setNoticeIdx(noticeIdx);
+		PetitionsDto petitionsDto = new PetitionsDto();
+		petitionsDto.setPetitionsIdx(petitionsIdx);
 		System.out.println(count++);
 		//boolean owner = boardDto.getBoardWriter().equals(memberId);
 		
@@ -84,31 +87,31 @@ public class NoticeController {
 		
 		System.out.println("회원idx="+memberIdx);
 		System.out.println(count++);
-		noticeDto.setMemberIdx(memberIdx);
+		petitionsDto.setMemberIdx(memberIdx);
 		System.out.println(count++);
 		//noticeDao.read(noticeDto);
 		
 		
 		// 1. 조회한 글 번호 모음인 Set<Integer> NoticeViewedNo를 준비한다.
 		// 1-1. noticeViewedNo 라는 이름의 저장소를 세션에서 꺼내어 본다.
-		Set<Integer> noticeViewedNo = (Set<Integer>)session.getAttribute("noticeViewedNo");
+		Set<Integer> petitionsViewedNo = (Set<Integer>)session.getAttribute("petitionsViewedNo");
 		System.out.println(count++);
 		// 1-2. boardViewedNo 가 null 이면 "처음 글을 읽는 상태"임을 말하므로 저장소를 신규로 생성
-		if(noticeViewedNo == null){
-			noticeViewedNo = new HashSet<>();
+		if(petitionsViewedNo == null){
+			petitionsViewedNo = new HashSet<>();
 			//System.out.println("처음으로 글을 읽기 시작했습니다(저장소 생성)");
 		}
 		
 
 		// 2. 본격적으로 상세 글정보를 얻어온다.
 		
-		NoticeVO noticeVO = noticeDao.get(noticeIdx);//단일조회
+		PetitionsVO petitionsVO = petitionsDao.get(petitionsIdx);//단일조회
 		
 		System.out.println(count++);
 		// 획득된 데이터를 Model에 지정
-		List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
+		List<PetitionsFileDto> list = petitionsFileDao.getIdx(petitionsIdx);
 		System.out.println(count++);
-		model.addAttribute("NoticeVO", noticeVO);
+		model.addAttribute("PetitionsVO", petitionsVO);
 		System.out.println(count++);
 		model.addAttribute("list", list);
 		System.out.println(count++);
@@ -118,8 +121,8 @@ public class NoticeController {
 		// 3. 현재 글 번호를 저장소에 추가해본다
 		// 3-1. 추가가 된다면 이 글은 처음 읽는 글
 		// 3-2. 추가가 안된다면 이 글은 두 번 이상 읽은 글
-		if(memberIdx != noticeVO.getMemberIdx() && noticeViewedNo.add(noticeIdx)){//처음 읽은 글인 경우
-			noticeDao.read(noticeDto);//조회수 증가(남에 글일때만)
+		if(memberIdx != petitionsVO.getMemberIdx() && petitionsViewedNo.add(petitionsIdx)){//처음 읽은 글인 경우
+			petitionsDao.read(petitionsDto);//조회수 증가(남에 글일때만)
 			//System.out.println("이 글은 처음 읽는 글입니다");
 		}
 		else{
@@ -129,16 +132,17 @@ public class NoticeController {
 		//System.out.println("저장소 : "+noticeViewedNo);
 		
 		//3. 갱신된 조회한 글 번호 모음을 다시 세션에 저장한다.
-		session.setAttribute("noticeViewedNo", noticeViewedNo);
+		session.setAttribute("petitionsViewedNo", petitionsViewedNo);
 		System.out.println(count++);
 		}
 		else {
-			NoticeVO noticeVO = noticeDao.get(noticeIdx);//단일조회
+			PetitionsVO petitionsVO = petitionsDao.get(petitionsIdx);//단일조회
+			
 			System.out.println(count++);
 			// 획득된 데이터를 Model에 지정
-			List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
+			List<PetitionsFileDto> list = petitionsFileDao.getIdx(petitionsIdx);
 			System.out.println(count++);
-			model.addAttribute("NoticeVO", noticeVO);
+			model.addAttribute("PetitionsVO", petitionsVO);
 			System.out.println(count++);
 			model.addAttribute("list", list);
 			System.out.println(count++);
@@ -150,7 +154,7 @@ public class NoticeController {
 		
 
 		// 페이지 리다이렉트 처리
-		return "notice/detail"; 
+		return "petitions/detail"; 
 		
 		
 	
@@ -161,7 +165,7 @@ public class NoticeController {
 	//게시글 작성
 	@GetMapping("/write")
     public String write() {
-    	return "notice/write";
+    	return "petitions/write";
     }
 	//글작성
 //	@PostMapping("/write")
@@ -174,54 +178,54 @@ public class NoticeController {
 //		
 //	}
 	@PostMapping("/write")
-	public String write(@ModelAttribute NoticeVO noticeVO,HttpSession session) throws IllegalStateException, IOException {
-		log.debug("---------------------{}",noticeVO);
-		int noticeIdx=noticeDao.getsequences();
+	public String write(@ModelAttribute PetitionsVO petitionsVO,HttpSession session) throws IllegalStateException, IOException {
+		log.debug("---------------------{}",petitionsVO);
+		int petitionsIdx=petitionsDao.getsequences();
 		int memberIdx=(int)session.getAttribute("memberIdx");
-		noticeVO.setNoticeIdx(noticeIdx);
-		noticeVO.setMemberIdx(memberIdx);
+		petitionsVO.setPetitionsIdx(petitionsIdx);
+		petitionsVO.setMemberIdx(memberIdx);
 		//noticeVO.setMemberIdx(99996);
-		noticeService.save(noticeVO);
-		return "redirect:detail/"+noticeIdx;
+		petitionsService.save(petitionsVO);
+		return "redirect:detail/"+petitionsIdx;
 		
 	}
 	//글삭제
 	@GetMapping("/delete")
-	public String delete(@RequestParam int noticeIdx) {
-		noticeDao.delete(noticeIdx);
+	public String delete(@RequestParam int petitionsIdx) {
+		petitionsDao.delete(petitionsIdx);
 		
 		return "redirect:list";
 	}
 	//글 수정
 	@GetMapping("/edit")
-	public String edit(@RequestParam int noticeIdx, Model model) {
-		model.addAttribute("noticeVO",noticeDao.get(noticeIdx));
+	public String edit(@RequestParam int petitionsIdx, Model model) {
+		model.addAttribute("petitionsVO",petitionsDao.get(petitionsIdx));
 	    
-	return "notice/edit";
+	return "petitions/edit";
 	}
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute NoticeVO noticeVO ,@RequestParam int noticeIdx) {
-		noticeVO.setNoticeIdx(noticeIdx);
-		noticeDao.edit(noticeVO);
-		return "redirect:detail?noticeIdx="+noticeIdx;
+	public String edit(@ModelAttribute PetitionsVO petitionsVO ,@RequestParam int petitionsIdx) {
+		petitionsVO.setPetitionsIdx(petitionsIdx);
+		petitionsDao.edit(petitionsVO);
+		return "redirect:detail?petitionsIdx="+petitionsIdx;
 	}
 	
 	
 	
 	// 파일 전송 실시
-		@GetMapping("/file/{noticeFileIdx}")
+		@GetMapping("/file/{petitionsFileIdx}")
 		@ResponseBody
-		public ResponseEntity<ByteArrayResource> file(@PathVariable int noticeFileIdx) throws IOException {
+		public ResponseEntity<ByteArrayResource> file(@PathVariable int petitionsFileIdx) throws IOException {
 
 			// 파일 DTO 획득
-			NoticeFileDto noticeFileDto = noticeFileDao.getNo(noticeFileIdx);
+			PetitionsFileDto petitionsFileDto = petitionsFileDao.getNo(petitionsFileIdx);
 
 			// 전송할 파일의 데이터 준비
-			byte[] data = noticeFileDao.load(noticeFileIdx);
+			byte[] data = petitionsFileDao.load(petitionsFileIdx);
 			ByteArrayResource resource = new ByteArrayResource(data);
 
 			// 보낼 파일명 설정
-			String encodeName = URLEncoder.encode(noticeFileDto.getNoticeFileMemberName(), "UTF-8");
+			String encodeName = URLEncoder.encode(petitionsFileDto.getPetitionsFileMemberName(), "UTF-8");
 			encodeName = encodeName.replace("+", "%20");
 
 			// 실제 파일 전송
@@ -231,11 +235,8 @@ public class NoticeController {
 				.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
 				// .header("Content-Length",
 				// String.valueOf(memberProfileDto.getMemberProfileSize()))
-				.contentLength(noticeFileDto.getNoticeFileSize()).body(resource);
+				.contentLength(petitionsFileDto.getPetitionsFileSize()).body(resource);
 
 		}
-	
-	
-	
 
 }

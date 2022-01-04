@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+	myBatis 매퍼 파일
+	- DBMS에서 실행할 SQL 구문을 저장하는 XML 파일
+	- namespace를 통해서 여러 개의 매퍼를 구분한다
+	- 테이블 당 1개씩 만드는 것이 일반적이며, 따라서 namespace를 테이블명으로 작성하면 구분이 용이하다.
+	- <insert> , <select> , <update> , <delete>를 이용해서 CRUD 구문을 작성한다.
+	- 각 구문은 외부에서 호출이 가능하도록 반드시 ID를 겹치지 않게 부여해야 한다.
+	- parameterType 은 구문을 실행하기 위해 필요한 데이터의 형태를 말한다.
+	- resultType은 구문을 실행한 결과를 어떤 형태로 변환해야 하는지를 말한다.
+ -->
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="petitions">
+<!-- 목록 조회 -->
+<select id="list" resultType="PetitionsVO">
+SELECT p.petitions_idx, p.petitions_name, m.member_idx, m.member_nick,
+p.petitions_registered, p.petitions_views, p.petitions_replies
+FROM petitions p
+LEFT OUTER JOIN
+member m
+ON p.member_idx = m.member_idx
+order by petitions_idx desc
+</select>
+
+<!-- 상세보기 -->
+<select id="get" parameterType="int" resultType="PetitionsVO">
+SELECT p.petitions_idx, p.petitions_name,p.petitions_detail, 
+m.member_idx, m.member_nick,p.petitions_registered, p.petitions_views, p.petitions_replies
+FROM petitions p
+LEFT OUTER JOIN
+member m
+ON p.member_idx = m.member_idx
+where petitions_idx=#{petitionsIdx}
+</select>
+
+
+<!--  글작성 -->
+<insert id="insert" parameterType="PetitionsDto">
+
+insert into petitions values
+(#{petitionsIdx},#{petitionsIdx},#{petitionsName},#{petitionsDetail},sysdate,0,0)
+</insert>
+
+<!-- 시퀀스 번호 생성 -->
+<select id="seq" resultType="int">
+select petitions_seq.nextval from dual
+</select>
+
+<!-- 글삭제 -->
+<delete id="delete" parameterType="int">
+delete petitions where petitions_idx=#{petitionsIdx}
+</delete>
+
+<!-- 글수정 -->
+<update id="edit" parameterType="PetitionsVO">
+update notice set petitions_name=#{petitionsName},petitions_detail=#{petitions_Detail} where petitions__idx=#{petitions_Idx}
+</update>
+
+<!-- 검색 -->
+<select id="search" parameterType="map" resultType="PetitionsVO">
+SELECT p.petitions_idx, p.petitions_name,p.petitions_detail,
+p.petitions_registered,p.petitions_views,p.petitions_replies, m.member_idx, m.member_nick
+FROM petitions p
+LEFT OUTER JOIN
+member m
+ON p.member_idx = m.member_idx
+where instr(${column},#{keyword})> 0 order by petitions_idx desc
+</select>
+
+<!-- 조회수 증가 -->
+<update id="views" parameterType="int">
+update petitions set _views=petitions_views+1 where petitions_idx=#{petitionsIdx}
+</update>
+
+<!-- 남의글일경우만 조회수 증가 -->
+<update id="read" parameterType="NoticeDto">
+update petitions set petitions_views = petitions_views+1
+where petitions_idx =#{petitionsIdx} and member_idx != #{memberIdx}
+</update>	
+</mapper>

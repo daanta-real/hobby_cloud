@@ -4,22 +4,22 @@
 <c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
 
 
-<h2>${NoticeVO.noticeIdx}번 게시글</h2>
+<h2>${PetitionsVO.noticeIdx}번 게시글</h2>
 
 <table border="1" width="80%">
 	<tbody>
 		<tr>
 			<td>
-				<h3>${NoticeVO.noticeName }</h3>
+				<h3>${PetitionsVO.petitionsName }</h3>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				등록일 : ${NoticeVO.noticeRegistered}
+				등록일 : ${PetitionsVO.petitionsRegistered}
 				|
-				작성자 : ${NoticeVO.memberNick}
+				작성자 : ${PetitionsVO.petitionsNick}
 				|
-				조회수 : ${NoticeVO.noticeViews}
+				조회수 : ${PetitionsVO.petitionsViews}
 			</td>
 		</tr>
 		<!-- 답답해 보이지 않도록 기본높이를 부여 -->
@@ -29,9 +29,9 @@
 		-->
 		<tr height="250" valign="top">
 			<td>
-				<pre>${NoticeVO.noticeDetail }</pre>
-				<c:forEach var="NoticeFileDto" items="${list}"> 
-<img src="${pageContext.request.contextPath}/notice/file/${NoticeFileDto.noticeFileIdx}" width="30%" 
+				<pre>${PetitionsVO.petitionsDetail }</pre>
+				<c:forEach var="PetitionsFileDto" items="${list}"> 
+<img src="${pageContext.request.contextPath}/petitions/file/${PetitionsFileDto.petitionsFileIdx}" width="30%" 
 class="image image-round image-border">
 </c:forEach>
 			</td>
@@ -43,8 +43,8 @@ class="image image-round image-border">
 				</c:if>
 				<a href="${pageContext.request.contextPath}/notice/list">목록보기</a>
 				<c:if test="${admin }">
-				<a href="${pageContext.request.contextPath}/notice/edit?noticeIdx=${NoticeVO.noticeIdx }">수정하기</a>
-				<a href="${pageContext.request.contextPath}/notice/delete?noticeIdx=${NoticeVO.noticeIdx }">삭제하기</a>
+				<a href="${pageContext.request.contextPath}/notice/edit?noticeIdx=${PetitionsVO.petitionsIdx }">수정하기</a>
+				<a href="${pageContext.request.contextPath}/notice/delete?noticeIdx=${PetitionsVO.petitionsIdx }">삭제하기</a>
 				</c:if>
 	
 	</tbody>
