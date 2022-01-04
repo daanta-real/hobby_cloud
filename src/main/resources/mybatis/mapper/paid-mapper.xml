@@ -10,9 +10,12 @@
 	</select>
 		
 	<!-- 단일조회 BY IDX(Integer)-->
-	<select id="getByIdx" parameterType="integer" resultType="PaidDto">
-		SELECT * FROM paid
-		WHERE paid_idx = #{paidIdx}
+	<select id="getByIdx" parameterType="integer" resultType="com.kh.hobbycloud.vo.pay.PaidVO">
+		SELECT p.*, m.member_id, m.member_nick
+		FROM paid p
+		INNER JOIN member m
+			ON p.member_idx = m.member_idx
+		WHERE p.paid_idx = #{paidIdx}
 	</select>
 	
 	<!-- 결제이력 등록.

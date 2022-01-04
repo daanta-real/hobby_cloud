@@ -12,8 +12,8 @@ public interface PaidDao {
 	public Integer getSequence();
 
 	// 단일조회 By idx (String)
-	public PaidDto getByIdx(String idx);
-	public PaidDto getByIdx(Integer idx);
+	public PaidVO getByIdx(String idx);
+	public PaidVO getByIdx(Integer idx);
 
 	// 결제이력 등록
 	public void insert(PaidDto dto);

@@ -23,8 +23,8 @@ public class PaidVO {
 	private String memberNick;
 
 	// 결제 상태 관련 조작 메소드
-	boolean getStatus() { return paidStatus == '1'; } // 1 = 성공, 0 = 취소됨
-	void setStatus(boolean status) { this.paidStatus = status ? '1' : '0'; } // true = 성공처리, false = 실패처리
+	public boolean getPaidStatus() { return paidStatus == '1'; } // 1 = 성공, 0 = 취소됨
+	void setPaidStatus(boolean status) { this.paidStatus = status ? '1' : '0'; } // true = 성공처리, false = 실패처리
 
 	// 데이터 관련 조작 메소드
 	public void prepareDateStr() {
