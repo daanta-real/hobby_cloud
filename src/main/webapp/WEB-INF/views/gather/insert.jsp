@@ -208,8 +208,8 @@ function setLoc(el) {
 	회원 idx<input type="text" name="memberIdx" value="99999"> 취미분류
 	이름<input type="text" name="lecCategoryName" value="운동"> <br>
 	장소 idx
-	<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999"> 제목
-		<input type="text" name="gatherName"value="제목"> 
+	<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999">
+	 제목	<input type="text" name="gatherName"value="제목"> 
 		상세내용<input type="text" name="gatherDetail" value="내용"> <br>
 		 작성일<input type="date"	name="gatherRegistered"> 
 		인원<input type="text"	name="gatherHeadCount" value="1">
