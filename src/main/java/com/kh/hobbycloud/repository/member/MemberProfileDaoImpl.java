@@ -48,8 +48,9 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 	// memberIdx로 memberProfileDto 불러오기
 	@Override
 	public MemberProfileDto getByMemberIdx(int memberIdx) {
-		return sqlSession.selectOne("memberProfile.getById", memberIdx);
+		return sqlSession.selectOne("memberProfile.getByIdx", memberIdx);
 	}
+
 	
 	// 한 개의 프로필파일 데이터를 회신
 	@Override
@@ -58,15 +59,11 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 		}
-
-	@Override
-	public MemberProfileDto getIdx(int memberIdx) {
-		return sqlSession.selectOne("memberProfile.getIdx", memberIdx);
-	}
+	
+	// 삭제
 	@Override
 	public void delete(int memberIdx) {
-		sqlSession.delete("memberProfile.delete",memberIdx);
-		
+		sqlSession.delete("memberProfile.delete",memberIdx);		
 	}
 
 

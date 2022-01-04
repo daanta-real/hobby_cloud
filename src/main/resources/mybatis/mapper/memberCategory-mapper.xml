@@ -6,13 +6,24 @@
 <mapper namespace="memberCategory">
 
 	<!-- 등록 -->
-	<insert id="insert" parameterType="memberCategoryDto">
+	<insert id="save" parameterType="MemberCategoryDto">
+		
 		insert into member_category(
 			member_idx, lec_category_name
 		)
 		values(
 			#{memberIdx}, #{lecCategoryName}
 		)
-	</insert>
+	</insert>	
+	
+	<!-- 조회 -->
+	<select id="getByIdx" parameterType="int" resultType="MemberCategoryDto">
+		select * from member_category where member_idx = #{memberIdx}
+	</select>
+	
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete member_idx where member_idx = #{memberIdx}
+	</delete>
 	
 </mapper>

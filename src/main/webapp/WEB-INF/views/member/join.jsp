@@ -63,19 +63,40 @@
    	    };
    	 });
    	
+   	$("#btnclick").click(function() { 
+   		alert("Disabled 처리"); 
+   		$("#btnclick").prop("disabled", true);
+   	});
+
     	//유효성 검사
     	var code = "";				//이메일전송 인증번호 저장위한 코드
     	
     	//유효성 검사 통과 유무 변수
- 		 var idCheck = false;			// 아이디
- 		 var idckCheck = false;			// 아이디 중복 검사
- 		 var pwCheck = false;			// 비번
- 		 var pwckCheck = false;			// 비번 확인
- 		 var pwckcorCheck = false;		// 비번 확인 일치 확인
- 		 var nickCheck = false;			// 닉네임
+ 		 var idCheck = false;				// 아이디
+ 		 var pwCheck = false;			// 비밀번호
+ 		 var pwchCkeck = false;			// 비밀번호 확인
+ 		 var nickCheck = false;			// 닉네임확인
  		 var mailCheck = false;			// 이메일
- 		 var mailnumCheck = false;		// 이메일 인증번호 확인
- 		 var addressCheck = false 		// 주소
+ 		 var phoneCheck = false;		// 핸드폰번호
+ 		 var idckCheck = false;			// 아이디중복
+ 		 var nickckCheck = false 		//닉네임중복
+ 		 var KeyCheck = false 			//인증번호
+ 		 
+ 		  //최종 유효성 검사	  
+     	function checkAll() {
+     		console.log("최종 유효성 검사 시작");
+	         $("#btnclick").prop("disabled", true);
+	         $("#btnclick").css("color", "gray");
+ 	      	//최종 유효성 검사
+ 	   		if(idCheck&&pwCheck&&pwchCkeck&&nickCheck&&mailCheck&&
+ 				phoneCheck &&idckCheck&&nickckCheck&&KeyCheck){	
+ 	   			alert("Disabled 해제 처리");
+ 	   		 $("#mailComm").html("");
+	         $("#btnclick").prop("disabled", false);
+ 	         $("#btnclick").css("color", "blue");
+ 	   		}		
+ 	   		return false;
+ 	 	};
 		 
 $(document).ready(function(){
 		
@@ -98,7 +119,9 @@ $(document).ready(function(){
      		         $("#idCheck").text("");
      		         $("#idCheck").css("color", "red");
      		         $("#idCheck").html("아이디는 영문, 숫자 4~16자리만 가능합니다.");
-     		         
+ 		         	
+     		         $("#btnclick").prop("disabled", true);
+     		         $("#btnclick").css("color", "gray");
 					idCheck = false;
 					
      	         } else {
@@ -108,9 +131,12 @@ $(document).ready(function(){
      		         $("#idCheck").html("사용가능한 아이디입니다.");
      		         
      		         idOverlap();
+     		         $("#btnclick").prop("disabled", false);
      		        
 					idCheck = true;
      	         }
+     	      
+     	     checkAll();
      	  });
      		
   		/* 비밀번호 유효성 검사 */
@@ -122,15 +148,19 @@ $(document).ready(function(){
   			         $("#pwComm").html("영문,숫자,특수문자 8자 이상 16자 이내로 입력하세요");
   			         
   			         pwCheck = false;
+  			         $("#btnclick").prop("disabled", true);
+  			         $("#btnclick").css("color", "gray");  
   			         
   		         } else {
   		         console.log("사용가능" + $("#pw").val());
-  			         $("#pwComm").text("");
-  			         $("#pwComm").css("color", "green");
+		         	 $("#pwComm").text("");
+		        	 $("#pwComm").css("color", "green");
   			         $("#pwComm").html("사용가능한 비밀번호입니다.");     
   			              			        
 					pwCheck = true;
+			         $("#btnclick").prop("disabled", false);
   		         }   
+  		    checkAll();
   		  });
 
 	// 비밀번호 동일한지 여부
@@ -141,12 +171,17 @@ $(document).ready(function(){
 		         $("#pwComm2").html("비밀번호가 동일하지 않습니다.");
 		         		         
 		         pwchCkeck = false;
+		         $("#btnclick").prop("disabled", true);
+		         $("#btnclick").css("color", "gray");
 				
 	         } else {
 		         $("#pwComm2").html("");
+		         $(this).prop("disabled",false);     	
 		         
 		         pwchCkeck = true;
-	         }   
+		         $("#btnclick").prop("disabled", false);
+	         } 
+	      checkAll();
 	  });
 		
 		/* 닉네임 유효성 검사 */
@@ -158,6 +193,8 @@ $(document).ready(function(){
      		         $("#nickCheck").html("닉네임은 대소문자, 한글 숫자로 이루어진 2~10자리만 가능합니다.");
      		         
 					nickCheck = false;
+			         $("#btnclick").prop("disabled", true);
+			         $("#btnclick").css("color", "gray");
 					
      	         } else {
      	        	 console.log("사용가능" + $("#userNick").val());
@@ -168,7 +205,9 @@ $(document).ready(function(){
      		        nickOverlap();
      		        
 					nickCheck = true;
+			         $("#btnclick").prop("disabled", false);
      	         }
+     	     checkAll();
      	  });
 		
 	// 이메일 아이디 유효성 검사
@@ -179,12 +218,16 @@ $(document).ready(function(){
 		         $("#mailComm").html("이메일 형식이 맞지 않습니다.");
 		         
 				mailCheck = false;
+		         $("#btnclick").prop("disabled", true);
+		         $("#btnclick").css("color", "gray");
 			
 	         } else {
 	        	 $("#mailComm").html("");
 	        	 
 				mailCheck = true;
+		         $("#btnclick").prop("disabled", false);
 	         }
+	      checkAll();
 	  });
 	
 	// 이메일 유효성 검사
@@ -200,29 +243,33 @@ $(document).ready(function(){
 		                    $("#mailComm").css("color", "red");
 		                    $("#mailComm").html("이메일 형식이 맞지 않습니다.");
 		                    
-		                    mailBoxCheck = false;
-		                    
+		       	         $("#btnclick").prop("disabled", true);
+		    	         $("#btnclick").css("color", "gray");
                      } else {
                          $("#mailComm").html("");
-                         
-                         mailBoxCheck = true;
+            	         $("#btnclick").prop("disabled", false);                    
                      }
                   });
          }  else {
              $('#inputMail').val($('#emailBox').val());
              $("#inputMail").attr("readonly", true);
          }
+         checkAll();
      });
 	
-	
+
     $("#emailCheck").click(function(){
      	console.log("이메일 인증 id : " + $("#idMail").val());
      	console.log("이메일 인증 domain : " + $("#inputMail").val());
      	console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
      	
      	sendMail();
-     });       
-     
+     });
+    
+    $("#reKey").keyup(function(){
+    	$("#btnclick").css("color", "gray");
+    	$("#btnclick").prop("disabled", true);
+    });     
 
 	// 폰번호 유효성 검사
 	 $(".phone").keyup(function(){
@@ -232,12 +279,16 @@ $(document).ready(function(){
 		         $("#phComm").html("숫자만 입력해주세요");
 		         
 				phoneCheck = false;
+		         $("#btnclick").prop("disabled", true);
+		         $("#btnclick").css("color", "gray");
 				
 	         } else {
 	        	 $("#phComm").html("");
 	        	 
 				phoneCheck = true;
+		         $("#btnclick").prop("disabled", false);
 	         }
+	      checkAll();
 	  });		
 	
 /* 	// 주소 유효성 검사
@@ -269,20 +320,8 @@ $(document).ready(function(){
 	   		$('input[name="memberEmail"]').val(email);
 	   		console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
    	})
-   	
-	$("#btnclick").click(function(){	
-	      	//최종 유효성 검사
-	   		if(idCheck&&idckCheck&&pwCheck&&pwchCkeck&&nickCheck&&nickckCheck&&
-	   			mailCheck&&mailBoxCheck&&phoneCheck &&nickCheck&&mailCheck){
-	   			
-	   			$("#btnclick").prop("disabled", false);
-	   		}		
-	   		return false;
-	 	});
 	
-});
-
-    	
+});   	
  		 
  	//아이디 중복검사
  	function idOverlap(){
@@ -305,17 +344,20 @@ $(document).ready(function(){
  			        $("#idCheck").css("color", "red");
  			        $("#idCheck").html("중복된 아이디입니다.");
  			        
- 					idckCheck = true;
+ 					idckCheck = false;
+			         $("#btnclick").prop("disabled", false);		         
  					
  				} else {
  	        		$("#idCheck").text("");
  	    	        $("#idCheck").css("color", "green");
  	    	        $("#idCheck").html("사용가능한 아이디입니다.");
-
- 					idckCheck = false;
+ 			         
+  					idckCheck = true;
+			         $("#btnclick").prop("disabled", true);
  	        	}
+ 				checkAll();
  	        }
- 	    })    
+ 	    })
  	}
 	   	//닉네임 중복검사
 	   	function nickOverlap(){
@@ -338,17 +380,22 @@ $(document).ready(function(){
 	   			        $("#nickCheck").css("color", "red");
 	   			        $("#nickCheck").html("중복된 닉네임입니다.");	
 	 			        
-	   					nickckCheck = true;
+	   			     	nickckCheck = false;
+	   			     	$("#btnclick").prop("disabled", false);
+	   					
 	   					
 	   				} else {
 	   	        		$("#nickCheck").text("");
 	   	    	        $("#nickCheck").css("color", "green");
 	   	    	        $("#nickCheck").html("사용가능한 닉네임입니다.");
 	   	    	        
-	   	    	     	nickckCheck = false;
+	   	    	     	nickckCheck = true;
+	   		         	$("#btnclick").prop("disabled", true);
+	   		        	$("#btnclick").css("color", "gray");
 	   	        	}
+	   				checkAll();
 	   	        }
-	   	    })    
+	   	    }) 
 	   	}
 		
 	  //인증 메일
@@ -365,18 +412,25 @@ $(document).ready(function(){
 	   	        		
 	   	        			alert("인증이 완료되었습니다.");
 	   	        			
-	   	        			mailCheck = true;
+	   	        			KeyCheck = true;
+	   	        			$("#btnclick").prop("disabled", false);
+	   	    		        $("#btnclick").css("color", "green");
+	   	   	 	         	$("#btnclick").prop("disabled", false);
+	   	   	 	    		$("#btnclick").css("color", "white");
+	   	        			
 	   	            	} else {
 	   	            		alert("인증번호가 다릅니다. 다시 인증해주세요");
 	   	            		$("#reKey").focus();
 	   	            		
-	   	            		mailCheck = false;
+	   	            		KeyCheck = false;
+	   	            		$("#btnclick").prop("disabled", true);
+	   	    	      		$("#btnclick").css("color", "gray");
 	   	            	}
+	   	        		checkAll();
 	   	        	});
 	   	        },
 	   			error : function(jqXHR, textStatus, errorThrown){
-	   				alert("이메일 보내기 실패 다시 시도해주세요");
-	   				
+	   				alert("이메일 보내기 실패 다시 시도해주세요");	   				
 	   			}
 	   		})
 	   	}
@@ -455,15 +509,15 @@ $(document).ready(function(){
 	
 	<div class="lecCategory_wrap">
 		<div class="lecCategory_name">관심분야</div>
-		<input type="checkbox" name="lecCategoryName"  value="sports">스포츠
-		<input type="checkbox" name="lecCategoryName"  value="music">음악
-		<input type="checkbox" name="lecCategoryName"  value="painting">그림	   		 
+		<input type="checkbox" name="lecCategoryName"  value="운동">운동
+		<input type="checkbox" name="lecCategoryName"  value="음악">음악
+		<input type="checkbox" name="lecCategoryName"  value="미술">미술	   		 
 	</div>
 
 <div class="mail_wrap">
  	<div class="mail_name">이메일</div>
  	<div class="mail_input_box"> 
-		<input type="text" id="idMail" name="email_id" required> @
+		<input type="text" id="idMail" name="email_id" class="rowChk" required> @
 		<input type="text" id="inputMail" name="email_domain" required readonly>
 		<select id="emailBox" name="emailBox" required>
 			<option value="" class="pickMail">이메일 선택</option>
@@ -488,7 +542,7 @@ $(document).ready(function(){
 </div>
 
 	<div class="join_button_wrap">
-			<input type="button" class="join_button" id="btnclick" value="가입하기" disabled>
+			<input type="submit" class="join_button" id="btnclick" value="가입하기">
 	</div>
 
 </div>

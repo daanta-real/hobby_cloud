@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <script>
+    	//암호화
     	$(function(){
     		$("form").submit(function(e){
     			e.preventDefault();
@@ -16,7 +17,58 @@
     			this.submit();
     		});
     	});
-    </script>
+    	
+   $(function(){
+	   
+	var password = RegExp(/^[A-Za-z0-9!@#$\s_-]{8,16}$/); 
+	
+  		/* 비밀번호 유효성 검사 */
+ 		 $("#pw").keyup(function(){
+ 		      if(!password.test($("#pw").val())){
+ 		         console.log("사용불가능" + $("#pw").val());
+ 			         $("#pwComm").text("");
+ 			         $("#pwComm").css("color", "red");
+ 			         $("#pwComm").html("영문,숫자,특수문자 8자 이상 16자 이내로 입력하세요");
+ 			         
+ 			         pwCheck = false;
+ 			         $("#btnclick").prop("disabled", true);
+ 			         $("#btnclick").css("color", "gray");  
+ 			         
+ 		         } else {
+ 		         console.log("사용가능" + $("#pw").val());
+		         	 $("#pwComm").text("");
+		        	 $("#pwComm").css("color", "green");
+ 			         $("#pwComm").html("사용가능한 비밀번호입니다.");     
+ 			              			        
+					pwCheck = true;
+			         $("#btnclick").prop("disabled", false);
+ 		         }   
+ 		    checkAll();
+ 		  });
+
+	// 비밀번호 동일한지 여부
+	 $("#pwch").keyup(function(){
+	      if($("#pwch").val() != $("#pw").val()){
+		         $("#pwComm2").text("");
+		         $("#pwComm2").css("color", "red");
+		         $("#pwComm2").html("비밀번호가 동일하지 않습니다.");
+		         		         
+		         pwchCkeck = false;
+		         $("#btnclick").prop("disabled", true);
+		         $("#btnclick").css("color", "gray");
+				
+	         } else {
+		         $("#pwComm2").html("");
+		         $(this).prop("disabled",false);     	
+		         
+		         pwchCkeck = true;
+		         $("#btnclick").prop("disabled", false);
+	         } 
+	      checkAll();
+	  });
+});
+   
+</script>
 
 <form method="post">
 
@@ -28,10 +80,25 @@
 		<label>현재 비밀번호</label>
 		<input type="password" name="memberPw" required class="form-input">
 	</div>
-	<div class="row">
-		<label>바꿀 비밀번호</label>
-		<input type="password" name="changePw" required class="form-input">
+	
+	<div class="pw_wrap">
+		<div class="pw_name">변경 비밀번호</div>
+		<div class="pw_input_box">
+		<input type="password" name="changePw" required id="pw"
+		placeholder="특수문자, 영문, 숫자, 6자 이상 20자 이내로 입력하세요" class="pw_input">
+		</div>
+		<div id="pwComm"></div>
 	</div>
+	
+	<div class="pwck_wrap">
+		<div class="pwck_name">비밀번호 확인</div>
+		<div class="pwck_input_box">
+		<input type="password" name="checkPw" required id="pwch"
+		placeholder="비밀번호를 한번 더 입력하세요" class="pwck_input">
+		</div>
+		<div id="pwComm2"></div>
+	</div>
+	
 	<div class="row">
 		<input type="submit" value="변경" class="form-btn">
 	</div>

@@ -28,10 +28,7 @@ tbody.locTBody { cursor:pointer; }
 <script type='text/javascript'>
 
 // 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
-window.addEventListener("load", function wrapclear(){
-	
-	$('.modal').css('opacity','0').css('display','none');
-	
+window.addEventListener("load", function() {
 	// 이메일 유효성 검사
 	
     $("#emailBox").change(function() {
@@ -63,7 +60,7 @@ window.addEventListener("load", function wrapclear(){
     window.modal = new bootstrap.Modal(document.getElementById("modal"), {
         keyboard: false
     });
-});
+ });
 
 // 라이브러리: 이벤트 버블링 막기
 function stopEvent() {
@@ -106,9 +103,10 @@ $(function(){
 			        }, 
 			    });
 			    // 모달 토글
-			    modal.toggle();
+			   	modal.toggle();
 	 });
 });
+
 
 </script>
 

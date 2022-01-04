@@ -3,6 +3,8 @@ package com.kh.hobbycloud.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
@@ -22,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.hobbycloud.entity.member.MemberCategoryDto;
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
+import com.kh.hobbycloud.repository.member.MemberCategoryDao;
 import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.member.MemberProfileDao;
 import com.kh.hobbycloud.service.member.EmailService;
@@ -49,6 +53,9 @@ public class MemberController {
 	
 	@Autowired
 	private EmailService service;
+	
+	@Autowired
+	private MemberCategoryDao memberCategoryDao;
 	
 
 	// 로그인 폼 페이지
@@ -181,7 +188,7 @@ public class MemberController {
 		String memberId = (String)session.getAttribute("memberId");
 		int memberIdx = (int) session.getAttribute("memberIdx");
 		MemberDto memberDto = memberDao.get(memberId);
-		MemberProfileDto memberProfileDto = memberProfileDao.getIdx(memberIdx);
+		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberProfileDto", memberProfileDto);
 		return "member/mypage";
@@ -342,8 +349,6 @@ public class MemberController {
 		
 		return "redirect:profileEdit";
 	}
-
-	
 	
 	
 	// 메일보내기	
@@ -416,21 +421,22 @@ public class MemberController {
 		return "member/updateMail";
 	}
 	
-	//이메일 변경 처리
-	@PostMapping("/modifyPw.")
-	@ResponseBody
-	public String updatePw(@ModelAttribute("memberDto") MemberDto memberDto) {
-		System.out.println("updatePw 실행 ");
-		System.out.println("MemberDto memberDto 실행 :" + memberDto);
-		
-		boolean result = memberDao.changeInformation(memberDto);
-		
-		if(result) {
-			return "success";
-		}
-		else {
-			log.debug("ㅡㅡMemberController - /member/edit?error GET> 이메일 변경 실패");
-			return "fail";
-		}		
-	}
+	// 관심분야 다운로드 처리 페이지
+		@GetMapping("/lecCategory")
+		@ResponseBody
+		public void lecCategory(@RequestParam int memberIdx) {
+
+			// 0. 매개변수로 memberIdx가 넘어와 있다.
+			System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 memberIdx : " + memberIdx);
+
+			// 1. memberIdx를 이용하여, 관심분야 private List<String> lecCategoryName 가져오기			
+				List<String> lecCategoryName = new ArrayList<>();
+//				lecCategoryName.add();
+	    		
+			MemberCategoryDto memberCategoryDto = memberCategoryDao.getByMemberIdx(memberIdx);
+			System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 memberCategoryDto : "+memberCategoryDto);
+			
+			memberCategoryDao.save(memberCategoryDto);
+		}	
+
 }

@@ -27,14 +27,21 @@ tbody.locTBody { cursor:pointer; }
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
-window.addEventListener("load", function wrapclear(){
-
-    $('.modal').css('opacity','0').css('display','none');
+window.addEventListener("load", function() {
     
     // 모달 변수 정의
     window.modal = new bootstrap.Modal(document.getElementById("modal"), {
         keyboard: false
     });
+});
+
+//라이브러리: 이벤트 버블링 막기
+function stopEvent() {
+    if(typeof window.event == 'undefined') return;
+    if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+}
 
 	$(function(){
 		let email = '${memberDto.memberEmail}';
@@ -45,10 +52,15 @@ window.addEventListener("load", function wrapclear(){
 	})
 
 	$(function(){
+		
+		 // 이벤트 버블링 막기
+		stopEvent();
+		
+		/* 정규표현식 변수 */
 		var email_id = RegExp(/^[a-zA-Z0-9_-]{4,20}$/); 
 		var email_domail = RegExp(/^[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/); 
 		
-		
+		//이메일아이디 유효성검사
 		 $("#idMail").keyup(function(){
 		      if(!email_id.test($("#idMail").val())){
 			         $("#mailComm").text("");
@@ -63,7 +75,7 @@ window.addEventListener("load", function wrapclear(){
 		         }
 		  });
 		 
-		 
+		 //이메일 유효성 검사
         $("#emailBox").change(function() {
             if ($("#emailBox").val() == "directly") {
                 $("#inputMail").attr("readonly", false);
@@ -88,6 +100,7 @@ window.addEventListener("load", function wrapclear(){
             }
         });		
 		
+		 //이메일 인증
 	    $("#emailCheck").click(function(){
 	        console.log("이메일 인증 id : " + $("#idMail").val());
 	        console.log("이메일 인증 domain : " + $("#inputMail").val());
@@ -95,69 +108,79 @@ window.addEventListener("load", function wrapclear(){
 	        sendMail();
 	    }); 
 	    
+		//이메일 인증번호
         $("#reKey").keyup(function(){
         	$("#findbtn").css("color", "gray");
         	$("#findbtn").prop("disabled", true);
         });
 		
+		//이메일 주소 합
      	$("#findbtn").click(function(){
     		let email = $("#idMail").val() + "@" + $("#inputMail").val();    		
 
     		$('input[name="email"]').val(email);
     	})
 		
+    	//이메일 수정
     	$("#findbtn").click(function(){
-			let email = $("#idMail").val() + "@" + $("#inputMail").val();
-
+    		//합해진 이메일 주소
+    		console.log("이메일 수정 ajax 실행");
+			let memberEmail = $("#idMail").val() + "@" + $("#inputMail").val();
 
 			 $.ajax({
 			    	type : "post",
-			        url : "modifyPw",
-			        data : {"email" : email},
+			        url : "edit",
+			        data : {"memberEmail" : memberEmail},
 			        success : function(resp){
-			        	if(resp == "success") {
+			        	if(resp == "redirect:edit_success") {
 			        		$('.popup-wrap').css('opacity','1').css('display','block');
 			        		$(".popup-detail").text("");
 					        $(".popup-detail").html("Email이 정상적으로 수정되었습니다.");
-					        $('.popup-close').click(wrapclear);
 
 			        	} else {
 			        		$('.popup-wrap').css('opacity','1').css('display','block');
 			        		$(".popup-detail").text("");
 					        $(".popup-detail").html("Email 변경에 실패했습니다. <br> 다시 시도해주세요");
-					        $('.popup-close').click(wrapclear);
 			        	}
 			        }, 
 			    });		
 	 });		
-	});
 });
 
-function sendMail() {
-	var mailAddr = $("#idMail").val() +"@"+ $("#inputMail").val();
-
-	$.ajax({
-    	type : "post",
-        url : "sendMail",
-        data : {"email" : mailAddr},
-        success : function(resp){
-        	alert("메일이 성공적으로 보내졌습니다.");
-        	$("#reKeyCheck").click(function(){
-        		if(resp == $("#reKey").val()) {
-        			alert("인증이 완료되었습니다.");
-
-            	} else {
-            		alert("인증번호가 다릅니다. 다시 인증해주세요");
-            		$("#reKey").focus();
-            	}
-        	});
-        },
-		error : function(jqXHR, textStatus, errorThrown){
-			alert("메일보내기 실패 다시 시도해주세요");
-			
+		//이메일 인증 
+		function sendMail() {
+			var mailAddr = $("#idMail").val() +"@"+ $("#inputMail").val();
+		
+			$.ajax({
+		    	type : "post",
+		        url : "sendMail",
+		        data : {"email" : mailAddr},
+		        success : function(resp){
+		        	alert("메일이 성공적으로 보내졌습니다."+resp);
+		        	$("#reKeyCheck").click(function(){
+		        		if(resp == $("#reKey").val()) {
+		        			alert("인증이 완료");
+						
+		            		$("#findbtn").prop("disabled", false);
+		    		        $("#findbtn").css("color", "white");
+		            	} else {
+		            		alert("인증번호가 다릅니다. 다시 인증해주세요");
+		            		$("#reKey").focus();
+		            		$("#findbtn").prop("disabled", true);
+		    		        $("#findbtn").css("color", "gray");
+		            	}
+		        	});
+		        },
+				error : function(jqXHR, textStatus, errorThrown){
+					alert("Ajax 처리 실패 : \n"
+							+"jqXHR.readyState : " + jqXHR.readyState + "\n"
+							+"textStatus : " + textStatus + "\n"
+							+"errorThrown : " + errorThrown);
+					
+				}
+			})
 		}
-	})
-}
+		  
 </script>
 </HEAD>
 
@@ -170,7 +193,7 @@ function sendMail() {
             <div class="modal-header">
                 <!-- 모달 타이틀 -->
                 <h5 class="modal-title">이메일 수정</h5>
-                <!-- 모달 닫기 버튼 -->
+                <!-- 모달 닫기 버튼 -->               
                 <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>               
             </div>
@@ -197,45 +220,34 @@ function sendMail() {
                 <div class="panel-heading">
                      Email 변경하기
                 </div>
-                <div class="panel-body">                 
-                	<br>
- 					<input type="text" id="memberId" name="memberId" placeholder="ID">
-					<br> 
-					<input type="text" id="memberNick" name="memberNick" placeholder="닉네임">
+                 <div class="panel-body">
 					<br>
-					<div class="inputag">
-					   <input type="text"  id="idMail" name="email_id" class="input form-control"  placeholder="EMAIL" required>
-						@
-						<input type="text" id="inputMail" name="email_domain" class="input form-control" required readonly placeholder="EMAIL" >
-						<select id="emailBox" name="emailBox" required>
-							<option value="" class="pickMail">이메일 선택</option>
-							<option value="directly">직접입력</option>
-							<option value="naver.com">naver.com</option>
-							<option value="gmail.com">gmail.com</option>
-							<option value="daum.net">daum.net</option>
-							<option value="hanmail.net">hanmail.net</option>
-							<option value="nate.com">nate.com</option>
-					</select>	
-						
-					<input type="hidden" name="email" >
-                    <div id="mailComm"></div>
+					<input type="text" id="idMail" name="email_id" class="input form-control" required> @
+                    <input type="text" id="inputMail" name="email_domain" class="input form-control" required readonly>
+                        <select id="emailBox" name="emailBox" class="input form-control" required>
+                            <option value="" class="pickMail">이메일 선택</option>
+                            <option value="directly">직접입력</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="hanmail.net">hanmail.net</option>
+                            <option value="nate.com">nate.com</option>
+                        </select>
+                        <input type="button" id="emailCheck" class="adCheck" value="인증하기">
+                        <input type="hidden" name="email" >
+                        <div id="mailComm"></div>
 
-					</div>
-					<input type="button" id="emailCheck" class="adCheck" value="인증하기">
-					<div class="ckbox">					 	
 					<input type="text" id="reKey" class="input form-control" maxlength="20" placeholder="인증번호를 입력해주세요" required>
-                   	</div>
-                   	<input type="button" id="reKeyCheck" class="adCheck" value="확인" height="30%">
+                   	<input type="button" id="reKeyCheck" class="adCheck" value="확인">
                   <br>
                   <br>
                 </div>
             </div>
                 <div class="button-box">
 				<input type="button" class="btn btn-default btn01" value="뒤로가기" onclick="history.back()">   
-				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 				 
 				 <!-- 모달 여는 버튼 -->
-				<button type="button" id="findbtn" class="btn btn-default btn01">변경하기</button>
+				<button type="button" id="findbtn" class="btn btn-primary m-3 p-3">변경하기</button>
 			</div>     
 
 
