@@ -63,8 +63,6 @@
    	    };
    	 });
    	
-   	$(function(){
-   		
     	//유효성 검사
     	var code = "";				//이메일전송 인증번호 저장위한 코드
     	
@@ -78,6 +76,8 @@
  		 var mailCheck = false;			// 이메일
  		 var mailnumCheck = false;		// 이메일 인증번호 확인
  		 var addressCheck = false 		// 주소
+		 
+$(document).ready(function(){
 		
 		/* 입력값 변수 */
 		var addr = $('.address_input').val();		// 주소 입력란
@@ -134,8 +134,8 @@
   		  });
 
 	// 비밀번호 동일한지 여부
-	 $("#pwCh").keyup(function(){
-	      if($("#pwCh").val() != $("#pwCh").val()){
+	 $("#pwch").keyup(function(){
+	      if($("#pwch").val() != $("#pw").val()){
 		         $("#pwComm2").text("");
 		         $("#pwComm2").css("color", "red");
 		         $("#pwComm2").html("비밀번호가 동일하지 않습니다.");
@@ -270,7 +270,7 @@
 	   		console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
    	})
    	
-/*  	$("#btnclick").click(function(){	
+	$("#btnclick").click(function(){	
 	      	//최종 유효성 검사
 	   		if(idCheck&&idckCheck&&pwCheck&&pwchCkeck&&nickCheck&&nickckCheck&&
 	   			mailCheck&&mailBoxCheck&&phoneCheck &&nickCheck&&mailCheck){
@@ -278,7 +278,7 @@
 	   			$("#btnclick").prop("disabled", false);
 	   		}		
 	   		return false;
-	 	});  */
+	 	});
 	
 });
 
@@ -488,7 +488,7 @@
 </div>
 
 	<div class="join_button_wrap">
-			<input type="submit" class="join_button" id="btnclick" value="가입하기">
+			<input type="button" class="join_button" id="btnclick" value="가입하기" disabled>
 	</div>
 
 </div>
@@ -496,4 +496,3 @@
 </form>
 
 </div>
-
