@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.entity.lec.LecReplyDto;
 import com.kh.hobbycloud.vo.lec.LecReplyVO;
-
+//대댓글 실패
 //@Repository
 public class LecReplyDaoImpl2 implements LecReplyDao{
 	

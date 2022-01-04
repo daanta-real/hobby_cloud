@@ -86,27 +86,26 @@ public class LecController {
 		model.addAttribute("lecDetailVO", lecDetailVO);
 		model.addAttribute("list", list);
 		
+		log.debug("세션{},", session.getAttribute("memberIdx"));
+		
 		//좋아요 구현
-		
-		LecLikeVO lecLikeVO = new LecLikeVO();
-		lecLikeVO.setLecIdx(lecIdx);
-		lecLikeVO.setMemberIdx((Integer)session.getAttribute("memberIdx"));
-		
-		int isLike = 0;
-		
-		int check = lecService.likeCount(lecLikeVO);
-		
-		if(check ==0) {
+		//회원일때 보이고 비회원이면 안보이고
+		if(session.getAttribute("memberIdx") != null) {
+			LecLikeVO lecLikeVO = new LecLikeVO();
+			lecLikeVO.setLecIdx(lecIdx);
+			int isLike = 0;
 			
-			lecService.likeInsert(lecLikeVO);
+			lecLikeVO.setMemberIdx((Integer)session.getAttribute("memberIdx"));
+
+			int check = lecService.likeCount(lecLikeVO);
+			if(check ==0) {
+				lecService.likeInsert(lecLikeVO);
+			}else if(check==1) {
+				isLike = lecService.likeGetInfo(lecLikeVO);
+			}
 			
-		}else if(check==1) {
-			
-			isLike = lecService.likeGetInfo(lecLikeVO);
-		}
-		
-		model.addAttribute("isLike", isLike);	
-		
+			model.addAttribute("isLike", isLike);
+		}	
 		
 		return "lec/detail";
 	}

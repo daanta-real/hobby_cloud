@@ -37,60 +37,72 @@
 	 </tbody>
 </table>
 
-<!-- 좋아요 부분 -->
 <script>
-$(function(){
-	$('#like-btn').click(function(){
-		likeUpdate();
-	});
+ $(function(){
+ 	$('#like-btn').click(function(){
+ 		likeUpdate();
+ 	});
 	
-	function likeUpdate(){
-		memberIdx = $('#memberIdx').val(),
-		lecIdx = $('#lecIdx').val(),
-		count = $('#like-check').val(),
-		data = {"memberIdx" : memberIdx,
-				"lecIdx" : lecIdx,
-				"count" : count};
+ 	function likeUpdate(){
+//  		memberIdx = $('#memberIdx').val(),
+ 		lecIdx = $('#lecIdx').val(),
+ 		count = $('#like-check').val(),
+ 		data = {
+//  			"memberIdx" : memberIdx,
+ 				"lecIdx" : lecIdx,
+ 				"count" : count};
 		
-	$.ajax({
-		url : "${pageContext.request.contextPath}/lecData/likeUpdate",
-		type : 'POST',
-		contentType: 'application/json',
-		data : JSON.stringify(data),
-		success : function(result){
-			console.log("수정" + result.result);
-			if(count == 1){
-				console.log("좋아요 취소");
-				 $('#like-check').val(0);
-				 $('#like-btn').attr('class','btn btn-light');
-			}else if(count == 0){
-				console.log("좋아요!");
-				$('#like-check').val(1);
-				$('#like-btn').attr('class','btn btn-danger');
-			}
-		}, error : function(result){
-			console.log("에러" + result.result)
-		}
-		});
-	};
-});
+ 	$.ajax({
+ 		url : "${pageContext.request.contextPath}/lecData/likeUpdate",
+ 		type : 'POST',
+ 		contentType: 'application/json',
+ 		data : JSON.stringify(data),
+ 		success : function(result){
+ 			console.log("수정" + result.like);
+ 			if(count == 1){
+ 				console.log("좋아요 취소");
+ 				 $('#like-check').val(0);
+ 				 $('#like-btn').attr('class','btn btn-light');
+ 				 $('#likecount').html(result.like);
+ 			}else if(count == 0){
+ 				console.log("좋아요!");
+ 				$('#like-check').val(1);
+ 				$('#like-btn').attr('class','btn btn-danger');
+ 				$('#likecount').html(result.like);
+ 			}
+ 		}, error : function(result){
+ 			console.log("에러" + result.result)
+ 		}
+ 		});
+ 	};
+ });
+ 
 </script>
-<c:if test="${memberIdx != null}">
-	<div id="like">
-	<c:choose>
-		<c:when test="${isLike == 0}">
-			<button type="button" class="btn btn-light" id="like-btn">좋아요</button>
-			<input type="hidden" id="like-check" value="${isLike}">
-			<input type="hidden" id="memberIdx" value="${memberIdx}">
-			<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
-		</c:when>					
-		<c:when test="${isLike == 1}">
-			<button type="button" class="btn btn-danger" id="like-btn">좋아요</button>
-			<input type="hidden" id="like-check" value="${isLike}">
-		</c:when>
-	</c:choose>
-</div>
-</c:if>
+
+<div>좋아요 개수 : ${lecDetailVO.lecLike}</div>
+<c:choose>
+	<c:when test="${memberIdx != null}">
+		<div id="like">
+			<c:choose>
+				<c:when test="${isLike == 0}">
+					<button type="button" class="btn btn-light" id="like-btn">좋아요</button>
+					<input type="hidden" id="like-check" value="${isLike}">
+		<%-- 			<input type="hidden" id="memberIdx" value="${memberIdx}"> --%>
+					<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
+				</c:when>					
+				<c:when test="${isLike == 1}">
+					<button type="button" class="btn btn-danger" id="like-btn">좋아요</button>
+					<input type="hidden" id="like-check" value="${isLike}">
+		<%-- 			<input type="hidden" id="memberIdx" value="${memberIdx}"> --%>
+					<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
+				</c:when>			
+			</c:choose>
+		</div>
+	</c:when>
+	<c:otherwise>
+		<a href="${pageContext.request.contextPath}/member/login" class="btn btn-danger">좋아요</a>
+	</c:otherwise>
+</c:choose>
 
 <br>
 
@@ -164,33 +176,6 @@ $(function(){
 
 <div id="result"></div>
 
-<!-- <!-- 댓글작성 영역 --> -->
-<!-- <div class="board_cmt"> -->
-<!--     <div class="tit" style="margin-left: 6px;"><em id="totalCmt" class="bico_comment"></em>Comments</div> -->
-<!--      <div class="board_cmt_write"> -->
-<!--          <div class="bx">  -->
-<!--              <textarea id="cmtContent" placeholder="소중한 댓글을 작성해주세요^^" maxlength="150"></textarea> -->
-<!--          </div> -->
-<!--         <button id="btn_insert_cmt">등록</button> -->
-<!--      </div> -->
-<!-- </div> -->
-<!-- <!-- 댓글 목록 영역 --> -->
-<!-- <div class="board_cmt_list" id="board_cmt_list" style="margin-left:6px;"></div> -->
-<!-- <div style="text-align: center; margin: 20px 0px;" id="div_cmt_more"> -->
-<!--  <!-- 더보기 글자 hover 띄우기 --> -->
-<!--     <span class="cmt_more_guide" id="cmt_more_guide" style="display: none; position: absolute;"></span> -->
-<!--     <a href='javascript:void(0);' id='btn_cmt_more' style='position: relative;'> -->
-<!--         <img src="/home/img/ico_cmt_more_before.png" id="imgMore" style="cursor:pointer; width: 20px;"> -->
-<!--     </a> -->
-<!-- </div> -->
-<!-- <!-- 더보기 눌렀을때 추가 되는 댓글 영역 --> -->
-<!-- <div class="board_cmt_list" id="cmtMore" style="display:none;"></div> -->
-<!-- <div style="text-align: center; display:none; margin: 20px 0px;" id="div_cmt_back"> -->
-<!--     <span class="cmt_back_guide" id="cmt_back_guide" style="display: none; position: absolute;"></span> -->
-<!--     <a href='javascript:void(0);' id='btn_cmt_back' style='position: relative;'> -->
-<!--         <img src="/home/img/ico_cmt_back_before.png" id="imgBack" style="cursor:pointer; width: 20px;"> -->
-<!--     </a> -->
-<!-- </div> -->
 
 
 <a href="insert">글쓰기</a>

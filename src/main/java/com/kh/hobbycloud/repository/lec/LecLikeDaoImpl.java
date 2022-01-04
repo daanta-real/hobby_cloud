@@ -28,8 +28,13 @@ public class LecLikeDaoImpl implements LecLikeDao {
 	}
 	
 	@Override
-	public void likeUpdate(LecLikeVO lecLikeVO) {
+	public int likeUpdate(LecLikeVO lecLikeVO) {
 		sqlSession.update("lecLike.likeUpdate", lecLikeVO);
+		return lecLikeVO.getAllIsLike();
 	}
 	
+	@Override
+	public int likeCountEvery(int lecIdx) {
+		return sqlSession.selectOne("lecLike.likeCountEvery", lecIdx);
+	}
 }

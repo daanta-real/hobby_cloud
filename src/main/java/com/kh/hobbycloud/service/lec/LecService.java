@@ -18,8 +18,10 @@ public interface LecService {
 	int likeCount(LecLikeVO lecLikeVO);
 	void likeInsert(LecLikeVO lecLikeVO);
 	int likeGetInfo(LecLikeVO lecLikeVO);
-	void likeUpdate(LecLikeVO lecLikeVO);
-
+	int likeUpdate(LecLikeVO lecLikeVO);
+	
+	//비회원일때
+	int likeCountEvery(int lecIdx);
 	
 	
 }

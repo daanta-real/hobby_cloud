@@ -34,6 +34,7 @@ public class LecDetailVO {
 	private String memberPhone;//강사 번호
 	private String placeName;//장소 이름
 	private String placeDetail;//장소 소개
+	private int lecLike;//좋아요수
 //	private String placeLocLatitude;//장소 위도
 //	private String placeLocLongitude;//장소 경도
 }

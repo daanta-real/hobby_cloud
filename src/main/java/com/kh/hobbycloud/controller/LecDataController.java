@@ -102,15 +102,17 @@ public class LecDataController {
 
 	//좋아요
 	@PostMapping("/likeUpdate")
-	public Map<String,String> likeUpdate(@RequestBody LecLikeVO lecLikeVO){
+	public Map<String, Object> likeUpdate(@RequestBody LecLikeVO lecLikeVO, HttpSession session){
 		log.info("likeUpdate");
 		
-		Map<String,String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
+			lecLikeVO.setMemberIdx((Integer)session.getAttribute("memberIdx"));
 			lecService.likeUpdate(lecLikeVO);
+			int like = lecLikeVO.getAllIsLike();
 			map.put("result", "success");
-			
+			map.put("like", like);
 		}catch(Exception e) {
 			e.printStackTrace();
 			map.put("result", "fail");

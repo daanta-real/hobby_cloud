@@ -20,6 +20,12 @@
 		select count(is_like) from lec_like where member_idx = #{memberIdx} and lec_idx=#{lecIdx}
 	</select>
 	
+	<!-- 비회원도 가능한 좋아요 읽기 -->
+	<select id="likeCountEvery" resultType="Integer" parameterType="Integer">
+		select count(is_like) from lec_like where lec_idx = #{lecIdx}
+	</select>
+	
+	
 	<insert id="likeInsert" parameterType="LecLikeVO">
 		insert into lec_like(member_idx, lec_idx)
 		values (#{memberIdx}, #{lecIdx})
@@ -33,6 +39,10 @@
 		update lec_like
 		set <include refid="cal"></include>
 		where member_idx = #{memberIdx} and lec_idx = #{lecIdx}
+		
+		<selectKey keyProperty="allIsLike" order="AFTER" resultType="Integer">
+			select count(is_like) from lec_like where lec_idx = #{lecIdx} and is_like = 1
+		</selectKey>
 	</update>
 	
 	<sql id="cal">

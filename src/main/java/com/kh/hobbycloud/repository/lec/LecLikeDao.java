@@ -10,6 +10,8 @@ public interface LecLikeDao {
 
 	void likeInsert(LecLikeVO lecLikeVO);
 
-	void likeUpdate(LecLikeVO lecLikeVO);
+	int likeUpdate(LecLikeVO lecLikeVO);
+
+	int likeCountEvery(int lecIdx);
 	
 }

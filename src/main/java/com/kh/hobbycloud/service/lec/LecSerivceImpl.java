@@ -140,7 +140,13 @@ public class LecSerivceImpl implements LecService{
 	}
 	
 	@Override
-	public void likeUpdate(LecLikeVO lecLikeVO) {
+	public int likeUpdate(LecLikeVO lecLikeVO) {
 		lecLikeDao.likeUpdate(lecLikeVO);
+		return lecLikeVO.getAllIsLike();
+	}
+	
+	@Override
+	public int likeCountEvery(int lecIdx) {
+		return lecLikeDao.likeCountEvery(lecIdx);
 	}
 }
