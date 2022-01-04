@@ -33,3 +33,14 @@ const debug_rainbowQueryRun = () => {
     console.log('"' + query + '"의 쿼리에 해당하는 레이어 레인보우화 실행됨');
     rainbow(query, { padding:"0.3rem", margin:"0.2rem" });
 };
+
+
+//문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+window.addEventListener("load", () => {
+
+	// 모달 변수 정의
+	window.modal = new bootstrap.Modal(document.getElementById("modal"), {
+	    keyboard: false
+	});
+	
+});

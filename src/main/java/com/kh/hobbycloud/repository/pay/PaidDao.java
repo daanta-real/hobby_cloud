@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.hobbycloud.entity.pay.PaidDto;
 import com.kh.hobbycloud.vo.pay.PaidSearchVO;
+import com.kh.hobbycloud.vo.pay.PaidVO;
 
 public interface PaidDao {
 
@@ -22,6 +23,6 @@ public interface PaidDao {
 	public boolean cancel(Integer idx);
 
 	// 결제이력 검색
-	public List<PaidDto> search(PaidSearchVO searchVO);
+	public List<PaidVO> search(PaidSearchVO searchVO);
 
 }

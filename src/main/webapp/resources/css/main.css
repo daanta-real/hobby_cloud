@@ -6,6 +6,9 @@
 .flexRow { flex-direction:row; }
 .flexJus { justify-content:center; }
 .flexAli { align-items:center; }
+.cursor-pointer { cursor:pointer; }
+.minWidthMaxContent { min-width:max-content; }
+.scrollXEnabler { overflow-x:auto; }
 
 /* 엘레멘트별 속성 */
 #topProfileBox, ASIDE#accordionSideMenu div.accordion-body { cursor:pointer; }

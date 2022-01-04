@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class PaidSearchVO {
 	private String memberIdx;
+	private String memberId;
+	private String memberNick;
 	private String paidRegistered_start;
 	private String paidRegistered_end;
 	private String paidPrice_min;

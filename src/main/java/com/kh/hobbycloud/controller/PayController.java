@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestClientException;
 
 import com.kh.hobbycloud.entity.pay.PaidDto;
 import com.kh.hobbycloud.repository.pay.PaidDao;
@@ -112,21 +111,31 @@ public class PayController {
 	// ************************************************************
 
 	// 취소 요청
-	@GetMapping("/cancel/{idx}")
-	public String cancel(@PathVariable int idx, Model model) throws RestClientException, URISyntaxException {
-		log.debug("================== /pay/cancel/{idx} (GET) 진입");
+	@GetMapping("/cancel/{paidIdx}")
+	public String cancel(@PathVariable int paidIdx, Model model) throws Exception {
+		log.debug("================== /pay/cancel/{paidIdx} (GET) 진입");
 
 		// idx로 tid 및 amount 알아내기
-		PaidDto dto = paidDao.getByIdx(idx);
+		PaidDto dto = paidDao.getByIdx(paidIdx);
 		String tid = dto.getPaidTid();
 		Integer paidPrice = dto.getPaidPrice();
+		log.debug("ㅡㅡ대상 결제이력: {}", dto);
+		log.debug("ㅡㅡtid: {}", tid);
+		log.debug("ㅡㅡpaidPrice: {}", paidPrice);
+
+		// 해당 결제가 이미 취소되어 있으면 빠꾸
+		if(dto.getPaidStatus().equals('0')) {
+			log.debug("ㅡㅡ결제를 취소할 수 없습니다. 이미 취소된 결제입니다.");
+			throw new Exception();
+		}
 
 		// 결제 취소 진행
 		KakaoPayCancelResponseVO responseVO = payService.cancel(tid, paidPrice);
+		log.debug("ㅡㅡ취소 결과: {}", responseVO);
 		model.addAttribute("cancelResponseVO", responseVO);
 
 		// 결제 취소 컨트롤러로
-		return "redirect:pay/cancel_success";
+		return "/pay/cancel_success";
 	}
 
 }
