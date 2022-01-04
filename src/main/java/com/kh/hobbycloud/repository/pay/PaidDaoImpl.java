@@ -22,8 +22,8 @@ public class PaidDaoImpl implements PaidDao {
 	}
 
 	// 단일조회 By idx
-	@Override public PaidDto getByIdx(String idx) { return getByIdx(Integer.valueOf(idx)); }
-	@Override public PaidDto getByIdx(Integer idx) {
+	@Override public PaidVO getByIdx(String idx) { return getByIdx(Integer.valueOf(idx)); }
+	@Override public PaidVO getByIdx(Integer idx) {
 		return sqlSession.selectOne("paid.getByIdx", idx);
 	}
 

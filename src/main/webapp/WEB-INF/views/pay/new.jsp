@@ -28,110 +28,6 @@ window.addEventListener("load", function() {
 
 
 
-<!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
-<!-- 사이드메뉴 영역 시작 -->
-<ASIDE id="accordionSideMenu" class="accordion col-lg-2">
-	<div class="accordion-item">
-		<h2 class="accordion-header" id="heading1">
-			<button class="accordion-button" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse1"
-				aria-expanded="true" aria-controls="collapse1">회원 관리</button>
-		</h2>
-		<div id="collapse1" class="accordion-collapse collapse show"
-			aria-labelledby="heading1" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body px-3 py-2">회원 통계</div>
-			<div class="accordion-body px-3 py-2">회원 관리</div>
-			<div class="accordion-body px-3 py-2">1:1 채팅 이력</div>
-			<div class="accordion-body px-3 py-2">채널 채팅 이력</div>
-			<div class="accordion-body px-3 py-2">회원 등급</div>
-		</div>
-	</div> 
-	<div class="accordion-item">
-		<h2 class="accordion-header" id="heading2">
-			<button class="accordion-button p-3 collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse2"
-				aria-expanded="false" aria-controls="collapse2">
-				강좌</button>
-		</h2>
-		<div id="collapse2" class="accordion-collapse collapse"
-			aria-labelledby="heading2" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body px-3 py-2">강좌 관리</div>
-		</div>
-	</div>
-	<div class="accordion-item">
-		<h2 class="accordion-header" id="heading3">
-			<button class="accordion-button p-3 collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse3"
-				aria-expanded="false" aria-controls="collapse3">
-				장소</button>
-		</h2>
-		<div id="collapse3" class="accordion-collapse collapse"
-			aria-labelledby="heading3" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body px-3 py-2">장소 관리</div>
-			<div class="accordion-body px-3 py-2">장소담당자 관리</div>
-		</div>
-	</div>
-	<div class="accordion-item">
-		<h2 class="accordion-header" id="heading4">
-			<button class="accordion-button p-3 collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse4"
-				aria-expanded="false" aria-controls="collapse4">
-				소모임</button>
-		</h2>
-		<div id="collapse4" class="accordion-collapse collapse"
-			aria-labelledby="heading4" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body px-3 py-2">소모임 관리</div>
-		</div>
-	</div>
-	<div class="accordion-item">
-		<h2 class="accordion-header" id="heading5">
-			<button class="accordion-button p-3 collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse5"
-				aria-expanded="false" aria-controls="collapse5">
-				청원</button>
-		</h2>
-		<div id="collapse5" class="accordion-collapse collapse"
-			aria-labelledby="heading5" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body px-3 py-2">청원 관리</div>
-		</div>
-	</div>
-	<div class="accordion-item">
-		<h2 class="accordion-header" id="heading6">
-			<button class="accordion-button p-3 collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse6"
-				aria-expanded="false" aria-controls="collapse6">
-				공지</button>
-		</h2>
-		<div id="collapse6" class="accordion-collapse collapse"
-			aria-labelledby="heading6" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body px-3 py-2">공지 관리</div>
-		</div>
-	</div>
-	<div class="accordion-item">
-		<h2 class="accordion-header" id="heading7">
-			<button class="accordion-button p-3 collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse7"
-				aria-expanded="false" aria-controls="collapse7">
-				수익</button>
-		</h2>
-		<div id="collapse7" class="accordion-collapse collapse"
-			aria-labelledby="heading7" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body px-3 py-2">광고 관리</div>
-			<a class="accordion-body px-3 py-2" href="${root}/admin/pay/list">결제이력 관리</a>
-		</div>
-	</div>
-</ASIDE>
-<!-- 사이드메뉴 영역 끝 -->
-
-
-
 <!-- ************************************************ 페이지 영역 ************************************************ -->
 <!-- 페이지 영역 시작 -->
 <ARTICLE class="d-flex flex-column align-items-start col-lg-8 mx-md-1 mt-xs-2 mt-md-3 pt-2">
@@ -150,51 +46,21 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form name="searchForm" method="get" class="row">
+				<form name="newPayForm" method="post" action="${root}/pay/confirm" class="row">
 					<div class="form-group mb-4 col-md-6 col-lg-4">
-						<label for="searchForm_memberIdx" class="form-label mb-0">회원 번호</label>
-						<input name="memberIdx" id="searchForm_memberIdx" type="number" class="form-control" placeholder="회원 번호를 입력하세요" value="${param.memberIdx}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group mb-4 col-md-6 col-lg-4">
-						<label for="searchForm_memberId" class="form-label mb-0">ID</label>
-						<input name="memberId" id="searchForm_memberId" type="text" class="form-control" placeholder="회원 아이디를 입력하세요" value="${param.memberId}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
+						<label for="newPayForm_item_name" class="form-label mb-0">품목명</label>
+						<input name="item_name" id="newPayForm_item_name" type="text" class="form-control" placeholder="아이템명을 입력하세요">
 					</div>
 					<div class="form-group mb-4 col-md-6 col-lg-4">
-						<label for="searchForm_memberNick" class="form-label mb-0">닉네임</label>
-						<input name="memberNick" id="searchForm_memberNick" type="text" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
+						<label for="newPayForm_quantity" class="form-label mb-0">수량</label>
+						<input name="quantity" id="newPayForm_quantity" type="number" class="form-control" placeholder="수량을 입력하세요" value=1>
 					</div>
-					<div class="form-group mb-4 col-md-6 container">
-						<div class="row">
-							<span class="form-label mb-0 text-nowrap">결제 금액</span>
-						</div>
-						<div class="row d-flex flex-start align-items-center">
-							<div class="col-5">
-								<input name="paidPrice_min" id="searchForm_paidPrice_min" type="number" class="form-control" placeholder="최소 금액" value="${param.paidPrice_min}">
-							</div>
-							<div class="col-auto d-flex justify-content-center align-items-center p-0">
-								<span>~</span>
-							</div>
-							<div class="col-5">
-								<input name="paidPrice_max" id="searchForm_paidPrice_max" type="number" class="form-control" placeholder="최대 금액" value="${param.paidPrice_max}">
-							</div>
-						</div>
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group mb-4 col-lg-6">
-						<label for=searchForm_paidPrice_min class="form-label mb-0 d-block">결제여부</label>
-						<div class="btn-group w-100">
-							<input name="paidStatusList" type="checkbox" value="1" class="btn-check" id="chkbox_paid_done" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '1').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="chkbox_paid_done">결제 완료</label>
-							<input name="paidStatusList" type="checkbox" value="0" class="btn-check" id="chkbox_paid_canceled" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '0').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="chkbox_paid_canceled">결제 취소</label>
-						</div>
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
+					<div class="form-group mb-4 col-md-6 col-lg-4">
+						<label for="newPayForm_total_amount" class="form-label mb-0">결제금액</label>
+						<input name="total_amount" id="newPayForm_total_amount" type="number" class="form-control" placeholder="금액을 입력하세요">
 					</div>
 					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">검색</button>
+						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">결제하기</button>
 					</div>
 				</form>
 			</div>

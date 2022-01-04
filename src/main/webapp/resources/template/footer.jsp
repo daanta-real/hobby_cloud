@@ -13,6 +13,7 @@
 			<li class="row m-1">전자우편주소 : welcome@hobbycloud.kr</li>
 			<li class="row m-1">Copyright HobbyCloud Corp. All rights reserved</li>
 			<li class="row m-1">로그인 정보: No. ${sessionScope.memberIdx} ${sessionScope.memberNick}님 (${sessionScope.memberId} - ${sessionScope.memberGrade}등급)</li>
+			<li class="row m-1">결제 정보: partner_order_id=${sessionScope.partner_order_id}, tid=${sessionScope.tid}</li>
 		</ul>
 	</div>
 </FOOTER>

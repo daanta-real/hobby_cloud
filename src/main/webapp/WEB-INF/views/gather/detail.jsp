@@ -29,7 +29,7 @@
 <c:choose>
 <c:when test="${isLogin}">
 
-<h1>로그인</h1>
+
 </c:when>
 </c:choose>
 
@@ -55,16 +55,19 @@
 			(주의) 태그 사이에 쓸데없는 엔터, 띄어쓰기 등이 들어가지 않도록 해야 한다.(모두 표시된다) 
 		-->
 		<tr height="250" valign="top">
-			<td>
+			<td class="participate">
 								
 				<pre>${GatherVO.gatherDetail}23</pre>
 				
 			<!-- 참가자 리스트 반복문 -->
-		
+			<c:set var = "isJoin" value="false"/>
 			<c:forEach var ="GatherHeadsVO" items="${list2}">
- 				<c:set var="join" value="${GatherHeadsVO.memberIdx eq memberIdx}"></c:set>
-			<h1>${memberIdx}</h1>
-			<h1>${GatherHeadsVO.memberIdx }</h1>
+				<c:if test="${GatherHeadsVO.memberIdx  eq memberIdx}" >
+				<!-- 만약에 일치한다  -->
+				<c:set var = "isJoin" value="true"/>
+				</c:if>
+ 			<input class="participate"type="hidden" value="${GatherHeadsVO.memberIdx}">
+	
 			<tr>
 			<th>닉네임</th>
 			<th>프로필</th>
@@ -75,8 +78,6 @@
 
 			
 			</tr>
-			<h1>세션:${memberIdx}</h1>
-			<h1>아이디 :${GatherHeadsVO.memberIdx}</h1>
 			</c:forEach>			
 			
 		<!-- 게시판 사진 반복문 -->	
@@ -89,14 +90,22 @@
 			
 		</td>
 		
+		<script>
+			$(function(){
+				let partNo = $(".participate").val();
+				console.log("partNo     "+partNo);
+			});
+		</script>
+		
+		
+		
 		</tr>
 		<!-- 소모임 참가 /취소 버튼 -->
-
 			<tr>
 			<td>
 			<!-- 참가하기 버튼 -->
 			<c:choose>
-			<c:when test="${!join}">
+			<c:when test="${!isJoin}">
 			<a class="btn btn-primary" href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
 			</c:when>
 			<c:otherwise>

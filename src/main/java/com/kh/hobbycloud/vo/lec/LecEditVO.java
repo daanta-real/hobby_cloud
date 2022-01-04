@@ -8,12 +8,12 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Data;
 
 /**
- * 강좌 등록 정보를 받기 위한 VO
+ * 강좌 수정 정보를 받기 위한 VO
  * 강좌정보(MemberDto)와 파일(attach)을 저장한다
  */
 
 @Data
-public class LecRegisterVO {
+public class LecEditVO {
 	private int lecIdx;//강좌idx
 	private int tutorIdx;//강사idx -> 세션
 	private String lecCategoryName;//취미 분류 이름
