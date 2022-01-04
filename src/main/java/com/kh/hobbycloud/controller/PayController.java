@@ -31,6 +31,14 @@ public class PayController {
 	@Autowired PayService payService;
 	@Autowired PaidDao paidDao;
 
+	// 새 결제를 만드는 페이지.
+	// 결제 폼이 출력되며, 여기에서 입력한 내용을 confirm으로 넘긴다.
+	@GetMapping("/new")
+	public String newPayForm() {
+		log.debug("================== /pay/new(GET) 결제 작성 진입.");
+		return "pay/new";
+	}
+
 	// 결제 내용을 최종 확인하는 페이지.
 	// 사용자에게 결제 내역 페이지가 출력된다.
 	// 사용자가 확인 버튼을 누르면, /pay/confirm (POST)로 넘어간다.
