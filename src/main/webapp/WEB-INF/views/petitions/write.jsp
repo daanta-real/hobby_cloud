@@ -7,13 +7,13 @@
 	<tbody>
 		<tr>
 			<th>제목</th>
-			<td><input type="text" name="noticeName" required></td>
+			<td><input type="text" name="petitionsName" required></td>
 			
 		</tr>
 		<tr>
 			<th>내용</th>
 			<td>
-				<textarea name="noticeDetail" required rows="10" cols="60"></textarea>
+				<textarea name="petitionsDetail" required rows="10" cols="60"></textarea>
 			</td>
 		</tr>
 		<tr>

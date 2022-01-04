@@ -40,10 +40,10 @@
 <h1>${memberGrade }</h1>
 
 
-<c:if test="${admin }">
+<c:if test="${login }">
 <a href="write">글쓰기</a>
-
 </c:if>
+
 
 
 
@@ -52,8 +52,8 @@
 <form method="post">
 	
 	<select name="column">
-		<option value="notice_name" selected>제목</option>
-		<option value="notice_detail">내용</option>
+		<option value="petitions_name" selected>제목</option>
+		<option value="petitions_detail">내용</option>
 		<option value="member_nick">작성자</option>
 	</select>
 	

@@ -42,7 +42,7 @@ where petitions_idx=#{petitionsIdx}
 <insert id="insert" parameterType="PetitionsDto">
 
 insert into petitions values
-(#{petitionsIdx},#{petitionsIdx},#{petitionsName},#{petitionsDetail},sysdate,0,0)
+(#{petitionsIdx},#{memberIdx},#{petitionsName},#{petitionsDetail},sysdate,0,0)
 </insert>
 
 <!-- 시퀀스 번호 생성 -->
@@ -57,7 +57,7 @@ delete petitions where petitions_idx=#{petitionsIdx}
 
 <!-- 글수정 -->
 <update id="edit" parameterType="PetitionsVO">
-update notice set petitions_name=#{petitionsName},petitions_detail=#{petitions_Detail} where petitions__idx=#{petitions_Idx}
+update notice set petitions_name=#{petitionsName},petitions_detail=#{petitionsDetail} where petitions_idx=#{petitionsIdx}
 </update>
 
 <!-- 검색 -->
@@ -77,7 +77,7 @@ update petitions set _views=petitions_views+1 where petitions_idx=#{petitionsIdx
 </update>
 
 <!-- 남의글일경우만 조회수 증가 -->
-<update id="read" parameterType="NoticeDto">
+<update id="read" parameterType="PetitionsDto">
 update petitions set petitions_views = petitions_views+1
 where petitions_idx =#{petitionsIdx} and member_idx != #{memberIdx}
 </update>	

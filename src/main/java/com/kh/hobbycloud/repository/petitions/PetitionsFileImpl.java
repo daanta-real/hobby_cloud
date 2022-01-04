@@ -18,7 +18,7 @@ public class PetitionsFileImpl implements PetitionsFileDao{
 	private SqlSession sqlSession;
 	
 	@Autowired
-	private String STOREPATH_NOTICE;
+	private String STOREPATH_PETITIONS;
 
 	@Override
 	public void save(PetitionsFileDto petitionsFileDto, MultipartFile multipartFile)
@@ -27,7 +27,7 @@ public class PetitionsFileImpl implements PetitionsFileDao{
 				int sequence = sqlSession.selectOne("petitionsFile.seq");
 				
 				//2. 실제파일을 폴더에저장
-				File target = new File(STOREPATH_NOTICE,String.valueOf(sequence));
+				File target = new File(STOREPATH_PETITIONS,String.valueOf(sequence));
 				multipartFile.transferTo(target);
 				petitionsFileDto.setPetitionsFileIdx(sequence);
 				petitionsFileDto.setPetitionsFileServerName(String.valueOf(sequence));
@@ -49,7 +49,7 @@ public class PetitionsFileImpl implements PetitionsFileDao{
 
 	@Override
 	public byte[] load(int petitionsFileIdx) throws IOException {
-		File target = new File(STOREPATH_NOTICE, String.valueOf(petitionsFileIdx));
+		File target = new File(STOREPATH_PETITIONS, String.valueOf(petitionsFileIdx));
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 	}

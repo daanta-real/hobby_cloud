@@ -35,7 +35,7 @@ public class PetitionsServiceImpl implements PetitionsService{
 		petitionsDto.setPetitionsReplies(petitionsVO.getPetitionsReplies());
 		petitionsDto.setPetitionsView(petitionsVO.getPetitionsViews());
 		petitionsDao.insert(petitionsDto);
-		petitionsDao.edit(petitionsVO);
+	
 		// 실제 파일 업로드 시도 → 성공 시 파일정보를 DB에 저장
 		List<MultipartFile> attach = petitionsVO.getAttach();
 		for (MultipartFile file : attach) {

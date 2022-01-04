@@ -2,9 +2,11 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
+<c:set var="login" value="${memberIdx != null }"></c:set>
 
 
-<h2>${PetitionsVO.noticeIdx}번 게시글</h2>
+
+<h2>${PetitionsVO.petitionsIdx}번 게시글</h2>
 
 <table border="1" width="80%">
 	<tbody>
@@ -17,7 +19,7 @@
 			<td>
 				등록일 : ${PetitionsVO.petitionsRegistered}
 				|
-				작성자 : ${PetitionsVO.petitionsNick}
+				작성자 : ${PetitionsVO.memberNick}
 				|
 				조회수 : ${PetitionsVO.petitionsViews}
 			</td>
@@ -38,13 +40,13 @@ class="image image-round image-border">
 		</tr>
 		<tr>
 			<td align="right">
-			<c:if test="${admin }">
+			<c:if test="${login }">
 				<a href="write">글쓰기</a>
 				</c:if>
-				<a href="${pageContext.request.contextPath}/notice/list">목록보기</a>
-				<c:if test="${admin }">
-				<a href="${pageContext.request.contextPath}/notice/edit?noticeIdx=${PetitionsVO.petitionsIdx }">수정하기</a>
-				<a href="${pageContext.request.contextPath}/notice/delete?noticeIdx=${PetitionsVO.petitionsIdx }">삭제하기</a>
+				<a href="${pageContext.request.contextPath}/petitions/list">목록보기</a>
+				<c:if test="${login }">
+				<a href="${pageContext.request.contextPath}/petitions/edit?petitionsIdx=${PetitionsVO.petitionsIdx }">수정하기</a>
+				<a href="${pageContext.request.contextPath}/petitions/delete?petitionsIdx=${PetitionsVO.petitionsIdx }">삭제하기</a>
 				</c:if>
 	
 	</tbody>

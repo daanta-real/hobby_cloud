@@ -49,7 +49,7 @@ public class PetitionsController {
 	
 	
 	
-	//공지게시판 목록조회
+	//청원게시판 목록조회
 	@GetMapping("/list")
     public String list(Model model) {
     	
@@ -180,6 +180,8 @@ public class PetitionsController {
 	@PostMapping("/write")
 	public String write(@ModelAttribute PetitionsVO petitionsVO,HttpSession session) throws IllegalStateException, IOException {
 		log.debug("---------------------{}",petitionsVO);
+		System.out.println(petitionsVO.getPetitionsDetail());
+		System.out.println("제목목목"+petitionsVO.getPetitionsName());
 		int petitionsIdx=petitionsDao.getsequences();
 		int memberIdx=(int)session.getAttribute("memberIdx");
 		petitionsVO.setPetitionsIdx(petitionsIdx);
