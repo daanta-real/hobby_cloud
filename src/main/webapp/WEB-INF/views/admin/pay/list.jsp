@@ -226,7 +226,6 @@ value="${param.paidRegistered_end}"--%>
 						</thead>
 						<tbody>
 							<c:forEach var="PaidVO" items="${paidList}">
-								<c:set var="paidStatus" value="${PaidVO.paidStatus == '1'.charAt(0)}" />
 								<tr class="cursor-pointer">
 									<td class="text-center align-middle text-nowrap">${PaidVO.paidIdx}</td>
 									<td class="text-center align-middle text-nowrap">${PaidVO.memberIdx}</td>
