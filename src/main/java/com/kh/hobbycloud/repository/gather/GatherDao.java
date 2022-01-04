@@ -4,6 +4,7 @@
 import java.util.List;
 
 import com.kh.hobbycloud.entity.gather.GatherDto;
+import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
 
@@ -18,4 +19,12 @@ public interface GatherDao {
 	 void delete(int gatherIdx);
 //	 List<GatherVO> getUpdate(int gatherIdx);
 	 boolean update(GatherDto gatherDto);
+	 List<GatherVO> listPage(int startRow, int endRow);
+	
+	 //게시글 목록 조회
+	 List<GatherVO>list (Criteria cri);
+	 //게시글 총개수
+	 int listCount();
+
+
 }

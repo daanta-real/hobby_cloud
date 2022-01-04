@@ -11,7 +11,9 @@ import com.kh.hobbycloud.entity.gather.GatherDto;
 import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
+import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
+import com.kh.hobbycloud.vo.gather.GatherVO;
 
 @Service
 public class GatherServiceImpl implements GatherService {
@@ -121,4 +123,16 @@ public class GatherServiceImpl implements GatherService {
 
 		}
 	}
+
+	@Override
+	public List<GatherVO> list(Criteria cri) {
+		return gatherDao.list(cri);
+	}
+
+	@Override
+	public int listCount() {
+		return gatherDao.listCount();
+	}
+
+
 }

@@ -27,6 +27,29 @@ select * from  gather g left outer join
   on  f.gather_idx = g.gather_idx  
   order by g.gather_idx desc 
 </select>
+
+<!-- 게시글 총 개수 구하기 -->
+<select id="listCount" resultType="int" >
+select count(*) as BNO from (
+select * from  gather g left outer join
+ (select distinct gather_idx, min(gather_file_idx) as gather_file_idx
+  from gather_file group by gather_idx) f  
+  on  f.gather_idx = g.gather_idx)
+</select>
+	
+<select id="listPage" resultType="GatherVO" parameterType="Criteria">
+select * from(
+select rownum  rn , TMP.* from(
+select * from  gather g left outer join
+ (select distinct gather_idx, min(gather_file_idx) as gather_file_idx
+  from gather_file group by gather_idx) f  
+  on  f.gather_idx = g.gather_idx  
+  order by g.gather_idx desc 
+  )TMP
+) where rn between #{rowStart} and #{rowEnd}
+</select>
+	
+	
 	
 <select id ="listSearch" parameterType="GatherSearchVO" resultType="GatherVO">
 <!-- 장소 + 제목    유사 검색이 둘다 가능하다.-->
