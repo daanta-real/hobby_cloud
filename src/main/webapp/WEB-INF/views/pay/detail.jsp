@@ -2,14 +2,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
-<c:set var="vo" value="${failResponseVO}" />
+<c:set var="paidVO" value="${paidVO}"/>
+<c:set var="kakaoPayVO" value="${kakaoPayVO}"/>
 <!DOCTYPE HTML>
 <HTML LANG="ko">
+
+
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 결제 실패</TITLE>
+<TITLE>HobbyCloud - 결제 상세조회</TITLE>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -37,21 +40,55 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			결제 실패
+			결제 상세 조회
 			</span>
 		</div>
 	</HEADER>
 	<!-- 제목 영역 끝 -->
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
+		<!-- 소단원 제목 -->
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${kakaoPayVO.item_name}</div>
 		<!-- 소단원 내용 -->
-		<div class="d-flex flex-row justify-content-center align-items-center p-sm-2 mx-1 mb-5 container">
-			<div class="m-5 fs-4 row">결제에 실패하였습니다.</div>
-			<div class="m-5 row">
-				<a class="btn btn-primary m-5 col-auto" href="${root}/my/pay">결제 이력 화면으로 돌아가기</a>
-				<a class="btn btn-primary m-5 col-auto" href="${root}/my/">마이페이지로 돌아가기</a>
-			</div>
+		<div class="row p-sm-2 mx-1 mb-5">
+			<ul class="">
+				<li>본점 주문번호: ${paidVO.paidIdx}</li>
+				<li>카카오페이 주문번호: ${paidVO.paidTid})</li>
+				<li>주문 회원: No.${paidVO.memberIdx} ${paidVO.memberNick}(${paidVO.memberId})님</li>
+				<li>${kakaoPayVO.}</li>
+				<li>결제 금액: ${paidVO.paidPrice}</li>
+				<li>결제 일시: ${paidVO.paidRegisteredStr}</li>
+				<li>결제 상태:
+					<c:choose>
+						<c:if test="${paidVO.status eq '1'.charAt(0)}">
+							<span class="text-success">결제 완료</span>
+						</c:if>
+						<c:otherwise>
+							<span class="text-danger">취소됨</span>
+						</c:otherwise>
+					</c:choose>
+				</li>
+			</ul>
+			<ul class="row">
+				<li>상품명: ${kakaoPayVO.item_name}</li>
+				<li>상품 코드: ${kakaoPayVO.item_code}</li>
+				<li>상품 수량: ${kakaoPayVO.quantity}</li>
+				<li>결제 시각: ${kakaoPayVO.created_at}</li>
+				<li>승인 시각: ${kakaoPayVO.approved_at}</li>
+				<c:if test="${paidVO.status eq '1'.charAt(0)}">
+					<li>취소 시각: ${kakaoPayVO.cancled_at}</li>
+				</c:if>
+				<li>결제 수단: ${kakaoPayVO.payment_method_time}</li>
+				<li>결제 금액: ${kakaoPayVO.amount}</li>
+				<li>취소된 금액: ${kakaoPayVO.cancled_amount}</li>
+				<li>취소 가능 금액: ${kakaoPayVO.cancel_available_count}</li>
+				<li>결제 카드 정보: ${kakaoPayVO.selected_card_info}</li>
+				<li>결제 취소 상세정보: ${kakaoPayVO.payment_action_details}</li>
+			</ul>
 		</div>
+		<nav class="row pt-4 d-flex flex-justify-between">
+			<a href="list">목록으로</a>
+		</nav>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
 	
@@ -66,3 +103,4 @@ window.addEventListener("load", function() {
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
 </BODY>
 </HTML>
+		

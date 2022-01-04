@@ -122,7 +122,9 @@
 	<task:annotation-driven/>	
 	
 	<!-- 서버 주소 관련 설정 -->
-	<bean id="SERVER_PORT"  class="java.lang.String"><constructor-arg index="0" value="${CONFIG.SERVER_PORT}"/></bean>
+	<bean id="SERVER_ROOT"        class="java.lang.String"><constructor-arg index="0" value="${CONFIG.SERVER_ROOT}"/></bean>
+	<bean id="SERVER_PORT"        class="java.lang.String"><constructor-arg index="0" value="${CONFIG.SERVER_PORT}"/></bean>
+	<bean id="CONTEXT_NAME"       class="java.lang.String"><constructor-arg index="0" value="${CONFIG.CONTEXT_NAME}"/></bean>
 	<!-- 첨부파일 폴더 경로값 설정 -->
 	<bean id="STOREPATH"          class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}" /></bean>
 	<bean id="STOREPATH_MEMBER"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/member" /></bean>

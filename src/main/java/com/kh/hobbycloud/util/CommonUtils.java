@@ -25,5 +25,4 @@ public class CommonUtils {
 	public static String toChar(java.util.Date date) {
 		return sdf.format(date);
 	}
-
 }

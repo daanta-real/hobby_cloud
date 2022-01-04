@@ -2,6 +2,8 @@ package com.kh.hobbycloud.service.pay;
 
 import java.net.URISyntaxException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.client.RestClientException;
 
 import com.kh.hobbycloud.vo.pay.KakaoPayApproveRequestVO;
@@ -15,7 +17,7 @@ public interface PayService {
 
 	// 카카오페이에게 결제 준비(ready)를 요청한 다음,
 	// TID(결제 일련번호)와 next_redirect_pc_url(QR코드 주소) 등을 받아와 리턴하는 메소드
-	public KakaoPayReadyResponseVO ready(KakaoPayReadyRequestVO requestVO) throws URISyntaxException;
+	public KakaoPayReadyResponseVO ready(KakaoPayReadyRequestVO requestVO, HttpServletRequest request) throws URISyntaxException;
 
 	// 사용자가 QR을 찍은 뒤 tg_token(승인번호)가 입수되면,
 	// 카카오페이에게 결제 실행(approve)을 요청하고,
