@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.pay.PaidDto;
 import com.kh.hobbycloud.vo.pay.PaidSearchVO;
+import com.kh.hobbycloud.vo.pay.PaidVO;
 
 @Repository
 public class PaidDaoImpl implements PaidDao {
@@ -41,8 +42,10 @@ public class PaidDaoImpl implements PaidDao {
 
 	// 결제이력 검색
 	@Override
-	public List<PaidDto> search(PaidSearchVO searchVO) {
-		return sqlSession.selectList("paid.search", searchVO);
+	public List<PaidVO> search(PaidSearchVO searchVO) {
+		List<PaidVO> list = sqlSession.selectList("paid.search", searchVO);
+		for(PaidVO vo: list) vo.prepareDateStr();
+		return list;
 	}
 
 }
