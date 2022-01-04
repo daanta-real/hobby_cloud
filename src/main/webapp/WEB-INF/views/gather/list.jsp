@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<jsp:include page="/resources/template/header.jsp" flush="false" />
+	 	<style type="text/css">
+			li {list-style: none; float: left; padding: 6px;}
+		</style>
 <form  method="post">
 
 <!-- <input type="checkbox" name="location" value="서울"> -->
@@ -67,4 +70,21 @@
 		</c:forEach>
 	</tbody>
 </table>
+			<nav class="row pt-4">
+  <ul class="pagination justify-content-center">
+    <c:if test="${pageMaker.prev}">
+    	<li class="page-item "><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}">&laquo;</a></li>
+    </c:if> 
+
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<li class="page-item"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+    </c:forEach>
+
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+    </c:if> 
+  </ul>
+</nav>
+
+	
 <tr>

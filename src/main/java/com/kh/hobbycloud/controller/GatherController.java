@@ -27,10 +27,13 @@ import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
 import com.kh.hobbycloud.service.gather.GatherService;
+import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
 import com.kh.hobbycloud.vo.gather.GatherHeadsVO;
 import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
+import com.kh.hobbycloud.vo.gather.PageMaker;
+import com.kh.hobbycloud.vo.gather.Pagination;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,15 +52,29 @@ public class GatherController {
 	@Autowired
 	private GatherHeadsDao gatherHeadsDao;
 
-	// 일반 목록 페이지
+//	// 일반 목록 페이지
+//	@GetMapping("/list")
+//	public String list(Model model) {
+//		List<GatherVO> list = gatherDao.list();
+//		model.addAttribute("list", list);
+//		System.out.println(list);
+//		return "gather/list";
+//	}
+
 	@GetMapping("/list")
-	public String list(Model model) {
-		List<GatherVO> list = gatherDao.list();
-		model.addAttribute("list", list);
-		System.out.println(list);
+	public String list(Model model,Criteria cri) {
+		
+		
+		model.addAttribute("list", gatherService.list(cri));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(gatherService.listCount());
+		model.addAttribute("pageMaker",pageMaker);
+		
+		System.out.println(gatherService.list(cri));
 		return "gather/list";
 	}
-
 	// 검색결과 목록 페이지
 	@PostMapping("/list")
 	public String search(@ModelAttribute GatherSearchVO gatherSearchVO, Model model) {
