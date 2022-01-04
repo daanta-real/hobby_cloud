@@ -12,7 +12,7 @@ import com.kh.hobbycloud.entity.gather.GatherDto;
 import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
-import com.kh.hobbycloud.vo.gather.Pagination;
+
 
 @Repository
 public class GatherDaoImpl implements GatherDao {
