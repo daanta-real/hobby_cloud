@@ -6,8 +6,8 @@ import lombok.Data;
 public class KakaoPayReadyRequestVO {
 
 	// 우리 측 결제 ID 모음
-	private String partner_order_id; // 웹사이트 측 결제 ID
-	private String partner_user_id;  // 유저 측 결제 ID
+	private String partner_order_id; // 웹사이트 측 결제 일련번호
+	private String partner_user_id;  // 회원 아이디
 
 	// 결제 내용 모음
 	private String item_name; // 결제 대표 이름

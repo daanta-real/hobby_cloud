@@ -1,0 +1,44 @@
+
+/* 공통 속성 */
+* { font-family: 'Noto Sans KR', sans-serif !important; }
+.flex { display:flex; }
+.flexCol { flex-direction:column; }
+.flexRow { flex-direction:row; }
+.flexJus { justify-content:center; }
+.flexAli { align-items:center; }
+.cursor-pointer { cursor:pointer; }
+.minWidthMaxContent { min-width:max-content; }
+.scrollXEnabler { overflow-x:auto; }
+
+/* 엘레멘트별 속성 */
+#topProfileBox, ASIDE#accordionSideMenu div.accordion-body { cursor:pointer; }
+#topProfileImage { width:2rem; height:2rem; object-fit:cover; }
+NAV .navbar-brand { font-size:25px; padding-top:0; text-transform: capitalize; line-height: 40px; }
+HEADER .subject { font-weight:900; box-sizing: border-box; width:fit-content; margin:-3px; }
+ASIDE#accordionSideMenu div.accordion-body:hover { background:var(--bs-blue); color:var(--bs-white); }
+FOOTER { background:var(--bs-gray-400); }
+
+/* 미디어쿼리 속성 */
+@media (max-width: 992px) { /* ~모바일 */
+    .container { max-width: 100%; }
+    FOOTER { font-size:.6rem; }
+}
+@media (min-width: 992px) { /* PC~ */
+    .container { max-width: 940px; }
+    FOOTER { font-size:.8rem; }
+}
+@media (min-width: 1200px) {
+    .container { max-width: 1130px; }
+    FOOTER { font-size:1rem; }
+}
+
+/* 클릭 시 확대되는 애니메이션 */
+@keyframes heartbeat {
+    0% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 디버그용 */
+/*HEADER { background:url("https://cdn.pixabay.com/photo/2021/12/09/20/58/christmas-cookies-6859116_960_720.jpg"); }*/
+FOOTER { font-weight:100; }
+    

@@ -45,11 +45,11 @@
 	
 	<!-- 
 		DispatcherServlet에서 처리하지 말아야 할 요청을 설정
-		= 이미지, 음악, CSS, Javascript 파일 등은 정적 파일이므로 굳이 컨트롤러를 거칠 필요가 없음
+		= 이미지, 음악, CSS, JS 파일 등은 정적 파일이므로 굳이 컨트롤러를 거칠 필요가 없음
 		= location은 실제 위치를 지정하고 mapping은 주소의 패턴을 지정한다
 		= 원하는 주소를 특정 위치로 연결할 수 있다.
 	 -->
- 	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
 	
 	<!-- 
 		파일 업로드(multipart) 방식 요청을 처리할 수 있는 도구를 등록

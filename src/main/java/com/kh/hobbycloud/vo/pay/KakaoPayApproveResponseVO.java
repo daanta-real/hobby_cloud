@@ -10,8 +10,8 @@ public class KakaoPayApproveResponseVO {
 
 	// 우리 측 결제 ID 모음
 	private String cid; //가맹점 코드
-	private String partner_order_id; // 웹사이트 측 결제 ID
-	private String partner_user_id;  // 유저 측 결제 ID
+	private String partner_order_id; // 웹사이트 측 결제 일련번호
+	private String partner_user_id;  // 회원 아이디
 
 	// 카카오측 결제 ID 모음
 	private String aid; // 승인 번호 (pg_token은 인증 확인 번호이고 이건 결제 승인 이력 번호임)

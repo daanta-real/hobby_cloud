@@ -16,9 +16,16 @@
 <!-- 인천 -->
 	
 <!--  제목 검색:	<input type="text" name="title">  -->
- <input type="checkbox" name="category" value="운동">
- <input type="checkbox" name="category" value="미술">
+ <input type="checkbox" name="gatherLocRegion" value="제주">제주도
+  <input type="checkbox" name="gatherLocRegion" value="강원">강원도
+ <input type="text" name="gatherName">
+  <input type="checkbox" name="category" value="운동">운동
+  <input type="checkbox" name="category" value="미술">미술
+   <input type="checkbox" name="category" value="음악">음악
+
+
  <input type="submit" value="검색하기">
+ 
  <a href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
 </form>
 

@@ -140,20 +140,14 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			결제 관리
+			결제 신규 (테스트용)
 			</span>
 		</div>
 	</HEADER>
 	<!-- 제목 영역 끝 -->
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
-		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 조건</div>
 		<!-- 소단원 내용 -->
-
-<%--value="${param.paidStatusList}" value="${param.paidRegistered_start}"
-value="${param.paidRegistered_end}"--%>
-
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<form name="searchForm" method="get" class="row">
@@ -204,62 +198,6 @@ value="${param.paidRegistered_end}"--%>
 					</div>
 				</form>
 			</div>
-		</div>
-		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 결과</div>
-		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5">
-			<div class="scrollXEnabler">
-				<div class="card p-0 minWidthMaxContent">
-					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
-						<thead>
-							<tr class="table-danger">
-								<th scope="col" class="text-center align-middle text-nowrap">결제번호</th>
-								<th scope="col" class="text-center align-middle text-nowrap">회원번호</th>
-								<th scope="col" class="text-center align-middle text-nowrap">ID</th>
-								<th scope="col" class="text-center align-middle text-nowrap">닉네임</th>
-								<th scope="col" class="text-center align-middle text-nowrap">TID</th>
-								<th scope="col" class="text-center align-middle text-nowrap">결제일시</th>
-								<th scope="col" class="text-center align-middle text-nowrap">결제액</th>
-								<th scope="col" class="text-center align-middle text-nowrap">결제상태</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="PaidVO" items="${paidList}">
-								<c:set var="paidStatus" value="${PaidVO.paidStatus == '1'.charAt(0)}" />
-								<tr class="cursor-pointer">
-									<td class="text-center align-middle text-nowrap">${PaidVO.paidIdx}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.memberIdx}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.memberId}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.memberNick}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.paidTid}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.paidRegisteredStr}</td>
-									<td class="text-end align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${PaidVO.paidPrice}" pattern="#,###" /></td>
-									<td class="text-center align-middle text-nowrap text-${paidStatus ? 'success' : 'danger'}">
-										<c:choose>
-											<c:when test="${paidStatus}">
-												결제 완료&nbsp;<a href="${root}/pay/cancel/${PaidVO.paidIdx}" class="btn btn-warning btn-sm">결제 취소</a>
-											</c:when>
-											<c:otherwise>
-												결제 취소됨
-											</c:otherwise>
-										</c:choose>
-									</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<nav class="row pt-4">
-				<ul class="pagination justify-content-center">
-					<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a></li>
-					<li class="page-item active"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-				</ul>
-			</nav>
 		</div>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
