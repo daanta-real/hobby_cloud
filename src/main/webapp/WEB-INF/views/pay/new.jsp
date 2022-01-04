@@ -2,14 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
-<c:set var="vo" value="${failResponseVO}" />
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 결제 실패</TITLE>
+<TITLE>HobbyCloud - 마이 페이지</TITLE>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -37,7 +36,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			결제 실패
+			결제 신규 (테스트용)
 			</span>
 		</div>
 	</HEADER>
@@ -45,11 +44,25 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 내용 -->
-		<div class="d-flex flex-row justify-content-center align-items-center p-sm-2 mx-1 mb-5 container">
-			<div class="m-5 fs-4 row">결제에 실패하였습니다.</div>
-			<div class="m-5 row">
-				<a class="btn btn-primary m-5 col-auto" href="${root}/my/pay">결제 이력 화면으로 돌아가기</a>
-				<a class="btn btn-primary m-5 col-auto" href="${root}/my/">마이페이지로 돌아가기</a>
+		<div class="row p-sm-2 mx-1 mb-5">
+			<div class="container">
+				<form name="newPayForm" method="post" action="${root}/pay/confirm" class="row">
+					<div class="form-group mb-4 col-md-6 col-lg-4">
+						<label for="newPayForm_item_name" class="form-label mb-0">품목명</label>
+						<input name="item_name" id="newPayForm_item_name" type="text" class="form-control" placeholder="아이템명을 입력하세요">
+					</div>
+					<div class="form-group mb-4 col-md-6 col-lg-4">
+						<label for="newPayForm_quantity" class="form-label mb-0">수량</label>
+						<input name="quantity" id="newPayForm_quantity" type="number" class="form-control" placeholder="수량을 입력하세요" value=1>
+					</div>
+					<div class="form-group mb-4 col-md-6 col-lg-4">
+						<label for="newPayForm_total_amount" class="form-label mb-0">결제금액</label>
+						<input name="total_amount" id="newPayForm_total_amount" type="number" class="form-control" placeholder="금액을 입력하세요">
+					</div>
+					<div class="row d-flex justify-content-center mt-3">
+						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">결제하기</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</SECTION>

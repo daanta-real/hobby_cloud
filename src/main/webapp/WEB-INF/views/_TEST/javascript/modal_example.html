@@ -34,14 +34,6 @@ window.addEventListener("load", () => {
 
 });
 
-// 라이브러리: 이벤트 버블링 막기
-function stopEvent() {
-    if(typeof window.event == 'undefined') return;
-    if (!e) var e = window.event;
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-}
-
 // TR로부터 지역/위도/경도값을 취해 FORM INPUT 안에 넣어주는 함수
 function setLoc(el) {
 

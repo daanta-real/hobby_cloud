@@ -2,14 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
-<c:set var="vo" value="${failResponseVO}" />
+<c:set var="vo" value="${cancelResponseVO}" />
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 결제 실패</TITLE>
+<TITLE>HobbyCloud - 결제 취소 성공</TITLE>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -37,7 +37,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			결제 실패
+			결제 취소 성공
 			</span>
 		</div>
 	</HEADER>
@@ -46,7 +46,7 @@ window.addEventListener("load", function() {
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 내용 -->
 		<div class="d-flex flex-row justify-content-center align-items-center p-sm-2 mx-1 mb-5 container">
-			<div class="m-5 fs-4 row">결제에 실패하였습니다.</div>
+			<div class="m-5 fs-4 row">결제 취소에 성공하였습니다.</div>
 			<div class="m-5 row">
 				<a class="btn btn-primary m-5 col-auto" href="${root}/my/pay">결제 이력 화면으로 돌아가기</a>
 				<a class="btn btn-primary m-5 col-auto" href="${root}/my/">마이페이지로 돌아가기</a>

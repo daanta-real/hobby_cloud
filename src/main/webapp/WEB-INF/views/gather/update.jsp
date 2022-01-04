@@ -22,7 +22,7 @@
 	지역<input type="text"	name="gatherLocRegion" value="${GatherVO.gatherLocRegion}"> 
 	<br> 
 	위도<input id="placeLatiHolder" type="text" name="gatherLocLatitude" value="${GatherVO.gatherLocLatitude}">
-	경도<input id="placeLongHolder" type="text" name="gatherLocLogitude"	value="${GatherVO.gatherLocLogitude}">
+	경도<input id="placeLongHolder" type="text" name="gatherLocLogitude"	value="${GatherVO.gatherLocLongitude}">
 	 시작시간<input type="date" name="gatherStart" value="${GatherVO.gatherStart}">
 	<br> 
 	종료시간<input type="date" name="gatherEnd" value="${GatherVO.gatherEnd}">

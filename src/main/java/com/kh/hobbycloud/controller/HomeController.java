@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class HomeController {
 
+	// 기본 메인 페이지
 	@RequestMapping(value = "/")
 	public String home() {
 		log.debug("ㅡㅡHomeController - /home> home(메인페이지) 접속");

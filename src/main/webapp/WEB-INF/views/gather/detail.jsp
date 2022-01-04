@@ -62,7 +62,9 @@
 			<!-- 참가자 리스트 반복문 -->
 		
 			<c:forEach var ="GatherHeadsVO" items="${list2}">
- 				<c:set var="join" value="${GatherHeadsVO.memberIdx eq memberIdx}"></c:set>
+ 			
+ 			<c:set var="join" value="${GatherHeadsVO.memberIdx eq memberIdx}"></c:set>
+			
 			<h1>${memberIdx}</h1>
 			<h1>${GatherHeadsVO.memberIdx }</h1>
 			<tr>

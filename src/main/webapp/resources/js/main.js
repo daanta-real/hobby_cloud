@@ -1,3 +1,4 @@
+
 // 엘리먼트 획득
 var getEl = (id) => document.getElementById(id);
 
@@ -28,12 +29,18 @@ function rainbow(query, styles) {
     });
 }
 const debug_rainbowQueryRun = () => {
-	const query = document.getElementById("debug_query").value;
-	console.log('"' + query + '"의 쿼리에 해당하는 레이어 레인보우화 실행됨');
-	rainbow(query, { padding:"0.3rem", margin:"0.2rem" });
+    const query = document.getElementById("debug_query").value;
+    console.log('"' + query + '"의 쿼리에 해당하는 레이어 레인보우화 실행됨');
+    rainbow(query, { padding:"0.3rem", margin:"0.2rem" });
 };
 
-/*
-document.getElementById("mobileMenuContainer").addEventListener("onload", () => {
-	this.style.tranform = "translateX(-80vw)";
-});*/
+
+//문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+window.addEventListener("load", () => {
+
+	// 모달 변수 정의
+	window.modal = new bootstrap.Modal(document.getElementById("modal"), {
+	    keyboard: false
+	});
+	
+});
