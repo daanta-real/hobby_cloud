@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<title>드래그 & 드롭을 통한 파일 추가 연습 (http://yoonbumtae.com/?p=3225)</title>
+
+<style>
+    #fileInputEl { width:200px; height:200px; border:1px solid red; }
+    #fileDropZone { width:200px; height:200px; border:1px solid green; }
+    #fileDropZone.dragenter, #fileDropZone.dragover { border: 10px solid blue; }
+</style>
+<script>
+
+// 라이브러리. 엘리먼트 하나 생성해서 리턴 - class: 클래스리스트, id:아이디, value:값, text:텍스트, html:HTML
+function createEl(name, param) {
+    var el = document.createElement(name);
+    if(param != undefined) {
+        if(param.class != undefined) {
+            if(Array.isArray(param.class)) for(var i in param.class) el.classList.add(param.class[i]);
+            else el.classList.add(param.class);
+        }
+        if(param.id != undefined) el.id = param.id;
+        if(param.value != undefined) el.value = param.value;
+        if(param.text != undefined) el.innerText = param.text;
+        if(param.html != undefined) el.innerHTML = param.html;
+        if(param.attrib != undefined) for(var i in param.attrib) el.setAttribute(i, param.attrib[i]);
+        if(param.style != undefined) for(var i in param.style) el.style[i] = param.style[i];
+        if(param.child != undefined) {
+            if(param.child instanceof Array) for(var i = 0; i < param.child.length; i++) el.append(param.child[i]);
+            else el.append(param.child);
+        }
+        if(param.onclick != undefined) el.onclick = param.onclick;
+        if(param.src != undefined) el.src = param.src;
+    }
+    return el;
+}
+
+// 라이브러리. element 넘겨주면 자식노드 싹 삭제
+function truncateEl(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+
+// 문서 로딩 완료 시 실행
+window.addEventListener('load', () => {
+    
+    // 엘리먼트 및 환경변수 선언
+    console.log("엘리먼트 선언");
+    window.fileEl = document.getElementById("fileInputObj");
+    window.dropZoneEl = document.getElementById("fileDropZone");
+    window.dropZoneClassList = ["dragenter", "dragleave", "dragover", "drop"];
+
+    // 드롭존 엘리먼트에 입력된 className 클래스만 추가하고 나머지 다 OFF시키는 함수
+    function toggleDraggingClass(className) {
+        dropZoneEl.classList.remove(...dropZoneClassList);
+        dropZoneEl.classList.add(className);
+    }
+    
+    // 업로드 파일 목록을 새로 갱신된 으로 교체
+    function refreshFilesStageList(filesList) {
+        console.log("파일 목록:\n", filesList);
+        fileEl.files = filesList;
+        truncateEl(dropZoneEl);
+        Array.from(fileEl.files).forEach((oneFile) => {
+            console.log(" ㅡ 파일 추가: ", oneFile);
+            dropZoneEl.append(createEl('div', {text:oneFile.name}));
+        });
+    }
+
+    // fileEl의 files 정보를 새로 입수된 파일 목록으로 대체
+    function applyFilesToInput(fileList) {
+        fileEl.files = fileList;
+        refreshFilesStageList(fileEl.files);
+    }
+    
+    // input 태그를 통해 업로드를 할 경우, 변화를 감지하여 통으로 대체
+    fileEl.addEventListener("change", (e) => { applyFilesToInput(e.target.files) });
+    // 드래그한 파일이 드롭존에 진입했을 때
+    dropZoneEl.addEventListener("dragenter", (e) => { e.stopPropagation(); e.preventDefault(); toggleDraggingClass("dragenter"); });
+    // 드래그한 파일이 드롭존을 벗어났을 때
+    dropZoneEl.addEventListener("dragleave", (e) => { e.stopPropagation(); e.preventDefault(); toggleDraggingClass("dragleave"); });
+    // 드래그한 파일이 드롭존에 머물러 있을 때
+    dropZoneEl.addEventListener("dragover", (e) => { e.stopPropagation(); e.preventDefault(); toggleDraggingClass("dragover"); });
+    // 드래그한 파일이 마우스를 뗌으로써 최종 드랍되었을 때
+    dropZoneEl.addEventListener("drop", (e) => { e.preventDefault(); toggleDraggingClass("drop");
+        console.log("실행");
+        // 이벤트 내에서 파일전송 정보 객체를 찾음
+        var receivedFilesList = e.dataTransfer && e.dataTransfer.files;
+        console.log("드래그로 접수된 파일 정보: ", receivedFilesList);
+        // 파일 유형 검사.
+        // 검사 1) 폴더일 경우 업로드 불가 = 빠꾸
+        // ※ 폴더도 객체 1개로 취급되기 때문에 length로 에러 검출하면 안 될 것 같다. 넣어도 작동은 하니 냅둠.
+        if(receivedFilesList.length < 1) { alert("폴더는 업로드 불가능합니다."); return; }
+        // 검사 2) type정보 비었다 = 폴더다 = 에러 = 빠꾸
+        Array.from(receivedFilesList).forEach((one) => {
+            if(one.type.length == 0) { alert("일반 파일 외에는 업로드할 수 없습니다."); return; }
+        });
+        applyFilesToInput(receivedFilesList);
+    });
+
+});
+
+</script>
+</head>
+
+<body>
+
+<form>
+    <input type="file" id="fileInputObj"><span>← 여기를 눌러 파일을 추가하세요.</span>
+    <br/><br/><br/>
+    <div id="fileDropZone">아니면 파일을 여기에 드래그하세요.</div>
+</form>
+
+</body></html>

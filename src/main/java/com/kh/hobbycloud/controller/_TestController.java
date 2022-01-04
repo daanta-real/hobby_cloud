@@ -1,10 +1,7 @@
 package com.kh.hobbycloud.controller;
 
-import java.util.HashMap;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,9 +26,10 @@ public class _TestController {
 	// FORM으로부터 Map 읽어오기 테스트
 	@ResponseBody
 	@PostMapping("/mapTest")
-	public String mapTest(@ModelAttribute HashMap<String, Object> map, MultipartFile file) {
-		log.debug("ㅡㅡㅡMap size: {}", map.size());
-		for(String key: map.keySet()) log.debug("ㅡㅡㅡMap.get({}) = {}", key, map.get(key));
+	public String mapTest(MultipartFile file) {
+		//log.debug("ㅡㅡㅡMap size: {}", map.size());
+		//for(String key: map.keySet()) log.debug("ㅡㅡㅡMap.get({}) = {}", key, map.get(key));
+
 		return null;
 	}
 
