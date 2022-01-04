@@ -10,7 +10,7 @@
 	</select>
 		
 	<!-- 단일조회 BY IDX(Integer)-->
-	<select id="getByIdx" parameterType="integer" resultType="PaidVO">
+	<select id="getByIdx" parameterType="integer" resultType="com.kh.hobbycloud.vo.pay.PaidVO">
 		SELECT p.*, m.member_id, m.member_nick
 		FROM paid p
 		INNER JOIN member m

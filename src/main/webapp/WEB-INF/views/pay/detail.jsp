@@ -2,8 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
-<c:set var="paidVO" value="${paidVO}"/>
-<c:set var="kakaoPayVO" value="${kakaoPayVO}"/>
+<c:set var="paidStatus" value="${PaidVO.paidStatus != '1'.charAt(0)}" />
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
@@ -40,7 +39,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			결제 상세 조회
+			결제 상세 조회 ${PaidVO.paidPrice}
 			</span>
 		</div>
 	</HEADER>
@@ -52,21 +51,14 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<ul class="">
-				<li>본점 주문번호: ${paidVO.paidIdx}</li>
-				<li>카카오페이 주문번호: ${paidVO.paidTid})</li>
-				<li>주문 회원: No.${paidVO.memberIdx} ${paidVO.memberNick}(${paidVO.memberId})님</li>
-				<li>${kakaoPayVO.}</li>
-				<li>결제 금액: ${paidVO.paidPrice}</li>
+				<li>주문번호: No. ${paidVO.paidIdx} (카카오페이 ${paidVO.paidTid})</li>
+				<li>주문 회원: No. ${paidVO.memberIdx} ${paidVO.memberNick} (ID ${paidVO.memberId})님</li>
+				<li>결제 금액: &#8361; ${paidPrice}</li>
 				<li>결제 일시: ${paidVO.paidRegisteredStr}</li>
 				<li>결제 상태:
-					<c:choose>
-						<c:if test="${paidVO.status eq '1'.charAt(0)}">
-							<span class="text-success">결제 완료</span>
-						</c:if>
-						<c:otherwise>
-							<span class="text-danger">취소됨</span>
-						</c:otherwise>
-					</c:choose>
+					<span class="text-${paidStatus ? success : danger}">
+						${paidStatus ? "결제 완료" : "취소됨" }
+					</span>
 				</li>
 			</ul>
 			<ul class="row">
@@ -75,15 +67,16 @@ window.addEventListener("load", function() {
 				<li>상품 수량: ${kakaoPayVO.quantity}</li>
 				<li>결제 시각: ${kakaoPayVO.created_at}</li>
 				<li>승인 시각: ${kakaoPayVO.approved_at}</li>
-				<c:if test="${paidVO.status eq '1'.charAt(0)}">
-					<li>취소 시각: ${kakaoPayVO.cancled_at}</li>
-				</c:if>
-				<li>결제 수단: ${kakaoPayVO.payment_method_time}</li>
-				<li>결제 금액: ${kakaoPayVO.amount}</li>
-				<li>취소된 금액: ${kakaoPayVO.cancled_amount}</li>
-				<li>취소 가능 금액: ${kakaoPayVO.cancel_available_count}</li>
+				<li>결제 수단: ${kakaoPayVO.payment_method_type}</li>
+				<li>취소 가능 금액: ${kakaoPayVO.cancel_available_amount.total}</li>
 				<li>결제 카드 정보: ${kakaoPayVO.selected_card_info}</li>
-				<li>결제 취소 상세정보: ${kakaoPayVO.payment_action_details}</li>
+				<c:if test="${paidStatus == false}">
+					<li>취소 시각: ${kakaoPayVO.canceled_at}</li>
+					<li>취소된 총 금액: &#8361;&nbsp;<fmt:formatNumber value="${kakaoPayVO.canceled_amount.total}" pattern="#,###"/></li>
+					<li>결제 취소 상세정보
+						<c:out value="${kakaoPayVO.payment_action_details}"/>
+					</li>
+				</c:if>
 			</ul>
 		</div>
 		<nav class="row pt-4 d-flex flex-justify-between">

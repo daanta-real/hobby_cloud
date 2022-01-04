@@ -19,6 +19,7 @@ import org.springframework.web.client.RestClientException;
 
 import com.kh.hobbycloud.repository.pay.PaidDao;
 import com.kh.hobbycloud.service.pay.PayService;
+import com.kh.hobbycloud.util.CommonUtils;
 import com.kh.hobbycloud.vo.pay.KakaoPayApproveRequestVO;
 import com.kh.hobbycloud.vo.pay.KakaoPayApproveResponseVO;
 import com.kh.hobbycloud.vo.pay.KakaoPayCancelResponseVO;
@@ -176,9 +177,13 @@ public class PayController {
 		log.debug("================== /pay/detail/{idx} (GET) 진입");
 
 		PaidVO paidVO = paidDao.getByIdx(idx);
+		paidVO.prepareDateStr();
 		KakaoPayVO kakaoPayVO = payService.detail(paidVO.getPaidTid());
 		model.addAttribute("paidVO", paidVO);
-		model.addAttribute("paidVO", kakaoPayVO);
+		model.addAttribute("kakaoPayVO", kakaoPayVO);
+		log.debug("ㅡㅡㅡ찾아낸 PaidVO: {}", paidVO);
+		log.debug("ㅡㅡㅡ찾아낸 kakaoPayVO: {}", kakaoPayVO);
+		model.addAttribute("paidPrice", CommonUtils.attachComma(paidVO.getPaidPrice()));
 
 		return "pay/detail";
 
