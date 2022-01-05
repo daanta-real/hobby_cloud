@@ -1,10 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 <!-- LINKS -->
 <!-- Bootstrap Theme -->
 <LINK rel="stylesheet"
 	href="https://bootswatch.com/5/journal/bootstrap.css">
+<style>
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  justify-content: space-around;
+  padding: 0 0.2em;
+  text-align: center;
+  width: 5em;
+}
+ 
+.star-rating input {
+  display: none;
+}
+ 
+.star-rating label {
+  -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 2.3px;
+  -webkit-text-stroke-color: #2b2a29;
+  cursor: pointer;
+}
+ 
+.star-rating :checked ~ label {
+  -webkit-text-fill-color: gold;
+}
+ 
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  -webkit-text-fill-color: #fff58c;
+}
+
+</style>
+
+
 <!-- Bootstrap -->
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -24,16 +61,18 @@
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
-<c:set var="isLogin" value="${memberIdx != null}"/>
+
+<c:set var="isLogin" value="${memberIdx != null}" />
 
 <c:choose>
-<c:when test="${isLogin}">
+	<c:when test="${isLogin}">
 
 
-</c:when>
+	</c:when>
 </c:choose>
 
-<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번 게시글 </h2>
+<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번
+	게시글</h2>
 
 <table border="1" width="80%">
 	<tbody>
@@ -43,11 +82,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
-				작성자 :${GatherVO.memberNick}
-				|
-				장소 : ${GatherVO.gatherLocRegion}
-			</td>
+			<td>작성자 :${GatherVO.memberNick} | 장소 :
+				${GatherVO.gatherLocRegion}</td>
 		</tr>
 		<!-- 답답해 보이지 않도록 기본높이를 부여 -->
 		<!-- 
@@ -55,125 +91,254 @@
 			(주의) 태그 사이에 쓸데없는 엔터, 띄어쓰기 등이 들어가지 않도록 해야 한다.(모두 표시된다) 
 		-->
 		<tr height="250" valign="top">
-			<td class="participate">
-								
-				<pre>${GatherVO.gatherDetail}23</pre>
-				
-			<!-- 참가자 리스트 반복문 -->
-			<c:set var = "isJoin" value="false"/>
-			<c:forEach var ="GatherHeadsVO" items="${list2}">
-				<c:if test="${GatherHeadsVO.memberIdx  eq memberIdx}" >
-				<!-- 만약에 일치한다  -->
-				<c:set var = "isJoin" value="true"/>
-				</c:if>
- 			<input class="participate"type="hidden" value="${GatherHeadsVO.memberIdx}">
-	
-			<tr>
-			<th>닉네임</th>
-			<th>프로필</th>
-			</tr>
-			<tr>
-			<td>${GatherHeadsVO.memberNick}</td>
-			<td>${GatherHeadsVO.gatherIdx}</td>
+			<td class="participate"><pre>${GatherVO.gatherDetail}</pre> <c:set
+					var="isJoin" value="false" /> <c:set var="isFull" value="false" />
+				<!-- 참가자 리스트 반복문 --> <c:forEach var="GatherHeadsVO" items="${list2}"
+					varStatus="status">
+					<c:out value="${status.count}" />
 
-			
-			</tr>
-			</c:forEach>			
-			
-		<!-- 게시판 사진 반복문 -->	
-			<c:forEach var="GatherFileDto" items="${list}"> 
-			<span><${GatherFileDto.gatherFileUserName}</span>
-			<br>
-			<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}" width="30%" class="image image-round image-border">			
-			</c:forEach>
+					<!-- 참가자 인원을 확인 -->
+					<c:if test="${status.count ==1 }">
+						<c:set var="isFull" value="true" />
+					</c:if>
 
-			
-		</td>
-		
-		<script>
-			$(function(){
-				let partNo = $(".participate").val();
-				console.log("partNo     "+partNo);
-			});
-		</script>
-		
-		
-		
+
+
+					<!-- 참가여부를 확인 -->
+					<c:if test="${GatherHeadsVO.memberIdx  eq memberIdx}">
+						<!-- 만약에 일치한다  -->
+						<c:set var="isJoin" value="true" />
+					</c:if>
+
+
+					<tr>
+						<th>닉네임</th>
+						<th>프로필</th>
+					</tr>
+					<tr>
+						<td>${GatherHeadsVO.memberNick}</td>
+						<td>${GatherHeadsVO.gatherIdx}</td>
+
+
+					</tr>
+				</c:forEach> <c:choose>
+					<c:when test="${isFull}">
+						<h1>헬로</h1>
+					</c:when>
+				</c:choose> <!-- 게시판 사진 반복문 --> <c:forEach var="GatherFileDto" items="${list}">
+					<span><${GatherFileDto.gatherFileUserName}</span>
+					<br>
+					<img
+						src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
+						width="30%" class="image image-round image-border">
+				</c:forEach></td>
+
+
+
 		</tr>
 		<!-- 소모임 참가 /취소 버튼 -->
-			<tr>
-			<td>
-			<!-- 참가하기 버튼 -->
-			<c:choose>
-			<c:when test="${!isJoin}">
-			<a class="btn btn-primary" href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
-			</c:when>
-			<c:otherwise>
-			<a class="btn btn-secondary" href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
-			</c:otherwise>
-			</c:choose>
-			</td>
-			</tr>
-			
-			
- 
 		<tr>
-		<td>	
-				<a href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
-				<a href="${pageContext.request.contextPath}/gather/list">목록보기</a>
-				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}">수정</a>			
-				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}">삭제</a>	
-	
+			<td>
+				<!-- 참가하기 버튼 --> <c:choose>
+					<c:when test="${isJoin}">
+						<a class="btn btn-warning"
+							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
+					</c:when>
+					<c:when test="${isFull}">
+						<a class="btn btn-secondary"
+							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">완료</a>
+					</c:when>
+					<c:otherwise>
+						<a class="btn btn-primary"
+							href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
+					</c:otherwise>
+				</c:choose>
+			</td>
+		</tr>
+		<tr>
+			<td><a href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
+				<a href="${pageContext.request.contextPath}/gather/list">목록보기</a> <a
+				href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}">수정</a>
+				<a
+				href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}">삭제</a>
+
 			</td>
 		</tr>
 	</tbody>
 </table>
 
-<!-- 게시판 작성 목록 -->
+<!-- 게시판 댓글 작성 -->
 <h1>댓글</h1>
 
 <form id="insert-form">
-	내용 : <input type="text" name="gatherReplyDetail">
-		<br>
-		  <input type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
-		  <input type="hidden" name="memberIdx" value="1">
+	내용 : <input type="text" name="gatherReplyDetail"> <br> 
+	<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
+	<input type="hidden" name="memberIdx" value="1">
 	<button type="submit">등록</button>
 </form>
 
 
-<!-- 게시판 댓글 목록 -->
+게시판 댓글 목록
 <template id="gatherVO-template">
 <div class="item">
-<span class="gatherReplyIdx">{{gatherReplyIdx}}</span>
-<span class="memberNick">{{memberNick}}</span>
-<span class="gatherReplyDetail">{{gatherReplyDetail}}</span>
-<span class="gatherReplyDate">{{gatherReplyDate}}</span>
-<button class="remove-btn" data-gatherReplyIdx="{{gatherReplyId}}">삭제</button>
+	<span class="gatherReplyIdx">{{gatherReplyIdx}}</span> <span
+		class="memberNick">{{memberNick}}</span> <span
+		class="gatherReplyDetail">{{gatherReplyDetail}}</span> <span
+		class="gatherReplyDate">{{gatherReplyDate}}</span>
+	<button class="edit-btn" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
+	<button class="remove-btn" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
 </div>
 </template>
 
 <div id="result"></div>
 
 
+<form id="insertReview-form">
+	<div class="star-rating space-x-4 mx-auto">
+        <input type="radio" id="5-stars" name="gatherReviewScore" value="5" v-model="ratings"/>
+        <label for="5-stars" class="star pr-4">★</label>
+        <input type="radio" id="4-stars" name="gatherReviewScore" value="4" v-model="ratings"/>
+        <label for="4-stars" class="star">★</label>
+        <input type="radio" id="3-stars" name="gatherReviewScore" value="3" v-model="ratings"/>
+        <label for="3-stars" class="star">★</label>
+        <input type="radio" id="2-stars" name="gatherReviewScore" value="2" v-model="ratings"/>
+        <label for="2-stars" class="star">★</label>
+        <input type="radio" id="1-star" name="gatherReviewScore" value="1" v-model="ratings" />
+        <label for="1-star" class="star">★</label>
+    </div> 
+	내용 : <input type="text" name="gatherReviewDetail">
+		 <input type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}"> 
+		 <input	type="submit" value="전송하기">
+</form>
+
+<!-- 평점목록 -->
+<template id="gatherReviewVO-template">
+<div class="item">
+	<span class="gatherReviewIdx">{{gatherReviewIdx}}</span> <span
+		class="memberIdx">{{memberIdx}}</span> <span class="gatherIdx">{{gatherIdx}}</span>
+	<span class="gatherReviewScore">{{gatherReviewScore}}</span> <span
+		class="gatherReviewDetail">{{gatherReviewDetail}}</span>
+	<button class="edit-btn" data-gatherreview-idx="{{gatherReviewIdx}}">e</button>
+	<button class="remove-btn" data-gatherreview-idx="{{gatherReviewIdx}}">엑스</button>
+</div>
+</template>
+
+<div id="resultReivew"></div>
 
 
-
-
-
-
-
-
-
+<!-- 평점 등록 -->
 <script>
+$(function(){
+	//처음 들어오면 목록 출력.
+	loadReview();
+	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
+	$("#insertReview-form").submit(function(e){
+		console.log("누름");
+		//this == #insert-form
+		e.preventDefault();
+		
+		var dataValue =$(this).serialize();
+		
+		$.ajax({
+			url:"${pageContext.request.contextPath}/gatherData/reviewInsert",
+			type:"post",
+			data : dataValue,
+			//dataType 없음
+			success:function(resp){
+				console.log("성공", resp);
+				$("#insertReview-form")[0].reset();
+				
+				//성공하면 목록 갱신
+				loadReview();
+			
+			},
+			error:function(e){
+				console.log("실패", e);
+				console.log(dataValue);
+			}
+		});
+	});
+});
+</script>
 
+
+
+
+<!-- 평점 조회 -->
+<script>
+function loadReview(){
+	var gatherIdxValue = $("#gatherIdxValue").data("gather-idx");
+	$.ajax({
+		url:"${pageContext.request.contextPath}/gatherData/reviewList",
+		type:"get",
+		data:{
+			gatherIdx:gatherIdxValue
+		},
+		dateType:"json",
+		success:function(resp){
+			console.log("성공",resp);
+			$("#resultReivew").empty();//내부영역 청소
+			//$("#result").html("");
+			//$("#result").text("");
+			
+			for(var i=0; i < resp.length; i++){
+				var template = $("#gatherReviewVO-template").html();
+				
+				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
+				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
+				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
+				template = template.replace("{{memberIdx}}", resp[i].memberIdx);
+				template = template.replace("{{gatherReviewDetail}}", resp[i].gatherReviewDetail);
+		
+				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
+	
+				console.log(tag.find(".remove-btn"));
+				tag.find(".remove-btn").click(function(){
+					console.log("누름");
+					deleteReview($(this).data("gatherreview-idx"));
+				});
+				
+		
+				$("#resultReivew").append(tag);
+			}
+		},
+		error:function(e){
+			console.log("실패",e);
+		}
+	});
+}
+
+
+
+function deleteReview(gatherReviewIdxValue){
+
+	$.ajax({
+//			url:"${pageContext.request.contextPath}/data/data8?examId="+examIdValue,
+		url:"${pageContext.request.contextPath}/gatherData/reviewDelete?"+$.param({"gatherReviewIdx":gatherReviewIdxValue}),
+		type:"delete",
+			data:{
+				gatherReviewIdx : gatherReviewIdxValue
+			},
+		dataType:"text",
+		success:function(resp){
+			console.log("성공", resp);
+			
+			loadReview();//데이터가 변하면 무조건 갱신
+		},
+		error:function(e){}
+	});
+}
+</script>
+
+
+
+
+
+<!-- 댓글 등록구현 -->
+<script>
 $(function(){
 	//처음 들어오면 목록 출력
 	loadList();
-	
-	
-	
-	
-	
 	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insert-form").submit(function(e){
 		//this == #insert-form
@@ -206,6 +371,9 @@ $(function(){
 });
 
 
+
+
+//댓글 목록 리스트
 function loadList(){
 	var gatherIdxValue = $("#gatherIdxValue").data("gather-idx");
 	$.ajax({
@@ -222,25 +390,21 @@ function loadList(){
 				var template = $("#gatherVO-template").html();
 				
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
+				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
+				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
 				template = template.replace("{{memberNick}}",resp[i].memberNick);
 				template = template.replace("{{gatherReplyDetail}}",resp[i].gatherReplyDetail);
 				template = template.replace("{{gatherReplyDate}}",resp[i].gatherReplyDate);
 				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 				
-				
-				
-				//삭제 버튼 클릭 시
-				tag.find(".remove-btn").click(function(){//tag에서 .remove-btn을 찾아서 클릭 이벤트 지정하고
-				console.log("찾음");
-					deleteData($(this).data("gatherReplyIdx"));
-				
+				console.log(tag.find(".remove-btn"));
+				tag.find(".remove-btn").click(function(){
+					console.log("누름");
+					deleteReply($(this).data("gatherreply-idx"));
 				});
-				
-				
-		
-				
-				$("#result").append(template);
+						
+				$("#result").append(tag);
 			}
 		},
 		error:function(e){
@@ -249,32 +413,42 @@ function loadList(){
 	});
 }
 
+</script>
+<!-- 댓글삭제 -->
+<script>
+function deleteReply(gatherReplyIdxValue){
 
-function deleteData(gatherReplyIdxValue){
 	$.ajax({
-		url:"${pageContext.request.contextPath}/gatherData/replyDelete"+$.param({"gatherReplyIdx":gatherReplyIdxValue}),
+//			url:"${pageContext.request.contextPath}/data/data8?examId="+examIdValue,
+		url:"${pageContext.request.contextPath}/gatherData/replyDelete?"+$.param({"gatherReplyIdx":gatherReplyIdxValue}),
 		type:"delete",
+			data:{
+				gatherReplyIdx : gatherReplyIdxValue
+			},
 		dataType:"text",
 		success:function(resp){
-			console.log("성공",resp),
+			console.log("성공", resp);
+			
 			loadList();
 		},
-		error:function(e){
-			console.log("실패", e);
-		}
-		
+		error:function(e){}
 	});
-	
 }
-
 </script>
 
-<script>
 
-$.ajax({
-	
-})
-</script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
