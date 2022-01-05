@@ -229,7 +229,7 @@ function setLoc(el) {
 		<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999">
 		 지역<input type="text"	name="lecLocRegion" value="지역">
 		 <br> 
-		 위도<input	id="placeLatiHolder" type="text" name="lecLocLatitude">
+		 위도<input id="placeLatiHolder" type="text" name="lecLocLatitude">
 		 경도<input id="placeLongHolder" type="text" name="lecLocLongitude">
 	</div>
 	<div class="row">

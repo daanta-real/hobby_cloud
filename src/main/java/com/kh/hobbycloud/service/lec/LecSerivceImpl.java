@@ -13,8 +13,10 @@ import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.repository.lec.LecLikeDao;
+import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
+import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -148,5 +150,15 @@ public class LecSerivceImpl implements LecService{
 	@Override
 	public int likeCountEvery(int lecIdx) {
 		return lecLikeDao.likeCountEvery(lecIdx);
+	}
+	
+	@Override
+	public List<LecListVO> list(LecCriteria cri) {
+		return lecDao.list(cri);
+	}
+
+	@Override
+	public int listCount() {
+		return lecDao.listCount();
 	}
 }

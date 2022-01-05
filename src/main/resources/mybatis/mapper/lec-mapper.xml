@@ -41,6 +41,31 @@
 <!-- 		) -->
 <!-- 	</insert> -->
 	
+	<!-- 게시글 총 개수 구하기 -->
+	<select id="listCount" resultType="int" >
+	select count(*) as BNO from (
+		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
+			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, 
+			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+			from lec L
+		left outer join tutor T on L.tutor_idx = T.tutor_idx
+		left outer join member M on T.member_idx = M.member_idx
+		)
+	</select>
+		
+	<select id="listPage" resultType="LecListVO" parameterType="Criteria">
+	select * from(
+	select rownum  rn , TMP.* from(
+		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
+			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, 
+			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+			from lec L
+		left outer join tutor T on L.tutor_idx = T.tutor_idx
+		left outer join member M on T.member_idx = M.member_idx
+	  )TMP
+	) where rn between #{rowStart} and #{rowEnd}
+	</select>
+	
 	<!-- 강좌 상세 -->
 	<select id="get" parameterType="int" resultType="LecDetailVO">
 		select L.*, T.tutor_detail, T.tutor_registered , M.member_nick, M.member_email, M.member_phone, 
@@ -77,7 +102,10 @@
 			and lec_idx = #{lecIdx}
 			</if>
 			<if test="lecCategoryName != '' and lecCategoryName != null">
-			and instr(lec_category_name, #{lecCategoryName}) > 0
+				and lec_category_name in
+				<foreach item="statOne" collection="category" open="(" close=")" separator="," >
+				#{statOne}
+				</foreach>
 			</if>
 			<if test="lecName != '' and lecName != null">
 			and instr(lec_name, #{lecName}) > 0
@@ -166,8 +194,14 @@
 	</select>
 	
 	<!-- 강좌 수정 -->
-	<update id="edit" parameterType="lecDetailVO">
-	
+	<update id="edit" parameterType="lecDto">
+		update lec set 
+		lec_name = #{lecName}, lec_category_name = #{lecCategoryName},
+		lec_detail = #{lecDetail}, place_idx = #{placeIdx}, lec_loc_region = #{lecLocRegion},
+		lec_loc_latitude = #{lecLocLatitude}, lec_loc_longitude = #{lecLocLongitude},
+		lec_price = #{lecPrice}, lec_head_count = #{lecHeadCount}, lec_contains_count = #{lecContainsCount},
+		lec_start = #{lecStart}, lec_end = #{lecEnd}
+		where lec_idx = #{lecIdx}
 	</update>
 	
 	<!--  강좌 삭제 -->

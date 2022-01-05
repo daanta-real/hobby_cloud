@@ -22,15 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecService;
+import com.kh.hobbycloud.vo.lec.LecCriteria;
+import com.kh.hobbycloud.vo.lec.LecPageMaker;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
+import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -52,10 +54,24 @@ public class LecController {
 	@Autowired
 	private LecReplyDao lecReplyDao;
 	
+	//목록
+	@GetMapping("/list")
+	public String list(Model model,LecCriteria cri) {
+		model.addAttribute("list", lecService.list(cri));
+		
+		LecPageMaker pageMaker = new LecPageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lecService.listCount());
+		model.addAttribute("pageMaker",pageMaker);
+		
+		System.out.println(lecService.list(cri));
+		return "lec/list";
+	}
+	
 	//목록(검색 가능)
 	@RequestMapping("/list")
 	public String search(@RequestParam Map<String ,Object> param , Model model) {
-		List<LecDto> listSearch = lecDao.listSearch(param);
+		List<LecListVO> listSearch = lecDao.listSearch(param);
 		model.addAttribute("listSearch", listSearch);
 		return "lec/list";
 	}
