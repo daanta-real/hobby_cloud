@@ -121,7 +121,7 @@
 
 <table border="1" width="90%">
 	<thead>
-		<tr>
+		<tr align="center">
 		<th width="30%">사진</th>
 			<th>번호</th>
 			<th >제목</th>
@@ -135,22 +135,22 @@
 
 	<tbody align="center">
 		<c:forEach var="GatherVO" items="${list}">
-			<tr>
-			<input type="hidden" class="fgTitle" value="${GatherVO.gatherName}">
-			<input type="hidden" class="fgLatitude" value="${GatherVO.gatherLocLatitude}">
- 			<input type="hidden" class="fgLongitude" value="${GatherVO.gatherLocLongitude}">
-			<td>
-			<img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%">
-			</td>
+			<tr align="center">
 			
+				<td>
+				<img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%">
+				</td>		
 				<td>${GatherVO.gatherIdx}</td>
-				<td align="left">
-				<a href="${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx }">${GatherVO.gatherName }</a>
+				<td>
+				<a href="${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}">${GatherVO.gatherName }</a>
 				</td>
 				<td>${GatherVO.memberNick}</td>
 				<td>${GatherVO.gatherLocRegion}</td>
 				<td>${GatherVO.gatherHeadCount}</td>
 				<td>${GatherVO.gatherName}</td>
+				<td><input type="hidden" class="fgTitle" value="${GatherVO.gatherName}"></td>
+				<td><input type="hidden" class="fgLatitude" value="${GatherVO.gatherLocLatitude}"></td>
+			 	<td><input type="hidden" class="fgLongitude" value="${GatherVO.gatherLocLongitude}"></td>
 			</tr>
 		</c:forEach>
 	</tbody>

@@ -151,7 +151,7 @@
 
 // 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", () => {
-
+	
     // 모달 변수 정의
     window.modal = new bootstrap.Modal(document.getElementById("modal"), {
         keyboard: false
@@ -217,7 +217,10 @@ function setLoc(el) {
 		 <br> 
 		 위도<input	id="placeLatiHolder" type="text" name="gatherLocLatitude">
 		 경도<input id="placeLongHolder" type="text" name="gatherLocLongitude">
-		 시작시간<input type="date" name="gatherStart">
+		
+		 	<input id="startDate" type="date">
+		 	 <input id="startTime" type="time">
+		 시작시간<input id="start" type="hidden" name="gatherStart">
 	<br>
 		 종료시간<input type="date" name="gatherEnd"> 
 		 최대원인원수<input	type="text" name="gatherMax" value="1">
@@ -229,6 +232,15 @@ function setLoc(el) {
 	
 	</form>
 
+<script>
+
+
+function(makeStart){
+	
+	
+	
+}
+</script>
 
 
 <!-- 모달 여는 버튼 -->
