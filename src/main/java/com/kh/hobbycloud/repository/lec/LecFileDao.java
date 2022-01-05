@@ -1,6 +1,7 @@
 package com.kh.hobbycloud.repository.lec;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,4 +13,5 @@ public interface LecFileDao {
 	LecFileDto get(int lecFileIdx);
 	LecFileDto getByIdx(int lecIdx);
 	byte[] load(int lecFileIdx) throws IOException;
+	List<LecFileDto> getByLecIdx_list(int lecIdx);
 }
