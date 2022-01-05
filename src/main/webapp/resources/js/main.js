@@ -45,6 +45,13 @@ function stopEvent() {
     if (e.stopPropagation) e.stopPropagation();
 }
 
+//라이브러리. 엘리먼트의 클래스명 목록에, 입력된 classTarget 들만 추가하고 나머지 classList 들은 다 제거키는 함수
+//매개변수: el(대상 엘리먼트), classTarget(ON시킬 클래스명), classList(전체 클래스명 목록)
+function onSpecificClasses(el, classTarget, classList) {
+	el.classList.remove(...classList);
+	el.classList.add([].concat(classTarget));
+}
+
 // 라이브러리. 디버그용 - 랜덤한 css html 보더 설정
 function rainbow(query, styles) {
     var rndClr = ['Red', 'Lime', 'Blue', 'Yellow', 'Cyan', 'Magenta', 'Silver', 'Gray', 'Maroon', 'Olive', 'Green', 'Purple', 'Teal', 'Navy'];

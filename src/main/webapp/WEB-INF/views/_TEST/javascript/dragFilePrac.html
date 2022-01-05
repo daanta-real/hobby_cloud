@@ -39,6 +39,13 @@ function createEl(name, param) {
 // 라이브러리. element 넘겨주면 자식노드 싹 삭제
 function truncateEl(el) { while (el.firstChild) el.removeChild(el.firstChild); }
 
+// 라이브러리. 엘리먼트의 클래스명 목록에, 입력된 classTarget 들만 추가하고 나머지 classList 들은 다 제거키는 함수
+// 매개변수: el(대상 엘리먼트), classTarget(ON시킬 클래스명), classList(전체 클래스명 목록)
+function onSpecificClasses(el, classTarget, classList) {
+    el.classList.remove(...classList);
+    el.classList.add([].concat(classTarget));
+}
+
 // 문서 로딩 완료 시 실행
 window.addEventListener('load', () => {
     
@@ -48,39 +55,40 @@ window.addEventListener('load', () => {
     window.dropZoneEl = document.getElementById("fileDropZone");
     window.dropZoneClassList = ["dragenter", "dragleave", "dragover", "drop"];
 
-    // 드롭존 엘리먼트에 입력된 className 클래스만 추가하고 나머지 다 OFF시키는 함수
-    function toggleDraggingClass(className) {
-        dropZoneEl.classList.remove(...dropZoneClassList);
-        dropZoneEl.classList.add(className);
-    }
+
     
-    // 업로드 파일 목록을 새로 갱신된 으로 교체
+    // 업로드 파일 목록을 새로 갱신해서 보여줌
     function refreshFilesStageList(filesList) {
         console.log("파일 목록:\n", filesList);
         fileEl.files = filesList;
         truncateEl(dropZoneEl);
         Array.from(fileEl.files).forEach((oneFile) => {
             console.log(" ㅡ 파일 추가: ", oneFile);
-            dropZoneEl.append(createEl('div', {text:oneFile.name}));
+            dropZoneEl.append(
+                createEl('div', { class:['d-flex', 'justify-contents-center', 'align-items-center'], child:[
+                    createEl('span', { text:oneFile.name }),
+                    createEl('button', { class:['badge', 'rounded-pill', 'bg-danger'], text:'X' })
+                ]})
+            );
         });
     }
 
-    // fileEl의 files 정보를 새로 입수된 파일 목록으로 대체
-    function applyFilesToInput(fileList) {
-        fileEl.files = fileList;
+    // fileEl 엘리먼트의 files 정보에 새로운 리스트를 추가
+    function addFilesToInput(fileList) {
+        fileEl.files.add(...fileList);
         refreshFilesStageList(fileEl.files);
     }
     
-    // input 태그를 통해 업로드를 할 경우, 변화를 감지하여 통으로 대체
+    // (input 태그를 쓸 경우 한정) input 태그를 통해 업로드를 할 경우, 변화를 감지하여 통으로 대체
     fileEl.addEventListener("change", (e) => { applyFilesToInput(e.target.files) });
     // 드래그한 파일이 드롭존에 진입했을 때
-    dropZoneEl.addEventListener("dragenter", (e) => { e.stopPropagation(); e.preventDefault(); toggleDraggingClass("dragenter"); });
+    dropZoneEl.addEventListener("dragenter", (e) => { e.stopPropagation(); e.preventDefault(); onSpecificClasses(dropZoneEl, "dragenter", dropZoneClassList); });
     // 드래그한 파일이 드롭존을 벗어났을 때
-    dropZoneEl.addEventListener("dragleave", (e) => { e.stopPropagation(); e.preventDefault(); toggleDraggingClass("dragleave"); });
+    dropZoneEl.addEventListener("dragleave", (e) => { e.stopPropagation(); e.preventDefault(); onSpecificClasses(dropZoneEl, "dragleave", dropZoneClassList); });
     // 드래그한 파일이 드롭존에 머물러 있을 때
-    dropZoneEl.addEventListener("dragover", (e) => { e.stopPropagation(); e.preventDefault(); toggleDraggingClass("dragover"); });
+    dropZoneEl.addEventListener("dragover", (e) => { e.stopPropagation(); e.preventDefault(); onSpecificClasses(dropZoneEl, "dragover", dropZoneClassList); });
     // 드래그한 파일이 마우스를 뗌으로써 최종 드랍되었을 때
-    dropZoneEl.addEventListener("drop", (e) => { e.preventDefault(); toggleDraggingClass("drop");
+    dropZoneEl.addEventListener("drop", (e) => { e.preventDefault(); onSpecificClasses(dropZoneEl, "drop", dropZoneClassList);
         console.log("실행");
         // 이벤트 내에서 파일전송 정보 객체를 찾음
         var receivedFilesList = e.dataTransfer && e.dataTransfer.files;
@@ -89,11 +97,11 @@ window.addEventListener('load', () => {
         // 검사 1) 폴더일 경우 업로드 불가 = 빠꾸
         // ※ 폴더도 객체 1개로 취급되기 때문에 length로 에러 검출하면 안 될 것 같다. 넣어도 작동은 하니 냅둠.
         if(receivedFilesList.length < 1) { alert("폴더는 업로드 불가능합니다."); return; }
-        // 검사 2) type정보 비었다 = 폴더다 = 에러 = 빠꾸
+        // 검사 2) .type 빈값이다 = 폴더다 = 에러 = 빠꾸
         Array.from(receivedFilesList).forEach((one) => {
             if(one.type.length == 0) { alert("일반 파일 외에는 업로드할 수 없습니다."); return; }
         });
-        applyFilesToInput(receivedFilesList);
+        addFilesToInput(receivedFilesList);
     });
 
 });
