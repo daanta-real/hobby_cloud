@@ -194,7 +194,49 @@ function setLoc(el) {
 
 </script>
 
-
+        <script>
+				function makeTime(){
+					let startDate= $("#startDate").val(); // YYYY-MM-DD
+					let startTime=  $("#startTime").val();// 24HH:mm		
+					let start = startDate + " " + startTime;		
+					$("#start").val(start);
+					let endDate = $("#endDate").val();
+					let endTime =$("#endTime").val();
+					let end = endDate +" "+endTime;
+					$("#end").val(end);
+					
+				}
+				$(function(){
+					$("#insert-btn").click(function(e){
+					//시간설정 잘못 된 것
+					makeTime(); 
+					let startTime = new Date($("#start").val());
+			        let endTime    = new Date($("#end").val());
+			        let today = new Date();
+			             //빈칸일 경우
+// 					"input[name=]").val()==""||
+// 					$("input[name=]").val()==""||
+// 					$("input[name=]").val()==""||
+// 					$("input[name=]").val()==""||
+// 					$("input[name=]").val()==""
+						if(endTime>startTime&&startTime>today)
+						{  
+							
+							e.preventDefault();
+							makeTime();
+   						} else{
+		                e.preventDefault();		
+		                alert("시간 설정을 확인해주세요");
+		                console.log(endTime);      
+						console.log(startTime);
+						console.log(today);
+						console.log(endTime >startTime);
+						console.log(startTime>today);
+						console.log(endTime>startTime>today);  
+   						}	    
+					});
+		        });
+				</script>
 
 
 
@@ -202,7 +244,7 @@ function setLoc(el) {
 <h1>소모임 등록창</h1>
 <div id="map"></div>
 
-<form method="post" enctype="multipart/form-data">
+<form action="insert" method="post" enctype="multipart/form-data" id="insert-form">
 
 
 	회원 idx<input type="text" name="memberIdx" value="99999"> 취미분류
@@ -218,29 +260,25 @@ function setLoc(el) {
 		 위도<input	id="placeLatiHolder" type="text" name="gatherLocLatitude">
 		 경도<input id="placeLongHolder" type="text" name="gatherLocLongitude">
 		
-		 	<input id="startDate" type="date">
+		 시작시간<input id="startDate" type="date">
 		 	 <input id="startTime" type="time">
-		 시작시간<input id="start" type="hidden" name="gatherStart">
-	<br>
-		 종료시간<input type="date" name="gatherEnd"> 
+		 <input id="start" type="hidden" name="gatherStart">
+		<br>
+		 종료시간 	<input id="endDate" type="date">
+		 		<input id="endTime" type="time">
+		<input id="end" type="hidden" name="gatherEnd">
 		 최대원인원수<input	type="text" name="gatherMax" value="1">
 		 현재오픈여부 <input	type="text" name="gatherStaus" value="1"> <br>
 		 
 		 <input type="file" name="attach" enctype="multipart/form-data" multiple>
-		<input type="submit" value="전송하기">
+		<input id="insert-btn" type="submit" value="전송하기">
 	 <br> 
 	
 	</form>
 
-<script>
 
 
-function(makeStart){
-	
-	
-	
-}
-</script>
+
 
 
 <!-- 모달 여는 버튼 -->

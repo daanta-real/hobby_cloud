@@ -89,7 +89,8 @@ insert into gather(gather_idx, member_idx, lec_category_name,
 values(#{gatherIdx},#{memberIdx},#{lecCategoryName},
 #{placeIdx},#{gatherName},#{gatherDetail},sysdate,
 #{gatherHeadCount},#{gatherLocRegion},#{gatherLocLatitude},
-#{gatherLocLongitude},#{gatherStart},#{gatherEnd},
+#{gatherLocLongitude},to_date(#{gatherStart},'YYYY-MM-DD hh24:mi'),
+to_date(#{gatherEnd},'YYYY-MM-DD hh24:mi'),
 #{gatherMax},#{gatherStaus}
 )
 </insert>
