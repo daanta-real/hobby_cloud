@@ -33,7 +33,7 @@ import com.kh.hobbycloud.vo.gather.GatherHeadsVO;
 import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
 import com.kh.hobbycloud.vo.gather.PageMaker;
-import com.kh.hobbycloud.vo.gather.Pagination;
+
 
 import lombok.extern.slf4j.Slf4j;
 
