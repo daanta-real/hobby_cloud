@@ -9,6 +9,6 @@ public class PetitionsFileDto {
 	private String petitionsFileMemberName;
 	private String petitionsFileServerName;
 	private long petitionsFileSize;
-	private int petitionsFileType;
+	private String petitionsFileType;
 
 }

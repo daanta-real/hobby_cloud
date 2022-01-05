@@ -72,7 +72,12 @@ where instr(${column},#{keyword})> 0 order by notice_idx desc
 
 <!-- 조회수 증가 -->
 <update id="views" parameterType="int">
-update notice set notice_views=notice_views+1 where notice_idx=${notice_idx}
+update notice set notice_views=notice_views+1 where notice_idx=#{noticeIdx}
 </update>
-	
+
+<!-- 남의글일경우만 조회수 증가 -->
+<update id="read" parameterType="NoticeDto">
+update notice set notice_views = notice_views+1
+where notice_idx =#{noticeIdx} and member_idx != #{memberIdx}
+</update>	
 </mapper>

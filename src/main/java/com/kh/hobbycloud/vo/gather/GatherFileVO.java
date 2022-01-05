@@ -15,7 +15,7 @@ public class GatherFileVO {
 	private String gatherName, gatherDetail;
 	// 1-2. 위치 관련
 	private String gatherLocRegion;
-	private int gatherLocLatitude, gatherLocLogitude;
+	private String gatherLocLatitude, gatherLocLongitude;
 	// 1-3. 날짜 관련
 	private String gatherRegistered, gatherStart, gatherEnd;
 

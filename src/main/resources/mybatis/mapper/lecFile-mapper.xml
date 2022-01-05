@@ -42,4 +42,14 @@
 		select * from lec_file where lec_idx = #{lecIdx}
 	</select>
 	
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+	  	delete from lec_file where lec_idx = #{lecIdx}
+	</delete>
+	
+	<!-- 실시간 삭제 -->
+	<delete id="deleteAjax" parameterType="int">
+		delete from lec_file where lec_file_idx = #{lecFileIdx}
+	</delete>
+	
 </mapper>

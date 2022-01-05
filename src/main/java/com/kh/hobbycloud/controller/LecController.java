@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,8 @@ import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
+import com.kh.hobbycloud.vo.lec.LecEditVO;
+import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +64,8 @@ public class LecController {
 	@PostMapping("/register")
 	public String register(@ModelAttribute LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
 //		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
-		lecService.register(lecRegisterVO);
-		return "redirect:register_success";
+		int lecIdx = lecService.register(lecRegisterVO);
+		return "redirect:detail/" + lecIdx;
 	}
 
 	@GetMapping("/register_success")
@@ -71,47 +74,63 @@ public class LecController {
 	}
 
 	//상세
-	@RequestMapping("/detail")
-	public String detail(@RequestParam int lecIdx, Model model) {
+	@RequestMapping("/detail/{lecIdx}")
+	public String detail(@PathVariable int lecIdx, HttpSession session, Model model) {
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-		LecFileDto lecFileDto = lecFileDao.getByIdx(lecIdx);
+
+		List<LecFileDto> list = lecFileDao.getByIdx(lecIdx);
 		model.addAttribute("lecDetailVO", lecDetailVO);
-		model.addAttribute("lecFileDto", lecFileDto);
+		model.addAttribute("list", list);
+
+		log.debug("세션{},", session.getAttribute("memberIdx"));
+
+		//좋아요 구현
+		//회원일때 보이고 비회원이면 안보이고
+		if(session.getAttribute("memberIdx") != null) {
+			LecLikeVO lecLikeVO = new LecLikeVO();
+			lecLikeVO.setLecIdx(lecIdx);
+			int isLike = 0;
+
+			lecLikeVO.setMemberIdx((Integer)session.getAttribute("memberIdx"));
+
+			int check = lecService.likeCount(lecLikeVO);
+			if(check ==0) {
+				lecService.likeInsert(lecLikeVO);
+			}else if(check==1) {
+				isLike = lecService.likeGetInfo(lecLikeVO);
+			}
+
+			model.addAttribute("isLike", isLike);
+		}
+
 		return "lec/detail";
 	}
 
 	//강좌 수정
-	@GetMapping("/edit")
-	public String edit(@RequestParam int lecIdx, Model model) {
+	@GetMapping("/edit/{lecIdx}")
+	public String update(@PathVariable int lecIdx, Model model) {
 		log.debug("ㅡㅡㅡ /lec/edit?" + lecIdx + " (강좌 파일 수정 GET) 진입");
 
-		// 강좌 정보 불러오기
+		// 데이터 획득: VO 및 DTO
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
 		log.debug("ㅡㅡㅡ lecDetailVO: {}", lecDetailVO);
 		model.addAttribute("lecDetailVO", lecDetailVO);
 
-		// 해당 강좌의 파일들 정보 불러오기
-		List<LecFileDto> lecFileDto = lecFileDao.getByLecIdx_list(lecIdx);
-		log.debug("ㅡㅡㅡ lecFileDto = {}", lecFileDto);
-		model.addAttribute("lecFileDto", lecFileDto);
+		// 획득된 데이터를 Model에 지정
+		List<LecFileDto> list = lecFileDao.getByLecIdx_list(lecIdx);
+		log.debug("ㅡㅡㅡ List<LecFileDto> list = {}", list);
+		model.addAttribute("list", list);
 
 		return "lec/edit";
 	}
 
 	// 강좌 수정 처리
-	// map에는 fileList와 lecDetailVO가 넘어온다.
-	@PostMapping("/edit")
-	public String edit(@ModelAttribute Map<String, Object> map, Model model, HttpSession session) {
-
-		// 넘어온 파일정보를 모델로 넘김
-		List<String> filesList = (List<String>) map.get("filesList");
-		log.debug("ㅡㅡㅡ filesList = {}", filesList);
-
-		// 수정된 글정보를 갖고옴
-		LecDetailVO lecDetailVO = (LecDetailVO) map.get("lecDetailVO");
-		log.debug("ㅡㅡㅡ lecDetailVO = {}", lecDetailVO);
-
-		return "lec/list";
+	@PostMapping("/edit/{lecIdx}")
+	public String update(@ModelAttribute LecEditVO lecEditVO) throws IllegalStateException, IOException {
+		// 수정
+		lecService.edit(lecEditVO);
+		int lecIdx = lecEditVO.getLecIdx();
+		return "redirect:/lec/detail/" + lecIdx;
 	}
 
 	// 강좌 삭제
@@ -121,43 +140,40 @@ public class LecController {
 		return "redirect:list";
 	}
 
-	//파일 다운로드
-	@GetMapping("/lecfile")
+	// 파일 전송 다운로드 (파일 전송 실시)
+	@GetMapping("/lecFile/{lecFileIdx}")
 	@ResponseBody
-	public ResponseEntity<ByteArrayResource> lecfile(
-				@RequestParam int lecIdx
-			) throws IOException {
+	public ResponseEntity<ByteArrayResource> file(@PathVariable int lecFileIdx) throws IOException {
 
 		// 0. 매개변수로 lecIdx가 넘어와 있다.
-		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 lecIdx : " + lecIdx);
+		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 lecIdx : " + lecFileIdx);
 
 		// 1. lecIdx를 이용하여, 이미지 파일정보 전체를 DTO로 갖고 온다.
-		LecFileDto lecFileDto = lecFileDao.getByIdx(lecIdx);
+		LecFileDto lecFileDto = lecFileDao.get(lecFileIdx);
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 lecFileDto : "+lecFileDto);
 
 		// 2. 갖고 온 DTO에서 실제 저장 파일명(save name)을 찾아낸다.
 		String savename = lecFileDto.getLecFileServerName();
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 2. 찾아낸 파일명: " + savename);
 
-		// 3-1. 프로필번호(memberProfileIdx)로 실제 파일 정보를 불러온다
-		byte[] data = lecFileDao.load(lecIdx);
+		// 3-1. 프로필번호(memberProfileIdx)를 이용하여 내가 전송할 실제 파일 정보를 불러온다
+		byte[] data = lecFileDao.load(lecFileIdx);
 		ByteArrayResource resource = new ByteArrayResource(data);
-		System.out.println("ㅡㅡㅡㅡㅡㅡ 3-1. 불러낸 파일 크기: " + data.length);
 
-		// 3-2. 불러낸 파일명을 실제 다운로드 가능한 파일명으로 바꾼다.
-		String encodeName = URLEncoder.encode(lecFileDto.getLecFileServerName(), "UTF-8");
+		// 보낼 파일명 설정
+		String encodeName = URLEncoder.encode(lecFileDto.getLecFileUserName(), "UTF-8");
 		encodeName = encodeName.replace("+", "%20");
-		System.out.println("ㅡㅡㅡㅡㅡㅡ 3-2. 변경된 파일명: " + encodeName);
 
-		return ResponseEntity.ok()
-									//.header("Content-Type", "application/octet-stream")
-									.contentType(MediaType.APPLICATION_OCTET_STREAM)
-									//.header("Content-Disposition", "attachment; filename=\""+이름+"\"")
-									.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+encodeName+"\"")
-									//.header("Content-Encoding", "UTF-8")
-									.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
-									//.header("Content-Length", String.valueOf(memberProfileDto.getMemberProfileSize()))
-									.contentLength(lecFileDto.getLecFileSize())
-								.body(resource);
+		// 실제 파일 전송
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM)
+			// .header("Content-Disposition", "attachment; filename=\""+이름+"\"")
+			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodeName + "\"")
+			.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
+			// .header("Content-Length",
+			// String.valueOf(memberProfileDto.getMemberProfileSize()))
+			.contentLength(lecFileDto.getLecFileSize()).body(resource);
+
 	}
+
+
 }

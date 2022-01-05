@@ -36,6 +36,7 @@
 					<th>강사</th>
 					<th>수강료</th>
 					<th>수강 인원</th>
+					<th>좋아요</th>
 					<th>강의수</th>
 					<th>강좌시작날짜</th>
 					<th>강좌종료날짜</th>
@@ -50,10 +51,11 @@
 				<tr>
 					<td>${lecListVO.lecIdx}</td>
 					<td>${lecListVO.lecCategoryName}</td>
-					<td>${lecListVO.lecName}</td>
+					<td><a href="detail/${lecListVO.lecIdx}">${lecListVO.lecName}</a></td>
 					<td>${lecListVO.memberNick}</td>
 					<td>${lecListVO.lecPrice}</td>
 					<td>${lecListVO.lecHeadCount}</td>
+					<td>${lecListVO.lecLike}</td>
 					<td>${lecListVO.lecContainsCount}</td>
 					<td>${lecListVO.lecStart}</td>
 					<td>${lecListVO.lecEnd}</td>

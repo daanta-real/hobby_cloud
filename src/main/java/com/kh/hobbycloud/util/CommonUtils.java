@@ -18,7 +18,7 @@ public class CommonUtils {
 			.replaceAll("\\(", "\n")
 			.replaceAll("\\)",  "\n");
 	}
-
+  
 	// java.util.Date 혹은 java.sql.Date 형태를,
 	// yyy-MM-dd hh:mm:ss 형식의 문자열로 리턴해 준다.
 	public static String toChar(java.sql.Date date) {

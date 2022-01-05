@@ -14,6 +14,7 @@ public interface NoticeDao {
 	int getsequences();
 	List<NoticeVO>search(String column,String keyword);
 	void views(int noticeIdx);
+	void read(NoticeDto noticeDto);
 	
 	
 

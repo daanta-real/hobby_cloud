@@ -131,7 +131,7 @@
 	<bean id="STOREPATH_PLACE"    class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/place" /></bean>
 	<bean id="STOREPATH_GATHER"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/gather" /></bean>
 	<bean id="STOREPATH_NOTICE"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/notice" /></bean>
-	<bean id="STOREPATH_PETITION" class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/petition" /></bean>
+	<bean id="STOREPATH_PETITIONS" class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/petitions" /></bean>
 	<bean id="STOREPATH_LEC"      class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/lec" /></bean>
 	<bean id="STOREPATH_AD"       class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/ad" /></bean>
 	<!-- 카카오페이 결제용 키와 업체 CID 설정 -->
