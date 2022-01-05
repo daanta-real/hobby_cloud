@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
 
-<input type="hidden" name="noticeIdx" value="${noticeVO.noticeIdx }">
-<input type="hidden" name="noticeIdx" value="${noticeDto.noticeIdx }">
 
 <h2>${NoticeVO.noticeIdx}번 게시글</h2>
 
@@ -39,10 +38,14 @@ class="image image-round image-border">
 		</tr>
 		<tr>
 			<td align="right">
+			<c:if test="${admin }">
 				<a href="write">글쓰기</a>
+				</c:if>
 				<a href="${pageContext.request.contextPath}/notice/list">목록보기</a>
+				<c:if test="${admin }">
 				<a href="${pageContext.request.contextPath}/notice/edit?noticeIdx=${NoticeVO.noticeIdx }">수정하기</a>
 				<a href="${pageContext.request.contextPath}/notice/delete?noticeIdx=${NoticeVO.noticeIdx }">삭제하기</a>
+				</c:if>
 	
 	</tbody>
 </table>

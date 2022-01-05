@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <c:set var="login" value="${memberIdx != null }"></c:set>
+ <c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
 <h1>공지 게시판</h1>
 <br><br>
 <table border="1" width="90%">
@@ -32,7 +34,19 @@
 	</tbody>
 </table>
 <br>
+
+
+<h1>${memberIdx}</h1>
+<h1>${memberGrade }</h1>
+
+
+<c:if test="${admin }">
 <a href="write">글쓰기</a>
+
+</c:if>
+
+
+
 
 <!-- 검색창 -->
 <form method="post">

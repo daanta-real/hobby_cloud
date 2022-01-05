@@ -43,7 +43,10 @@
 	
 	<!-- 강좌 상세 -->
 	<select id="get" parameterType="int" resultType="LecDetailVO">
-		select L.*, T.tutor_detail, T.tutor_registered , M.member_nick, M.member_email, M.member_phone, P.place_name, P.place_detail from lec L 
+		select L.*, T.tutor_detail, T.tutor_registered , M.member_nick, M.member_email, M.member_phone, 
+		P.place_name, P.place_detail, 
+		(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+		from lec L
 		inner join tutor T on L.tutor_idx = T.tutor_idx
 		inner join place P on L.place_idx = P.place_idx
 		inner join member M on T.member_idx = M.member_idx
@@ -53,7 +56,9 @@
 	<!-- 강좌 목록 -->
 	<select id="list" resultType="LecListVO">
 		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
-			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region from lec L
+			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, 
+			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+			from lec L
 		left outer join tutor T on L.tutor_idx = T.tutor_idx
 		left outer join member M on T.member_idx = M.member_idx
 	</select>
@@ -61,7 +66,9 @@
 	<!-- 강좌 목록 및 검색 -->
 	<select id="listSearch" parameterType="map" resultType="LecListVO">
 		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
-			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region from lec L
+			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region,
+			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+			from lec L
 		left outer join tutor T on L.tutor_idx = T.tutor_idx
 		left outer join member M on T.member_idx = M.member_idx
 		

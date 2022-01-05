@@ -43,7 +43,7 @@ public class GatherDataController {
 	//게시판 댓글 작성
 	@PostMapping("/replyInsert")
 	public void replyInsert(@ModelAttribute GatherReplyDto gatherReplyDto) {
-		System.out.println("젬ㄴ으ㅐ라ㅡㅁㅇ내ㅑ러ㅜㅇㄴ먀ㅕㅐ로ㅓㅜㅁㅇ냐ㅕㅛㅗㅠㅕㅛㅁㄹㄴ으");
+
 		System.out.println(gatherReplyDto);
 		gatherReplyDao.insert(gatherReplyDto);
 	}

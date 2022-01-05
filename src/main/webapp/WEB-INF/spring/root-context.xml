@@ -122,14 +122,16 @@
 	<task:annotation-driven/>	
 	
 	<!-- 서버 주소 관련 설정 -->
-	<bean id="SERVER_PORT"  class="java.lang.String"><constructor-arg index="0" value="${CONFIG.SERVER_PORT}"/></bean>
+	<bean id="SERVER_ROOT"        class="java.lang.String"><constructor-arg index="0" value="${CONFIG.SERVER_ROOT}"/></bean>
+	<bean id="SERVER_PORT"        class="java.lang.String"><constructor-arg index="0" value="${CONFIG.SERVER_PORT}"/></bean>
+	<bean id="CONTEXT_NAME"       class="java.lang.String"><constructor-arg index="0" value="${CONFIG.CONTEXT_NAME}"/></bean>
 	<!-- 첨부파일 폴더 경로값 설정 -->
 	<bean id="STOREPATH"          class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}" /></bean>
 	<bean id="STOREPATH_MEMBER"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/member" /></bean>
 	<bean id="STOREPATH_PLACE"    class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/place" /></bean>
 	<bean id="STOREPATH_GATHER"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/gather" /></bean>
 	<bean id="STOREPATH_NOTICE"   class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/notice" /></bean>
-	<bean id="STOREPATH_PETITION" class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/petition" /></bean>
+	<bean id="STOREPATH_PETITIONS" class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/petitions" /></bean>
 	<bean id="STOREPATH_LEC"      class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/lec" /></bean>
 	<bean id="STOREPATH_AD"       class="java.lang.String"><constructor-arg index="0" value="${CONFIG.STOREPATH}/ad" /></bean>
 	<!-- 카카오페이 결제용 키와 업체 CID 설정 -->

@@ -11,7 +11,9 @@ import com.kh.hobbycloud.entity.gather.GatherDto;
 import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
+import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
+import com.kh.hobbycloud.vo.gather.GatherVO;
 
 @Service
 public class GatherServiceImpl implements GatherService {
@@ -40,7 +42,7 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherHeadCount(gatherFileVO.getGatherHeadCount());
 		gatherDto.setGatherLocRegion(gatherFileVO.getGatherLocRegion());
 		gatherDto.setGatherLocLatitude(gatherFileVO.getGatherLocLatitude());
-		gatherDto.setGatherLocLogitude(gatherFileVO.getGatherLocLogitude());
+		gatherDto.setGatherLocLongitude(gatherFileVO.getGatherLocLongitude());
 		gatherDto.setGatherStart(gatherFileVO.getGatherStart());
 		gatherDto.setGatherEnd(gatherFileVO.getGatherEnd());
 		gatherDto.setGatherMax(gatherFileVO.getGatherMax());
@@ -90,7 +92,7 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherHeadCount(gatherFileVO.getGatherHeadCount());
 		gatherDto.setGatherLocRegion(gatherFileVO.getGatherLocRegion());
 		gatherDto.setGatherLocLatitude(gatherFileVO.getGatherLocLatitude());
-		gatherDto.setGatherLocLogitude(gatherFileVO.getGatherLocLogitude());
+		gatherDto.setGatherLocLongitude(gatherFileVO.getGatherLocLongitude());
 		gatherDto.setGatherStart(gatherFileVO.getGatherStart());
 		gatherDto.setGatherEnd(gatherFileVO.getGatherEnd());
 		gatherDto.setGatherMax(gatherFileVO.getGatherMax());
@@ -121,4 +123,16 @@ public class GatherServiceImpl implements GatherService {
 
 		}
 	}
+
+	@Override
+	public List<GatherVO> list(Criteria cri) {
+		return gatherDao.list(cri);
+	}
+
+	@Override
+	public int listCount() {
+		return gatherDao.listCount();
+	}
+
+
 }

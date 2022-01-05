@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -31,20 +30,16 @@ public class PayServiceImpl implements PayService {
 	// 변수준비: 카카오페이 어드민 키 및 업체ID
 	@Autowired private String KAKAOPAY_ADMIN_KEY;
 	@Autowired private String KAKAOPAY_CID;
-	@Autowired private HttpServletRequest request;
-	@Value("${CONFIG.SERVER_PORT}") String serverPort; // 환경변수로 설정한 사용자 포트값
-
-	// 자체 메소드 1. 사용자에게 표시될 주소를 리턴하는 메소드
-	private String getUserPageString(String pageName) {
-		return request.getRequestURL().toString() + ":" + serverPort + "/" + pageName;
-	}
+	// 변수준비: 서버 주소 관련
+	@Autowired private String SERVER_ROOT;   // 환경변수로 설정한 사용자 루트 주소
+	@Autowired private String SERVER_PORT;   // 환경변수로 설정한 사용자 포트 번호
+	@Autowired private String CONTEXT_NAME; // 환경변수로 설정한 사용자 콘텍스트명
 
 	// 자체 메소드 2. 새 헤더 인스턴스를 생성해 리턴하는 메소드
 	private HttpHeaders header() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", KAKAOPAY_ADMIN_KEY);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-		log.debug("HEADERS 생성: {}", headers);
 		return headers;
 	}
 
@@ -65,23 +60,23 @@ public class PayServiceImpl implements PayService {
 	// 카카오페이에게 결제 준비(ready)를 요청한 다음,
 	// TID(결제 일련번호)와 next_redirect_pc_url(QR코드 주소) 등을 받아와 리턴하는 메소드
 	@Override
-	public KakaoPayReadyResponseVO ready(KakaoPayReadyRequestVO requestVO) throws URISyntaxException {
+	public KakaoPayReadyResponseVO ready(KakaoPayReadyRequestVO requestVO, HttpServletRequest request) throws URISyntaxException {
 		return sendPost(
 			new LinkedMultiValueMap<String, String>() {{
 				// 필요정보 1. 업체측과 사용자측의 결제 코드
 				add("partner_order_id", requestVO.getPartner_order_id()); // 가맹점 측에서 갖고 있을 주문번호
 				add("partner_user_id", requestVO.getPartner_user_id()); // 유저 측에서 갖고 있을 주문번호
 				// 필요정보 2. 주요 결제정보 등록
-				add("item_name", "자바수강권"); // 대표상품 제목
-				add("quantity", "1"); // 결제 건수 (웬만하면 1)
-				add("total_amount", "99999"); // 최종 구매 금액 (test계정이라 100 넘으면 안 됨)
+				add("item_name", requestVO.getItem_name()); // 대표상품 제목
+				add("quantity", requestVO.getQuantity_string()); // 결제 건수 (웬만하면 1)
+				add("total_amount", requestVO.getTotal_amount_string()); // 최종 구매 금액 (test계정이라 100 넘으면 안 됨)
 				add("tax_free_amount", "0"); // 면세 부분. 미활용 예상됨
 				// 필요정보 3. 카카오서버에게 결제 결과에 따른 페이지를 미리 안내
 				// 카카오 개발자 페이지의 애플리케이션에 등록된 주소만 가능하므로 사전 등록 여부 필히 확인
 				// 아래 세 개의 페이지가 미리 준비되어 있어야 결제 자체가 가능하다.
-				add("approval_url", getUserPageString("success"));
-				add("cancel_url", getUserPageString("cancel"));
-				add("fail_url", getUserPageString("fail"));
+				add("approval_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/pay/success");
+				add("cancel_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/pay/cancel");
+				add("fail_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/pay/fail");
 			}}, "ready", KakaoPayReadyResponseVO.class
 		);
 	}

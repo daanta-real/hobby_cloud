@@ -48,6 +48,7 @@
 		<package name="com.kh.hobbycloud.vo.gather"/>
 		<package name="com.kh.hobbycloud.vo.lec"/>
 		<package name="com.kh.hobbycloud.vo.notice"/>
+		<package name="com.kh.hobbycloud.vo.petitions" />
 	</typeAliases>
 	
 </configuration>

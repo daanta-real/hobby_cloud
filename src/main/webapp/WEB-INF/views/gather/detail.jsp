@@ -1,12 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<!-- LINKS -->
+<!-- Bootstrap Theme -->
+<LINK rel="stylesheet"
+	href="https://bootswatch.com/5/journal/bootstrap.css">
+<!-- Bootstrap -->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap"
+	rel="stylesheet">
+<!-- JQuery 3.6.0 -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- XE Icon -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
- 
-<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번 게시글 </h2>
+<c:set var="isLogin" value="${memberIdx != null}"/>
 
+<c:choose>
+<c:when test="${isLogin}">
+
+
+</c:when>
+</c:choose>
+
+<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번 게시글 </h2>
 
 <table border="1" width="80%">
 	<tbody>
@@ -28,24 +55,72 @@
 			(주의) 태그 사이에 쓸데없는 엔터, 띄어쓰기 등이 들어가지 않도록 해야 한다.(모두 표시된다) 
 		-->
 		<tr height="250" valign="top">
-			<td>
-				<pre>${GatherVO.gatherDetail}</pre>
-			
+			<td class="participate">
+								
+				<pre>${GatherVO.gatherDetail}23</pre>
 				
+			<!-- 참가자 리스트 반복문 -->
+			<c:set var = "isJoin" value="false"/>
+			<c:forEach var ="GatherHeadsVO" items="${list2}">
+				<c:if test="${GatherHeadsVO.memberIdx  eq memberIdx}" >
+				<!-- 만약에 일치한다  -->
+				<c:set var = "isJoin" value="true"/>
+				</c:if>
+ 			<input class="participate"type="hidden" value="${GatherHeadsVO.memberIdx}">
+	
+			<tr>
+			<th>닉네임</th>
+			<th>프로필</th>
+			</tr>
+			<tr>
+			<td>${GatherHeadsVO.memberNick}</td>
+			<td>${GatherHeadsVO.gatherIdx}</td>
+
+			
+			</tr>
+			</c:forEach>			
+			
+		<!-- 게시판 사진 반복문 -->	
 			<c:forEach var="GatherFileDto" items="${list}"> 
 			<span><${GatherFileDto.gatherFileUserName}</span>
 			<br>
-		
-			<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}" width="30%" class="image image-round image-border">
+			<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}" width="30%" class="image image-round image-border">			
 			</c:forEach>
 
-
-			</td>
+			
+		</td>
+		
+		<script>
+			$(function(){
+				let partNo = $(".participate").val();
+				console.log("partNo     "+partNo);
+			});
+		</script>
+		
+		
+		
 		</tr>
+		<!-- 소모임 참가 /취소 버튼 -->
+			<tr>
+			<td>
+			<!-- 참가하기 버튼 -->
+			<c:choose>
+			<c:when test="${!isJoin}">
+			<a class="btn btn-primary" href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
+			</c:when>
+			<c:otherwise>
+			<a class="btn btn-secondary" href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
+			</c:otherwise>
+			</c:choose>
+			</td>
+			</tr>
+			
+			
+ 
 		<tr>
 		<td>	
 				<a href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
-				<a href="list">목록보기</a>
+				<a href="${pageContext.request.contextPath}/gather/list">목록보기</a>
 				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}">수정</a>			
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}">삭제</a>	
 	
@@ -194,7 +269,12 @@ function deleteData(gatherReplyIdxValue){
 
 </script>
 
+<script>
 
+$.ajax({
+	
+})
+</script>
 
 
 
