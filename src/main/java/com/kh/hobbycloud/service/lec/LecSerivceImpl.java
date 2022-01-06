@@ -13,8 +13,10 @@ import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.repository.lec.LecLikeDao;
+import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
+import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +37,7 @@ public class LecSerivceImpl implements LecService{
 	@Override
 	public int register(LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
-		//= MemberJoinVO에서 정보를 뽑아서 MemberDto를 생성
+		//= LecRegisterVO에서 정보를 뽑아서 LecDto를 생성
 		int lecIdx = lecDao.getSequence();
 		LecDto lecDto = new LecDto();
 		lecDto.setLecIdx(lecIdx);
@@ -148,5 +150,15 @@ public class LecSerivceImpl implements LecService{
 	@Override
 	public int likeCountEvery(int lecIdx) {
 		return lecLikeDao.likeCountEvery(lecIdx);
+	}
+	
+	@Override
+	public List<LecListVO> list(LecCriteria cri) {
+		return lecDao.list(cri);
+	}
+
+	@Override
+	public int listCount() {
+		return lecDao.listCount();
 	}
 }

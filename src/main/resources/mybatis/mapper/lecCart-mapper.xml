@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+	myBatis 매퍼 파일
+	- DBMS에서 실행할 SQL 구문을 저장하는 XML 파일
+	- namespace를 통해서 여러 개의 매퍼를 구분한다
+	- 테이블 당 1개씩 만드는 것이 일반적이며, 따라서 namespace를 테이블명으로 작성하면 구분이 용이하다.
+	- <insert> , <select> , <update> , <delete>를 이용해서 CRUD 구문을 작성한다.
+	- 각 구문은 외부에서 호출이 가능하도록 반드시 ID를 겹치지 않게 부여해야 한다.
+	- parameterType 은 구문을 실행하기 위해 필요한 데이터의 형태를 말한다.
+	- resultType은 구문을 실행한 결과를 어떤 형태로 변환해야 하는지를 말한다.
+ -->
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lecCart">
+	<!-- 찜하기 -->
+	<!-- 
+		찜하기 버튼을 누를때 실행되는 커리문
+		cartIdx와 memberIdx, lecIdx값 저장.
+		cartIdx는 하나씩 증가되어야해서 시퀀스값으로 지정
+	 -->
+	<insert id="insert">
+		insert into lec_cart
+		values (lec_cart_seq.nextval, #{memberIdx}, #{lecIdx})
+	</insert>
+	
+	<!-- 찜 목록 -->
+	<select id="listCart" resultType="LecCartVO">
+		select cart_idx, l.lec_idx, m.member_idx, m.member_nick, 
+		lec_name, lec_price from lec_cart c, member m, lec l
+		where m.member_idx = c.member_idx and c.lec_idx = l.lec_idx
+		and c.member_idx = #{memberIdx} order by cart_idx
+	</select>
+	
+	<!-- 회원의 찜 총 금액 -->
+	<!-- 조인을 하는 이유는 찜 테이블에는 가격이 없기때문에 가격이 있는 다른 테이블과 join을 해야한다. -->
+	<select id="totalPrice" resultType="int">
+		select nvl(sum(lec_price), 0)
+		<!-- 아무것도 담지 않았을때를 확인하는것 -->
+		<!-- 빈값이 null이면 안되기 때문에 대체값으로 0이 출력되게끔 만들었음 -->
+		from lec_cart c, lec l
+		<!-- 찜테이블과 강좌 테이블로 부터 -->
+		where c.lec_idx = l.lec_idx and member_idx = #{memberIdx}
+	</select>
+	
+	<!-- 장바구니 개별 상품 삭제 -->
+    <delete id="delete">
+        delete from lec_cart where cart_idx = #{cartIdx}
+    </delete>
+	
+</mapper>

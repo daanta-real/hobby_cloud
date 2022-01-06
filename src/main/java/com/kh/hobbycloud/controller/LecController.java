@@ -2,6 +2,7 @@ package com.kh.hobbycloud.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,15 +22,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
+
+import com.kh.hobbycloud.repository.lec.LecReplyDao;
+import com.kh.hobbycloud.service.lec.LecCartService;
+
 import com.kh.hobbycloud.service.lec.LecService;
+import com.kh.hobbycloud.vo.lec.LecCartVO;
+import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
+import com.kh.hobbycloud.vo.lec.LecListVO;
+import com.kh.hobbycloud.vo.lec.LecPageMaker;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,19 +52,42 @@ public class LecController {
 	private LecService lecService;
 
 	@Autowired
+	private LecCartService lecCartService;
+	
+	@Autowired
 	private LecDao lecDao;
 
 	@Autowired
 	private LecFileDao lecFileDao;
 
+	
+	@Autowired
+	private LecReplyDao lecReplyDao;
+	
+	//목록
+	@GetMapping("/list")
+	public String list(Model model,LecCriteria cri) {
+		model.addAttribute("list", lecService.list(cri));
+		
+		LecPageMaker pageMaker = new LecPageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lecService.listCount());
+		model.addAttribute("pageMaker",pageMaker);
+		
+		System.out.println(lecService.list(cri));
+		return "lec/list";
+	}
+	
 	//목록(검색 가능)
 	@RequestMapping("/list")
 	public String search(@RequestParam Map<String ,Object> param , Model model) {
-		List<LecDto> listSearch = lecDao.listSearch(param);
+		List<LecListVO> listSearch = lecDao.listSearch(param);
 		model.addAttribute("listSearch", listSearch);
 		return "lec/list";
 	}
 
+	
+	//강좌 등록
 	@GetMapping("/register")
 	public String insert() {
 		return "lec/register";
@@ -175,6 +207,68 @@ public class LecController {
 			.contentLength(lecFileDto.getLecFileSize()).body(resource);
 
 	}
+
+
+	//찜하기
+	@RequestMapping("/cart/insert")
+	public String insert(@ModelAttribute LecCartVO lecCartVO, HttpSession session) {
+		//@ModelAttribute로 submit된 form의 내용을 저장해서 전달받고, 다시 뷰로 넘겨서 출력하기 위해 사용
+		//로그인 여부를 체크
+		int memberIdx = (Integer)session.getAttribute("memberIdx");
+		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
+			return "redirect:/member/login";//로그인 화면으로 리다이렉트
+		}
+		lecCartVO.setMemberIdx(memberIdx);
+		lecCartService.insert(lecCartVO);//찜 테이블에 저장
+		return "redirect:/lec/cart_list";//찜 목록으로 이동
+	}
+	
+	//찜 목록
+	@RequestMapping("/cart_list")
+	public ModelAndView list(HttpSession session, ModelAndView mav) {
+		Map<String, Object> map = new HashMap<>();
+		//찜에 담을 값이 많아서 HashMap 사용
+		boolean isLogin = session.getAttribute("memberIdx") != null;
+		if(isLogin) {//로그인 했으면
+			int memberIdx = (Integer)session.getAttribute("memberIdx");
+			//얘가 위에 있으면 int memberIdx가 null이라 nullPointerException에러가 뜨니까 꼭 주의!!!!!!!!!!!!!!!!
+			List<LecCartVO> list = lecCartService.listCart(memberIdx);//찜 목록
+			int totalPrice = lecCartService.totalPrice(memberIdx);//금액 합계
+			
+			//map에 찜에 넣을 값 저장
+			map.put("totalPrice", totalPrice);//전체 금액
+			map.put("list", list);//찜 목록
+			map.put("count", list.size());//찜 개수
+			
+			//ModelAndView mav에 이동할 페이지의 이름과 데이터를 저장
+			mav.setViewName("lec/cart_list");//이동할 페이지 이름
+			mav.addObject("map", map); //데이터 저장
+			
+			return mav;//화면 이동
+			
+		}else {//로그인 안한 상태
+			return new ModelAndView("member/login", "", null);
+			//로그인 페이지로 이동
+		}
+	}
+	
+	//찜 전체 삭제
+	@RequestMapping("/cart/deleteAll")
+    public String deleteAll(HttpSession session) {
+        boolean isLogin = session.getAttribute("memberIdx") != null;
+        if(isLogin) {
+        	int memberIdx=(Integer)session.getAttribute("memberIdx");
+            lecCartService.deleteAll(memberIdx);
+        }
+        return "redirect:/lec/cart_list";
+    }
+
+	//찜 개별 삭제
+	@RequestMapping("/cart/delete/{cartIdx}")
+    public String deleteCart(@PathVariable int cartIdx) {
+        lecCartService.delete(cartIdx);
+        return "redirect:/lec/cart_list";
+    }
 
 
 }

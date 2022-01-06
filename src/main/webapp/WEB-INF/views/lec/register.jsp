@@ -227,9 +227,9 @@ function setLoc(el) {
 	<div class="row">
 		<label>대여할 장소</label>
 		<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999">
-		 지역<input type="text"	name="lecLocRegion" value="지역">
+		 지역<input type="text" name="lecLocRegion">
 		 <br> 
-		 위도<input	id="placeLatiHolder" type="text" name="lecLocLatitude">
+		 위도<input id="placeLatiHolder" type="text" name="lecLocLatitude">
 		 경도<input id="placeLongHolder" type="text" name="lecLocLongitude">
 	</div>
 	<div class="row">
@@ -333,3 +333,12 @@ function setLoc(el) {
 						});
 	});
 </script>
+
+
+
+
+
+
+
+
+<h1>각 컬럼에 맞는 value값 다시 조정해라</h1>
