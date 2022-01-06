@@ -9,13 +9,17 @@ import com.kh.hobbycloud.entity.lec.LecFileDto;
 
 
 public interface LecFileDao {
+
+	// CREATE
 	void save(LecFileDto lecFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException;
-	LecFileDto get(int lecFileIdx);
-	List<LecFileDto> getByIdx(int lecIdx);
+
+	// SELECT
+	LecFileDto getByLecFileIdx(int lecFileIdx);
+	List<LecFileDto> getListByLecIdx(int lecIdx);
 	byte[] load(int lecFileIdx) throws IOException;
-	List<LecFileDto> getByLecIdx_list(int lecIdx);
-	//파일삭제
+
+	// DELETE
 	boolean delete(int lecIdx);
-	//실시간삭제
 	boolean deleteAjax(int lecFileIdx);
+
 }

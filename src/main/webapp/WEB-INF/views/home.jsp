@@ -204,8 +204,8 @@ window.addEventListener("load", function() {
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 결과</div>
 		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5 container">
-			<div class="row scrollXEnabler">
+		<div class="row p-sm-2 mx-1 mb-5">
+			<div class="scrollXEnabler">
 				<div class="card p-0 minWidthMaxContent">
 					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
 						<thead>
@@ -221,21 +221,40 @@ window.addEventListener("load", function() {
 							</tr>
 						</thead>
 						<tbody>
-							
+							<c:forEach var="PaidVO" items="${paidList}">
+								<c:set var="paidStatus" value="${PaidVO.paidStatus == '1'.charAt(0)}" />
+								<tr class="cursor-pointer">
+									<td class="text-center align-middle text-nowrap">${PaidVO.paidIdx}</td>
+									<td class="text-center align-middle text-nowrap">${PaidVO.memberIdx}</td>
+									<td class="text-center align-middle text-nowrap">${PaidVO.memberId}</td>
+									<td class="text-center align-middle text-nowrap">${PaidVO.memberNick}</td>
+									<td class="text-center align-middle text-nowrap">${PaidVO.paidTid}</td>
+									<td class="text-center align-middle text-nowrap">${PaidVO.paidRegisteredStr}</td>
+									<td class="text-end align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${PaidVO.paidPrice}" pattern="#,###" /></td>
+									<td class="text-center align-middle text-nowrap text-${paidStatus ? 'success' : 'danger'}">
+										<c:choose>
+											<c:when test="${paidStatus}">
+												결제 완료&nbsp;<a href="${root}/pay/cancel/${PaidVO.paidIdx}" class="btn btn-warning btn-sm">결제 취소</a>
+											</c:when>
+											<c:otherwise>
+												결제 취소됨
+											</c:otherwise>
+										</c:choose>
+									</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			<nav class="row pt-4 d-flex justify-content-between">
-				<a href="#" class="col-auto btn btn-primary">전체목록</a>
-				<ul class="col-auto pagination m-0">
-					<li class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a></li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item disabled"><a class="page-link" href="#">2</a></li>
-					<li class="page-item active"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">»</a></li>
+			<nav class="row pt-4">
+				<ul class="pagination justify-content-center">
+					<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a></li>
+					<li class="page-item active"><a class="page-link" href="#">1</a></li>
+					<li class="page-item"><a class="page-link" href="#">2</a></li>
+					<li class="page-item"><a class="page-link" href="#">3</a></li>
+					<li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
 				</ul>
-				<a href="#" class="col-auto btn btn-primary">글쓰기</a>
 			</nav>
 		</div>
 	</SECTION>
