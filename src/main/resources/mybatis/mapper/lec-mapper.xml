@@ -27,7 +27,7 @@
 		values (
 			#{lecIdx}, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
 			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
-			#{lecStart}, #{lecEnd}, null, null, null,
+			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitude}, #{lecLocLongitude},
 			0, 0, 0
 		)
 	</insert>

@@ -26,7 +26,7 @@
  	<input type="submit" value="검색하기">
  	
 	<div class="row">
-		<h2>강좌 검색</h2>
+		<h2>강좌 목록</h2>
 	</div>
 	<div class="row">
 		<table class="table table-border table-hover">
@@ -64,8 +64,8 @@
 					<td>${lecListVO.lecLocRegion}</td>
 					<td>
 					<c:if test="${memberGrade == admin}">
-						<a href="edit?lecIdx=${lecDto.lecIdx}">수정</a>
-						<a href="delete?lecIdx=${lecDto.lecIdx}">삭제</a>
+						<a href="edit/${lecListVO.lecIdx}">수정</a>
+						<a href="delete/${lecListVO.lecIdx}">삭제</a>
 					</c:if>
 					</td>
 				</tr>
@@ -75,6 +75,8 @@
 	</div>
 </div>
 </form>
+
+<a href="register">강좌 등록하기</a>
 
 <nav class="row pt-4">
   <ul class="pagination justify-content-center">

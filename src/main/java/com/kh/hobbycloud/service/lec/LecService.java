@@ -32,4 +32,5 @@ public interface LecService {
 	int listCount();
 	
 	
+	
 }

@@ -37,7 +37,7 @@ public class LecSerivceImpl implements LecService{
 	@Override
 	public int register(LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
-		//= MemberJoinVO에서 정보를 뽑아서 MemberDto를 생성
+		//= LecRegisterVO에서 정보를 뽑아서 LecDto를 생성
 		int lecIdx = lecDao.getSequence();
 		LecDto lecDto = new LecDto();
 		lecDto.setLecIdx(lecIdx);
