@@ -30,5 +30,10 @@ public class GatherReplyDaoImpl implements GatherReplyDao {
 		int count = sqlSession.delete("gather.replyDelete",gatherReplyIdx);
 		return count >0;
 	}
+	@Override
+	public void edit(GatherReplyDto gatherReplyDto) {
+		//댓글 수정 void도 가능
+		 sqlSession.update("gather.replyEdit",gatherReplyDto);
+	}
 
 }

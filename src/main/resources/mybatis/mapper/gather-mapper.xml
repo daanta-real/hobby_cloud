@@ -16,6 +16,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gather">
 
+<!-- 게시판 시퀸스 구하기 -->
 <select id="getSequence" resultType="int">
 select gather_seq.nextval from dual
 </select>
@@ -36,7 +37,9 @@ select * from  gather g left outer join
   from gather_file group by gather_idx) f  
   on  f.gather_idx = g.gather_idx)
 </select>
-	
+
+
+<!-- 목록페이지 목록 페이지 네이션 적용 -->
 <select id="listPage" resultType="GatherVO" parameterType="Criteria">
 select * from(
 select rownum  rn , TMP.* from(
@@ -44,15 +47,17 @@ select * from  gather g left outer join
  (select distinct gather_idx, min(gather_file_idx) as gather_file_idx
   from gather_file group by gather_idx) f  
   on  f.gather_idx = g.gather_idx  
-  order by g.gather_idx desc 
+ left outer join member m on g.member_idx = m.member_idx
+ order by g.gather_idx desc
   )TMP
 ) where rn between #{rowStart} and #{rowEnd}
 </select>
 	
 	
+<!-- 게시판  목록 검색 -->
+<!-- 장소 + 제목    유사 검색이 둘다 가능하다.-->	
 	
 <select id ="listSearch" parameterType="GatherSearchVO" resultType="GatherVO">
-<!-- 장소 + 제목    유사 검색이 둘다 가능하다.-->
  select * from  gather g left outer join
  (select distinct gather_idx, min(gather_file_idx) as gather_file_idx
   from gather_file group by gather_idx) f  
@@ -75,6 +80,7 @@ select * from  gather g left outer join
 </select>
 
 
+<!-- 게시판 등록 -->
 <insert id="insert" parameterType="GatherDto">
 insert into gather(gather_idx, member_idx, lec_category_name,
  place_idx, gather_name, gather_detail, gather_registered,
@@ -85,10 +91,13 @@ insert into gather(gather_idx, member_idx, lec_category_name,
 values(#{gatherIdx},#{memberIdx},#{lecCategoryName},
 #{placeIdx},#{gatherName},#{gatherDetail},sysdate,
 #{gatherHeadCount},#{gatherLocRegion},#{gatherLocLatitude},
-#{gatherLocLongitude},#{gatherStart},#{gatherEnd},
+#{gatherLocLongitude},to_date(#{gatherStart},'YYYY-MM-DD hh24:mi'),
+to_date(#{gatherEnd},'YYYY-MM-DD hh24:mi'),
 #{gatherMax},#{gatherStaus}
 )
 </insert>
+
+
 <select id="get" parameterType="int" resultType="GatherVO">
 select g.*, m.member_nick 
 from gather g  
@@ -98,32 +107,31 @@ ON g.member_idx = m.member_idx
  where gather_idx=#{gatherIdx}
 </select>
 
+<!-- 삭제 -->
 <delete id="delete" parameterType="int">
 delete  gather where gather_idx= #{gatherIdx}
 </delete>
 
+<!-- 수정 -->
 <update id="update" parameterType="GatherDto">
 update gather set gather_name=#{gatherName}, 
 lec_category_name=#{lecCategoryName}, 
 place_idx=#{placeIdx}, gather_detail=#{gatherDetail}, 
 gather_registered=sysdate,
-gather_loc_region = #{gatherLocRegion}, gather_loc_latitude=#{gatherLocLatitude},
+gather_loc_region = #{gatherLocRegion},
+ gather_loc_latitude=#{gatherLocLatitude},
  gather_loc_longitude=#{gatherLocLogitude}, 
-gather_start=#{gatherStart}, gather_end =#{gatherEnd}, gather_max=#{gatherMax}
+gather_start=#{gatherStart}, 
+gather_end =#{gatherEnd}, gather_max=#{gatherMax}
 where gather_idx=#{gatherIdx}
 
 </update>
 
-<!-- 댓글 입력 -->
-<insert id="replyInsert" parameterType="GatherReplyDto">
-insert into gather_reply values
-(gather_reply_seq.nextval,#{memberIdx},#{gatherIdx},
-#{gatherReplyDetail},sysdate,1,1,1)
-</insert>
+
 
 
 <!-- 해당 게시물 댓글리스트 -->
-<select id="replyList"  parameterType="int"      resultType="GatherReplyVO">
+<select id="replyList"  parameterType="int"     resultType="GatherReplyVO">
 select  m.member_nick,r.*
 from gather g  
 left outer join
@@ -135,21 +143,25 @@ on g.gather_idx= r.gather_idx
 where r.gather_idx = #{gatherIdx}
 </select>
 
+<!-- 댓글 입력 -->
+<insert id="replyInsert" parameterType="GatherReplyDto">
+insert into gather_reply values
+(gather_reply_seq.nextval,#{memberIdx},#{gatherIdx},
+#{gatherReplyDetail},sysdate,1,1,1)
+</insert>
+
+
 <!-- 댓글 삭제 -->
 <delete id="replyDelete" parameterType="int">
 delete  from gather_reply where gather_reply_idx=#{gatherReplyIdx}
 </delete>
 
-<!-- <select id="getUpdate" parameterType="int" resultType="GatherVO"> -->
-<!-- select g.*, m.member_nick ,f.gather_file_idx -->
-<!-- from gather g   -->
-<!-- left outer join -->
-<!-- member m   -->
-<!-- ON g.member_idx = m.member_idx -->
-<!-- left outer join -->
-<!-- gather_file f -->
-<!-- on g.gather_idx= f.gather_idx where g.gather_idx=#{gatherIdx} -->
-<!-- </select> -->
-
-
+<!-- 댓글 수정 -->
+<update id="replyEdit" parameterType="GatherReplyDto">
+ update gather_reply set 
+ gather_reply_detail=#{gatherReplyDetail},
+ gather_reply_date=sysdate 
+ where 
+ gather_reply_idx =#{gatherReplyIdx}
+</update>
 </mapper>

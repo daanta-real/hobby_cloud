@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<style type="text/css">
+	li {list-style: none; float: left; padding: 6px;}
+</style>
 <form method="post">
 <div class="container-900 container-center">
 
@@ -24,7 +26,7 @@
  	<input type="submit" value="검색하기">
  	
 	<div class="row">
-		<h2>강좌 검색</h2>
+		<h2>강좌 목록</h2>
 	</div>
 	<div class="row">
 		<table class="table table-border table-hover">
@@ -47,7 +49,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="lecListVO" items="${listSearch}">
+				<c:forEach var="lecListVO" items="${list}">
 				<tr>
 					<td>${lecListVO.lecIdx}</td>
 					<td>${lecListVO.lecCategoryName}</td>
@@ -62,8 +64,8 @@
 					<td>${lecListVO.lecLocRegion}</td>
 					<td>
 					<c:if test="${memberGrade == admin}">
-						<a href="edit?lecIdx=${lecDto.lecIdx}">수정</a>
-						<a href="delete?lecIdx=${lecDto.lecIdx}">삭제</a>
+						<a href="edit/${lecListVO.lecIdx}">수정</a>
+						<a href="delete/${lecListVO.lecIdx}">삭제</a>
 					</c:if>
 					</td>
 				</tr>
@@ -73,3 +75,25 @@
 	</div>
 </div>
 </form>
+
+<a href="register">강좌 등록하기</a>
+
+<nav class="row pt-4">
+  <ul class="pagination justify-content-center">
+    <c:if test="${pageMaker.prev}">
+    	<li class="page-item "><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}">&laquo;</a></li>
+    </c:if> 
+
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+<!--     
+만약에 현재페이지면 *미완성*
+<li class="page-item active"><a class="page-link" href="#">1</a></li>
+ -->
+    	<li class="page-item"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+    </c:forEach>
+
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+    </c:if> 
+  </ul>
+</nav>	

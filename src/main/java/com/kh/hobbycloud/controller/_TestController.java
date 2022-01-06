@@ -1,14 +1,11 @@
 package com.kh.hobbycloud.controller;
 
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,19 +17,20 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/test")
 public class _TestController {
 
-	@GetMapping("/")
-	public String testForm() {
-		return "_TEST/_test";
+	// Map 쓰기 테스트용 FORM
+	@GetMapping("/mapTest")
+	public String mapTest( ) {
+		return "_TEST/mapTest";
 	}
 
-	@PostMapping("/")
+	// FORM으로부터 Map 읽어오기 테스트
 	@ResponseBody
-	public String testFormReceiver(@RequestParam Map<String, Object> map, Model model) {
-		log.debug("◆◆◆◆◆◆◆◆◆◆◆◆◆" + map);
-		model.addAttribute("map", map);
-		return "_TEST/_test";
+	@PostMapping("/mapTest")
+	public String mapTest(MultipartFile file) {
+		//log.debug("ㅡㅡㅡMap size: {}", map.size());
+		//for(String key: map.keySet()) log.debug("ㅡㅡㅡMap.get({}) = {}", key, map.get(key));
+
+		return null;
 	}
-
-
 
 }
