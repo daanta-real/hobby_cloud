@@ -151,7 +151,7 @@
 
 // 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", () => {
-
+	
     // 모달 변수 정의
     window.modal = new bootstrap.Modal(document.getElementById("modal"), {
         keyboard: false
@@ -194,7 +194,49 @@ function setLoc(el) {
 
 </script>
 
-
+        <script>
+				function makeTime(){
+					let startDate= $("#startDate").val(); // YYYY-MM-DD
+					let startTime=  $("#startTime").val();// 24HH:mm		
+					let start = startDate + " " + startTime;		
+					$("#start").val(start);
+					let endDate = $("#endDate").val();
+					let endTime =$("#endTime").val();
+					let end = endDate +" "+endTime;
+					$("#end").val(end);
+					
+				}
+				$(function(){
+					$("#insert-btn").click(function(e){
+					//시간설정 잘못 된 것
+					makeTime(); 
+					let startTime = new Date($("#start").val());
+			        let endTime    = new Date($("#end").val());
+			        let today = new Date();
+			             //빈칸일 경우
+// 					"input[name=]").val()==""||
+// 					$("input[name=]").val()==""||
+// 					$("input[name=]").val()==""||
+// 					$("input[name=]").val()==""||
+// 					$("input[name=]").val()==""
+						if(endTime>startTime&&startTime>today)
+						{  
+							
+							e.preventDefault();
+							makeTime();
+   						} else{
+		                e.preventDefault();		
+		                alert("시간 설정을 확인해주세요");
+		                console.log(endTime);      
+						console.log(startTime);
+						console.log(today);
+						console.log(endTime >startTime);
+						console.log(startTime>today);
+						console.log(endTime>startTime>today);  
+   						}	    
+					});
+		        });
+				</script>
 
 
 
@@ -202,14 +244,14 @@ function setLoc(el) {
 <h1>소모임 등록창</h1>
 <div id="map"></div>
 
-<form method="post" enctype="multipart/form-data">
+<form action="insert" method="post" enctype="multipart/form-data" id="insert-form">
 
 
 	회원 idx<input type="text" name="memberIdx" value="99999"> 취미분류
 	이름<input type="text" name="lecCategoryName" value="운동"> <br>
 	장소 idx
-	<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999"> 제목
-		<input type="text" name="gatherName"value="제목"> 
+	<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999">
+	 제목	<input type="text" name="gatherName"value="제목"> 
 		상세내용<input type="text" name="gatherDetail" value="내용"> <br>
 		 작성일<input type="date"	name="gatherRegistered"> 
 		인원<input type="text"	name="gatherHeadCount" value="1">
@@ -217,17 +259,25 @@ function setLoc(el) {
 		 <br> 
 		 위도<input	id="placeLatiHolder" type="text" name="gatherLocLatitude">
 		 경도<input id="placeLongHolder" type="text" name="gatherLocLongitude">
-		 시작시간<input type="date" name="gatherStart">
-	<br>
-		 종료시간<input type="date" name="gatherEnd"> 
+		
+		 시작시간<input id="startDate" type="date">
+		 	 <input id="startTime" type="time">
+		 <input id="start" type="hidden" name="gatherStart">
+		<br>
+		 종료시간 	<input id="endDate" type="date">
+		 		<input id="endTime" type="time">
+		<input id="end" type="hidden" name="gatherEnd">
 		 최대원인원수<input	type="text" name="gatherMax" value="1">
 		 현재오픈여부 <input	type="text" name="gatherStaus" value="1"> <br>
 		 
 		 <input type="file" name="attach" enctype="multipart/form-data" multiple>
-		<input type="submit" value="전송하기">
+		<input id="insert-btn" type="submit" value="전송하기">
 	 <br> 
 	
 	</form>
+
+
+
 
 
 
@@ -256,7 +306,7 @@ function setLoc(el) {
                     </tr>
                 </thead>
                 <tbody class="locTBody">
-                 
+                <!-- ajax로 리스트 목록이 나오는 장소 -->
                 </tbody>
             </table>
             <!-- 모달 꼬리말 영역 -->
@@ -280,6 +330,7 @@ function setLoc(el) {
 							console.log("성공", resp);
 							var results = resp;
 							console.log(results);
+							
 							var totalStr = "";
 							$.each(results, function(i) {
 								var jsonStr = results[i];
@@ -295,7 +346,6 @@ function setLoc(el) {
 							console.log("전체 HTML: ", totalStr);
 							
 							var listTarget = document.querySelector(".locTBody");
-							console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
 							listTarget.innerHTML = totalStr;
 							
 						},

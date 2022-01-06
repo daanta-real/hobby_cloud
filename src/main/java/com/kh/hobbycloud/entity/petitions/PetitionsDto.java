@@ -6,12 +6,13 @@ import lombok.Data;
 
 @Data
 public class PetitionsDto {
-	private int petitonsIdx;
+	private int petitionsIdx;
 	private int memberIdx;
 	private String petitionsName;
+	private String petitionsDetail;
 	private Date petitionsRegistered;
-	private int petitonsView;
-	private int petitonsReplies;
+	private int petitionsView;
+	private int petitionsReplies;
 	
 
 }

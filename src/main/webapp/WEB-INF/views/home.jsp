@@ -150,10 +150,6 @@ window.addEventListener("load", function() {
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 조건</div>
 		<!-- 소단원 내용 -->
-
-<%--value="${param.paidStatusList}" value="${param.paidRegistered_start}"
-value="${param.paidRegistered_end}"--%>
-
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<form name="searchForm" method="get" class="row">

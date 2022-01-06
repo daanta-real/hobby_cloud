@@ -69,6 +69,18 @@ public class NoticeDaoImpl implements NoticeDao {
 		
 	}
 
+	@Override
+	public void read(NoticeDto noticeDto) {
+		sqlSession.update("notice.read",noticeDto);
+		
+	}
+
+	
+
+	
+
+	
+
 	
 
 	

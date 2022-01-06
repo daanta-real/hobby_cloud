@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        #testText {
+            width: 400px;
+            /* 배경색 설정 */
+            background: linear-gradient(to right, green, cyan, blue, purple, maroon);
+
+            /* 텍스트 외곽선 안쪽을 투명하게 채우기 */
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+
+            /* 텍스트 외곽선 바깥 영역의 배경을 제거 */
+            background-clip: text;
+            -webkit-background-clip: text;
+
+            font-weight:900;
+            font-size:50px;
+            line-height:49px;
+        }
+    </style>
+</head>
+<body>
+    
+<div id="testText">
+    테스트글자입니다.테스트글자입니다.테스트글자입니다.테스트글자입니다.테스트글자입니다.
+</div>
+
+</body>
+</html>

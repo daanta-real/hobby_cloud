@@ -5,10 +5,13 @@
 	 	<style type="text/css">
 			li {list-style: none; float: left; padding: 6px;}
 		</style>
+		
+		
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
-<script>  
+<script>
 	$(function() {
 		//지도 생성 준비 코드
 		var container = document.querySelector("#map");
@@ -18,20 +21,16 @@
 		};
 		//지도 생성 코드
 		var map = new kakao.maps.Map(container, options);
-
 		// 마커의 위치 , 내용을 가지고 있는 객체 배열입니다
 		var positions = [
-
 		];
 		var markers = [];
 		
 		for (var i = 0; i < $(".fgTitle").length; i++) {
 			let title = $(".fgTitle").eq(i).val();
-			let latti = Number($(".fgLatitude").eq(i).val());
-			let longdi = Number($(".fgLongitude").eq(i).val());
-			console.log($(".fgTitle").eq(i).val());
-			console.log($(".fgLatitude").eq(i).val());
-			console.log($(".fgLongitude").eq(i).val());
+			let latti = Number($(".fgLongitude").eq(i).val());
+			let longdi = Number($(".fgLatitude").eq(i).val());
+	
 		
 			positions.push({
 				content : title ,
@@ -43,7 +42,6 @@
 			addMarker(positions[i]);
 			
 		}
-
 		//마커 생성 함수 + 클릭 이벤트 추가 함수 
 		function addMarker(position){
 			var marker = new kakao.maps.Marker({
@@ -63,7 +61,6 @@
 				var lat = marker.getPosition().getLat();
 				var lng = marker.getPosition().getLng();
 				setCenter(lat,lng);
-
 			});
 			// 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
 			// 이벤트 리스너로는 클로저를 만들어 등록합니다 
@@ -80,7 +77,6 @@
 				infowindow.open(map, marker);
 			};
 		}
-
 		// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
 		function makeOutListener(infowindow) {
 			return function() {
@@ -125,34 +121,36 @@
 
 <table border="1" width="90%">
 	<thead>
-		<tr>
-		<th width="30%">사진></th>
+		<tr align="center">
+		<th width="30%">사진</th>
 			<th>번호</th>
 			<th >제목</th>
 			<th>작성자</th>
 			<th>지역</th>
 			<th>인원</th>
-			<th>제목</th>
+			<th>제목2</th>
 		</tr>
 	</thead>
 
 
 	<tbody align="center">
 		<c:forEach var="GatherVO" items="${list}">
-			<tr>
+			<tr align="center">
 			
-			<td>
-			<img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%">
-			</td>
-			
+				<td>
+				<img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%">
+				</td>		
 				<td>${GatherVO.gatherIdx}</td>
-				<td align="left">
-				<a href="${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx }">${GatherVO.gatherName }</a>
+				<td>
+				<a href="${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}">${GatherVO.gatherName }</a>
 				</td>
-				<td>${GatherVO.memberNick }</td>
-				<td>${GatherVO.gatherLocRegion }</td>
-				<td>${GatherVO.gatherHeadCount }</td>
-				<td>${GatherVO.gatherName }</td>
+				<td>${GatherVO.memberNick}</td>
+				<td>${GatherVO.gatherLocRegion}</td>
+				<td>${GatherVO.gatherHeadCount}</td>
+				<td>${GatherVO.gatherName}</td>
+				<td><input type="hidden" class="fgTitle" value="${GatherVO.gatherName}"></td>
+				<td><input type="hidden" class="fgLatitude" value="${GatherVO.gatherLocLatitude}"></td>
+			 	<td><input type="hidden" class="fgLongitude" value="${GatherVO.gatherLocLongitude}"></td>
 			</tr>
 		</c:forEach>
 	</tbody>
