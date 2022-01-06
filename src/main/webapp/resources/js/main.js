@@ -14,7 +14,7 @@ function createEl(name, param) {
      if(param.value != undefined) el.value = param.value;
      if(param.text != undefined) el.innerText = param.text;
      if(param.html != undefined) el.innerHTML = param.html;
-     if(param.attrib != undefined) for(var i in param.attrib) el.setAttribute(i, param.attrib[i]);
+     if(param.attr != undefined) for(var i in param.attr) el.setAttribute(i, param.attr[i]);
      if(param.style != undefined) for(var i in param.style) el.style[i] = param.style[i];
      if(param.child != undefined) {
          if(param.child instanceof Array) for(var i = 0; i < param.child.length; i++) el.append(param.child[i]);
