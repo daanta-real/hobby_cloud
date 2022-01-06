@@ -6,18 +6,20 @@
 <mapper namespace="memberCategory">
 
 	<!-- 등록 -->
-	<insert id="save" parameterType="MemberCategoryDto">
-		
+	<insert id="save" parameterType="com.kh.hobbycloud.entity.member.MemberCategoryDto">		
 		insert into member_category(
 			member_idx, lec_category_name
 		)
-		values(
-			#{memberIdx}, #{lecCategoryName}
-		)
-	</insert>	
+		values
+		<foreach collection="lecCategoryName" item="categoryName" separator=",">
+        (
+            #{memberIdx}, #{lecCategoryName.categoryName}
+        )
+        </foreach>
+	</insert>
 	
-	<!-- 조회 -->
-	<select id="getByIdx" parameterType="int" resultType="MemberCategoryDto">
+	<!-- 조회--> 
+	<select id="getByIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.member.MemberCategoryDto">
 		select * from member_category where member_idx = #{memberIdx}
 	</select>
 	

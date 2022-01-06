@@ -21,7 +21,7 @@ public class MemberCategoryDaoImpl implements MemberCategoryDao{
 	// memberIdx로 memberCategoryDto 불러오기
 	@Override
 	public MemberCategoryDto getByMemberIdx(int memberIdx) {
-		return sqlSession.selectOne("MemberCategory.getByIdx", memberIdx);
+		return sqlSession.selectOne("memberCategory.getByIdx", memberIdx);
 	}
 	
 	// 한 회원의 선호파일 데이터를 불러오기

@@ -3,8 +3,6 @@ package com.kh.hobbycloud.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.hobbycloud.entity.member.MemberCategoryDto;
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberCategoryDao;
@@ -126,7 +123,7 @@ public class MemberController {
 	// 회원가입 처리 페이지
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberJoinVO memberJoinVO) throws IllegalStateException, IOException {
-		log.debug("ㅡㅡMemberController - /member/join POST> 회원가입 DATA 입력됨");
+		log.debug("ㅡㅡMemberController - /member/join POST> 회원가입 DATA 입력됨. 입력값 {}", memberJoinVO);
 		memberService.join(memberJoinVO);
 		log.debug("ㅡㅡMemberController - /member/join POST> 회원가입 DATA 입력됨");
 		return "redirect:join_success";
@@ -185,12 +182,15 @@ public class MemberController {
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
 		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
+		//데이터 획득(memberId, memberIdx)
 		String memberId = (String)session.getAttribute("memberId");
 		int memberIdx = (int) session.getAttribute("memberIdx");
+		//데이터 Model에 저장		
 		MemberDto memberDto = memberDao.get(memberId);
 		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberProfileDto", memberProfileDto);
+		//페이지 리다이렉트		
 		return "member/mypage";
 	}
 
@@ -420,23 +420,5 @@ public class MemberController {
 		log.debug("ㅡㅡMemberController - /member/updateMail GET> 이메일 변경");
 		return "member/updateMail";
 	}
-	
-	// 관심분야 다운로드 처리 페이지
-		@GetMapping("/lecCategory")
-		@ResponseBody
-		public void lecCategory(@RequestParam int memberIdx) {
-
-			// 0. 매개변수로 memberIdx가 넘어와 있다.
-			System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 memberIdx : " + memberIdx);
-
-			// 1. memberIdx를 이용하여, 관심분야 private List<String> lecCategoryName 가져오기			
-				List<String> lecCategoryName = new ArrayList<>();
-//				lecCategoryName.add();
-	    		
-			MemberCategoryDto memberCategoryDto = memberCategoryDao.getByMemberIdx(memberIdx);
-			System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 memberCategoryDto : "+memberCategoryDto);
-			
-			memberCategoryDao.save(memberCategoryDto);
-		}	
 
 }

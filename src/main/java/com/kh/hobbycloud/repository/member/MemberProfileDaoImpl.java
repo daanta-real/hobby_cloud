@@ -19,7 +19,7 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 	@Autowired
 	private SqlSession sqlSession;
 	
-	// 소모임 관련 첨부파일 저장 위치 문자열
+	// 프로필 첨부파일 저장 위치 문자열
 	@Autowired
 	private String STOREPATH_MEMBER;
 	

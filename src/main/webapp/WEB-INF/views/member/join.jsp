@@ -7,8 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha1.min.js"></script>
 
 <script>
-//비밀번호 암호화
-        
+//비밀번호 암호화        
   	$(function(){
    		$("form").submit(function(e){
    			e.preventDefault();
@@ -29,6 +28,7 @@
    	 *  .findRegion을 누르면 자동으로 주소검색창이 나옴    
    	 *  - input[name=memberRegion] 에 기본주소 작성
    	 */
+   	 
     	 
    	 $(function(){
    		$(".findRegion").click(function(){
@@ -104,13 +104,13 @@ $(document).ready(function(){
 		var addr = $('.address_input').val();		// 주소 입력란
 
 		/* 정규표현식 변수 */
-     		var emp = RegExp(/\s/g)
-     	    var userId = RegExp(/(?=.*\d{1,20})(?=.*[a-zA-Z]{1,20}).{4,16}$/);
-     	    var password = RegExp(/^[A-Za-z0-9!@#$\s_-]{8,16}$/); 
-     	    var nick =  RegExp(/^[0-9a-zA-Z가-힣]{2,10}$/); 
-     		var ph = RegExp(/^[0-9]*$/); 
-     		var email_id = RegExp(/^[a-zA-Z0-9_-]{4,20}$/);
-     		var email_domain= RegExp(/^[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/);
+     		var emp = new RegExp(/\s/g)
+     	    var userId = new RegExp(/(?=.*\d{1,20})(?=.*[a-zA-Z]{1,20}).{4,16}$/);
+     	    var password = new RegExp(/^[A-Za-z0-9!@#$\s_-]{8,16}$/); 
+     	    var nick =  new RegExp(/^[0-9a-zA-Z가-힣]{2,10}$/); 
+     		var ph = new RegExp(/^[0-9]*$/); 
+     		var email_id = new RegExp(/^[a-zA-Z0-9_-]{4,20}$/);
+     		var email_domain= new RegExp(/^[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/);
 
      		/* 아이디 유효성검사 */
      	  $("#userId").keyup(function(){
@@ -542,7 +542,7 @@ $(document).ready(function(){
 </div>
 
 	<div class="join_button_wrap">
-			<input type="submit" class="join_button" id="btnclick" value="가입하기">
+			<input type="submit" class="join_button" id="btnclick" value="가입">
 	</div>
 
 </div>
