@@ -132,15 +132,15 @@ where gather_idx=#{gatherIdx}
 
 <!-- 해당 게시물 댓글리스트 -->
 <select id="replyList"  parameterType="int"     resultType="GatherReplyVO">
-select  m.member_nick,r.*
-from gather g  
+select gr.*,m.member_nick from 
+gather g 
+inner join
+gather_reply gr 
+ON g.gather_idx = gr.gather_idx
 left outer join
-member m  
-ON g.member_idx = m.member_idx
-left outer join
-gather_reply r
-on g.gather_idx= r.gather_idx
-where r.gather_idx = #{gatherIdx}
+ member m
+ON gr.member_idx = m.member_idx
+where gr.gather_idx = #{gatherIdx}
 </select>
 
 <!-- 댓글 입력 -->
@@ -164,4 +164,6 @@ delete  from gather_reply where gather_reply_idx=#{gatherReplyIdx}
  where 
  gather_reply_idx =#{gatherReplyIdx}
 </update>
+
+
 </mapper>

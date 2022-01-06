@@ -224,6 +224,7 @@ function setLoc(el) {
 							
 							e.preventDefault();
 							makeTime();
+							  $("#insert-form").submit();
    						} else{
 		                e.preventDefault();		
 		                alert("시간 설정을 확인해주세요");
@@ -247,10 +248,10 @@ function setLoc(el) {
 <form action="insert" method="post" enctype="multipart/form-data" id="insert-form">
 
 
-	회원 idx<input type="text" name="memberIdx" value="99999"> 취미분류
-	이름<input type="text" name="lecCategoryName" value="운동"> <br>
-	장소 idx
-	<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999">
+	
+	 취미분류 <input type="text" name="lecCategoryName" value="운동">
+	  <br>
+	장소 idx<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999">
 	 제목	<input type="text" name="gatherName"value="제목"> 
 		상세내용<input type="text" name="gatherDetail" value="내용"> <br>
 		 작성일<input type="date"	name="gatherRegistered"> 

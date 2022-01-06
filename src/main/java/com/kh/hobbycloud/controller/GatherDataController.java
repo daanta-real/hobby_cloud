@@ -17,8 +17,10 @@ import com.kh.hobbycloud.entity.gather.GatherReplyDto;
 import com.kh.hobbycloud.entity.gather.GatherReviewDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
+import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
 import com.kh.hobbycloud.repository.gather.GatherReplyDao;
 import com.kh.hobbycloud.repository.gather.GatherReviewDao;
+import com.kh.hobbycloud.vo.gather.GatherChartVO;
 import com.kh.hobbycloud.vo.gather.GatherReplyVO;
 import com.kh.hobbycloud.vo.gather.GatherReviewVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
@@ -36,6 +38,8 @@ public class GatherDataController {
 	
 	@Autowired
 	private GatherFileDao gatherFileDao;
+	@Autowired
+	private GatherHeadsDao gatherHeadsDao;
 	
 	
 	//ajax연습용
@@ -53,8 +57,9 @@ public class GatherDataController {
 	//게시판 댓글 작성
 	@PostMapping("/replyInsert")
 	
-	public void replyInsert(@ModelAttribute GatherReplyDto gatherReplyDto) {
-	
+	public void replyInsert(@ModelAttribute GatherReplyDto gatherReplyDto,HttpSession session) {
+		int memberIdx =(int) session.getAttribute("memberIdx");
+		gatherReplyDto.setMemberIdx(memberIdx);
 		gatherReplyDao.insert(gatherReplyDto);
 	}
 	//게시판 댓글목록
@@ -105,7 +110,15 @@ public class GatherDataController {
 	//평점수정
 	@PostMapping("/reviewEdit")
 	public void reviewEdit(@ModelAttribute GatherReviewDto gatherReviewDto) {	
+		System.out.println("수정+"+gatherReviewDto);
 		gatherReviewDao.edit(gatherReviewDto);
+	}
+	//성별 별 인원수 구하기
+	@GetMapping("/genderCount")
+	public List<GatherChartVO> countByGender(@RequestParam int gatherIdx){
+		System.out.println(gatherIdx);
+		System.out.println("왓ㅅ음");
+		return gatherHeadsDao.countByGender(gatherIdx);
 	}
 	
 }
