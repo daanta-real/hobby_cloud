@@ -306,7 +306,7 @@ function setLoc(el) {
                     </tr>
                 </thead>
                 <tbody class="locTBody">
-                 
+                <!-- ajax로 리스트 목록이 나오는 장소 -->
                 </tbody>
             </table>
             <!-- 모달 꼬리말 영역 -->
@@ -330,6 +330,7 @@ function setLoc(el) {
 							console.log("성공", resp);
 							var results = resp;
 							console.log(results);
+							
 							var totalStr = "";
 							$.each(results, function(i) {
 								var jsonStr = results[i];
@@ -345,7 +346,6 @@ function setLoc(el) {
 							console.log("전체 HTML: ", totalStr);
 							
 							var listTarget = document.querySelector(".locTBody");
-							console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
 							listTarget.innerHTML = totalStr;
 							
 						},

@@ -37,6 +37,8 @@ public class GatherDataController {
 	@Autowired
 	private GatherFileDao gatherFileDao;
 	
+	
+	//ajax연습용
 	@GetMapping("/hello")
 	public String home() {
 		return "home";
@@ -53,7 +55,6 @@ public class GatherDataController {
 	
 	public void replyInsert(@ModelAttribute GatherReplyDto gatherReplyDto) {
 	
-		System.out.println("댓글");
 		gatherReplyDao.insert(gatherReplyDto);
 	}
 	//게시판 댓글목록
@@ -69,6 +70,11 @@ public class GatherDataController {
 	return gatherReplyDao.delete(gatherReplyIdx);
 	}
 	
+	//댓글 수정
+	@PostMapping("/replyEdit")
+	public void replyEdit(@ModelAttribute  GatherReplyDto gatherReplyDto) {
+		gatherReplyDao.edit(gatherReplyDto);
+	}
 	//파일삭제
 	@DeleteMapping("/fileDelete")
 	public boolean fileDelete(@RequestParam int gatherFileIdx) {
@@ -78,7 +84,6 @@ public class GatherDataController {
 	@PostMapping("/reviewInsert")
 	public void reviewInsert(@ModelAttribute GatherReviewDto gatherReviewDto,HttpSession session) {
 	
-		System.out.println("헬로우");
 		int memberIdx =(int) session.getAttribute("memberIdx");
 		gatherReviewDto.setMemberIdx(memberIdx);
 		System.out.println(gatherReviewDto);
@@ -97,4 +102,10 @@ public class GatherDataController {
 		System.out.println(gatherReviewIdx);
 		return gatherReviewDao.delete(gatherReviewIdx);
 	}
+	//평점수정
+	@PostMapping("/reviewEdit")
+	public void reviewEdit(@ModelAttribute GatherReviewDto gatherReviewDto) {	
+		gatherReviewDao.edit(gatherReviewDto);
+	}
+	
 }

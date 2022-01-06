@@ -34,7 +34,19 @@ member m ON g.member_idx = m.member_idx
  member_profile mp ON m.member_idx =mp.member_idx where g.gather_idx=#{gatherIdx}
 </select>
 
+<!-- 평점 삭제 -->
 <delete id="delete" parameterType="int">
  delete from gather_review where gather_review_idx=#{gatherReviewIdx}
 </delete>
+
+<!-- 평점 수정 -->
+<update id="edit" parameterType="GatherReviewDto">
+update gather_review set
+ gather_review_detail=#{gatherReviewDetail},
+gather_review_score=#{gatherReviewScore},
+gather_review_registered=sysdate 
+where 
+gather_review_idx =#{gatherReviewIdx}
+</update>
+
 </mapper>
