@@ -12,4 +12,5 @@ public interface LecDao {
 	LecDetailVO get(int lecIdx);//단일 조회
 	void delete(int lecIdx);//삭제
 	int  getSequence();//시퀀스 생성
+	boolean update(LecDto lecDto);
 }

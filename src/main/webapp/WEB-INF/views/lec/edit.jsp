@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
-<c:set var="root" value="${pageContext.request.contextPath}"/>
+<%@ taglib uri="http://www.springframework.org/tags"  prefix="spring"%>
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
@@ -10,6 +9,13 @@
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 마이 페이지</TITLE>
 <style type='text/css'>
+/*
+
+			
+${SERVER_ROOT}
+${SERVER_PORT}
+${CONTEXT_NAME}
+*/
 	#selboxDirect { min-width:200px; min-height:200px; }
 	
 	/* 파일 드롭존 관련 설정 */
@@ -17,15 +23,40 @@
     #fileDropZone { border:1px solid green; }
     #fileDropZone.dragenter, #fileDropZone.dragover { border: 10px solid blue; }
     
+    /* 수정 완료 버튼 */
+    #lecForm_submitBtn { cursor:pointer; }
+    
 </style>
 <script type='text/javascript'>
 
-//첨부파일 저장소 (files 안에 Object형 file 객체들이 들어감)
-const fileStageArr = [];
+// 첨부파일 저장소 (files 안에 Object형 file 객체들이 들어감)
+let fileStageArr = [];
+
+// 파일 객체를 넘기면, FileReader가 이미지 내용물을 로드해 대상 이미지 태그에 반영함으로써
+// 이미지를 로드시켜 준다.
+// 패러미터: 대상 파일객체, 대상 이미지 태그
+function renderImageFromFile(file, targetEl) {
+	console.log(file.name);
+	const reader = new FileReader();
+	reader.readAsDataURL(file);
+	reader.addEventListener('load', (e) => {
+		targetEl.src = e.target.result;
+	});
+}
 
 // 첨부파일 저장소에 새 파일을 추가해주는 함수
 function addFiles(filesObjArr) {
 	fileStageArr = fileStageArr.concat(filesObjArr);
+	for(var i in filesObjArr) readImage(filesObjArr[i]);
+	/*createEl("div", {
+		class:['fileBox'],
+		child:[
+			createEl('img', {
+				class:['fileImg']
+				attr:{'data-idx', }
+			})
+		]
+	}*/
 }
 
 // 첨부파일 저장소에서 특정 번째의 파일을 삭제하는 함수
@@ -50,15 +81,29 @@ function refreshFilesStageList(filesList) {
 }
 
 // 파일 저장소 정보 내용대로 <input type=file> 태그를 새로 만들어 리턴해줌
-function fileStageArr_prepareToSend() {
-	const formData = new FormData();
-	console.log("생성된 formData:", formData);
-	fileStageArr.map((file, i) => {
-		console.log(i + "번째 파일: ", file);
-		formData.append(`file_{i + 1}`, file);
+function sendForm() {
+	
+	// formData 객체 생성: 기존 Form의 입력값을 전부 품은 객체 
+	let formData = new FormData(document.querySelector("#lecFormEl"));
+	
+	// formData에 파일 정보 모두 추가
+	fileStageArr.map((file, i) => { formData.append("attach", file); });
+	
+	// 완성된 전체 formData 확인
+	console.log("완성된 formData:");
+	for (var p of formData) console.log(p);
+
+	// AXIOS를 이용하여 FORM DATA 제출
+	axios.post("http://localhost:8080/hobbycloud/lecData/update", formData, {
+		headers: { "Content-type": "multipart/form-data" }
+	}).then((response) => {
+		console.log("성공. 다음 주소로 이동할 예정\n${root}/lec/detail/${lecDetailVO.lecIdx}");
+		location.href = "${root}/lec/detail/${lecDetailVO.lecIdx}";
+	}).catch((response) => {
+		console.log("에러");
+		console.log(response);
 	});
-	console.log("최종 formData:");
-	return formData;
+
 }
 
 // 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -66,13 +111,9 @@ window.addEventListener("load", function() {
 
     // 엘리먼트 및 환경변수 선언
     console.log("엘리먼트 선언");
-    window.fileEl = document.getElementById("fileInputObj");
     window.dropZoneEl = document.getElementById("fileDropZone");
     window.dropZoneClassList = ["dragenter", "dragleave", "dragover", "drop"];
 
-    
-    // (input 태그를 쓸 경우 한정) input 태그를 통해 업로드를 할 경우, 변화를 감지하여 통으로 대체
-    fileEl.addEventListener("change", (e) => { applyFilesToInput(e) });
     // 드래그한 파일이 드롭존에 진입했을 때
     dropZoneEl.addEventListener("dragenter", (e) => { e.stopPropagation(); e.preventDefault(); onSpecificClasses(dropZoneEl, "dragenter", dropZoneClassList); });
     // 드래그한 파일이 드롭존을 벗어났을 때
@@ -81,13 +122,9 @@ window.addEventListener("load", function() {
     dropZoneEl.addEventListener("dragover", (e) => { e.stopPropagation(); e.preventDefault(); onSpecificClasses(dropZoneEl, "dragover", dropZoneClassList); });
     // 드래그한 파일이 마우스를 뗌으로써 최종 드랍되었을 때
     dropZoneEl.addEventListener("drop", (e) => { e.preventDefault(); onSpecificClasses(dropZoneEl, "drop", dropZoneClassList);
-        
-    	// 시작 알림
-    	console.log("새로운 파일 드래그됨");
-        
-        // 이벤트 내에서 파일전송 정보 객체를 찾음
+                
+        // 접수된 파일(들) 전송 정보 객체를 이벤트 객체에서 캐냄
         var receivedFilesList = e.dataTransfer && e.dataTransfer.files;
-        console.log("드래그로 접수된 파일 정보: ", receivedFilesList);
         
         // 파일 유형 검사.
         // 검사 1) 폴더일 경우 업로드 불가 = 빠꾸
@@ -103,12 +140,11 @@ window.addEventListener("load", function() {
         console.log("파일 오브젝트 목록 생성:fileObjArr\n", filesObjArr);
         // 파일 정보 배열을 이용해 파일 목록에 추가 처리를 함
         addFiles(filesObjArr);
-        // 처리가 끝났으면, 파일 input 태그는 더 이상 이용할 필요 없으니 싹 비움.
-        fileInputObj.value = "";
         
-        //addFilesToInput(receivedFilesList);
-        //refreshFilesStageList(fileEl.files);
     });
+    
+    // 수정 완료 버튼 클릭 시 이벤트 실행
+    document.getElementById("lecForm_submitBtn").addEventListener("click", sendForm);
 
 });
 
@@ -151,21 +187,19 @@ window.addEventListener("load", function() {
 			<div class="container">
 
 
-<form method="post" enctype="multipart/form-data" class="container">
+<form id="lecFormEl" name="lecForm" method="post" enctype="multipart/form-data" class="container">
+	<input type="hidden" name="lecIdx", value="${lecDetailVO.lecIdx}" />
 	<div class="row mb-4">
 		<label>강좌 이름</label>
 		<input type="text" name="lecName" required class="form-input" value="${lecDetailVO.lecName}">
 	</div>
 	<div class="row mb-4">
 		<label>카테고리</label>
-		<select name="lecCategoryName" required class="form-input">			
+		<select name="lecCategoryName" required class="form-input">
 			<option value="">선택하세요</option>
-			<option value="운동" ${lecDetailVO.lecCategoryName == '운동' ? selected : ''}>운동</option>
-			<option value="요리" ${lecDetailVO.lecCategoryName == '요리' ? selected : ''}>요리</option>
-			<option value="문화" ${lecDetailVO.lecCategoryName == '문화' ? selected : ''}>문화</option>
-			<option value="예술" ${lecDetailVO.lecCategoryName == '예술' ? selected : ''}>예술</option>
-			<option value="IT" ${lecDetailVO.lecCategoryName == 'IT' ? selected : ''}>IT</option>
-			<option value="기타" ${lecDetailVO.lecCategoryName == '기타' ? selected : ''}>기타</option>
+			<c:forEach var="val" items="${lecCategoryList}">
+				<option value="${val}" ${lecDetailVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
+			</c:forEach>
 		</select>
 	</div>
 	<div class="row mb-4">
@@ -185,7 +219,7 @@ window.addEventListener("load", function() {
 <!-- 		</select> -->
 		<!-- 상단의 select box에서 '직접입력'을 선택하면 나타날 인풋박스 -->
 <!-- 		<input type="text" id="selboxDirect" name="lecLocRegion"/> -->
-		<input type="number" name="placeIdx" required class="form-input">
+		<input type="number" name="placeIdx" class="form-input" required value=9999>
 		<div class="border border-1 border-primary" id="selboxDirect"></div>
 	</div>
 	<div class="row mb-4">
@@ -210,13 +244,11 @@ window.addEventListener("load", function() {
 	</div>
  	<div class="row mb-4">
  		<label>첨부 파일</label>
- 		<!-- class="d-none" --> 
- 		<input id="fileInputObj" type="file" name="attach" multiple>
  		<!-- 드롭존 겸 파일리스트 -->
  		<div id="fileDropZone">아니면 파일을 여기에 드래그하세요.</div>
  	</div>
 	<div class="row mb-4">
-		<input type="submit" value="수정" class="form-btn">
+		<input type="button" id="lecForm_submitBtn" value="수정 완료" class="form-btn">
 	</div>
 </form>
 	

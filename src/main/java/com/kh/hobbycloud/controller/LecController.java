@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.entity.lec.LecFileDto;
+import com.kh.hobbycloud.repository.lec.LecCategoryDao;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
-import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
@@ -47,6 +47,9 @@ public class LecController {
 
 	@Autowired
 	private LecFileDao lecFileDao;
+
+	@Autowired
+	private LecCategoryDao lecCategoryDao;
 
 	//목록(검색 가능)
 	@RequestMapping("/list")
@@ -82,7 +85,7 @@ public class LecController {
 		model.addAttribute("lecDetailVO", lecDetailVO);
 		model.addAttribute("list", list);
 
-		log.debug("세션{},", session.getAttribute("memberIdx"));
+		log.debug("세션 memberIdx = {},", session.getAttribute("memberIdx"));
 
 		//좋아요 구현
 		//회원일때 보이고 비회원이면 안보이고
@@ -116,6 +119,10 @@ public class LecController {
 		log.debug("ㅡㅡㅡ lecDetailVO: {}", lecDetailVO);
 		model.addAttribute("lecDetailVO", lecDetailVO);
 
+		// 데이터 획득: 카테고리 목록
+		List<String> lecCategoryList = lecCategoryDao.select();
+		model.addAttribute("lecCategoryList", lecCategoryList);
+
 		// 획득된 데이터를 Model에 지정
 		List<LecFileDto> fileList = lecFileDao.getListByLecIdx(lecIdx);
 		log.debug("ㅡㅡㅡ List<LecFileDto> list = {}", fileList);
@@ -123,15 +130,6 @@ public class LecController {
 
 		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
 		return "lec/edit";
-	}
-
-	// 강좌 수정 처리
-	@PostMapping("/edit/{lecIdx}")
-	public String update(@ModelAttribute LecEditVO lecEditVO) throws IllegalStateException, IOException {
-		// 수정
-		lecService.edit(lecEditVO);
-		int lecIdx = lecEditVO.getLecIdx();
-		return "redirect:/lec/detail/" + lecIdx;
 	}
 
 	// 강좌 삭제
