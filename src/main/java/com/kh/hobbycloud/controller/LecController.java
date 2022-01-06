@@ -78,7 +78,7 @@ public class LecController {
 	public String detail(@PathVariable int lecIdx, HttpSession session, Model model) {
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
 
-		List<LecFileDto> list = lecFileDao.getByIdx(lecIdx);
+		List<LecFileDto> list = lecFileDao.getListByLecIdx(lecIdx);
 		model.addAttribute("lecDetailVO", lecDetailVO);
 		model.addAttribute("list", list);
 
@@ -106,7 +106,7 @@ public class LecController {
 		return "lec/detail";
 	}
 
-	//강좌 수정
+	// 강좌 수정 폼 페이지 불러오기
 	@GetMapping("/edit/{lecIdx}")
 	public String update(@PathVariable int lecIdx, Model model) {
 		log.debug("ㅡㅡㅡ /lec/edit?" + lecIdx + " (강좌 파일 수정 GET) 진입");
@@ -117,10 +117,11 @@ public class LecController {
 		model.addAttribute("lecDetailVO", lecDetailVO);
 
 		// 획득된 데이터를 Model에 지정
-		List<LecFileDto> list = lecFileDao.getByLecIdx_list(lecIdx);
-		log.debug("ㅡㅡㅡ List<LecFileDto> list = {}", list);
-		model.addAttribute("list", list);
+		List<LecFileDto> fileList = lecFileDao.getListByLecIdx(lecIdx);
+		log.debug("ㅡㅡㅡ List<LecFileDto> list = {}", fileList);
+		model.addAttribute("list", fileList);
 
+		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
 		return "lec/edit";
 	}
 
@@ -134,8 +135,8 @@ public class LecController {
 	}
 
 	// 강좌 삭제
-	@GetMapping("/delete")
-	public String delete(@RequestParam int lecIdx) {
+	@GetMapping("/delete/{lecIdx}")
+	public String delete(@PathVariable int lecIdx) {
 		lecDao.delete(lecIdx);
 		return "redirect:list";
 	}
@@ -149,7 +150,7 @@ public class LecController {
 		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 lecIdx : " + lecFileIdx);
 
 		// 1. lecIdx를 이용하여, 이미지 파일정보 전체를 DTO로 갖고 온다.
-		LecFileDto lecFileDto = lecFileDao.get(lecFileIdx);
+		LecFileDto lecFileDto = lecFileDao.getByLecFileIdx(lecFileIdx);
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 lecFileDto : "+lecFileDto);
 
 		// 2. 갖고 온 DTO에서 실제 저장 파일명(save name)을 찾아낸다.
