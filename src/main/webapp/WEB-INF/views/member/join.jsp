@@ -29,7 +29,7 @@
    	 *  - input[name=memberRegion] 에 기본주소 작성
    	 */
    	 
-    	 
+    	  
    	 $(function(){
    		$(".findRegion").click(function(){
    	    	findAddress();
