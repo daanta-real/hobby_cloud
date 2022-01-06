@@ -1,8 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
+    
+    
+    <script>
+    $(function() {
+		//지도 생성 준비 코드
+		var container = document.querySelector("#map");
+		var options = {
+			center : new kakao.maps.LatLng($("input[name=gatherLocLongitude]").val(), $(
+					"input[name=gatherLocLatitude]").val()),
+			level : 3
+		};
 
+		//지도 생성 코드
+		var map = new kakao.maps.Map(container, options);
+
+		// 마커가 표시될 위치입니다 
+		var markerPosition = new kakao.maps.LatLng($("input[name=gatherLocLongitude]")
+				.val(), $("input[name=gatherLocLatitude]").val());
+
+		// 마커를 생성합니다
+		var marker = new kakao.maps.Marker({
+			position : markerPosition
+		});
+
+		// 마커가 지도 위에 표시되도록 설정합니다
+		marker.setMap(map);
+	});
+    </script>
 <!-- LINKS -->
 <!-- Bootstrap Theme -->
 <LINK rel="stylesheet"
@@ -64,16 +93,14 @@
 
 <c:set var="isLogin" value="${memberIdx != null}" />
 
-<c:choose>
-	<c:when test="${isLogin}">
 
+<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번게시글</h2>
+<input type="text" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
+<input type="text" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
 
-	</c:when>
-</c:choose>
-
-<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번
-	게시글</h2>
-
+<!--상세페이지 지도 -->
+<div id="map" style="width:50%;height:350px;"></div>
+ 
 <table border="1" width="80%">
 	<tbody>
 		<tr>
@@ -91,9 +118,15 @@
 			(주의) 태그 사이에 쓸데없는 엔터, 띄어쓰기 등이 들어가지 않도록 해야 한다.(모두 표시된다) 
 		-->
 		<tr height="250" valign="top">
-			<td class="participate"><pre>${GatherVO.gatherDetail}</pre> <c:set
-					var="isJoin" value="false" /> <c:set var="isFull" value="false" />
-				<!-- 참가자 리스트 반복문 --> <c:forEach var="GatherHeadsVO" items="${list2}"
+			<td class="participate"><pre>${GatherVO.gatherDetail}</pre> 
+			
+			
+			
+			<c:set	var="isJoin" value="false" /> <c:set var="isFull" value="false" />
+				
+				
+				<!-- 참가자 리스트 반복문 -->
+				 <c:forEach var="GatherHeadsVO" items="${list2}"
 					varStatus="status">
 					<c:out value="${status.count}" />
 
@@ -110,6 +143,7 @@
 						<c:set var="isJoin" value="true" />
 					</c:if>
 
+	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div>  
 
 					<tr>
 						<th>닉네임</th>
@@ -118,12 +152,11 @@
 					<tr>
 						<td>${GatherHeadsVO.memberNick}</td>
 						<td>${GatherHeadsVO.gatherIdx}</td>
-
-
 					</tr>
-				</c:forEach> <c:choose>
+				</c:forEach> 
+				
+				<c:choose>
 					<c:when test="${isFull}">
-						<h1>헬로</h1>
 					</c:when>
 				</c:choose> <!-- 게시판 사진 반복문 --> <c:forEach var="GatherFileDto" items="${list}">
 					<span><${GatherFileDto.gatherFileUserName}</span>
@@ -178,7 +211,7 @@
 </form>
 
 
-게시판 댓글 목록
+<!-- 게시판 댓글 목록 -->
 <template id="gatherVO-template">
 <div class="item">
 	<span class="gatherReplyIdx">{{gatherReplyIdx}}</span> <span
@@ -192,9 +225,9 @@
 
 <div id="result"></div>
 
-
+<input type="radio" id="5-stars" name="gatherReviewScore" value="5" v-model="ratings"/>
 <form id="insertReview-form">
-	<div class="star-rating space-x-4 mx-auto">
+ 	<div class="star-rating space-x-4 mx-auto"> 
         <input type="radio" id="5-stars" name="gatherReviewScore" value="5" v-model="ratings"/>
         <label for="5-stars" class="star pr-4">★</label>
         <input type="radio" id="4-stars" name="gatherReviewScore" value="4" v-model="ratings"/>
@@ -203,9 +236,10 @@
         <label for="3-stars" class="star">★</label>
         <input type="radio" id="2-stars" name="gatherReviewScore" value="2" v-model="ratings"/>
         <label for="2-stars" class="star">★</label>
+        
         <input type="radio" id="1-star" name="gatherReviewScore" value="1" v-model="ratings" />
         <label for="1-star" class="star">★</label>
-    </div> 
+     </div>  
 	내용 : <input type="text" name="gatherReviewDetail">
 		 <input type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}"> 
 		 <input	type="submit" value="전송하기">
@@ -214,10 +248,11 @@
 <!-- 평점목록 -->
 <template id="gatherReviewVO-template">
 <div class="item">
-	<span class="gatherReviewIdx">{{gatherReviewIdx}}</span> <span
-		class="memberIdx">{{memberIdx}}</span> <span class="gatherIdx">{{gatherIdx}}</span>
-	<span class="gatherReviewScore">{{gatherReviewScore}}</span> <span
-		class="gatherReviewDetail">{{gatherReviewDetail}}</span>
+	<span class="gatherReviewIdx">{{gatherReviewIdx}}</span> 
+	<span	class="memberNick">{{memberNick}}</span> 
+	<span class="gatherIdx">{{gatherIdx}}</span>
+	<span class="gatherReviewScore">{{gatherReviewScore}}</span> 
+	<span	class="gatherReviewDetail">{{gatherReviewDetail}}</span>
 	<button class="edit-btn" data-gatherreview-idx="{{gatherReviewIdx}}">e</button>
 	<button class="remove-btn" data-gatherreview-idx="{{gatherReviewIdx}}">엑스</button>
 </div>
@@ -287,17 +322,75 @@ function loadReview(){
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
-				template = template.replace("{{memberIdx}}", resp[i].memberIdx);
+				template = template.replace("{{memberNick}}", resp[i].memberNick);
+				template = template.replace("{{gatherReviewScore}}", resp[i].gatherReviewScore);
+				template = template.replace("{{gatherIdx}}", resp[i].gatherIdx);
 				template = template.replace("{{gatherReviewDetail}}", resp[i].gatherReviewDetail);
 		
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 	
 				console.log(tag.find(".remove-btn"));
+				
+				//별점 삭제
 				tag.find(".remove-btn").click(function(){
 					console.log("누름");
 					deleteReview($(this).data("gatherreview-idx"));
 				});
 				
+				//별점 수정
+				tag.find(".edit-btn").click(function(){
+					
+					var gatherReviewIdx = $(this).prevAll("gatherReviewIdx").text();
+					var gatherReviewDetail = $(this).prevAll(".gatherReviewDetail").text();
+					var gatherReviewScore = $(this).prevAll(".gatherReviewScore").text();
+				
+					var form = $("<form>");
+					form.append("<input type='hidden' name='gatherReviewIdx' value='"+gatherReviewIdx+"'>");
+					form.append("<input type='text' name='gatherReviewDetail' value='"+gatherReviewDetail+"'>");
+					form.append("<div class='star-rating space-x-4 mx-auto'> <input type='radio' id='5-stars' name='gatherReviewScore'value='5' v-model='ratings'/> <label for='5-stars' class='star pr-4'>★</label>");
+					
+					form.append("<input type='radio' id='5-stars' name='gatherReviewScore'value='5' v-model='ratings'/>");
+					form.append("<label for='5-stars' class='star pr-4'>★</label>");
+					
+					form.append("<input type='radio' id='4-stars' name='gatherReviewScore'value='4' v-model='ratings'/>");
+					form.append("<label for='4-stars' class='star'>★</label>");
+					
+					form.append("<input type='radio' id='3-stars' name='gatherReviewScore' value='3' v-model='ratings'/>");
+					form.append("<label for='3-stars' class='star'>★</label>");
+					
+					form.append("<input type='radio' id='2-stars' name='gatherReviewScore'value='2' v-model='ratings'/>");
+					form.append("<label for='2-stars' class='star'>★</label>");
+					
+					form.append("<input type='radio' id='1-stars' name='gatherReviewScore'value='1' v-model='ratings'/>");
+					form.append("<label for='1-stars' class='star'>★</label>");
+				
+					form.append("</div>");
+					form.append("<button type='submit'>수정</button>");
+					
+					form.submit(function(e){
+					e.preventDefault();
+						
+					var dataValue = $(this).serialize();
+					console.log(dataValue);
+					$.ajax({
+						url:"${pageContext.request.contextPath}/snsReply/edit",
+						type:"post",
+						data:dataValue,
+						success:function(resp){
+							console.log("성공", resp);
+						
+							$("#result").empty();
+							
+		
+						},
+						error:function(e){}
+					});
+				});	
+				
+				var div = $(this).parent();
+				div.html(form);
+				
+			});
 		
 				$("#resultReivew").append(tag);
 			}
@@ -309,7 +402,7 @@ function loadReview(){
 }
 
 
-
+//리뷰 삭제
 function deleteReview(gatherReviewIdxValue){
 
 	$.ajax({
@@ -329,6 +422,7 @@ function deleteReview(gatherReviewIdxValue){
 	});
 }
 </script>
+
 
 
 
@@ -399,13 +493,56 @@ function loadList(){
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 				
 				console.log(tag.find(".remove-btn"));
+				
+				//댓글 삭제
 				tag.find(".remove-btn").click(function(){
 					console.log("누름");
 					deleteReply($(this).data("gatherreply-idx"));
 				});
+				
+				//댓글 수정
+				tag.find(".edit-btn").click(function(){
+					
+					var gatherReplyIdx =$(this).prevAll(".gatherReplyIdx").text();
+					var memberNick =$(this).prevAll(".memberNick").text();
+					var gatherReplyDetail =$(this).prevAll(".gatherReplyDetail").text();
+					var gatherReplyDate =$(this).prevAll(".gatherReplyDate").text();
+					
+					var form =$("<form>");
+					console.log(form);
+					
+					
+					form.append("<input type='hidden' name='gatherReplyIdx' value='"+gatherReplyIdx+"'>");
+					form.append("<input type='text' name='gatherReplyDetail' value='"+gatherReplyDetail+"'>");
+					form.append("<button type='submit'>수정</button>");
+			
+					form.submit(function(e){
+						e.preventDefault();
 						
-				$("#result").append(tag);
-			}
+						
+					var dataValue=$(this).serialize();			
+					$.ajax({
+						url:"${pageContext.request.contextPath}/gatherData/replyEdit",
+						type:"post",
+						data:dataValue,
+						success:function(resp){
+							$("#result").empty();
+							loadList();
+						},
+						error:function(e){}
+					});
+							
+				});
+					
+					var div = $(this).parent();
+					console.log(div);
+					div.html(form);
+				
+				
+				}); 
+					$("#result").append(tag);
+				} 
+			 
 		},
 		error:function(e){
 			console.log("실패",e);
@@ -414,6 +551,9 @@ function loadList(){
 }
 
 </script>
+
+
+
 <!-- 댓글삭제 -->
 <script>
 function deleteReply(gatherReplyIdxValue){

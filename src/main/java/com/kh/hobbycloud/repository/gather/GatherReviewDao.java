@@ -13,4 +13,6 @@ public interface GatherReviewDao {
 	List<GatherReviewVO> list(int gatherIdx);
 	//평점삭제
 	boolean delete(int gatherReviewIdx);
+	//평점수정
+	void edit(GatherReviewDto gatherReviewDto);
 }

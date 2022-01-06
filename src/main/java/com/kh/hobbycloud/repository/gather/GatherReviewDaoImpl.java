@@ -32,4 +32,10 @@ public class GatherReviewDaoImpl  implements GatherReviewDao{
 		int result = sqlSession.delete("gatherReview.delete", gatherReviewIdx);
 		return result>0;
 	}
+
+	@Override
+	public void edit(GatherReviewDto gatherReviewDto) {
+		sqlSession.update("gatherReview.edit",gatherReviewDto);
+		
+	}
 }
