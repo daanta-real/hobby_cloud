@@ -109,7 +109,7 @@
  action="${pageContext.request.contextPath}/lec/cart/insert">
     <input type="hidden" name="lecIdx"
      value="${lecDetailVO.lecIdx}">
-    <input type="submit" value="장바구니에 담기">
+    <input type="submit" class="btn btn-light" value="찜하기">
 </form>
 
 <br>

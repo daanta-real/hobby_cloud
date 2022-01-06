@@ -213,11 +213,11 @@ public class LecController {
 	@RequestMapping("/cart/insert")
 	public String insert(@ModelAttribute LecCartVO lecCartVO, HttpSession session) {
 		//@ModelAttribute로 submit된 form의 내용을 저장해서 전달받고, 다시 뷰로 넘겨서 출력하기 위해 사용
-		//로그인 여부를 체크
-		int memberIdx = (Integer)session.getAttribute("memberIdx");
+		//로그인 여부를 체크	
 		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
 			return "redirect:/member/login";//로그인 화면으로 리다이렉트
 		}
+		int memberIdx = (Integer)session.getAttribute("memberIdx");
 		lecCartVO.setMemberIdx(memberIdx);
 		lecCartService.insert(lecCartVO);//찜 테이블에 저장
 		return "redirect:/lec/cart_list";//찜 목록으로 이동
