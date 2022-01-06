@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha1.min.js"></script>
+
     <script>
     	$(function(){
     		$("form").submit(function(e){
@@ -16,31 +21,7 @@
     			this.submit();
     		});
     	});
-    	
-   $(function(){
-    		
-    		var password = RegExp(/^[A-Za-z0-9!@#$\s_-]{8,16}$/); 
-    	
-  		/* 비밀번호 유효성 검사 */
- 		 $("#pw").keyup(function(){
- 		      if(!password.test($("#pw").val())){
- 		         console.log("사용불가능" + $("#pw").val());
- 			         $("#pwComm").text("");
- 			         $("#pwComm").css("color", "red");
- 			         $("#pwComm").html("영문,숫자,특수문자 8자 이상 16자 이내로 입력하세요");
- 			         
- 			         pwCheck = false;
- 			         
- 		         } else {
- 		         console.log("사용가능" + $("#pw").val());
- 			         $("#pwComm").text("");
- 			         $("#pwComm").css("color", "green");
- 			         $("#pwComm").html("사용가능한 비밀번호입니다.");     
- 			              			        
-					pwCheck = true;
- 		         }   
- 		  })
-   })
+
    
       	/*  
    	 *	 주소 검색창
@@ -132,7 +113,6 @@
 		<input type="password" name="memberPw"  class="pw_input" required
 		placeholder="비밀번호를 입력하세요" id="pw">
 		</div>
-		<div id="pwComm"></div>
 	</div>
 	
 	<div class="nick_wrap">
@@ -190,7 +170,7 @@
  	<div class="mail_name">이메일</div>
  	<div class="mail_input_box"> 
 		${memberDto.memberEmail}
-	<input type="button" id="emailCheck" class="adCheck" value="메일변경하기" onclick="location.href='updateMail.jsp'">
+	<input type="button" id="emailCheck" class="adCheck" value="메일변경하기" onclick="location.href='updateMail'">
 	</div>
 	</div>
 	

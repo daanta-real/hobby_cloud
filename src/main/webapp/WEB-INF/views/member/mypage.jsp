@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
  <style>
 	.float-container > .float-item-left:nth-child(1) {
 		width:25%;	
@@ -33,8 +34,7 @@
 					<c:otherwise>					
 						<img src="profile?memberIdx=${memberProfileDto.memberIdx}" width="100%">
 					</c:otherwise>
-				</c:choose>
-			
+				</c:choose>			
 			</div>
 			
 			<!-- 회원 아이디 -->

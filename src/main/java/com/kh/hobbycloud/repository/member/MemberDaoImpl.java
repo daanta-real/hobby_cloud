@@ -85,7 +85,7 @@ public class MemberDaoImpl implements MemberDao{
 	// 개인정보 변경 (비밀번호 제외)
 	@Override
 	public boolean changeInformation(MemberDto memberDto) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberIdx());
+		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
 		if(encoder.matches(memberDto.getMemberPw(), findDto.getMemberPw())) {
 			int count = sqlSession.update("member.changeInformation", memberDto);
 			return count > 0;
@@ -94,6 +94,13 @@ public class MemberDaoImpl implements MemberDao{
 			return false;
 		}
 	}
+	// 개인정보 변경 (이메일)
+	public int changeEmail(MemberDto memberDto) {
+		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
+		System.out.println("changeEmail() 실행");
+		return sqlSession.update("member.changeEmail", memberDto);
+	}
+
 
 	// 회원 탈퇴
 	@Override

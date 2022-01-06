@@ -20,6 +20,9 @@ public interface MemberDao {
 
 	// 개인정보 변경
 	boolean changeInformation(MemberDto memberDto);
+	
+	// 개인정보 변경(이메일)
+	int changeEmail(MemberDto memberDto);	
 
 	// 회원 탈퇴
 	boolean quit(Integer memberIdx, String memberPw);
@@ -38,4 +41,5 @@ public interface MemberDao {
 	
 	//임시 비밀번호 변경
 	boolean tempPw(MemberDto memberDto, String ChangePw);
+
 }

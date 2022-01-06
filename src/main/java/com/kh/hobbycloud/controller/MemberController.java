@@ -255,6 +255,24 @@ public class MemberController {
 			return "redirect:edit?error";
 		}
 	}
+	
+	//이메일 변경 처리 페이지
+	@PostMapping("/updateMail")// AJAX와 URL을 매핑
+	@ResponseBody//AJAX후 값을 리턴하기위해 필요
+	public String updateMail(@ModelAttribute MemberDto memberDto, HttpSession session) {
+		log.debug("ㅡㅡMemberController - /member/updateMail POST> 회원정보 변경 DATA 입력됨");
+		String memberId = (String)session.getAttribute("memberId");
+		memberDto.setMemberId(memberId);
+		int result = memberDao.changeEmail(memberDto);
+		if(result == 1) {
+			log.debug("ㅡㅡMemberController -이메일 변경 성공");
+			return "success";
+		}
+		else {
+			log.debug("ㅡㅡMemberController - /member/edit?error GET> 이메일 변경 실패");
+			return "fail";
+		}
+	}
 
 	// 개인정보 변경 성공 페이지
 	@RequestMapping("/edit_success")

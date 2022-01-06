@@ -21,12 +21,13 @@
 		SELECT member_seq.nextval FROM DUAL
 	</select>
 	
-	<!-- 단일조회 -->
+	<!-- memberId로 단일조회 -->
 	<select id="get" parameterType="string" resultType="MemberDto">
 		SELECT * FROM member
 		WHERE member_id = #{memberId}
 	</select>
 	
+	<!--memberIdx로 단일조회 -->
 	<select id="getbyIdx" parameterType="Integer" resultType="MemberDto">
 		SELECT * FROM member
 		WHERE member_idx = #{memberIdx}
@@ -45,9 +46,15 @@
 	</insert>
 	
 	<!-- 비밀번호 변경 -->
-	<update id="changePassword" parameterType="map">
+	<update id="changePassword" parameterType="MemberDto">
 		UPDATE member SET member_pw = #{changePw}
 		WHERE member_idx = #{memberIdx}
+	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changeEmail" parameterType="map">
+		UPDATE member SET member_email = #{memberEmail}
+		WHERE member_id = #{memberId}
 	</update>
 	
 	<!-- 
@@ -105,7 +112,8 @@
 			</if>
 		</set>
 		WHERE member_idx = #{memberIdx}
-	</update>
+	</update>	
+
 	
 	<!-- 탈퇴 -->
 	<delete id="quit" parameterType="integer">
@@ -133,5 +141,21 @@
 		UPDATE member SET member_pw = #{memberPw}
 		WHERE member_id = #{memberId} 
 	</update>
+	
+	<!-- member_Idx로 list 조회 -->
+	<select id="list" resultType="MemberJoinVO">
+		SELECT m.member_idx, m.member_grade_name, m.member_id,
+                m.member_nick, m.member_email, m.member_phone, m.member_registered,
+                m.member_point, m.member_region, m.member_gender, c.lec_category_name,
+                f.member_profile_idx                
+				FROM member m
+				LEFT OUTER JOIN 
+				member_category c
+				ON  m.member_idx = c.member_idx
+				LEFT OUTER JOIN 
+				member_profile f
+				ON  m.member_idx = f.member_idx
+		where member_id = #{memberId};
+	</select>
 
 </mapper>
