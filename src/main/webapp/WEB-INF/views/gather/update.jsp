@@ -10,11 +10,10 @@
 <form method="post" enctype="multipart/form-data">
 <!-- action="${pageContext.request.contextPath}/gather/update" -->
 
-	회원 idx<input type="text" name="memberIdx" value="99999"> 
-	취미분류
-	이름<input type="text" name="lecCategoryName" value="${GatherVO.lecCategoryName}">
+	
+	취미분류<input type="text" name="lecCategoryName" value="${GatherVO.lecCategoryName}">
 	<br>
-	장소2 idx<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999"> 
+	장소 <input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999"> 
 	제목<input type="text" name="gatherName"		value="${GatherVO.gatherName}">
 	상세내용<input type="text" name="gatherDetail"	value="${GatherVO.gatherDetail}"> <br> 		
 	작성일<input type="date"	name="gatherRegistered" value="${GatherVO.gatherRegistered }"> 

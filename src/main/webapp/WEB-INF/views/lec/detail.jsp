@@ -104,6 +104,14 @@
 	</c:otherwise>
 </c:choose>
 
+<!-- 찜하기 -->
+<form name="form1" method="post"
+ action="${pageContext.request.contextPath}/lec/cart/insert">
+    <input type="hidden" name="lecIdx"
+     value="${lecDetailVO.lecIdx}">
+    <input type="submit" value="장바구니에 담기">
+</form>
+
 <br>
 
 <h2>강좌 상세</h2>
@@ -122,6 +130,7 @@
 </div>
 
 <h2>장소 정보</h2>
+<!-- 여기에 장소 표시할 지도 들어갈거임 -->
 <table border="1" width="80%">
 	 <tbody>
 	     <tr>
@@ -131,6 +140,18 @@
 	     <tr>
 	         <td>지역 상세</td>
 	         <td>${lecDetailVO.placeDetail}</td>
+	     </tr>
+	     <tr>
+	         <td>카카오에서 선택한 지역</td>
+	         <td>${lecDetailVO.lecLocRegion}</td>
+	     </tr>
+	     <tr>
+	         <td>카카오에서 선택한 위도</td>
+	         <td>${lecDetailVO.lecLocLatitude}</td>
+	     </tr>
+	     <tr>
+	         <td>카카오에서 선택한 경도</td>
+	         <td>${lecDetailVO.lecLocLongitude}</td>
 	     </tr>
 	 </tbody>
 </table>
@@ -179,6 +200,6 @@
 
 
 <a href="insert">글쓰기</a>
-<a href="list">목록보기</a>
-<a href="#">수정</a>			
-<a href="delete?lecIdx=${lecDetailVO.lecIdx}">삭제</a>	
+<a href="${pageContext.request.contextPath}/lec/list">목록보기</a>
+<a href="${pageContext.request.contextPath}/lec/edit/${lecDetailVO.lecIdx}">수정</a>			
+<a href="${pageContext.request.contextPath}/lec/delete/${lecDetailVO.lecIdx}">삭제</a>	

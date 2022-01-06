@@ -51,3 +51,5 @@ class="image image-round image-border">
 	
 	</tbody>
 </table>
+<br><br>
+<!-- 댓글란 -->
