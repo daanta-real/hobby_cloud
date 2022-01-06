@@ -63,10 +63,10 @@
 		<label class="form-block">강좌 종료 시간</label>
 		<input type="date" name="lecEnd" required class="form-input form-inline">
 	</div>
-<!-- 	<div class="row"> -->
-<!-- 		<label>첨부 파일</label> -->
-<!-- 		<input type="file" name="attach" class="form-btn"> -->
-<!-- 	</div> -->
+ 	<div class="row">
+ 		<label>첨부 파일</label>
+ 		<input type="file" name="attach" class="form-btn">
+ 	</div>
 	<div class="row">
 		<input type="submit" value="수정" class="form-btn">
 	</div>

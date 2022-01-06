@@ -17,13 +17,11 @@ public class LecFileDaoImpl implements LecFileDao {
 
 	@Autowired
 	private SqlSession sqlSession;
-	
 	@Autowired
 	private String STOREPATH_LEC;
-	
 	//저장용 폴더
-//	private File directory = new File(STOREPATH_LEC);
-	
+	private File directory = new File(STOREPATH_LEC);
+
 	@Override
 	public void save(LecFileDto lecFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
 		//1
@@ -37,16 +35,22 @@ public class LecFileDaoImpl implements LecFileDao {
 		lecFileDto.setLecFileIdx(sequence);
 		lecFileDto.setLecFileServerName(String.valueOf(sequence));
 		sqlSession.insert("lecFile.save", lecFileDto);
-		
+
 	}
 
 	@Override
 	public LecFileDto get(int lecFileIdx) {
 		return sqlSession.selectOne("lecFile.get", lecFileIdx);
 	}
-	
+
 	@Override
 	public List<LecFileDto> getByIdx(int lecIdx) {
+		return sqlSession.selectList("lecFile.getByLecIdx", lecIdx);
+	}
+
+	// 해당 강좌에 등록된 모든 데이터를 갖고 와 반환한다.
+	@Override
+	public List<LecFileDto> getByLecIdx_list(int lecIdx) {
 		return sqlSession.selectList("lecFile.getByLecIdx", lecIdx);
 	}
 
@@ -56,13 +60,13 @@ public class LecFileDaoImpl implements LecFileDao {
 		byte[] data = FileUtils.readFileToByteArray(target);
 		return data;
 	}
-	
+
 	@Override
 	public boolean delete(int lecIdx) {
 		int count = sqlSession.delete("lecFile.delete",lecIdx);
 		return count > 0;
 	}
-	
+
 	@Override
 	public boolean deleteAjax(int lecFileIdx) {
 		int count =sqlSession.delete("lecFile.deleteAjax",lecFileIdx);

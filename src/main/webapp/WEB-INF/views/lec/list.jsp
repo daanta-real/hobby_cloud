@@ -62,8 +62,8 @@
 					<td>${lecListVO.lecLocRegion}</td>
 					<td>
 					<c:if test="${memberGrade == admin}">
-						<a href="edit?lecIdx=${lecDto.lecIdx}">수정</a>
-						<a href="delete?lecIdx=${lecDto.lecIdx}">삭제</a>
+						<a href="edit?lecIdx=${lecListVO.lecIdx}">수정</a>
+						<a href="delete?lecIdx=${lecListVO.lecIdx}">삭제</a>
 					</c:if>
 					</td>
 				</tr>

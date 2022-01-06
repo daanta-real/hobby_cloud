@@ -13,6 +13,7 @@ public interface LecFileDao {
 	LecFileDto get(int lecFileIdx);
 	List<LecFileDto> getByIdx(int lecIdx);
 	byte[] load(int lecFileIdx) throws IOException;
+	List<LecFileDto> getByLecIdx_list(int lecIdx);
 	//파일삭제
 	boolean delete(int lecIdx);
 	//실시간삭제
