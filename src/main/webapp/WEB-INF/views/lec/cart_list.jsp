@@ -26,6 +26,7 @@ $(function(){
 </head>
 <body>
 
+
 <h2>찜</h2>
 <c:choose>
     <c:when test="${map.count == 0}">
