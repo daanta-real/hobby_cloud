@@ -11,9 +11,9 @@
 			member_idx, lec_category_name
 		)
 		values
-		<foreach collection="lecCategoryName" item="categoryName" separator=",">
+		<foreach collection="lecCategoryName" item="val" separator=",">
         (
-            #{memberIdx}, #{lecCategoryName.categoryName}
+            #{memberCategoryDto.memberIdx}, #{val}
         )
         </foreach>
 	</insert>

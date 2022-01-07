@@ -267,7 +267,7 @@ function sendForm() {
 	for (var p of formData) console.log(p);
 
 	// AXIOS를 이용하여 FORM DATA 제출
-	axios.post("http://localhost:8080/hobbycloud/lecData/update", formData, {
+	axios.post("${pageContext.request.contextPath}/lecData/update", formData, {
 		headers: { "Content-type": "multipart/form-data" }
 	}).then((response) => {
 		location.href = "${root}/lec/detail/${lecDetailVO.lecIdx}";

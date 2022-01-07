@@ -43,28 +43,16 @@
 		<div class="collapse navbar-collapse" id="navbarColor01">
 
 			<ul class="navbar-nav me-auto">
-				<li class="nav-item"><a class="nav-link active" href="#">Home
-						<span class="visually-hidden">(current)</span>
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">강좌</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">소모임</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">청원</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">공지</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-					role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="#">Action</a> <a
-							class="dropdown-item" href="#">Another action</a> <a
-							class="dropdown-item" href="#">Something else here</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Separated link</a>
-					</div></li>
+				<li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/lec/list">강좌</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/gather/list">소모임</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/petitions/list">청원</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지</a></li>
 			</ul>
 
-			<form class="d-flex">
-				<input class="form-control me-sm-1" type="text" placeholder="Search">
-				<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+			<form class="d-flex mx-2">
+				<input class="form-control form-control-sm me-sm-1" type="text" placeholder="Search">
+				<button class="btn btn-sm btn-secondary my-2 my-sm-0" type="submit">Search</button>
 			</form>
 			<c:choose>
 				<%-- 로그인했을 경우 내 회원정보 표시 --%>
@@ -72,24 +60,26 @@
 					<div id="topProfileBox" class="d-flex flex-row align-items-center"
 						style="color: white !important;"
 						onclick="location.href='${pageContext.request.contextPath}/member/mypage'">
-						<img id="topProfileImage" class="rounded-circle"
+						<img id="topProfileImage" class="rounded-circle mx-1"
 							src="https://cdn.pixabay.com/photo/2021/12/04/15/54/santa-claus-6845491_960_720.jpg" />
 						<%--${sessionScope.memberProfileSavename}" alt="프로필 사진"/>--%>
-						<span class="d-flex flex-column"> <small class="fs-5">${sessionScope.memberNick}</small>
-							<small class="fs-6">(${sessionScope.memberId})</small>
-						</span>
+						<div class="d-flex flex-column align-items-center mx-1">
+							<span class="navLoginNick">${sessionScope.memberNick}</span>
+							<span class="navLoginId">(${sessionScope.memberId})</span>
+						</div>
+						<a href="${pageContext.request.contextPath}/member/logout" class="mx-2 fs-4 text-light"><i class="xi-power-off"></i></a>
 					</div>
 				</c:when>
 				<%-- 로그인하지 않았을 경우 ID/PW 입력창 표시 --%>
 				<c:otherwise>
-					<form class="d-flex"
+					<form id="topLoginBox" class="d-flex"
 						action="${pageContext.request.contextPath}/member/login"
 						method="post">
-						<input class="form-control me-sm-1" type="text" name="memberId"
+						<input class="form-control form-control-sm me-sm-1" type="text" name="memberId" size=5
 							required class="form-input" placeholder="ID" /> <input
-							class="form-control me-sm-1" type="password" name="memberPw"
+							class="form-control form-control-sm me-sm-1" type="password" name="memberPw" size=5
 							required class="form-input" placeholder="Password" />
-						<button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
+						<button class="btn btn-sm btn-secondary my-2 my-sm-0" type="submit">Login</button>
 					</form>
 				</c:otherwise>
 			</c:choose>

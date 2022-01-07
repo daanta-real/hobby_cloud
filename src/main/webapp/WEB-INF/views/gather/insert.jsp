@@ -8,12 +8,56 @@
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 마이 페이지</TITLE>
-<script type='text/javascript'>
+
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b
+&libraries=services"></script>
+<script type="text/javascript">
+
+
+
+// TR로부터 지역/위도/경도값을 취해 FORM INPUT 안에 넣어주는 함수
+function setLoc(el) {
+
+    // 이벤트 버블링 막기
+    stopEvent();
+
+    // 내가 클릭한 TR 태그로부터 값 추출
+    const data = {
+        idx      : el.getAttribute("data-idx"),
+        region   : el.getAttribute("data-region"),
+        longitude: el.getAttribute("data-longitude"),
+        latitude : el.getAttribute("data-latitude")
+    };
+
+    // 추출된 값을 각 INPUT 태그에 넣어주기
+//     document.querySelector("input[name='loc_idx']"      ).value = data.idx;
+    document.querySelector("input[name='gatherLocRegion']"   ).value = data.region;
+    document.querySelector("input[name='gatherLocLatitude']").value = data.longitude;
+    document.querySelector("input[name='gatherLocLongitude']" ).value = data.latitude;
+    
+    // 모달 토글
+    modal.toggle();
+
+}
+function makeTime(){
+	let startDate= $("#startDate").val(); // YYYY-MM-DD
+	let startTime=  $("#startTime").val();// 24HH:mm		
+	let start = startDate + " " + startTime;		
+	$("#start").val(start);
+	let endDate = $("#endDate").val();
+	let endTime =$("#endTime").val();
+	let end = endDate +" "+endTime;
+	$("#end").val(end);
+}
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
-});
-$(function() {
+
+	// 모달 변수 정의
+	window.modal = new bootstrap.Modal(document.getElementById("modal"), {
+		keyboard: false
+	});
 
 	//지도 생성 준비 코드
 	var container = document.querySelector("#map");
@@ -24,34 +68,30 @@ $(function() {
 
 	//지도 생성 코드
 	var map = new kakao.maps.Map(container, options);
-	$(".search-btn").click(
-			function() {
-				// 주소-좌표 변환 객체를 생성합니다
-				var geocoder = new kakao.maps.services.Geocoder();
+	$(".search-btn").click(function() {
+			// 주소-좌표 변환 객체를 생성합니다
+			var geocoder = new kakao.maps.services.Geocoder();
 
-				// 주소로 좌표를 검색합니다
+			// 주소로 좌표를 검색합니다
+			geocoder.addressSearch($("input[name=keyword]").val(),
+				function(result, status) {
+					// 정상적으로 검색이 완료됐으면 
+					if (status === kakao.maps.services.Status.OK) {
+						// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+						var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+						map.setCenter(coords);
+					}
+		});
+	});
 
-				geocoder.addressSearch($("input[name=keyword]").val(),
-						function(result, status) {
-
-							// 정상적으로 검색이 완료됐으면 
-							if (status === kakao.maps.services.Status.OK) {
-
-								var coords = new kakao.maps.LatLng(
-										result[0].y, result[0].x);
-
-								// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-								map.setCenter(coords);
-							}
-						});
-			});
 	// 주소-좌표 변환 객체를 생성합니다
 	var geocoder = new kakao.maps.services.Geocoder();
 
-	var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
-	infowindow = new kakao.maps.InfoWindow({
-		zindex : 1
-	}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+	// 클릭한 위치를 표시할 마커입니다
+	var marker = new kakao.maps.Marker(),
+
+	// 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+	infowindow = new kakao.maps.InfoWindow({ zindex : 1 }); 
 
 	// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
 	searchAddrFromCoords(map.getCenter(), displayCenterInfo);
@@ -104,14 +144,14 @@ $(function() {
 		searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 	});
 
+	// 좌표로 행정동 주소 정보를 요청합니다
 	function searchAddrFromCoords(coords, callback) {
-		// 좌표로 행정동 주소 정보를 요청합니다
 		geocoder.coord2RegionCode(coords.getLng(), coords.getLat(),
 				callback);
 	}
 
+	// 좌표로 법정동 상세 주소 정보를 요청합니다
 	function searchDetailAddrFromCoords(coords, callback) {
-		// 좌표로 법정동 상세 주소 정보를 요청합니다
 		geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 
 	}
@@ -123,120 +163,68 @@ $(function() {
 
 		}
 	}
-});
-// 모달 변수 정의
-window.modal = new bootstrap.Modal(document.getElementById("modal"), {
-    keyboard: false
-});
-//라이브러리: 이벤트 버블링 막기
-function stopEvent() {
-    if(typeof window.event == 'undefined') return;
-    if (!e) var e = window.event;
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-}
 
-// TR로부터 지역/위도/경도값을 취해 FORM INPUT 안에 넣어주는 함수
-function setLoc(el) {
-
-    // 이벤트 버블링 막기
-    stopEvent();
-
-    // 내가 클릭한 TR 태그로부터 값 추출
-    const data = {
-        idx      : el.getAttribute("data-idx"),
-        region   : el.getAttribute("data-region"),
-        longitude: el.getAttribute("data-longitude"),
-        latitude : el.getAttribute("data-latitude")
-    };
-
-    // 추출된 값을 각 INPUT 태그에 넣어주기
-//     document.querySelector("input[name='loc_idx']"      ).value = data.idx;
-    document.querySelector("input[name='gatherLocRegion']"   ).value = data.region;
-    document.querySelector("input[name='gatherLocLatitude']").value = data.longitude;
-    document.querySelector("input[name='gatherLocLongitude']" ).value = data.latitude;
-    
-    // 모달 토글
-    modal.toggle();
-
-}
-function makeTime(){
-	let startDate= $("#startDate").val(); // YYYY-MM-DD
-	let startTime=  $("#startTime").val();// 24HH:mm		
-	let start = startDate + " " + startTime;		
-	$("#start").val(start);
-	let endDate = $("#endDate").val();
-	let endTime =$("#endTime").val();
-	let end = endDate +" "+endTime;
-	$("#end").val(end);
-	
-}
-$(function(){
-	$("#insert-btn").click(function(e){
-	//시간설정 잘못 된 것
-	makeTime(); 
-	let startTime = new Date($("#start").val());
-    let endTime    = new Date($("#end").val());
-    let today = new Date();
-         //빈칸일 경우
-//		"input[name=]").val()==""||
-//		$("input[name=]").val()==""||
-//		$("input[name=]").val()==""||
-//		$("input[name=]").val()==""||
-//		$("input[name=]").val()==""
-		if(endTime>startTime&&startTime>today)
-		{  
-			
-			e.preventDefault();
-			makeTime();
-			  $("#insert-form").submit();
-			} else{
-        e.preventDefault();		
-        alert("시간 설정을 확인해주세요");
-        console.log(endTime);      
-		console.log(startTime);
-		console.log(today);
-		console.log(endTime >startTime);
-		console.log(startTime>today);
-		console.log(endTime>startTime>today);  
-			}	    
-	});
-});
-$(function() {
 	$("#showList").click(function() {
-					$.ajax({
-					url : "${pageContext.request.contextPath}/gatherData/gatherList",
-					type : "get",
-					dataType : "json",
-					success:function(resp){
-						
-						console.log("성공", resp);
-						var results = resp;
-						console.log(results);
-						
-						var totalStr = "";
-						$.each(results, function(i) {
-							var jsonStr = results[i];
-							console.log(i + "번째 TR: ", jsonStr);
-							totalStr += '<tr scope="row" data-idx="' + jsonStr.gatherIdx + '"'
-								+ ' data-region="'+jsonStr.gatherLocRegion+'" data-longitude="'+jsonStr.gatherLocLongitude+'"'
-								+ ' data-latitude="' + jsonStr.gatherLocLatitude+'"'
-								+ ' onclick="setLoc(this)">'
-								+ '<td class="text-center">' + jsonStr.gatherIdx +'</td>'
-								+ '<td class="text-center">' + jsonStr.gatherName +'</td>'
-								+ '<td>' + jsonStr.gatherLocRegion +'</td></tr>';
-						});
-						console.log("전체 HTML: ", totalStr);
-						
-						var listTarget = document.querySelector(".locTBody");
-						listTarget.innerHTML = totalStr;
-						
-					},
-					error : function(e) {
-					console.log("실패", e);
-								}
-							});
-					});
+		$.ajax({
+		url : "${pageContext.request.contextPath}/gatherData/gatherList",
+		type : "get",
+		dataType : "json",
+		success:function(resp){
+			
+			console.log("성공", resp);
+			var results = resp;
+			console.log(results);
+			
+			var totalStr = "";
+			$.each(results, function(i) {
+				var jsonStr = results[i];
+				console.log(i + "번째 TR: ", jsonStr);
+				totalStr += '<tr scope="row" data-idx="' + jsonStr.gatherIdx + '"'
+					+ ' data-region="'+jsonStr.gatherLocRegion+'" data-longitude="'+jsonStr.gatherLocLongitude+'"'
+					+ ' data-latitude="' + jsonStr.gatherLocLatitude+'"'
+					+ ' onclick="setLoc(this)">'
+					+ '<td class="text-center">' + jsonStr.gatherIdx +'</td>'
+					+ '<td class="text-center">' + jsonStr.gatherName +'</td>'
+					+ '<td>' + jsonStr.gatherLocRegion +'</td></tr>';
+			});
+			console.log("전체 HTML: ", totalStr);
+			
+			var listTarget = document.querySelector(".locTBody");
+			listTarget.innerHTML = totalStr;
+			
+		},
+		error : function(e) { console.log("실패", e); }
+		});
+	});
+	
+	$("#insert-btn").click(function(e){
+		// 시간설정 잘못 된 것
+		makeTime(); 
+		let startTime = new Date($("#start").val());
+		let endTime   = new Date($("#end").val());
+		let today     = new Date();
+			// 빈칸일 경우
+			// "input[name=]").val()==""||
+			// $("input[name=]").val()==""||
+			// $("input[name=]").val()==""||
+			// $("input[name=]").val()==""||
+			// $("input[name=]").val()==""
+			if(endTime>startTime&&startTime>today) {
+				e.preventDefault();
+				makeTime();
+				$("#insert-form").submit();
+			} else{
+			e.preventDefault();		
+			alert("시간 설정을 확인해주세요");
+			console.log(endTime);      
+			console.log(startTime);
+			console.log(today);
+			console.log(endTime >startTime);
+			console.log(startTime>today);
+			console.log(endTime>startTime>today);  
+			}	    
+		}
+	);
 });
 
 </script>
