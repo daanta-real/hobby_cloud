@@ -143,7 +143,7 @@
 	</update>
 	
 	<!-- member_Idx로 list 조회 -->
-	<select id="list" resultType="MemberJoinVO">
+<!-- 	<select id="list" resultType="MemberJoinVO">
 		SELECT m.member_idx, m.member_grade_name, m.member_id,
                 m.member_nick, m.member_email, m.member_phone, m.member_registered,
                 m.member_point, m.member_region, m.member_gender, c.lec_category_name,
@@ -156,6 +156,33 @@
 				member_profile f
 				ON  m.member_idx = f.member_idx
 		where member_id = #{memberId};
-	</select>
+	</select>-->
+	
+		<!-- 관리자용: 멤버 목록 조회 -->
+<!-- 	<select id="search"
+			resultType="com.kh.hobbycloud.vo.pay.PaidVO"
+			parameterType="com.kh.hobbycloud.vo.pay.PaidSearchVO">
+		SELECT p.*, m.member_id, m.member_nick
+		FROM paid p
+		INNER JOIN member m
+			ON p.member_idx = m.member_idx
+		<where>
+			<if test="memberIdx != null and !memberIdx.equals('')">AND INSTR(p.member_idx, #{memberIdx}) > 0</if>
+			<if test="memberId != null and !memberId.equals('')">AND INSTR(m.member_id, #{memberId}) > 0</if>
+			<if test="memberNick != null and !memberNick.equals('')">AND INSTR(m.member_nick, #{memberNick}) > 0</if>
+			<if test="paidRegistered_start != null and !paidRegistered_start.equals('')">
+				AND p.paid_registered <![CDATA[>=]]> to_date(#{paidRegistered_start}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="paidRegistered_end != null and !paidRegistered_end.equals('')">
+				AND p.paid_registered <![CDATA[<=]]> to_date(#{paidRegistered_end}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="paidPrice_min != null and !paidPrice_min.equals('')">AND p.paid_price <![CDATA[>=]]> #{paidPrice_min}</if>
+			<if test="paidPrice_max != null and !paidPrice_max.equals('')">AND p.paid_price <![CDATA[<=]]> #{paidPrice_max}</if>
+			<if test="paidStatusList != null and !paidStatusList.equals('')">AND p.paid_status in
+				<foreach item="statOne" collection="paidStatusList" open="(" close=")" separator="," >#{statOne}</foreach>
+			</if>
+		</where>
+		ORDER BY paid_idx DESC
+	</select>-->
 
 </mapper>
