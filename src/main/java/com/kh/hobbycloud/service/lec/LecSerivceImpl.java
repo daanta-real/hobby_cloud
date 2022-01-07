@@ -27,13 +27,13 @@ public class LecSerivceImpl implements LecService{
 
 	@Autowired
 	private LecDao lecDao;
-	
+
 	@Autowired
 	private LecFileDao lecFileDao;
-	
+
 	@Autowired
 	private LecLikeDao lecLikeDao;
-	
+
 	@Override
 	public int register(LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
@@ -54,9 +54,9 @@ public class LecSerivceImpl implements LecService{
 		lecDto.setLecLocRegion(lecRegisterVO.getLecLocRegion());
 		lecDto.setLecLocLatitude(lecRegisterVO.getLecLocLatitude());
 		lecDto.setLecLocLongitude(lecRegisterVO.getLecLocLongitude());
-		
+
 		lecDao.register(lecDto);
-		
+
 		//(선택) 강사 파일을 파일 테이블과 실제 하드디스크에 저장
 		List<MultipartFile> attach = lecRegisterVO.getAttach();
 		for(MultipartFile file: attach) {
@@ -71,21 +71,24 @@ public class LecSerivceImpl implements LecService{
 			lecFileDto.setLecFileType(file.getContentType());
 			lecFileDto.setLecFileSize(file.getSize());
 			// 파일 업로드 후, 파일정보를 DB에 저장
-			lecFileDao.save(lecFileDto, file);	
-			
+			lecFileDao.save(lecFileDto, file);
+
 		}
-		
+
 		return lecIdx;
 	}
-	
+
 	@Override
 	public void edit(LecEditVO lecEditVO) throws IllegalStateException, IOException {
+		log.debug("======================== LecService.edit(lecEditVO)가 실행되었습니다.");
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
 		//= MemberJoinVO에서 정보를 뽑아서 MemberDto를 생성
-		int lecIdx = lecDao.getSequence();
 		LecDto lecDto = new LecDto();
-		lecDto.setLecIdx(lecIdx);
-		lecDto.setTutorIdx(1);
+		lecDto.setLecIdx(lecEditVO.getLecIdx()); // 편집이므로 시퀀스를 뽑으면 안 된다.
+		// 강사 변경 가능하게 할지 안 할지 고민해봐야 한다.
+		// 물론 변경 가능하게 할 경우, 강사 스스로는 강사정보를 못 바꾸고
+		// 관리자만 수정 가능하게 처리해야 한다.
+		// lecDto.setTutorIdx(1);
 		lecDto.setLecCategoryName(lecEditVO.getLecCategoryName());
 		lecDto.setPlaceIdx(lecEditVO.getPlaceIdx());//보류
 		lecDto.setLecName(lecEditVO.getLecName());
@@ -98,33 +101,62 @@ public class LecSerivceImpl implements LecService{
 		lecDto.setLecLocRegion(lecEditVO.getLecLocRegion());
 		lecDto.setLecLocLatitude(lecEditVO.getLecLocLatitude());
 		lecDto.setLecLocLongitude(lecEditVO.getLecLocLongitude());
-		
-		lecDao.register(lecDto);
-		
-		//(선택) 강사 파일을 파일 테이블과 실제 하드디스크에 저장
+
+		log.debug("======================== lecDao.update() 실시. DTO = {}", lecDto);
+		boolean isSucceed = lecDao.update(lecDto);
+		log.debug("======================== lecDao.update() 실시 완료. 결과 = {}", isSucceed);
+
+
+		// (선택) 파일삭제 idx 목록에 해당되는 첨부파일들을 lec_file 테이블에서 삭제한다.
+		List<String> lecFileDelTargetList = lecEditVO.getLecFileDelTargetList();
+		log.debug("========삭제할 파일 리스트: {}", lecFileDelTargetList);
+		if(lecFileDelTargetList != null && lecFileDelTargetList.size() > 0) {
+			log.debug("==== 삭제할 파일 리스트가 있으므로 이에 대해 삭제 작업합니다.");
+			lecFileDao.deleteList(lecEditVO.getLecIdx(), lecEditVO.getLecFileDelTargetList());
+		}
+
+		// (선택) 강좌 파일을 파일 테이블과 실제 하드디스크에 저장
 		List<MultipartFile> attach = lecEditVO.getAttach();
+		// 만약에 attach가 아예 안 넘어왔다면, 이 강좌와 관련된 모든 파일을 지운다. (왜 이렇게 함??)
 		if(attach==null) {
-			System.out.println("이거파일널이니까 지우기" + attach);
+			log.debug("파일 정보를 담고 있는 List<MultipartFile> attach이 비었습니다. attach 정보 = {}", attach);
 			lecFileDao.delete(lecEditVO.getLecIdx());
 		}
-		for(MultipartFile file: attach) {
+		// 만약에 impl로 넘어온 attach가 존재한다면, 모든 파일을 업로드 처리한다.
+		else {
+			log.debug("파일 정보를 담고 있는 List<MultipartFile> attach가 존재합니다. 파일을 업로드하겠습니다.");
+			int i = 1;
+			for(MultipartFile file: attach) {
 
-			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
-			if(file.isEmpty()) continue;
+				log.debug("{}번째 파일: {}", i, file);
 
-			// 파일 정보에 대한 DTO 생성
-			LecFileDto lecFileDto = new LecFileDto();
-			lecFileDto.setLecIdx(lecIdx);
-			lecFileDto.setLecFileUserName(file.getOriginalFilename());
-			lecFileDto.setLecFileType(file.getContentType());
-			lecFileDto.setLecFileSize(file.getSize());
-			// 파일 업로드 후, 파일정보를 DB에 저장
-			lecFileDao.save(lecFileDto, file);	
-			
+				// 우선 각 파일 비어있는지 확인.
+				if(file.isEmpty()) {
+					// 파일이 비어있으면 이 파일 처리 생략
+					log.debug("  ㄴ 파일이 비었습니다. 다음으로 넘어가겠습니다.");
+					continue;
+				} else {
+					// 파일이 비어있지 않는다면, 이 파일을 업로드하고 DB에 등록한다.
+					log.debug("  ㄴ 파일이 존재합니다. 업로드하고 DB에 등록하겠습니다.");
+
+					// 파일 정보에 대한 DTO 생성
+					LecFileDto lecFileDto = new LecFileDto();
+					lecFileDto.setLecIdx(lecEditVO.getLecIdx());
+					lecFileDto.setLecFileUserName(file.getOriginalFilename());
+					lecFileDto.setLecFileType(file.getContentType());
+					lecFileDto.setLecFileSize(file.getSize());
+					log.debug("  ㄴ 완성된 파일 정보: {}", lecFileDto);
+
+					// 파일 업로드 후, 파일정보를 DB에 저장
+					lecFileDao.save(lecFileDto, file);
+					log.debug("  ㄴ 파일을 업로드하고 그 정보를 DB에 등록하였습니다.");
+
+				}
+			}
 		}
 
 	}
-	
+
 	//좋아요
 	@Override
 	public int likeCount(LecLikeVO lecLikeVO) {
@@ -135,18 +167,18 @@ public class LecSerivceImpl implements LecService{
 	public int likeGetInfo(LecLikeVO lecLikeVO) {
 		return lecLikeDao.likeGetInfo(lecLikeVO);
 	}
-	
+
 	@Override
 	public void likeInsert(LecLikeVO lecLikeVO) {
 		lecLikeDao.likeInsert(lecLikeVO);
 	}
-	
+
 	@Override
 	public int likeUpdate(LecLikeVO lecLikeVO) {
 		lecLikeDao.likeUpdate(lecLikeVO);
 		return lecLikeVO.getAllIsLike();
 	}
-	
+
 	@Override
 	public int likeCountEvery(int lecIdx) {
 		return lecLikeDao.likeCountEvery(lecIdx);

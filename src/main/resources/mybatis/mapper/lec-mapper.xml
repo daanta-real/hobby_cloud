@@ -194,14 +194,23 @@
 	</select>
 	
 	<!-- 강좌 수정 -->
-	<update id="edit" parameterType="lecDto">
-		update lec set 
-		lec_name = #{lecName}, lec_category_name = #{lecCategoryName},
-		lec_detail = #{lecDetail}, place_idx = #{placeIdx}, lec_loc_region = #{lecLocRegion},
-		lec_loc_latitude = #{lecLocLatitude}, lec_loc_longitude = #{lecLocLongitude},
-		lec_price = #{lecPrice}, lec_head_count = #{lecHeadCount}, lec_contains_count = #{lecContainsCount},
-		lec_start = #{lecStart}, lec_end = #{lecEnd}
-		where lec_idx = #{lecIdx}
+	<update id="update" parameterType="LecDto">
+		UPDATE lec
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="lecCategoryName != null">lec_category_name = #{lecCategoryName},</if>
+			<if test="placeIdx != null">place_idx = #{placeIdx}</if>
+			<!-- <if test="lecName != null and !lecName.equals('')">lec_name = #{lecName}</if>
+			<if test="lecDetail != null and !lecDetail.equals('')">lec_detail = #{lecDetail}</if>
+			<if test="lecPrice != null and !lecPrice.equals('')">lec_price = #{lecPrice}</if>
+			<if test="lecHeadCount != null and !lecHeadCount.equals('')">lec_head_count = #{lecHeadCount}</if>
+			<if test="lecContainsCount != null and !lecContainsCount.equals('')">lec_contains_count = #{lecContainsCount}</if>
+			<if test="lecStart != null and !lecStart.equals('')">lec_start = TO_DATE(#{lecStart})</if>
+			<if test="lecEnd != null and !lecEnd.equals('')">lec_end = TO_DATE(#{lecEnd})</if>
+			<if test="lecLocRegion != null and !lecLocRegion.equals('')">lec_loc_region = #{lecLocRegion}</if>
+			<if test="lecLocLatitude != null and !lecLocLatitude.equals('')">lec_loc_latitude = #{lecLocLatitude}</if>
+			<if test="lecLocLongitude!= null and !lecLocLongitude.equals('')">lec_loc_longitude = #{lecLocLongitude}</if>-->
+		</trim>
+		WHERE lec_idx = ${lecIdx}
 	</update>
 	
 	<!--  강좌 삭제 -->
