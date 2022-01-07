@@ -17,4 +17,6 @@ public interface MemberProfileDao {
 	byte[] load(String memberProfileSavename) throws IOException;
 	//삭제
 	void delete(int memberIdx);
+	//변경(profileIdx)
+	void edit(MemberProfileDto memberProfileDto);
 }

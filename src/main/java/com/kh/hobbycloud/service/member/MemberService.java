@@ -1,6 +1,9 @@
 package com.kh.hobbycloud.service.member;
 
 import java.io.IOException;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
@@ -21,5 +24,10 @@ public interface MemberService {
 	// 비밀번호 찾기(이메일)
 	MemberDto pwFindMail(String memberId, String memberNick, String memberEmail);
 	
+	//회원 정보 수정
+	void edit(MemberJoinVO memberJoinVO, MultipartFile attach) throws IllegalStateException, IOException;
+	
+	//회원 목록
+	List<MemberJoinVO> list(MemberJoinVO memberJoinVO);
 
 }

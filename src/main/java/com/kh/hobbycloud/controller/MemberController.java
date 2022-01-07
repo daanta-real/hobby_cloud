@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
@@ -241,20 +242,14 @@ public class MemberController {
 
 	// 개인정보 변경 처리 페이지
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute MemberDto memberDto, HttpSession session) {
+	public String edit(@ModelAttribute MemberJoinVO memberJoinVO, HttpSession session, MultipartFile attach) throws IllegalStateException, IOException {
 		log.debug("ㅡㅡMemberController - /member/edit POST> 회원정보 변경 DATA 입력됨");
 		String memberId = (String)session.getAttribute("memberId");
-		memberDto.setMemberId(memberId);
+		memberJoinVO.setMemberId(memberId);
 
-		boolean result = memberDao.changeInformation(memberDto);
-		if(result) {
+		memberService.edit(memberJoinVO, attach);
 			return "redirect:edit_success";
 		}
-		else {
-			log.debug("ㅡㅡMemberController - /member/edit?error GET> 회원정보 변경 실패");
-			return "redirect:edit?error";
-		}
-	}
 	
 	//이메일 변경 처리 페이지
 	@PostMapping("/updateMail")// AJAX와 URL을 매핑
@@ -368,6 +363,28 @@ public class MemberController {
 		return "redirect:profileEdit";
 	}
 	
+	// 프로필 수정 폼
+	@GetMapping("/profileEdit")
+	public String profileEdit(Model model, HttpSession session) {
+		log.debug("ㅡㅡMemberController - /member/profileEdit POST> 회원 프로필 수정 DATA 입력됨");
+		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
+		
+		MemberJoinVO memberJoinVO = memberDao.getVO(memberIdx);
+		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
+
+		model.addAttribute("memberJoinVO", memberJoinVO);
+		model.addAttribute("memberProfileDto", memberProfileDto);
+		return "member/profileEdit";
+	}
+	
+	// 프로필 수정 처리 페이지
+	@PostMapping("/profileEdit")
+	public String profileEdit(@ModelAttribute MemberJoinVO memberJoinVO, MultipartFile attach) throws IllegalStateException, IOException {
+
+		memberService.edit(memberJoinVO, attach);
+		
+		return "redirect:profileEdit";
+	}
 	
 	// 메일보내기	
 	@PostMapping("/sendMail")// AJAX와 URL을 매핑

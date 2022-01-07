@@ -146,7 +146,8 @@
 <!-- 	<select id="list" resultType="MemberJoinVO">
 		SELECT m.member_idx, m.member_grade_name, m.member_id,
                 m.member_nick, m.member_email, m.member_phone, m.member_registered,
-                m.member_point, m.member_region, m.member_gender, c.lec_category_name,
+                m.member_point, m.member_region, m.member_gender, 
+                c.lec_category_name,
                 f.member_profile_idx                
 				FROM member m
 				LEFT OUTER JOIN 

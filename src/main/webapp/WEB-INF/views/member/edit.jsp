@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
@@ -163,7 +164,10 @@
 		<div class="lecCategory_name">관심분야</div>
 		<input type="checkbox" name="lecCategoryName"  value="sports">스포츠
 		<input type="checkbox" name="lecCategoryName"  value="music">음악
-		<input type="checkbox" name="lecCategoryName"  value="painting">그림	   		 
+		<input type="checkbox" name="lecCategoryName"  value="painting">그림
+		<input type="checkbox" name="lecCategoryName"  value="예술">예술
+		<input type="checkbox" name="lecCategoryName"  value="IT">IT
+		<input type="checkbox" name="lecCategoryName"  value="기타">기타	   		 
 	</div>
 	
 	<div class="mail_wrap">

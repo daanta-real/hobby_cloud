@@ -1,16 +1,20 @@
 package com.kh.hobbycloud.repository.member;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
 public interface MemberDao {
 
 	// 가입
 	void join(MemberDto memberDto);
 
-	// 단일조회
+	// 단일조회(memberId)
 	MemberDto get(String memberId);
-
+	//단일조회(memberIdx)
 	MemberDto get(Integer memberIdx);
+	
+	//memberJoinVO  단일 조회
+	MemberJoinVO getVO(Integer memberIdx);
 
 	// 비밀번호 검사까지 통과 로그인
 	MemberDto login(MemberDto memberDto);

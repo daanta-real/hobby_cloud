@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
 
 @Repository
@@ -30,6 +31,11 @@ public class MemberDaoImpl implements MemberDao{
 	// 단일조회 - IDX 기준
 	@Override
 	public MemberDto get(Integer memberIdx) {
+		return sqlSession.selectOne("member.getbyIdx", memberIdx);
+	}
+	
+	@Override
+	public MemberJoinVO getVO(Integer memberIdx) {
 		return sqlSession.selectOne("member.getbyIdx", memberIdx);
 	}
 
@@ -166,6 +172,8 @@ public class MemberDaoImpl implements MemberDao{
 		int result=sqlSession.update("member.tempPw",param);
 		return result>0;
 	}
+	
+
 
 }
 

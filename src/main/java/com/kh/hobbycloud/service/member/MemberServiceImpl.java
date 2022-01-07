@@ -1,12 +1,15 @@
 package com.kh.hobbycloud.service.member;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.hobbycloud.entity.member.MemberCategoryDto;
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberCategoryDao;
@@ -31,7 +34,12 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired
 	private MemberCategoryDao memberCategoryDao;
-
+	
+	// 프로필 첨부파일 저장 위치 문자열
+	@Autowired
+	private String STOREPATH_MEMBER;
+	
+	//회원 가입
 	@Override
 	public void join(MemberJoinVO memberJoinVO) throws IllegalStateException, IOException {
 		
@@ -51,24 +59,24 @@ public class MemberServiceImpl implements MemberService{
 		memberDto.setMemberGender(memberJoinVO.getMemberGender());
 		memberDao.join(memberDto);
 		
-//		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
-//		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
-//		List<String> lecCategoryName = memberJoinVO.getLecCategoryName();
-//		System.out.println("그냥 밖에"+ lecCategoryName.toString());
-//		//관심분야 선택했는지 확인. 선택 안했으면 저장 생략
-//		if (lecCategoryName.size() > 0) {
-//			//회원관심분야에 대한 DTO 생성
-//			MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
-//
-//			memberCategoryDto.setMemberIdx(sequence);
-//			log.debug("DTO DATA B4 = {}", memberCategoryDto);
-//			log.debug("catName = {}", lecCategoryName);
-//			log.debug("GETTER 확인 = {}", memberCategoryDto.getLecCategoryName());
-//			memberCategoryDto.setLecCategoryName(lecCategoryName);
-//			//관심분야 DB에 저장
-//			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
-//			memberCategoryDao.save(memberCategoryDto);			
-//		}
+		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
+		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
+		List<String> lecCategoryName = memberJoinVO.getLecCategoryName();
+		System.out.println("그냥 밖에"+ lecCategoryName.toString());
+		//관심분야 선택했는지 확인. 선택 안했으면 저장 생략
+		if (lecCategoryName.size() > 0) {
+			//회원관심분야에 대한 DTO 생성
+			MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
+
+			memberCategoryDto.setMemberIdx(sequence);
+			log.debug("DTO DATA B4 = {}", memberCategoryDto);
+			log.debug("catName = {}", lecCategoryName);
+			log.debug("GETTER 확인 = {}", memberCategoryDto.getLecCategoryName());
+			memberCategoryDto.setLecCategoryName(lecCategoryName);
+			//관심분야 DB에 저장
+			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
+			memberCategoryDao.save(memberCategoryDto);			
+		}
 
 		//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
 		MultipartFile multipartFile = memberJoinVO.getAttach();
@@ -84,6 +92,84 @@ public class MemberServiceImpl implements MemberService{
 		}
 		
 	}
+	
+	//회원 수정
+	@Override
+	public void edit(MemberJoinVO memberJoinVO, MultipartFile attach) throws IllegalStateException, IOException {
+		//검사값 false를 변수에 담고
+		boolean check = false;
+		//파일이 있는지 없는 체크
+		MultipartFile multipartFile = attach;
+		//만약 파일이 비어있지 않다면
+		if(!multipartFile.isEmpty()) {
+			check = true;
+		}
+		//파일이 있다면 기존 파일을 삭제하고 새로운 파일을 추가
+		if(check) {
+			
+			//해당 번호에 파일 업로드 되어 있는지 확인한다
+			
+			MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberJoinVO.getMemberIdx());
+			
+			if(memberProfileDto != null) {
+				//파일이 있다면 삭제
+					File target = new File(STOREPATH_MEMBER, String.valueOf(memberProfileDto.getMemberProfileSavename()));
+					target.delete();
+					//테이블에서도 파일 삭제
+					memberProfileDao.delete(memberJoinVO.getMemberIdx());
+				}
+			}
+				//새로운 파일이 들어온 것으로 수정해준다.
+		
+				if(!multipartFile.isEmpty()) {
+						log.debug("멀티파트 = {}", multipartFile);
+						log.debug("memberDto  {}", memberJoinVO);
+						MemberProfileDto memberProfileDto = new MemberProfileDto();
+						memberProfileDto.setMemberIdx(memberJoinVO.getMemberIdx());
+						memberProfileDto.setMemberProfileUploadname(multipartFile.getOriginalFilename());
+						memberProfileDto.setMemberProfileType(multipartFile.getContentType());
+						memberProfileDto.setMemberProfileSize(multipartFile.getSize());
+						memberProfileDao.save(memberProfileDto, multipartFile);
+						
+				
+					//memberDto
+					MemberDto memberDto = new MemberDto();
+					
+					memberDto.setMemberIdx(memberJoinVO.getMemberIdx());
+					memberDto.setMemberId(memberJoinVO.getMemberId());
+					memberDto.setMemberPw(memberJoinVO.getMemberPw());
+					memberDto.setMemberNick(memberJoinVO.getMemberNick());
+					memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
+					memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
+					memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
+					memberDto.setMemberGender(memberJoinVO.getMemberGender());
+					
+					//memberDto를 테이블 업데이트
+					memberDao.changeInformation(memberDto);
+					
+			//		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
+			//		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
+			//		List<String> lecCategoryName = memberJoinVO.getLecCategoryName();
+			//		System.out.println("그냥 밖에"+ lecCategoryName.toString());
+			//		//관심분야 선택했는지 확인. 선택 안했으면 저장 생략
+			//		if (lecCategoryName.size() > 0) {
+			//			//회원관심분야에 대한 DTO 생성
+			//			MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
+			//
+			//			memberCategoryDto.setMemberIdx(sequence);
+			//			log.debug("DTO DATA B4 = {}", memberCategoryDto);
+			//			log.debug("catName = {}", lecCategoryName);
+			//			log.debug("GETTER 확인 = {}", memberCategoryDto.getLecCategoryName());
+			//			memberCategoryDto.setLecCategoryName(lecCategoryName);
+			//			//관심분야 DB에 저장
+			//			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
+			//			memberCategoryDao.update(memberCategoryDto);			
+			//		}
+			
+				}
+			}
+	
+	
 	//아이디 중복 확인
 	@Override
 	public MemberDto checkId(String memberId) throws Exception {
@@ -110,7 +196,12 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.pwFindMail(memberId, memberNick, memberEmail);
 	}
 	
-
+	@Override
+	public List<MemberJoinVO> list(MemberJoinVO memberJoinVO) {
+		return sqlSession.selectList("member.list");
+	}	
+	
+	
 }
 
 
