@@ -7,8 +7,42 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<%-- <script src="${pageContext.request.contextPath}/views/lec/reply.js"></script> --%>
- 
+<script type="text/javascript"
+       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
+   
+   
+<script>
+   $(function() {
+		//지도 생성 준비 코드
+		var container = document.querySelector("#map");
+		var options = {
+			center : new kakao.maps.LatLng(
+				$("input[name=lecLocLatitude]").val(),
+				$("input[name=lecLocLongitude]").val()
+			),
+			level : 3
+		};
+	
+		//지도 생성 코드
+		var map = new kakao.maps.Map(container, options);
+	
+		// 마커가 표시될 위치입니다 
+		var markerPosition = new kakao.maps.LatLng(
+			$("input[name=lecLocLatitude]").val(),
+			$("input[name=lecLocLongitude]").val()
+		);
+	
+		// 마커를 생성합니다
+		var marker = new kakao.maps.Marker({
+			position : markerPosition
+		});
+	
+		// 마커가 지도 위에 표시되도록 설정합니다
+		marker.setMap(map);
+	});
+</script> 
+    
+    
 <h2 id="lecIdxValue" data-lec-idx="${lecDetailVO.lecIdx}">${lecDetailVO.lecName} 강좌 상세 </h2>
 
 <br>
@@ -112,6 +146,8 @@
     <input type="submit" class="btn btn-light" value="찜하기">
 </form>
 
+<!-- 강좌 추가하기 -->
+<a href="${pageContext.request.contextPath}/lec/check/${lecDetailVO.lecIdx}" class="btn btn-danger">강좌 신청</a>
 <br>
 
 <h2>강좌 상세</h2>
@@ -131,6 +167,10 @@
 
 <h2>장소 정보</h2>
 <!-- 여기에 장소 표시할 지도 들어갈거임 -->
+<!--상세페이지 지도 -->
+<input type="text" name="lecLocLongitude" value="${lecDetailVO.lecLocLongitude}">
+<input type="text" name="lecLocLatitude"  value="${lecDetailVO.lecLocLatitude}">
+<div id="map" style="width:50%;height:350px;"></div>
 <table border="1" width="80%">
 	 <tbody>
 	     <tr>

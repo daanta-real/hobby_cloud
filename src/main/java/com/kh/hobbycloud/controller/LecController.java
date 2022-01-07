@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hobbycloud.entity.lec.LecFileDto;
+import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
-
 import com.kh.hobbycloud.repository.lec.LecReplyDao;
+import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.service.lec.LecCartService;
-
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecCartVO;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
@@ -56,6 +56,9 @@ public class LecController {
 	
 	@Autowired
 	private LecDao lecDao;
+	
+	@Autowired
+	private MemberDao memberDao;
 
 	@Autowired
 	private LecFileDao lecFileDao;
@@ -270,5 +273,38 @@ public class LecController {
         return "redirect:/lec/cart_list";
     }
 
+	//결제(신청) Get페이지
+	@GetMapping("/check/{lecIdx}")
+	public String check(@PathVariable int lecIdx, HttpSession session, Model model) {
+		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
+		boolean isLogin = session.getAttribute("memberId") != null;
+		if(isLogin) {
+			String memberId = (String)session.getAttribute("memberId");
+			MemberDto memberDto = memberDao.get(memberId);
+			model.addAttribute("memberDto", memberDto);
+		}
+		else {
+			return "redirect:/member/login";
+		}
+		model.addAttribute("lecDetailVO", lecDetailVO);
+		
+		return "lec/check";
+	}
+	
+	//강좌 신청 페이지 - 포인트 차감
+	//강사님 예전에 구현했던 포인트기능 적용?
+//	@PostMapping("/check")
+//	public String check(@RequestParam String memberPw,HttpSession session) {
+//		//비밀번호 받아서 맞으면 포인트 깎이면서, 내강좌에 추가
+//		String memberId = (String)session.getAttribute("memberId");
+//		MemberDto memberDto = memberDao.get(memberId);
+//		if(memberPw == memberDto.getMemberPw()) {
+//		//입력받은 비밀번호와 세션에 저장된 비밀번호가 같다면
+//		//내 포인트 감소, 내 강좌 추가, 그리고 강좌 신청 인원
+//		//내강좌에 강좌가 등록된 db idx
+//		}
+//	
+//	}
+	
 
 }

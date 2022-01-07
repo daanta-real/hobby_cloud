@@ -105,5 +105,17 @@
 	<delete id="quit" parameterType="integer">
 		delete member WHERE member_idx = #{memberIdx}
 	</delete>
-		
+	
+	<!-- 일반회원을 강사로 -->	
+	<update id="changeGradeTutor" parameterType="int">
+		update member set
+		member_grade_name = '강사'
+		where member_idx = #{memberIdx}
+	</update>
+	<!-- 강사를 일반회원으로 -->
+	<update id="changeGradeNormal" parameterType="int">
+		update member set
+		member_grade_name = '회원'
+		where member_idx = #{memberIdx}
+	</update>
 </mapper>

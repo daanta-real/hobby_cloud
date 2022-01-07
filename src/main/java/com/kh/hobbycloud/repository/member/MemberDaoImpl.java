@@ -101,6 +101,17 @@ public class MemberDaoImpl implements MemberDao{
 			return false;
 		}
 	}
+	
+	//tutor에서 이용할 등급 변경 기능
+	@Override
+	public void changeGradeTutor(int memberIdx) {
+		sqlSession.update("member.changeGradeTutor", memberIdx);
+	}
+	@Override
+	public void changeGradeNormal(int memberIdx) {
+		sqlSession.update("member.changeGradeNormal", memberIdx);
+	}
+	
 }
 
 
