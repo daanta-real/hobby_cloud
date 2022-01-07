@@ -21,5 +21,6 @@ public interface LecFileDao {
 	// DELETE
 	boolean delete(int lecIdx);
 	boolean deleteAjax(int lecFileIdx);
+	boolean deleteList(int LecIdx, List<String> list);
 
 }
