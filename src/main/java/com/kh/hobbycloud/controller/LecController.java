@@ -25,13 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hobbycloud.entity.lec.LecFileDto;
-
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.repository.lec.LecCategoryDao;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
-import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.repository.member.MemberDao;
-
 import com.kh.hobbycloud.service.lec.LecCartService;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecCartVO;

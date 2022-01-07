@@ -91,23 +91,26 @@ $(function() {
 				<div class="row">
 				${GatherVO.gatherDetail}
 				</div>
-			<div class="row">
-			</div>
+			
 			<c:set	var="isJoin" value="false" /> 
 			<c:set var="isFull" value="false" />
 				
 			
 				
 				<!-- 참가자 리스트 반복문 -->
+				<div class="row">
 				 <c:forEach var="GatherHeadsVO" items="${list2}"
 					varStatus="status">
-					<c:out value="${status.count}" />
+					참여자 수 :<c:out value="${status.count}" />
+					</div>
 
 					<!-- 참가자 인원을 확인 -->
+					<div class="row">
 					<c:if test="${status.count == GatherVO.gatherHeadCount}">  
 						<c:set var="isFull" value="true" />
 					</c:if>
-				
+				</c:forEach>
+				</div>
 				
 
 					<!-- 참가여부를 확인 -->
@@ -116,17 +119,26 @@ $(function() {
 						<c:set var="isJoin" value="true" />
 					</c:if>
 
-	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div>  
-
-					<tr>
-						<th>닉네임</th>
-						<th>프로필</th>
-					</tr>
-					<tr>
-						<td>${GatherHeadsVO.memberNick}</td>
-						<td>${GatherHeadsVO.gatherIdx}</td>
-					</tr>
-				</c:forEach> 
+	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div> 
+	<div class="row p-sm-2 mx-1 mb-5">
+			<div class="scrollXEnabler">
+				<div class="card p-0 minWidthMaxContent">
+					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
+						<thead>
+							<tr class="table-danger">
+								<th scope="col" class="text-center align-middle text-nowrap">프로필</th>
+								<th scope="col" class="text-center align-middle text-nowrap">닉네임</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr class="cursor-pointer">
+									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td>
+									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.gatherIdx}</td>
+									
+						</tbody>
+					</table>
+				</div>
+			</div> 	
 				
 				<c:choose>
 					<c:when test="${isFull}">
