@@ -117,7 +117,7 @@ public class MemberServiceImpl implements MemberService{
 					target.delete();
 					//테이블에서도 파일 삭제
 					memberProfileDao.delete(memberJoinVO.getMemberIdx());
-				}
+				} 
 			}
 				//새로운 파일이 들어온 것으로 수정해준다.
 		
