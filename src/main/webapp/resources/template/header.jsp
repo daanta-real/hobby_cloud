@@ -26,5 +26,13 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 	<!-- HobbyCloud Main JS -->    
 	<SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/main.js"></SCRIPT>
+	<!-- CryptoJS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha1.min.js"></script>
+	<!-- Kakao Map API -->
+	<script
+		type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services">
+	</script>
 	</HEAD>
 </HTML>

@@ -9,12 +9,16 @@
 .cursor-pointer { cursor:pointer; }
 .minWidthMaxContent { min-width:max-content; }
 .scrollXEnabler { overflow-x:auto; }
-a:hover, a:visited, a:active, a:link { color:inherit !important; text-decoration:none !important; }
+a:hover, a:visited, a:active, a:link { color: initial; text-decoration:none !important; }
 
 /* 엘레멘트별 속성 */
 #topProfileBox, ASIDE#accordionSideMenu div.accordion-body { cursor:pointer; }
 #topProfileImage { width:2rem; height:2rem; object-fit:cover; }
 NAV .navbar-brand { font-size:25px; padding-top:0; text-transform: capitalize; line-height: 40px; }
+.navbar-dark .navbar-nav .nav-link { word-break: keep-all; }
+.navLoginNick { font-size:1rem; word-break: keep-all; }
+.navLoginId { font-size:0.65rem; word-break: keep-all; }
+#topProfileImage { width: 2.5rem; height: 2.5rem; }
 HEADER .subject { font-weight:900; box-sizing: border-box; width:fit-content; margin:-3px; }
 ASIDE#accordionSideMenu div.accordion-body:hover { background:var(--bs-blue); color:var(--bs-white); }
 FOOTER { background:var(--bs-gray-400); }

@@ -8,7 +8,11 @@
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 마이 페이지</TITLE>
-<script type='text/javascript'>
+
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b
+&libraries=services"></script>
+<script type="text/javascript">
 
 
 
@@ -64,8 +68,7 @@ window.addEventListener("load", function() {
 
 	//지도 생성 코드
 	var map = new kakao.maps.Map(container, options);
-	$(".search-btn").click(
-		function() {
+	$(".search-btn").click(function() {
 			// 주소-좌표 변환 객체를 생성합니다
 			var geocoder = new kakao.maps.services.Geocoder();
 
@@ -78,7 +81,6 @@ window.addEventListener("load", function() {
 						var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 						map.setCenter(coords);
 					}
-				}
 		});
 	});
 
