@@ -39,13 +39,13 @@
 		select * from member_profile where member_profile_idx = #{memberProfileIdx}
 	</select>
 
-	<select id="getById" parameterType="int" resultType="MemberProfileDto">
+	<select id="getByIdx" parameterType="int" resultType="MemberProfileDto">
 		select * from member_profile where member_idx = #{memberIdx}
 	</select>
 	
-	<select id="getIdx" parameterType="int" resultType="MemberProfileDto">
-		select * from member_profile where member_idx = #{memberIdx}
-	</select>
+	<delete id="delete" parameterType="int">
+		delete member_profile where member_idx = #{memberIdx}
+	</delete>
 
 
 </mapper>

@@ -1,13 +1,17 @@
-package com.kh.hobbycloud.entity.place;
+package com.kh.hobbycloud.vo.place;
 
 import java.sql.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
 @Data
-public class PlaceDto {
+public class PlaceFileVO {
+	
+	//장소 테이블
 	private int placeIdx;
-	private int memberIdx;
 	private String placeName;
 	private String placeDetail;
 	private Date placeRegistered;
@@ -20,9 +24,11 @@ public class PlaceDto {
 	private int placeMax;
 	private String placeEmail;
 	private String placePhone;
+	
+	//장소사진 테이블
+	private List<MultipartFile> attach;
+	
+	//member 테이블
+	private int memberIdx;
+
 }
-
-
-
-
-

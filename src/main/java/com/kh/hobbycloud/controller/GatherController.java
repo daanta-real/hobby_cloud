@@ -95,8 +95,10 @@ public class GatherController {
 
 	// 모임글 등록 실시
 	@PostMapping("/insert")
-	public String insert(@ModelAttribute GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
+	public String insert(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
 		System.out.println("ㅡㅡ 모임글 등록 실시. 모임 정보: " + gatherFileVO);
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		gatherFileVO.setMemberIdx(memberIdx);
 		int gatherIdx = gatherService.save(gatherFileVO);
 		return "redirect:detail/" + gatherIdx;	
 	}																
@@ -171,10 +173,13 @@ public class GatherController {
 
 	// 글 수정 실시
 	@PostMapping("/update/{gatherIdx}")
-	public String update2(@ModelAttribute GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
+	public String update2(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
 
 		// 수정
-		gatherService.update(gatherFileVO);
+		int memberIdx = (int)session.getAttribute("memberIdx");
+		gatherFileVO.setMemberIdx(memberIdx);
+		gatherService.update(gatherFileVO);	
+		System.out.println("수정"+gatherFileVO);
 		int gatherIdx = gatherFileVO.getGatherIdx();
 		return "redirect:/gather/detail/" + gatherIdx;
 		

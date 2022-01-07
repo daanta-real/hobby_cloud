@@ -13,6 +13,7 @@ import lombok.Data;
  */
 @Data
 public class MemberJoinVO {
+	//member 테이블
 	private int memberIdx;
 	private String memberId;
 	private String memberPw;
@@ -21,7 +22,13 @@ public class MemberJoinVO {
 	private String memberPhone;
 	private Date memberRegistered;
 	private int memberPoint;
-	private String memberRegion;	
+	private String memberRegion;
+	private String memberGender;
+	
+	//memberProfile 테이블
 	private MultipartFile attach;		
-	private List<Integer> lecCategoryName;
+	
+	//MemberCategory 테이블
+	private List<String> lecCategoryName;
+
 }

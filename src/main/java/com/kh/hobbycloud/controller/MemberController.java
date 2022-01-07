@@ -1,8 +1,10 @@
 package com.kh.hobbycloud.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
+import com.kh.hobbycloud.repository.member.MemberCategoryDao;
 import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.member.MemberProfileDao;
+import com.kh.hobbycloud.service.member.EmailService;
 import com.kh.hobbycloud.service.member.MemberService;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
 
@@ -42,6 +47,13 @@ public class MemberController {
 
 	@Autowired
 	private MemberProfileDao memberProfileDao;
+	
+	@Autowired
+	private EmailService service;
+	
+	@Autowired
+	private MemberCategoryDao memberCategoryDao;
+	
 
 	// 로그인 폼 페이지
 	@GetMapping("/login")
@@ -76,7 +88,6 @@ public class MemberController {
 			session.setAttribute("memberNick" , foundDto.getMemberNick());
 			session.setAttribute("memberGrade", foundDto.getMemberGradeName());
 			return "redirect:/";
-
 		}
 
 		// 2-2. 일치하는 것이 없으면, 로그인 폼 페이지로 돌아감
@@ -112,7 +123,7 @@ public class MemberController {
 	// 회원가입 처리 페이지
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberJoinVO memberJoinVO) throws IllegalStateException, IOException {
-		log.debug("ㅡㅡMemberController - /member/join POST> 회원가입 DATA 입력됨");
+		log.debug("ㅡㅡMemberController - /member/join POST> 회원가입 DATA 입력됨. 입력값 {}", memberJoinVO);
 		memberService.join(memberJoinVO);
 		log.debug("ㅡㅡMemberController - /member/join POST> 회원가입 DATA 입력됨");
 		return "redirect:join_success";
@@ -125,18 +136,63 @@ public class MemberController {
 		return "member/join_success";
 	}
 
+	// 아이디 중복 검사
+		@PostMapping("/memberIdChk")
+		@ResponseBody
+		public String checkId(String memberId) throws Exception{
+			
+			log.info("memberIdChk() 실행");
+			log.info("memberId :"+ memberId);
+			MemberDto result = memberDao.checkId(memberId);
+			log.info("String checkId () result : "+ result); 
+
+			if(result != null) {
+				//중복아이디
+				return "fail";	
+
+			} else {
+				//중복 아이디 x
+				return "success";		
+			}					
+		}
+		
+		// 닉네임 중복 검사
+		@PostMapping("/memberNickChk")
+		@ResponseBody
+		public String checkNick(String memberNick) throws Exception{
+			
+			log.info("memberNickChk() 실행");
+			log.info("memberNick :"+ memberNick);
+			MemberDto result = memberDao.checkNick(memberNick);
+			log.info("String memberNick () result : "+ result); 
+
+			if(result != null) {
+				//중복닉네임
+				return "fail";	
+
+			} else {
+				//중복 닉네임 x
+				return "success";		
+			}					
+		}
+
+
 	// 마이페이지 (임시용)
-    @RequestMapping("/mypage")
-    public String mypage(HttpSession session, Model model) {
-        log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
-        String memberId = (String)session.getAttribute("memberId");
-        int memberIdx = (int) session.getAttribute("memberIdx");
-        MemberDto memberDto = memberDao.get(memberId);
-        MemberProfileDto memberProfileDto = memberProfileDao.getIdx(memberIdx);
-        model.addAttribute("memberDto", memberDto);
-        model.addAttribute("memberProfileDto", memberProfileDto);
-        return "member/mypage";
-    }
+
+	@RequestMapping("/mypage")
+	public String mypage(HttpSession session, Model model) {
+		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
+		//데이터 획득(memberId, memberIdx)
+		String memberId = (String)session.getAttribute("memberId");
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		//데이터 Model에 저장		
+		MemberDto memberDto = memberDao.get(memberId);
+		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
+		model.addAttribute("memberDto", memberDto);
+		model.addAttribute("memberProfileDto", memberProfileDto);
+		//페이지 리다이렉트		
+		return "member/mypage";
+	}
 
 
 	// 비밀번호 변경 폼 페이지
@@ -243,6 +299,7 @@ public class MemberController {
 		// views/member/quit_success.jsp 페이지에 메인페이지로 가는 버튼도 제공했으면 좋겠네요
 	}
 
+
 	// 프로필 다운로드 처리 페이지
 	@GetMapping("/profile")
 	@ResponseBody
@@ -267,22 +324,101 @@ public class MemberController {
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 3-1. 불러낸 파일 크기: " + data.length);
 
 		// 3-2. 불러낸 파일명을 실제 다운로드 가능한 파일명으로 바꾼다.
-		String encodeName = URLEncoder.encode(memberProfileDto.getMemberProfileUploadname(), "UTF-8");
+		String encodeName = URLEncoder.encode(memberProfileDto.getMemberProfileSavename(), "UTF-8");
+
 		encodeName = encodeName.replace("+", "%20");
 		System.out.println("ㅡㅡㅡㅡㅡㅡ 3-2. 변경된 파일명: " + encodeName);
 
-		// 실제 이미지를 스트림으로 전송
 		return ResponseEntity.ok()
-			//.header("Content-Type", "application/octet-stream")
-			.contentType(MediaType.APPLICATION_OCTET_STREAM)
-			//.header("Content-Disposition", "attachment; filename=\""+이름+"\"")
-			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+encodeName+"\"")
-			//.header("Content-Encoding", "UTF-8")
-			.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
-			//.header("Content-Length", String.valueOf(memberProfileDto.getMemberProfileSize()))
-			.contentLength(memberProfileDto.getMemberProfileSize())
-			.body(resource);
+									//.header("Content-Type", "application/octet-stream")
+									.contentType(MediaType.APPLICATION_OCTET_STREAM)
+									//.header("Content-Disposition", "attachment; filename=\""+이름+"\"")
+									.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+encodeName+"\"")
+									//.header("Content-Encoding", "UTF-8")
+									.header(HttpHeaders.CONTENT_ENCODING, "UTF-8")
+									//.header("Content-Length", String.valueOf(memberProfileDto.getMemberProfileSize()))
+									.contentLength(memberProfileDto.getMemberProfileSize())
+								.body(resource);
+	}
+	
+	//프로필 이미지 삭제
+	@GetMapping("/profileDelete")
+	public String profileDelete(@RequestParam int memberIdx) {
 
+		memberProfileDao.delete(memberIdx);
+		
+		return "redirect:profileEdit";
+	}
+	
+	
+	// 메일보내기	
+	@PostMapping("/sendMail")// AJAX와 URL을 매핑
+    @ResponseBody//AJAX후 값을 리턴하기위해 필요
+    public String sendMail(@RequestParam String email) throws FileNotFoundException, MessagingException, IOException {
+    	String result = service.sendCertification(email);
+    	return result;
+    }
+	
+	// 아이디찾기 폼 페이지
+	@GetMapping("/idfindMail")
+	public String findId() {
+		log.debug("ㅡㅡMemberController - /member/idfindMail GET> 아이디찾기");
+		return "member/idfindMail";
+	}
+	
+	// 아이디찾기(이메일)	
+	@PostMapping("/idfindMail")
+	@ResponseBody
+	public String idFindMail(MemberDto memberDto) {
+		System.out.println("idFindMail");
+		System.out.println("idFindMail memberDto : " + memberDto);
+		MemberDto idFind = memberService.idFindMail(memberDto.getMemberNick(), memberDto.getMemberEmail());
+		System.out.println("idFind : " + idFind);
+		
+		if(idFind != null) {
+			String id = idFind.getMemberId();
+			System.out.println("id: " + id);
+			return id;
+		} else {
+			return "fail";
+		}
+	}
+	//
+	
+	// 비밀번호 찾기 폼 페이지
+	@GetMapping("/pwFindMail")
+	public String findPw() {
+		log.debug("ㅡㅡMemberController - /member/pwFindMail GET> 비밀번호 찾기");
+		return "member/pwFindMail";
+	}
+		
+	// 비밀번호 재설정(이메일)
+	@PostMapping("/pwFindMail")
+	@ResponseBody
+	@Transactional(rollbackFor = Exception.class) 
+	public String pwFindMail(MemberDto memberDto) throws FileNotFoundException, MessagingException, IOException {
+		System.out.println("pwFindMail");
+		System.out.println("pwFindMail memberDto : " + memberDto);
+		System.out.println("memberDto"+ memberDto.getMemberNick());
+		MemberDto pwFind = memberService.pwFindMail(memberDto.getMemberId(), memberDto.getMemberNick(), memberDto.getMemberEmail());
+		System.out.println("pwFind : " + pwFind);
+		if(pwFind != null) {
+			String changePw = service.sendTempPwMail(pwFind.getMemberEmail());
+			System.out.println("changePw : "  + changePw);
+			boolean result = memberDao.tempPw(memberDto, changePw);
+			System.out.println("result: " + result);			
+			return "success";
+			
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 이메일 변경 폼 페이지
+	@GetMapping("/updateMail")
+	public String updateMail() {
+		log.debug("ㅡㅡMemberController - /member/updateMail GET> 이메일 변경");
+		return "member/updateMail";
 	}
 
 }
