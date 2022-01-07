@@ -31,6 +31,13 @@ public interface MemberDao {
 	// 회원 탈퇴
 	boolean quit(Integer memberIdx, String memberPw);
 
+
+	//일반회원 등급을 강사로
+	void changeGradeTutor(int memberIdx);
+	//강사를 일반회원으로
+	void changeGradeNormal(int memberIdx);
+	
+
 	// 아이디 중복 검사
 	MemberDto checkId(String memberId) throws Exception;
 
