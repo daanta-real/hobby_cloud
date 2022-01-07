@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -54,14 +56,17 @@ public class PlaceController {
 	// 장소 등록 폼 페이지
 	@GetMapping("/register")
 	public String register() {
-		log.debug("ㅡㅡPlaceController - /place/register GET> 장소 등록");
+		log.debug("ㅡㅡPlaceController - /place/register GET> 장소 등록");		
+		
 		return "place/register";
 	}
 	
 	// 장소등록 처리 페이지
 	@PostMapping("/register")
-	public String register(@ModelAttribute PlaceFileVO placeFileVO) throws IllegalStateException, IOException {
+	public String register(@ModelAttribute PlaceFileVO placeFileVO,HttpSession session) throws IllegalStateException, IOException {
 		log.debug("ㅡㅡPlaceController - /place/register POST> 장소 DATA 입력");
+		int memberIdx = (int) session.getAttribute("memberIdx");		
+		placeFileVO.setMemberIdx(memberIdx);
 		placeService.save(placeFileVO);
 		return "redirect:register_success";
 	}

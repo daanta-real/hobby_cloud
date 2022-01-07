@@ -19,13 +19,46 @@
 	</insert>
 	
 	<!-- 조회--> 
-	<select id="getByIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.member.MemberCategoryDto">
+<!--	<select id="getByIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.member.MemberCategoryDto">
 		select * from member_category where member_idx = #{memberIdx}
-	</select>
+	</select>--> 
 	
 	<!-- 삭제 -->
-	<delete id="delete" parameterType="int">
+<!--	<delete id="delete" parameterType="int">
 		delete member_idx where member_idx = #{memberIdx}
+	</delete>
+	
+--> 
+	
+		<!-- 취미구분 등록 -->
+	<insert id="insert" parameterType="string">
+		INSERT INTO
+			lec_category (lec_category_name)
+		VALUES
+			(#{value})
+	</insert>
+	
+	<!-- 취미구분 목록획득 -->
+	<select id="select" resultType="string">
+		SELECT
+			*
+		FROM
+			lec_category
+	</select>
+	
+	<!-- 취미구분 수정 -->
+	<update id="update" parameterType="LecCategoryUpdateVO">
+		UPDATE
+			lec_category
+		SET
+			lec_category_name = #{lecCategoryNameAfter}
+		WHERE
+			lec_category_name = #{lecCategoryNameBefore}
+	</update>
+	
+	<!--  취미구분 삭제 -->
+	<delete id="delete" parameterType="string">
+		DELETE FROM lec_category WHERE lec_category_name = #{value}
 	</delete>
 	
 </mapper>
