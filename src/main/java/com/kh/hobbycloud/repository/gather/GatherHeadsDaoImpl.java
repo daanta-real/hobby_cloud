@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.gather.GatherHeadsDto;
+import com.kh.hobbycloud.vo.gather.GatherChartVO;
 import com.kh.hobbycloud.vo.gather.GatherHeadsVO;
 
 @Repository
@@ -32,5 +33,11 @@ public class GatherHeadsDaoImpl implements GatherHeadsDao {
 	public boolean cancel(GatherHeadsDto gatherHeadsDto) {
 		int count =  sqlSession.delete("gatherHeads.cancel",gatherHeadsDto);
 		return count>0;
+	}
+
+	@Override
+	public List<GatherChartVO> countByGender(int gatherIdx) {
+		
+		return sqlSession.selectList("gatherHeads.countByGender",gatherIdx);
 	}
 }

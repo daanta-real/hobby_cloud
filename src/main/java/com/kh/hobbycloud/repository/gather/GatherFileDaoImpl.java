@@ -20,6 +20,7 @@ public class GatherFileDaoImpl implements GatherFileDao {
 	@Autowired
 	private SqlSession sqlSession;
 	// 소모임 관련 첨부파일 저장 위치 문자열
+	
 	@Autowired
 	private String STOREPATH_GATHER;
 	// 소모임 관련 첨부파일 저장소 파일 객체

@@ -52,4 +52,17 @@
 		delete from lec_file where lec_file_idx = #{lecFileIdx}
 	</delete>
 	
+		<!-- 강좌 목록 및 검색 -->
+	<delete id="deleteList" parameterType="map">
+		DELETE FROM
+			lec_file
+		WHERE
+			lec_idx = #{lecIdx}
+			<if test="list != null">
+				AND lec_file_idx IN
+				<foreach collection="list" item="one" open="(" close=")" separator=",">#{one}</foreach>
+			</if>
+			
+	</delete>
+	
 </mapper>

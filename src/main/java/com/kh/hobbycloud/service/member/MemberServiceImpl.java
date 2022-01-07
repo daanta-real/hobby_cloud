@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
+import com.kh.hobbycloud.repository.member.MemberCategoryDao;
 import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.member.MemberProfileDao;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
@@ -27,12 +28,16 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Autowired
+	private MemberCategoryDao memberCategoryDao;
 
 	@Override
 	public void join(MemberJoinVO memberJoinVO) throws IllegalStateException, IOException {
 		
 		//1. 시퀀스 번호 불러오기
 		int sequence = sqlSession.selectOne("member.seq");
+		log.debug("sequence:"+sequence);
 
 		//회원정보를 뽑아서 회원테이블에 저장
 		MemberDto memberDto = new MemberDto();
@@ -43,12 +48,27 @@ public class MemberServiceImpl implements MemberService{
 		memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
 		memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
 		memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
+		memberDto.setMemberGender(memberJoinVO.getMemberGender());
 		memberDao.join(memberDto);
 		
-		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
-		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
-//		List<Integer> categoryList = memberJoinVO.getLecCategoryName();
-//		categoryList.add()
+//		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
+//		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
+//		List<String> lecCategoryName = memberJoinVO.getLecCategoryName();
+//		System.out.println("그냥 밖에"+ lecCategoryName.toString());
+//		//관심분야 선택했는지 확인. 선택 안했으면 저장 생략
+//		if (lecCategoryName.size() > 0) {
+//			//회원관심분야에 대한 DTO 생성
+//			MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
+//
+//			memberCategoryDto.setMemberIdx(sequence);
+//			log.debug("DTO DATA B4 = {}", memberCategoryDto);
+//			log.debug("catName = {}", lecCategoryName);
+//			log.debug("GETTER 확인 = {}", memberCategoryDto.getLecCategoryName());
+//			memberCategoryDto.setLecCategoryName(lecCategoryName);
+//			//관심분야 DB에 저장
+//			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
+//			memberCategoryDao.save(memberCategoryDto);			
+//		}
 
 		//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
 		MultipartFile multipartFile = memberJoinVO.getAttach();
@@ -62,7 +82,34 @@ public class MemberServiceImpl implements MemberService{
 			memberProfileDto.setMemberProfileSize(multipartFile.getSize());
 			memberProfileDao.save(memberProfileDto, multipartFile);
 		}
+		
 	}
+	//아이디 중복 확인
+	@Override
+	public MemberDto checkId(String memberId) throws Exception {
+		System.out.println("serviceImpl: " + memberId);
+		return memberDao.checkId(memberId);
+	}
+	
+	//닉네임 중복 확인
+	@Override
+	public MemberDto checkNick(String memberNick) throws Exception {
+		System.out.println("serviceImpl: " + memberNick);
+		return memberDao.checkNick(memberNick);
+	}
+	
+	//아이디 찾기(이메일)
+	@Override
+	public MemberDto idFindMail(String memberNick, String memberEmail) {
+		return memberDao.idFindMail(memberNick, memberEmail);
+	}
+	
+	// 비밀번호 찾기(이메일)
+	@Override
+	public MemberDto pwFindMail(String memberId, String memberNick, String memberEmail) {
+		return memberDao.pwFindMail(memberId, memberNick, memberEmail);
+	}
+	
 
 }
 

@@ -14,6 +14,66 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="구분을위한이름(테이블명)">
+<mapper namespace="place">
+
+	<!-- 시퀀스 번호 획득 -->
+	<select id="getSequence" resultType="int">
+	select place_seq.nextval from dual
+	</select>
+	
+	<!-- 장소 추가 -->
+	<insert id="save" parameterType="com.kh.hobbycloud.entity.place.PlaceDto">
+		INSERT INTO PLACE(PLACE_IDX, MEMBER_IDX, PLACE_NAME, PLACE_DETAIL, PLACE_POSTCODE,
+		PLACE_ADDRESS,PLACE_DETAIL_ADDRESS,PLACE_START,PLACE_END,PLACE_MIN,PLACE_MAX,PLACE_EMAIL,PLACE_PHONE)
+		VALUES(
+			#{placeIdx}, #{memberIdx}, #{placeName}, #{placeDetail}, #{placePostcode}, #{placeAddress}, #{placeDetailAddress}, 
+			#{placeStart}, #{placeEnd}, #{placeMin}, #{placeMax}, #{placeEmail}, #{placePhone}
+		)
+	</insert>
+	
+	<!-- 장소 첨부파일 DTO 획득 by 파일번호 -->
+	<select id="getNo" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
+		SELECT * FROM place_file
+		WHERE place_file_idx = #{placeFileIdx}
+	</select>
+	
+	<!-- 장소 DTO 획득 by idx -->
+	<select id="get" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
+		SELECT * FROM place
+		WHERE place_idx = #{placeIdx}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+	  delete from place where place_idx=#{placeIdx}
+	</delete>
+	
+	<update id="update" parameterType="com.kh.hobbycloud.entity.place.PlaceDto">
+			UPDATE PLACE 
+		SET 
+			PLACE_NAME = #{placeName},
+			PLACE_DETAIL = #{placeDetail}, 
+			PLACE_REGISTERED = #{placeRegistered}, 
+			PLACE_POSTCODE =  #{placePostcode},
+			PLACE_ADDRESS =  #{placeAddress},
+			PLACE_DETAIL_ADDRESS = #{placeDetailAddress},
+			PLACE_START = #{placeStart},
+			PLACE_END = #{placeEnd},
+			PLACE_MIN = #{placeMin},
+			PLACE_MAX = #{placeMax},
+			PLACE_EMAIL = #{placeEmail},
+			PLACE_PHONE  = #{placePhone}
+			)
+		WHERE
+			MEMBER_IDX = #{memberIdx}
+	</update>
+	
+<select id="list" resultType="com.kh.hobbycloud.vo.place.PlaceRegisterVO">
+  select * from place p left outer join
+ (select distinct place_idx, min(place_file_idx) as place_file_idx
+  from place_file group by place_idx) f  
+  on  f.place_idx = p.place_idx  
+  order by p.place_idx desc;
+</select>
+	
 	
 </mapper>

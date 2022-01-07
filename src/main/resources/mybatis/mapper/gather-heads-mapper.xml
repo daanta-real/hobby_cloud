@@ -34,6 +34,16 @@ insert into gather_heads values(#{memberIdx},#{gatherIdx},1)
 <!-- 소모임 취소 -->
 <delete id="cancel" parameterType="GatherHeadsDto">
  delete gather_heads where member_idx=#{memberIdx} and gather_idx =#{gatherIdx}
- 
 </delete>
+
+<!-- 인원 수 구하기 -->
+<select id="countByGender" parameterType="int" resultType="GatherChartVO">
+ select  count(*)"count",m.member_gender "memberGender"
+ from gather_heads h 
+ left outer  join member m  
+ ON h.member_idx = m.member_idx 
+ left outer join member_profile p 
+ on m.member_idx = p.member_idx where h.gather_idx=#{gatherIdx}
+ Group BY m.member_gender
+</select>
 </mapper>

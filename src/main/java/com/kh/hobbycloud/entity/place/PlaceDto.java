@@ -11,9 +11,9 @@ public class PlaceDto {
 	private String placeName;
 	private String placeDetail;
 	private Date placeRegistered;
-	private String placeLocRegion;
-	private int placeLocLatitude;
-	private int placeLocLongitude;
+	private int placePostcode;
+	private String placeAddress;
+	private String placeDetailAddress;
 	private Date placeStart;
 	private Date placeEnd;
 	private int placeMin;

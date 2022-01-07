@@ -2,7 +2,9 @@ package com.kh.hobbycloud.repository.lec;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -67,7 +69,17 @@ public class LecFileDaoImpl implements LecFileDao {
 	// 파일 삭제 (강좌파일 idx로)
 	@Override
 	public boolean deleteAjax(int lecFileIdx) {
-		int count =sqlSession.delete("lecFile.deleteAjax",lecFileIdx);
+		int count = sqlSession.delete("lecFile.deleteAjax",lecFileIdx);
+		return count > 0;
+	}
+
+	// 파일 삭제 (리스트로)
+	@Override
+	public boolean deleteList(int lecIdx, List<String> list) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("lecIdx", lecIdx);
+		map.put("list", list);
+		int count = sqlSession.delete("lecFile.deleteList", map);
 		return count > 0;
 	}
 

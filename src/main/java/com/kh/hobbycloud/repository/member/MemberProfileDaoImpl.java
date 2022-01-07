@@ -14,11 +14,14 @@ import com.kh.hobbycloud.entity.member.MemberProfileDto;
 @Repository
 public class MemberProfileDaoImpl implements MemberProfileDao{
 
+	// 변수 준비
+	// MyBatis 객체	
 	@Autowired
 	private SqlSession sqlSession;
-
-	//저장용 폴더
-	private File directory = new File("D:/upload/member");
+	
+	// 프로필 첨부파일 저장 위치 문자열
+	@Autowired
+	private String STOREPATH_MEMBER;
 	
 	@Override
 	public void save(MemberProfileDto memberProfileDto, MultipartFile multipartFile)
@@ -27,8 +30,8 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 		//1. 시퀀스 번호 불러오기
 		int sequence = sqlSession.selectOne("memberProfile.seq");
 
-		//2. 실제 파일 시퀀스 번호로 저장
-		File target = new File(directory, String.valueOf(sequence));
+		//2. 실제 파일 업로드 폴더에 저장
+		File target = new File(STOREPATH_MEMBER, String.valueOf(sequence));
 		multipartFile.transferTo(target);
 
 		//3. 파일 정보를 DB에 저장한다.
@@ -36,26 +39,31 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 		memberProfileDto.setMemberProfileSavename(String.valueOf(sequence));
 		sqlSession.insert("memberProfile.save", memberProfileDto);
 	}
-
+	// 한 개의 프로필 첨부파일 Dto 얻기
 	@Override
 	public MemberProfileDto getMemberProfileIdx(int memberProfileIdx) {
 		return sqlSession.selectOne("memberProfile.get", memberProfileIdx);
 	}
-
+	
+	// memberIdx로 memberProfileDto 불러오기
 	@Override
 	public MemberProfileDto getByMemberIdx(int memberIdx) {
-		return sqlSession.selectOne("memberProfile.getById", memberIdx);
+		return sqlSession.selectOne("memberProfile.getByIdx", memberIdx);
 	}
+
 	
+	// 한 개의 프로필파일 데이터를 회신
 	@Override
 	public byte[] load(String memberProfileSavename) throws IOException {
-		File target = new File(directory, String.valueOf(memberProfileSavename));
+		File target = new File(STOREPATH_MEMBER, String.valueOf(memberProfileSavename));
 		byte[] data = FileUtils.readFileToByteArray(target);
-		return data;}
-
+		return data;
+		}
+	
+	// 삭제
 	@Override
-	public MemberProfileDto getIdx(int memberIdx) {
-		return sqlSession.selectOne("memberProfile.getIdx", memberIdx);
+	public void delete(int memberIdx) {
+		sqlSession.delete("memberProfile.delete",memberIdx);		
 	}
 
 

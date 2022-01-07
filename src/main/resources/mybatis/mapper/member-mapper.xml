@@ -27,15 +27,20 @@
 		WHERE member_id = #{memberId}
 	</select>
 	
+	<select id="getbyIdx" parameterType="Integer" resultType="MemberDto">
+		SELECT * FROM member
+		WHERE member_idx = #{memberIdx}
+	</select>		
+  	
 	<!-- 등록 -->
 	<insert id="insert" parameterType="MemberDto">
 		INSERT INTO member (
-			member_idx, member_id, member_pw, 
-			member_nick, member_email, member_phone, member_region
+			member_idx, member_id, member_pw,member_nick, 
+			member_email, member_phone, member_region, member_gender
 		)
 		VALUES (
 			#{memberIdx}, #{memberId}, #{memberPw}, #{memberNick},
-			#{memberEmail}, #{memberPhone}, #{memberRegion}
+			#{memberEmail}, #{memberPhone}, #{memberRegion}, #{memberGender}
 		)
 	</insert>
 	
@@ -102,10 +107,12 @@
 		WHERE member_idx = #{memberIdx}
 	</update>
 	
+	<!-- 탈퇴 -->
 	<delete id="quit" parameterType="integer">
 		delete member WHERE member_idx = #{memberIdx}
 	</delete>
 	
+
 	<!-- 일반회원을 강사로 -->	
 	<update id="changeGradeTutor" parameterType="int">
 		update member set
@@ -118,4 +125,28 @@
 		member_grade_name = '회원'
 		where member_idx = #{memberIdx}
 	</update>
+
+	<!-- 닉네임 중복 조회 -->
+	<select id="findNick" parameterType="string" resultType="MemberDto">
+		SELECT * FROM member
+		WHERE member_nick = #{memberNick}
+	</select>
+	
+	<!-- 아이디찾기(이메일) -->
+	<select id="idFindMail" parameterType="map" resultType="MemberDto">
+		SELECT * FROM MEMBER WHERE member_nick = #{memberNick} AND member_email = #{memberEmail}
+	</select>
+	
+	<!-- 비밀번호찾기(이메일) -->
+	<select id="pwFindMail" parameterType="map" resultType="MemberDto">
+		SELECT * FROM MEMBER WHERE member_id = #{memberId} AND member_nick = #{memberNick} AND member_email = #{memberEmail} 
+	</select>
+	
+	<!-- 임시 비밀번호 업데이트 -->
+	<update id="tempPw" parameterType="map">
+		UPDATE member SET member_pw = #{memberPw}
+		WHERE member_id = #{memberId} 
+	</update>
+
+
 </mapper>

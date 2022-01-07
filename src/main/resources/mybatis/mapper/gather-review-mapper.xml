@@ -42,7 +42,7 @@ member m ON g.member_idx = m.member_idx
 <!-- 평점 수정 -->
 <update id="edit" parameterType="GatherReviewDto">
 update gather_review set
- gather_review_detail=#{gatherReviewDetail},
+gather_review_detail=#{gatherReviewDetail},
 gather_review_score=#{gatherReviewScore},
 gather_review_registered=sysdate 
 where 

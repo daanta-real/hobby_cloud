@@ -4,7 +4,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
-    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.js" integrity="sha512-7Fh4YXugCSzbfLXgGvD/4mUJQty68IFFwB65VQwdAf1vnJSG02RjjSCslDPK0TnGRthFI8/bSecJl6vlUHklaw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+
+   
     
     <script>
     $(function() {
@@ -122,8 +127,10 @@
 			
 			
 			
-			<c:set	var="isJoin" value="false" /> <c:set var="isFull" value="false" />
+			<c:set	var="isJoin" value="false" /> 
+			<c:set var="isFull" value="false" />
 				
+			
 				
 				<!-- 참가자 리스트 반복문 -->
 				 <c:forEach var="GatherHeadsVO" items="${list2}"
@@ -131,11 +138,11 @@
 					<c:out value="${status.count}" />
 
 					<!-- 참가자 인원을 확인 -->
-					<c:if test="${status.count ==1 }">
+					<c:if test="${status.count == GatherVO.gatherHeadCount}">  
 						<c:set var="isFull" value="true" />
 					</c:if>
-
-
+				
+				
 
 					<!-- 참가여부를 확인 -->
 					<c:if test="${GatherHeadsVO.memberIdx  eq memberIdx}">
@@ -158,21 +165,23 @@
 				<c:choose>
 					<c:when test="${isFull}">
 					</c:when>
-				</c:choose> <!-- 게시판 사진 반복문 --> <c:forEach var="GatherFileDto" items="${list}">
+				</c:choose> <!-- 게시판 사진 반복문 --> 
+				<c:forEach var="GatherFileDto" items="${list}">
 					<span><${GatherFileDto.gatherFileUserName}</span>
 					<br>
-					<img
-						src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
+					
+					<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
 						width="30%" class="image image-round image-border">
 				</c:forEach></td>
 
-
+	<h1>참여자 수 :${status.count} / ${GatherVO.gatherHeadCount}</h1> 
 
 		</tr>
 		<!-- 소모임 참가 /취소 버튼 -->
 		<tr>
 			<td>
 				<!-- 참가하기 버튼 --> <c:choose>
+				
 					<c:when test="${isJoin}">
 						<a class="btn btn-warning"
 							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
@@ -181,10 +190,10 @@
 						<a class="btn btn-secondary"
 							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">완료</a>
 					</c:when>
-					<c:otherwise>
+					<c:when test="${isLogin}"> 
 						<a class="btn btn-primary"
 							href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
-					</c:otherwise>
+					</c:when>
 				</c:choose>
 			</td>
 		</tr>
@@ -241,7 +250,6 @@
         <label for="1-star" class="star">★</label>
      </div>  
 	내용 : <input type="text" name="gatherReviewDetail">
-		 <input type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}"> 
 		 <input	type="submit" value="전송하기">
 </form>
 
@@ -259,6 +267,87 @@
 </template>
 
 <div id="resultReivew"></div>
+
+<h1>차트 예제</h1>
+
+<canvas id="myChart" width="10" height="10"></canvas>
+
+
+
+<script>
+$(function(){
+	var gatherIdx = $("#gatherIdxValue").data("gather-idx");
+$.ajax({
+	url:"${pageContext.request.contextPath}/gatherData/genderCount", 
+	type:"get",
+	data:{
+		gatherIdx:gatherIdx
+	},
+	dataType:"json",
+	success:function(resp){
+		console.log("성공", resp);
+		
+		draw("#myChart", resp);
+	},
+	error:function(e){}
+});
+});
+	
+	function draw(selector, data){//select = 선택자 , data = JSON(List<ChartVO>)
+		//ctx는 canvas에 그림을 그리기 위한 펜 객체(고정 코드)
+		var ctx = $(selector)[0].getContext("2d");
+	
+		//List<ChartVO> 처럼 {text:?, count:?} 형태의 값이 List로 들어있는 data를
+		//text만 뽑아서 배열 한 개를 만들고, count만 뽑아서 배열 한 개를 만든다
+		
+		var memberGenderArray = [];//gender만 모아둘 배열
+		var countArray = [];//count만 모아둘 배열
+
+		
+		for(var i=0; i < data.length; i++){
+			memberGenderArray.push(data[i].memberGender);
+			countArray.push(data[i].count);
+		}
+		console.log(memberGenderArray);
+		console.log(countArray);
+	
+		//var myChart = new Chart(펜객체, 차트옵션);
+		var myChart = new Chart(ctx, {
+		    type: 'bar', //차트의 유형
+		    data: { //차트 데이터
+		    	
+		    	//하단 제목
+		        labels: memberGenderArray,
+		        datasets: [{
+		            label: '인원 수',//차트 범례
+		            data: countArray,//실 데이터(하단 제목과 개수가 일치하도록 구성)
+		            backgroundColor: [//배경색상(하단 제목과 개수가 일치하도록 구성)
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(54, 162, 235, 0.2)'
+		                
+		            ],
+		            borderColor: [//테두리색상(하단 제목과 개수가 일치하도록 구성)
+		                'rgba(255, 99, 132, 1)',
+		                'rgba(54, 162, 235, 1)' 
+		                
+		            ],
+		            borderWidth: 5//테두리 두께
+		        }]
+		    },
+		    options: {
+		        scales: {
+		            y: {
+		                beginAtZero: true
+		            }
+		        }
+		    }
+		});
+	}
+</script>
+
+
+
+
 
 
 <!-- 평점 등록 -->
@@ -347,23 +436,7 @@ function loadReview(){
 					var form = $("<form>");
 					form.append("<input type='hidden' name='gatherReviewIdx' value='"+gatherReviewIdx+"'>");
 					form.append("<input type='text' name='gatherReviewDetail' value='"+gatherReviewDetail+"'>");
-					form.append("<div class='star-rating space-x-4 mx-auto'> <input type='radio' id='5-stars' name='gatherReviewScore'value='5' v-model='ratings'/> <label for='5-stars' class='star pr-4'>★</label>");
-					
-					form.append("<input type='radio' id='5-stars' name='gatherReviewScore'value='5' v-model='ratings'/>");
-					form.append("<label for='5-stars' class='star pr-4'>★</label>");
-					
-					form.append("<input type='radio' id='4-stars' name='gatherReviewScore'value='4' v-model='ratings'/>");
-					form.append("<label for='4-stars' class='star'>★</label>");
-					
-					form.append("<input type='radio' id='3-stars' name='gatherReviewScore' value='3' v-model='ratings'/>");
-					form.append("<label for='3-stars' class='star'>★</label>");
-					
-					form.append("<input type='radio' id='2-stars' name='gatherReviewScore'value='2' v-model='ratings'/>");
-					form.append("<label for='2-stars' class='star'>★</label>");
-					
-					form.append("<input type='radio' id='1-stars' name='gatherReviewScore'value='1' v-model='ratings'/>");
-					form.append("<label for='1-stars' class='star'>★</label>");
-				
+					form.append("<div class='star-rating space-x-4 mx-auto'> <input type='radio' id='5-stars' name='gatherReviewScore'value='5' v-model='ratings'/> <label for='5-stars' class='star pr-4'>★</label> <input type='radio' id='4-stars' name='gatherReviewScore' value='4' v-model='ratings'/>   <label for='4-stars' class='star'>★</label>  <input type='radio' id='3-stars' name='gatherReviewScore' value='3' v-model='ratings'/><label for='3-stars' class='star'>★</label><input type='radio' id='2-stars' name='gatherReviewScore' value='2' v-model='ratings'/>    <label for='2-stars' class='star'>★</label> <input type='radio' id='1-star' name='gatherReviewScore' value='1' v-model='ratings' /> <label for='1-star' class='star'>★</label>");
 					form.append("</div>");
 					form.append("<button type='submit'>수정</button>");
 					
@@ -372,8 +445,9 @@ function loadReview(){
 						
 					var dataValue = $(this).serialize();
 					console.log(dataValue);
+					
 					$.ajax({
-						url:"${pageContext.request.contextPath}/snsReply/edit",
+						url:"${pageContext.request.contextPath}/gatherData/reviewEdit",
 						type:"post",
 						data:dataValue,
 						success:function(resp){
@@ -381,7 +455,7 @@ function loadReview(){
 						
 							$("#result").empty();
 							
-		
+							loadReview();
 						},
 						error:function(e){}
 					});

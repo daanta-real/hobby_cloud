@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class MemberDto {
 	private int memberIdx;
-	private String memberGradeName;
 	private String memberId;
 	private String memberPw;
 	private String memberNick;
@@ -16,6 +15,8 @@ public class MemberDto {
 	private Date memberRegistered;
 	private int memberPoint;
 	private String memberRegion;
+	private String memberGender;
+	private String memberGradeName;
 }
 
 
