@@ -11,7 +11,7 @@ public class PlaceDto {
 	private String placeName;
 	private String placeDetail;
 	private Date placeRegistered;
-	private int placePostcode;
+	private String placePostcode;
 	private String placeAddress;
 	private String placeDetailAddress;
 	private Date placeStart;

@@ -2,7 +2,9 @@ package com.kh.hobbycloud.repository.place;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -22,6 +24,7 @@ public class PlaceFileDaoImpl implements PlaceFileDao{
 	@Autowired
 	private String STOREPATH_PLACE;
 	
+	// 파일 저장
 	// 파일 정보를 DB로 저장한 뒤, 저장된 파일의 placeFileIdx를 회신
 	@Override
 	public void save(PlaceFileDto placeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
@@ -40,19 +43,20 @@ public class PlaceFileDaoImpl implements PlaceFileDao{
 
 	}
 	
-	//한 개의 장소 첨부파일 DTO 얻기
+	//한 개의 장소 첨부파일 DTO 얻기(placeFileIdx)
 	@Override
-	public PlaceFileDto getNo(int placeFileIdx) {
-		return sqlSession.selectOne("placeFile.getNo", placeFileIdx);
+	public PlaceFileDto getByPlaceFileIdx(int placeFileIdx) {
+		return sqlSession.selectOne("placeFile.getByPlaceFileIdx", placeFileIdx);
 	}
 	
-	//소모임 IDX로 첨부파일 전체 List 불러오기
-	@Override
-	public List<PlaceFileDto> getIdx(int placeIdx) {
-		return sqlSession.selectList("placeFile.getIdx", placeIdx);
+	// 파일 저장 정보 DTO List 획득: placeIdx로
+	@Override	
+	public List<PlaceFileDto> getListByPlaceIdx(int placeIdx) {
+		return sqlSession.selectList("placeFile.getByPlaceIdx", placeIdx);
 	}
 	
-	// 한 개의 파일 데이터를 회신 (파일명이 idx와 같다)
+	
+	// 파일 실제 데이터 byte[]를 리턴
 	@Override
 	public byte[] load(int placeFileIdx) throws IOException {
 		File target = new File(STOREPATH_PLACE, String.valueOf(placeFileIdx));
@@ -60,18 +64,28 @@ public class PlaceFileDaoImpl implements PlaceFileDao{
 		return data;
 	}
 	
-	//장소 번호로 해당 장소의 사진 다 삭제
+	//파일 삭제 (placeIdx)
 	@Override
 	public boolean delete(int placeIdx) {
 		int count = sqlSession.delete("placeFile.delete",placeIdx);
 		return count >0;
 	}
 	
+	// 파일 삭제 (placeFileIdx)
 	@Override
 	public boolean deleteAjax(int placeFileIdx) {
-		int count =sqlSession.delete("placeFile.deleteAjax",placeFileIdx);
-		
-		return count >0;
+		int count = sqlSession.delete("placeFile.deleteAjax",placeFileIdx);
+		return count > 0;
+	}
+
+	// 파일 삭제 (리스트로)
+	@Override
+	public boolean deleteList(int placeIdx, List<String> list) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("lecIdx", placeIdx);
+		map.put("list", list);
+		int count = sqlSession.delete("placeFile.deleteList", map);
+		return count > 0;
 	}
 
 }

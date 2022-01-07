@@ -156,11 +156,12 @@
 		WHERE member_id = #{memberId} 
 	</update>
 	
+	<!-- 관리자용: 멤버 목록 조회 -->
 	<!-- member_Idx로 list 조회 -->
-<!-- 	<select id="list" resultType="MemberJoinVO">
+ 	<select id="list" resultType="MemberListVO">
 		SELECT m.member_idx, m.member_grade_name, m.member_id,
-                m.member_nick, m.member_email, m.member_phone, m.member_registered,
-                m.member_point, m.member_region, m.member_gender, 
+                	m.member_nick, m.member_email, m.member_phone, m.member_registered,
+                	m.member_point, m.member_region, m.member_gender, 
                 c.lec_category_name,
                 f.member_profile_idx                
 				FROM member m
@@ -171,9 +172,8 @@
 				member_profile f
 				ON  m.member_idx = f.member_idx
 		where member_id = #{memberId};
-	</select>-->
-	
-		<!-- 관리자용: 멤버 목록 조회 -->
+	</select>
+
 <!-- 	<select id="search"
 			resultType="com.kh.hobbycloud.vo.pay.PaidVO"
 			parameterType="com.kh.hobbycloud.vo.pay.PaidSearchVO">

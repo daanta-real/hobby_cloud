@@ -40,8 +40,8 @@ public class PlaceController {
 	
 	@Autowired
 	private PlaceService placeService;
-	@Autowired
 	
+	@Autowired	
 	private PlaceFileDao placeFileDao;
 	
 	// 내 장소 목록 페이지
@@ -86,7 +86,7 @@ public class PlaceController {
 		PlaceRegisterVO placeRegisterVO = placeDao.get(placeIdx);
 
 		// 획득된 데이터를 Model에 지정
-		List<PlaceFileDto> list = placeFileDao.getIdx(placeIdx);
+		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);
 		model.addAttribute("PlaceRegisterVO", placeRegisterVO);
 		model.addAttribute("list", list);
 
@@ -104,27 +104,19 @@ public class PlaceController {
 	// 장소 변경 폼 페이지
 	@GetMapping("/update/{placeIdx}")
 	public String update(@PathVariable int placeIdx, Model model) {
+		log.debug("ㅡㅡㅡ /place/update?" + placeIdx + " (장소 파일 수정 GET) 진입");
 		
 		// 데이터 획득: VO 및 DTO
 		PlaceRegisterVO placeRegisterVO = placeDao.get(placeIdx);
+		log.debug("ㅡㅡㅡ PlaceRegisterVO: {}", placeRegisterVO);
+		model.addAttribute("PlaceRegisterVO", placeRegisterVO);
 
 		// 획득된 데이터를 Model에 지정
-		List<PlaceFileDto> list = placeFileDao.getIdx(placeIdx);
-		model.addAttribute("PlaceRegisterVO", placeRegisterVO);
+		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);
 		model.addAttribute("list", list);
-
-		return "place/update";
-	}
-
-	// 장소 수정 처리 페이지
-	@PostMapping("/update/{placeIdx}")
-	public String update2(@ModelAttribute PlaceFileVO placeFileVO) throws IllegalStateException, IOException {
-
-		// 수정
-		placeService.update(placeFileVO);
-		int placeIdx = placeFileVO.getPlaceIdx();
-		return "redirect:/place/detail/" + placeIdx;
 		
+		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
+		return "place/update";
 	}
 	
 	// 장소 사진 전송 실시
@@ -132,10 +124,18 @@ public class PlaceController {
 	@ResponseBody
 	public ResponseEntity<ByteArrayResource> file(@PathVariable int placeFileIdx) throws IOException {
 
+		// 0. 매개변수로 placeIdx가 넘어와 있다.
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 0. 요청된 placeIdx : " + placeFileIdx);
+				
 		// 파일 DTO 획득
-		PlaceFileDto placeFileDto = placeFileDao.getNo(placeFileIdx);
-
-		// 전송할 파일의 데이터 준비
+		PlaceFileDto placeFileDto = placeFileDao.getByPlaceFileIdx(placeFileIdx);
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 placeFileDto : "+placeFileDto);
+		
+		// 2. 갖고 온 DTO에서 실제 저장 파일명(save name)을 찾아낸다.
+		String savename = placeFileDto.getPlaceFileServerName();
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 2. 찾아낸 파일명: " + savename);
+		
+		// 3-1. 프로필번호(memberProfileIdx)를 이용하여 내가 전송할 실제 파일 정보를 불러온다
 		byte[] data = placeFileDao.load(placeFileIdx);
 		ByteArrayResource resource = new ByteArrayResource(data);
 

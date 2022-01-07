@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.hobbycloud.entity.member.MemberCategoryDto;
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberCategoryDao;
@@ -59,24 +58,24 @@ public class MemberServiceImpl implements MemberService{
 		memberDto.setMemberGender(memberJoinVO.getMemberGender());
 		memberDao.join(memberDto);
 		
-		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
-		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
-		List<String> lecCategoryName = memberJoinVO.getLecCategoryName();
-		System.out.println("그냥 밖에"+ lecCategoryName.toString());
-		//관심분야 선택했는지 확인. 선택 안했으면 저장 생략
-		if (lecCategoryName.size() > 0) {
-			//회원관심분야에 대한 DTO 생성
-			MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
-
-			memberCategoryDto.setMemberIdx(sequence);
-			log.debug("DTO DATA B4 = {}", memberCategoryDto);
-			log.debug("catName = {}", lecCategoryName);
-			log.debug("GETTER 확인 = {}", memberCategoryDto.getLecCategoryName());
-			memberCategoryDto.setLecCategoryName(lecCategoryName);
-			//관심분야 DB에 저장
-			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
-			memberCategoryDao.save(memberCategoryDto);			
-		}
+//		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
+//		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
+//		List<String> lecCategoryName = memberJoinVO.getLecCategoryName();
+//		System.out.println("그냥 밖에"+ lecCategoryName.toString());
+//		//관심분야 선택했는지 확인. 선택 안했으면 저장 생략
+//		if (lecCategoryName.size() > 0) {
+//			//회원관심분야에 대한 DTO 생성
+//			MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
+//
+//			memberCategoryDto.setMemberIdx(sequence);
+//			log.debug("DTO DATA B4 = {}", memberCategoryDto);
+//			log.debug("catName = {}", lecCategoryName);
+//			log.debug("GETTER 확인 = {}", memberCategoryDto.getLecCategoryName());
+//			memberCategoryDto.setLecCategoryName(lecCategoryName);
+//			//관심분야 DB에 저장
+//			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
+//			memberCategoryDao.save(memberCategoryDto);			
+//		}
 
 		//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
 		MultipartFile multipartFile = memberJoinVO.getAttach();
