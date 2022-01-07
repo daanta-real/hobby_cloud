@@ -14,7 +14,7 @@ function createEl(name, param) {
      if(param.value != undefined) el.value = param.value;
      if(param.text != undefined) el.innerText = param.text;
      if(param.html != undefined) el.innerHTML = param.html;
-     if(param.attrib != undefined) for(var i in param.attrib) el.setAttribute(i, param.attrib[i]);
+     if(param.attr != undefined) for(var i in param.attr) el.setAttribute(i, param.attr[i]);
      if(param.style != undefined) for(var i in param.style) el.style[i] = param.style[i];
      if(param.child != undefined) {
          if(param.child instanceof Array) for(var i = 0; i < param.child.length; i++) el.append(param.child[i]);
@@ -68,13 +68,57 @@ const debug_rainbowQueryRun = () => {
     rainbow(query, { padding:"0.3rem", margin:"0.2rem" });
 };
 
+// 라이브러리. 숫자로 된 용량을 주면 MB/KB/bytes 식으로 환산해 준다.
+function byteString(size, digitsLength) {
+	if (size >= 1024) {
+        size /= 1024;
+        size = (digitsLength === undefined) ? size : size.toFixed(digitsLength);
+        return size + 'KB';
+    }
+    else if (size >= 1024 * 1024) {
+        size = size / (1024 * 1024);
+        size = (digitsLength === undefined) ? size : size.toFixed(digitsLength);
+        return size + 'MB';
+    }
+    //KB 단위보다 작을때 byte 단위로 환산
+    else {
+        size = (digitsLength === undefined) ? size : size.toFixed(digitsLength);
+        return size + 'byte';
+    }
+}
 
-// 라이브러리. 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+// 라이브러리. 1차원 배열에서 특정 원소 제거한거 회신 (단, 첫번째 발견될때만 제거)
+function arr_remove_val(arr, val) {
+ var idx = arr.indexOf(val);
+ if(idx > -1) arr.splice(idx, 1);
+ return arr;
+}
+
+// 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", () => {
 
 	// 모달 변수 정의
 	window.modal = new bootstrap.Modal(document.getElementById("modal"), {
 	    keyboard: false
+	});
+	
+	// FORM 제출 시 자동 실행: 비밀번호 암호화
+	$("form").submit(function(e){
+		
+		// 이벤트 버블링 방지
+		e.preventDefault();
+		
+		// 비번 input 태그값 암호화 반영
+		$(this).find("input[type=password]").each(function(){
+			var origin = $(this).val();
+			var hash = CryptoJS.SHA1(origin);
+			var encrypt = CryptoJS.enc.Hex.stringify(hash);
+			$(this).val(encrypt);
+		});
+		
+		// 제출
+		this.submit();
+
 	});
 	
 });

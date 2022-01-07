@@ -18,6 +18,8 @@
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 	<!-- JQuery 3.6.0 -->
 	<SCRIPT src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></SCRIPT>
+	<!-- axios -->
+	<script src="https://unpkg.com/axios/dist/axios.min.js" crossorigin="anonymous"></script>
 	<!-- XE Icon -->
 	<LINK rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 	<!-- HobbyCloud Main CSS -->

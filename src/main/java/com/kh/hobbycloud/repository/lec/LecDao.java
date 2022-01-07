@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.hobbycloud.entity.lec.LecDto;
-import com.kh.hobbycloud.vo.gather.GatherVO;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
@@ -16,11 +15,14 @@ public interface LecDao {
 	LecDetailVO get(int lecIdx);//단일 조회
 	void delete(int lecIdx);//삭제
 	int getSequence();//시퀀스 생성
-	
+
 	List<LecListVO> listPage(int startRow, int endRow);
-		
+
 	//게시글 목록 조회
 	List<LecListVO> list(LecCriteria cri);
 	//게시글 총개수
 	int listCount();
+
+	boolean update(LecDto lecDto);
+
 }

@@ -25,17 +25,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hobbycloud.entity.lec.LecFileDto;
+import com.kh.hobbycloud.repository.lec.LecCategoryDao;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
-
-import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecCartService;
-
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecCartVO;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
-import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecPageMaker;
@@ -53,31 +50,30 @@ public class LecController {
 
 	@Autowired
 	private LecCartService lecCartService;
-	
+
 	@Autowired
 	private LecDao lecDao;
 
 	@Autowired
 	private LecFileDao lecFileDao;
 
-	
 	@Autowired
-	private LecReplyDao lecReplyDao;
-	
+	private LecCategoryDao lecCategoryDao;
+
 	//목록
 	@GetMapping("/list")
 	public String list(Model model,LecCriteria cri) {
 		model.addAttribute("list", lecService.list(cri));
-		
+
 		LecPageMaker pageMaker = new LecPageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(lecService.listCount());
 		model.addAttribute("pageMaker",pageMaker);
-		
+
 		System.out.println(lecService.list(cri));
 		return "lec/list";
 	}
-	
+
 	//목록(검색 가능)
 	@RequestMapping("/list")
 	public String search(@RequestParam Map<String ,Object> param , Model model) {
@@ -86,7 +82,7 @@ public class LecController {
 		return "lec/list";
 	}
 
-	
+
 	//강좌 등록
 	@GetMapping("/register")
 	public String insert() {
@@ -114,7 +110,7 @@ public class LecController {
 		model.addAttribute("lecDetailVO", lecDetailVO);
 		model.addAttribute("list", list);
 
-		log.debug("세션{},", session.getAttribute("memberIdx"));
+		log.debug("세션 memberIdx = {},", session.getAttribute("memberIdx"));
 
 		//좋아요 구현
 		//회원일때 보이고 비회원이면 안보이고
@@ -148,22 +144,17 @@ public class LecController {
 		log.debug("ㅡㅡㅡ lecDetailVO: {}", lecDetailVO);
 		model.addAttribute("lecDetailVO", lecDetailVO);
 
+		// 데이터 획득: 카테고리 목록
+		List<String> lecCategoryList = lecCategoryDao.select();
+		model.addAttribute("lecCategoryList", lecCategoryList);
+
 		// 획득된 데이터를 Model에 지정
 		List<LecFileDto> fileList = lecFileDao.getListByLecIdx(lecIdx);
-		log.debug("ㅡㅡㅡ List<LecFileDto> list = {}", fileList);
-		model.addAttribute("list", fileList);
+		log.debug("ㅡㅡㅡ List<LecFileDto> fileList = {}", fileList);
+		model.addAttribute("fileList", fileList);
 
 		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
 		return "lec/edit";
-	}
-
-	// 강좌 수정 처리
-	@PostMapping("/edit/{lecIdx}")
-	public String update(@ModelAttribute LecEditVO lecEditVO) throws IllegalStateException, IOException {
-		// 수정
-		lecService.edit(lecEditVO);
-		int lecIdx = lecEditVO.getLecIdx();
-		return "redirect:/lec/detail/" + lecIdx;
 	}
 
 	// 강좌 삭제
@@ -179,7 +170,7 @@ public class LecController {
 	public ResponseEntity<ByteArrayResource> file(@PathVariable int lecFileIdx) throws IOException {
 
 		// 0. 매개변수로 lecIdx가 넘어와 있다.
-		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 lecIdx : " + lecFileIdx);
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 0. 요청된 lecIdx : " + lecFileIdx);
 
 		// 1. lecIdx를 이용하여, 이미지 파일정보 전체를 DTO로 갖고 온다.
 		LecFileDto lecFileDto = lecFileDao.getByLecFileIdx(lecFileIdx);
@@ -222,7 +213,7 @@ public class LecController {
 		lecCartService.insert(lecCartVO);//찜 테이블에 저장
 		return "redirect:/lec/cart_list";//찜 목록으로 이동
 	}
-	
+
 	//찜 목록
 	@RequestMapping("/cart_list")
 	public ModelAndView list(HttpSession session, ModelAndView mav) {
@@ -234,24 +225,24 @@ public class LecController {
 			//얘가 위에 있으면 int memberIdx가 null이라 nullPointerException에러가 뜨니까 꼭 주의!!!!!!!!!!!!!!!!
 			List<LecCartVO> list = lecCartService.listCart(memberIdx);//찜 목록
 			int totalPrice = lecCartService.totalPrice(memberIdx);//금액 합계
-			
+
 			//map에 찜에 넣을 값 저장
 			map.put("totalPrice", totalPrice);//전체 금액
 			map.put("list", list);//찜 목록
 			map.put("count", list.size());//찜 개수
-			
+
 			//ModelAndView mav에 이동할 페이지의 이름과 데이터를 저장
 			mav.setViewName("lec/cart_list");//이동할 페이지 이름
 			mav.addObject("map", map); //데이터 저장
-			
+
 			return mav;//화면 이동
-			
+
 		}else {//로그인 안한 상태
 			return new ModelAndView("member/login", "", null);
 			//로그인 페이지로 이동
 		}
 	}
-	
+
 	//찜 전체 삭제
 	@RequestMapping("/cart/deleteAll")
     public String deleteAll(HttpSession session) {
