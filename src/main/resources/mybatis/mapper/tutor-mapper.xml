@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+	myBatis 매퍼 파일
+	- DBMS에서 실행할 SQL 구문을 저장하는 XML 파일
+	- namespace를 통해서 여러 개의 매퍼를 구분한다
+	- 테이블 당 1개씩 만드는 것이 일반적이며, 따라서 namespace를 테이블명으로 작성하면 구분이 용이하다.
+	- <insert> , <select> , <update> , <delete>를 이용해서 CRUD 구문을 작성한다.
+	- 각 구문은 외부에서 호출이 가능하도록 반드시 ID를 겹치지 않게 부여해야 한다.
+	- parameterType 은 구문을 실행하기 위해 필요한 데이터의 형태를 말한다.
+	- resultType은 구문을 실행한 결과를 어떤 형태로 변환해야 하는지를 말한다.
+ -->
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tutor">
+
+	<!-- 강사 등록 -->
+	<insert id="insert" parameterType="int">
+		insert into tutor
+		values (tutor_seq.nextval, #{memberIdx}, '안녕하세요 강사입니다', sysdate)
+	</insert>
+	
+	<!-- 강사 수정 -->
+	<update id="update" parameterType="TutorDto">
+		update tutor set
+		tutor_detail = #{tutorDetail}
+		where tutor_idx = #{tutorIdx}
+	</update>
+	
+	<!-- 강사 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete tutor where member_idx = #{memberIdx}
+	</delete>
+	
+	<!-- 강사 상세정보 -->
+	<select id="get" parameterType="int" resultType="TutorDto">
+		select * from tutor where member_idx = #{tutorIdx}
+	</select>
+	
+	<!-- 강사 리스트 -->
+	<select id="list" resultType="TutorDto">
+		select * from tutor
+	</select>
+</mapper>
