@@ -189,29 +189,23 @@ window.addEventListener("load", function() {
 				</div>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-		<button type="button"
-			class="col-auto btn btn-sm btn-outline-primary">목록으로</button>
-		<ul class="col-auto pagination pagination-sm m-0">
-			<li class="page-item disabled">
-				<a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
-			</li>
-			<li class="page-item active">
-				<a class="page-link" href="#">1</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">2</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">3</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">»</a>
-			</li>
-		</ul>
-		<a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
-	</nav>
+			<button type="button"class="col-auto btn btn-sm btn-outline-primary">목록으로</button>
+  <ul class="col-auto pagination pagination-sm m-0">
+    <c:if test="${pageMaker.prev}">
+    	<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
+    	> ◁ </a></li>
+    </c:if> 
 
-</div>
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+    </c:forEach>
+
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+    </c:if> 
+  </ul>
+  <a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
+</nav>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
 	
