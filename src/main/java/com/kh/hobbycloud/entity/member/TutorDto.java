@@ -8,6 +8,6 @@ import lombok.Data;
 public class TutorDto {
 	private int tutorIdx;
 	private int memberIdx;
-	private String tutorDetail;
-	private Date tutorRegistered;
+	private String tutorDetail;//강사 소개
+	private Date tutorRegistered;//강사 등록일
 }

@@ -14,6 +14,8 @@ public class LecDto {
 	private String lecDetail;//강좌 상세내용
 	private Date lecRegistered;//강좌 작성일
 	private int lecPrice;//강좌 수강료
+	//현재 강좌 신청 인원 컬럼을 추가
+	private int lecCurrentCount;
 	private int lecHeadCount;//강좌 수강인원
 	private int lecContainsCount;//강좌 강의수
 	private Date lecStart;//강좌 시작 시간
