@@ -108,6 +108,18 @@ public class MemberDaoImpl implements MemberDao{
 		}
 	}
 	
+
+	//tutor에서 이용할 등급 변경 기능
+	@Override
+	public void changeGradeTutor(int memberIdx) {
+		sqlSession.update("member.changeGradeTutor", memberIdx);
+	}
+	@Override
+	public void changeGradeNormal(int memberIdx) {
+		sqlSession.update("member.changeGradeNormal", memberIdx);
+	}
+	
+
 	//아이디 중복 검사
 	@Override
 	public MemberDto checkId(String memberId) throws Exception {
@@ -159,6 +171,7 @@ public class MemberDaoImpl implements MemberDao{
 		int result=sqlSession.update("member.tempPw",param);
 		return result>0;
 	}
+
 
 }
 

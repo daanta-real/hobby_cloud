@@ -218,4 +218,22 @@
 		delete lec where lec_idx = #{lecIdx}
 	</delete>
 	
+	
+	
+	<!-- 강좌 신청(lecCurrentCount + 1) -->
+	<update id="countPlus" parameterType="int">
+		update lec set
+		lec_current_count = lec_current_count + 1
+		where lec_idx = #{lecIdx}
+	</update>
+	<!-- 강좌 신청 취소(lecCurrentCount - 1) -->
+	<update id="countMinus" parameterType="int">
+		update lec set
+		lec_current_count = lec_current_count - 1
+		where lec_idx = #{lecIdx}
+	</update>
+		
+	
+	<!-- 강좌 현재 신청 인원 카운트 (굳이 안하고 lecDetailVO.get으로 하면됌)-->
+	
 </mapper>
