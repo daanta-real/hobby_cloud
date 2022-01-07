@@ -125,8 +125,8 @@ public class LecController {
 
 		// 획득된 데이터를 Model에 지정
 		List<LecFileDto> fileList = lecFileDao.getListByLecIdx(lecIdx);
-		log.debug("ㅡㅡㅡ List<LecFileDto> list = {}", fileList);
-		model.addAttribute("list", fileList);
+		log.debug("ㅡㅡㅡ List<LecFileDto> fileList = {}", fileList);
+		model.addAttribute("fileList", fileList);
 
 		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
 		return "lec/edit";
@@ -145,7 +145,7 @@ public class LecController {
 	public ResponseEntity<ByteArrayResource> file(@PathVariable int lecFileIdx) throws IOException {
 
 		// 0. 매개변수로 lecIdx가 넘어와 있다.
-		System.out.println("ㅡㅡㅡㅡㅡㅡ0. 요청된 lecIdx : " + lecFileIdx);
+		System.out.println("ㅡㅡㅡㅡㅡㅡ 0. 요청된 lecIdx : " + lecFileIdx);
 
 		// 1. lecIdx를 이용하여, 이미지 파일정보 전체를 DTO로 갖고 온다.
 		LecFileDto lecFileDto = lecFileDao.getByLecFileIdx(lecFileIdx);

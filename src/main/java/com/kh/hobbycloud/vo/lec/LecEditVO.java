@@ -29,4 +29,5 @@ public class LecEditVO {
 	private String lecLocLatitude;//강좌 주소 위도
 	private String lecLocLongitude;//강좌 주소 경도
 	private List<MultipartFile> attach;//파일
+	private List<String> lecFileDelTargetList; // 삭제할 파일 목록 (edit.jsp로부터 받아옴)
 }

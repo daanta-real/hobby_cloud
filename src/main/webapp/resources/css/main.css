@@ -9,6 +9,7 @@
 .cursor-pointer { cursor:pointer; }
 .minWidthMaxContent { min-width:max-content; }
 .scrollXEnabler { overflow-x:auto; }
+a:hover, a:visited, a:active, a:link { color:inherit !important; text-decoration:none !important; }
 
 /* 엘레멘트별 속성 */
 #topProfileBox, ASIDE#accordionSideMenu div.accordion-body { cursor:pointer; }

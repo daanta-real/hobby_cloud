@@ -105,7 +105,15 @@ public class LecSerivceImpl implements LecService{
 		log.debug("======================== lecDao.update() 실시 완료. 결과 = {}", isSucceed);
 
 
-		//(선택) 강좌 파일을 파일 테이블과 실제 하드디스크에 저장
+		// (선택) 파일삭제 idx 목록에 해당되는 첨부파일들을 lec_file 테이블에서 삭제한다.
+		List<String> lecFileDelTargetList = lecEditVO.getLecFileDelTargetList();
+		log.debug("========삭제할 파일 리스트: {}", lecFileDelTargetList);
+		if(lecFileDelTargetList != null && lecFileDelTargetList.size() > 0) {
+			log.debug("==== 삭제할 파일 리스트가 있으므로 이에 대해 삭제 작업합니다.");
+			lecFileDao.deleteList(lecEditVO.getLecIdx(), lecEditVO.getLecFileDelTargetList());
+		}
+
+		// (선택) 강좌 파일을 파일 테이블과 실제 하드디스크에 저장
 		List<MultipartFile> attach = lecEditVO.getAttach();
 		// 만약에 attach가 아예 안 넘어왔다면, 이 강좌와 관련된 모든 파일을 지운다. (왜 이렇게 함??)
 		if(attach==null) {
