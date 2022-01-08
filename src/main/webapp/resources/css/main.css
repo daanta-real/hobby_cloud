@@ -43,6 +43,19 @@ FOOTER { background:var(--bs-gray-400); }
     100% { transform: scale(1); }
 }
 
+/* 스피너 */
+:root { --spinner-size:1.25rem; --spinner-color:var(--bs-white); }
+@keyframes spinner { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.spinner { width:var(--spinner-size); height:var(--spinner-size); display:none; }
+.spinner.loading { display:block; }
+.spinner.loading:after {
+    content:""; float:left; width:var(--spinner-size); height:var(--spinner-size);
+    border-width: calc(var(--spinner-size) / 6); border-style: solid; border-color: transparent;
+    border-top-color: var(--spinner-color); border-bottom-color: var(--spinner-color);
+    border-radius: 50%; box-sizing: border-box;
+    animation: spinner 0.8s ease infinite;
+}
+
 /* 디버그용 */
 /*HEADER { background:url("https://cdn.pixabay.com/photo/2021/12/09/20/58/christmas-cookies-6859116_960_720.jpg"); }*/
 FOOTER { font-weight:100; }

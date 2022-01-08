@@ -25,13 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hobbycloud.entity.lec.LecFileDto;
-
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.repository.lec.LecCategoryDao;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
-import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.repository.member.MemberDao;
-
 import com.kh.hobbycloud.service.lec.LecCartService;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecCartVO;
@@ -57,7 +55,7 @@ public class LecController {
 
 	@Autowired
 	private LecDao lecDao;
-	
+
 	@Autowired
 	private MemberDao memberDao;
 
@@ -211,7 +209,7 @@ public class LecController {
 	@RequestMapping("/cart/insert")
 	public String insert(@ModelAttribute LecCartVO lecCartVO, HttpSession session) {
 		//@ModelAttribute로 submit된 form의 내용을 저장해서 전달받고, 다시 뷰로 넘겨서 출력하기 위해 사용
-		//로그인 여부를 체크	
+		//로그인 여부를 체크
 		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
 			return "redirect:/member/login";//로그인 화면으로 리다이렉트
 		}
@@ -282,10 +280,10 @@ public class LecController {
 			return "redirect:/member/login";
 		}
 		model.addAttribute("lecDetailVO", lecDetailVO);
-		
+
 		return "lec/check";
 	}
-	
+
 	//강좌 신청 페이지 - 포인트 차감
 	//강사님 예전에 구현했던 포인트기능 적용?
 //	@PostMapping("/check")
@@ -298,8 +296,8 @@ public class LecController {
 //		//내 포인트 감소, 내 강좌 추가, 그리고 강좌 신청 인원
 //		//내강좌에 강좌가 등록된 db idx
 //		}
-//	
+//
 //	}
-	
+
 
 }

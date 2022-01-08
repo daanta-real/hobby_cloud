@@ -34,5 +34,8 @@
 		type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services">
 	</script>
+	<script type='text/javascript'>
+		CONFIG_ROOTPATH = "${pageContext.request.contextPath}";
+	</script>
 	</HEAD>
 </HTML>

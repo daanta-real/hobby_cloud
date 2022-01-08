@@ -127,18 +127,6 @@ function makeFileBoxEl(type, name, size, serverIdx) {
 	return result;
 }
 
-// 파일 객체를 넘기면, FileReader가 이미지 내용물을 로드해 대상 이미지 태그에 반영함으로써
-// 이미지를 로드시켜 준다.
-// 패러미터: 대상 파일객체, 대상 이미지 태그
-function renderImageFromFile(file, targetEl) {
-	console.log(file.name);
-	const reader = new FileReader();
-	reader.readAsDataURL(file);
-	reader.addEventListener('load', (e) => {
-		targetEl.src = e.target.result;
-	});
-}
-
 // data 태그로부터 정보를 읽어와 기존 파일의 정보 배열인 orgFilesArr에 추가해주는 함수
 function readyOrgFiles() {
 	const orgFileList = document.querySelectorAll("#orgFileData > div");
@@ -270,7 +258,7 @@ function sendForm() {
 	axios.post("${pageContext.request.contextPath}/lecData/update", formData, {
 		headers: { "Content-type": "multipart/form-data" }
 	}).then((response) => {
-		location.href = "${root}/lec/detail/${lecDetailVO.lecIdx}";
+		location.href = "${pageContext.request.contextPath}/lec/detail/${lecDetailVO.lecIdx}";
 	}).catch((response) => {
 		console.log("에러");
 		console.log(response);
