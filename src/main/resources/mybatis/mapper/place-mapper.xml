@@ -28,13 +28,15 @@
 		PLACE_DETAIL, place_loc_region, PLACE_POSTCODE,
 		PLACE_ADDRESS,PLACE_DETAIL_ADDRESS,
 		PLACE_START,PLACE_END,PLACE_MIN,PLACE_MAX,
-		PLACE_EMAIL,PLACE_PHONE)
+		PLACE_EMAIL,PLACE_PHONE,
+		PLACE_SIDO,PLACE_SIGUNGU,PLACE_BNAME)
 		VALUES(
 			#{placeIdx}, #{memberIdx}, #{placeName}, 
 			#{placeDetail}, #{placeLocRegion}, #{placePostcode}, 
 			#{placeAddress}, #{placeDetailAddress}, 
 			#{placeStart}, #{placeEnd}, #{placeMin}, #{placeMax}, 
-			#{placeEmail}, #{placePhone}
+			#{placeEmail}, #{placePhone}, 
+			#{placeSido}, #{placeSigungu}, #{placeBname}
 		)
 	</insert>
 	
@@ -70,7 +72,10 @@
 			PLACE_MIN = #{placeMin},
 			PLACE_MAX = #{placeMax},
 			PLACE_EMAIL = #{placeEmail},
-			PLACE_PHONE  = #{placePhone}
+			PLACE_PHONE  = #{placePhone},
+			PLACE_SIDO = #{placeSido},
+			PLACE_SIGUNGU = #{placeSigungu},
+			PLACE_BNAME = #{placeBname}
 			)
 		WHERE
 			PLACE_IDX = #{placeIdx}
@@ -108,27 +113,28 @@ select count(*) as BNO from (
 	) where rn between #{rowStart} and #{rowEnd}
 	</select>
 	
-	<!-- 장소 상세 -->
-	<select id="get" parameterType="int" resultType=PlaceListVO">
+<!-- 장소 상세 -->
+<select id="get" parameterType="int" resultType="PlaceVO">
 	select p.*, m.member_nick 
 	from place p  
 	left outer join
 	member m  
 	ON p.member_idx = m.member_idx
-	 where gather_idx=#{gatherIdx}
-	</select>
+	 where place_idx=#{placeIdx}
+</select>
 	
 	<!-- 장소 목록 및 검색 -->
-<select id ="listSearch" parameterType="GatherSearchVO" resultType="GatherVO">
+<select id ="listSearch" parameterType="PlaceListVO" resultType="PlaceListVO">
  select * from  place p left outer join
   (select distinct place_idx, min(place_file_idx) as place_file_idx
+  from place_file group by place_idx) f 
   on  f.place_idx = p.place_idx
   <where> 
  	<if test="placeName != '' ">
   	AND instr(place_name,#{placeName}) >0
  	 </if>
-  	<if test="gatherLocRegion != null">
-   	AND instr(gather_loc_region,#{gatherLocRegion}) >0
+  	<if test="PLACE_SIDO != null">
+   	AND instr(PLACE_SIDO,#{placeSido}) >0
  	</if>
  	<if test="category != null">
  	AND lec_category_name in

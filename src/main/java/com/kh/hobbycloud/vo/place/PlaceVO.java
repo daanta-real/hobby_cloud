@@ -5,11 +5,12 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class PlaceListVO {
+public class PlaceVO {
 	
 	//장소 테이블
 	private int placeIdx;//장소번호
 	private String placeName;//장소 이름
+	private String placeDetail;//장소 설명
 	private Date placeRegistered;//장소 등록일
 	private String placePostcode;//장소 우편번호
 	private String placeAddress;//장소 주소
@@ -23,8 +24,12 @@ public class PlaceListVO {
 	private String placeSigungu;//장소 시군구
 	private String placeBname;//장소 읍면동
 	
-	//땅주인 이름
+	//땅주인(member) 테이블
+	private int memberIdx;
 	private String memberNick;
+	
+	//place_file 테이블 
+	private int placeFileIdx;
 	
 	//카테고리 이름
 	private String lecCategoryName;

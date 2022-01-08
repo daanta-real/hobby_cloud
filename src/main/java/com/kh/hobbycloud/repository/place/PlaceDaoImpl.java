@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.kh.hobbycloud.entity.place.PlaceDto;
 import com.kh.hobbycloud.vo.place.PlaceCriteria;
 import com.kh.hobbycloud.vo.place.PlaceListVO;
+import com.kh.hobbycloud.vo.place.PlaceSearchVO;
+import com.kh.hobbycloud.vo.place.PlaceVO;
 
 @Repository
 public class PlaceDaoImpl implements PlaceDao{
@@ -34,7 +36,7 @@ public class PlaceDaoImpl implements PlaceDao{
 	}
 
 	@Override
-	public PlaceListVO get(int placeIdx) {
+	public PlaceVO get(int placeIdx) {
 		return sqlSession.selectOne("place.get",placeIdx);
 	}
 
@@ -55,10 +57,9 @@ public class PlaceDaoImpl implements PlaceDao{
 	public int listCount() {
 		return sqlSession.selectOne("place.listCount");
 	}
-
-	@Override
-	public List<PlaceListVO> listSearch(Map<String, Object> param) {
-		return sqlSession.selectList("place.listSearch", param);
+	
+	public List<PlaceListVO> listSearch(PlaceSearchVO placeSearchVO) {
+		return sqlSession.selectList("Place.listSearch", placeSearchVO);
 	}
 	
 	//페이지네이션을 이용한 목록조회
@@ -69,5 +70,7 @@ public class PlaceDaoImpl implements PlaceDao{
 		param.put("endRow", endRow);
 		return sqlSession.selectList("lec.listPage",param);
 	}
+
+
 
 }

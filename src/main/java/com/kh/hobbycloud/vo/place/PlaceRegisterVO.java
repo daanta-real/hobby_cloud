@@ -21,6 +21,9 @@ public class PlaceRegisterVO {
 	private int placeMax;
 	private String placeEmail;
 	private String placePhone;
+	private String placeSido;
+	private String placeSigungu;
+	private String placeBname;
 	
 	//장소사진 테이블
 	private int placeFileIdx;

@@ -54,8 +54,11 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setPlaceMin(placeFileVO.getPlaceMin());
 		placeDto.setPlaceMax(placeFileVO.getPlaceMax());
 		placeDto.setPlaceEmail(placeFileVO.getPlaceEmail());
-		placeDto.setPlacePhone(placeFileVO.getPlacePhone());		
-
+		placeDto.setPlacePhone(placeFileVO.getPlacePhone());
+		placeDto.setPlaceSido(placeFileVO.getPlaceSido());
+		placeDto.setPlaceSigungu(placeFileVO.getPlaceSigungu());
+		placeDto.setPlaceBname(placeFileVO.getPlaceBname());
+		
 		// place DTO를 테이블에 삽입
 		placeDao.insert(placeDto);
 
@@ -110,7 +113,10 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setPlaceMin(placeEditVO.getPlaceMin());
 		placeDto.setPlaceMax(placeEditVO.getPlaceMax());
 		placeDto.setPlaceEmail(placeEditVO.getPlaceEmail());
-		placeDto.setPlacePhone(placeEditVO.getPlacePhone());		
+		placeDto.setPlacePhone(placeEditVO.getPlacePhone());
+		placeDto.setPlaceSido(placeEditVO.getPlaceSido());
+		placeDto.setPlaceSigungu(placeEditVO.getPlaceSigungu());
+		placeDto.setPlaceBname(placeEditVO.getPlaceBname());
 		
 		log.debug("======================== PlaceService.update() 실시. DTO = {}", placeDto);
 		// place DTO를 테이블에 삽입

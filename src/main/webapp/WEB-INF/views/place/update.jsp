@@ -270,7 +270,7 @@ function sendForm() {
 	axios.post("http://localhost:8080/hobbycloud/placeData/update", formData, {
 		headers: { "Content-type": "multipart/form-data" }
 	}).then((response) => {
-		location.href = "${root}/place/detail/${placeRegisterVO.placeIdx}";
+		location.href = "${root}/place/detail/${placeVO.placeIdx}";
 	}).catch((response) => {
 		console.log("에러");
 		console.log(response);
@@ -378,48 +378,81 @@ window.addEventListener("load", function() {
 
 
 <form id="placeFormEl" name="placeForm" method="post" enctype="multipart/form-data" class="container">
-	<input type="hidden" name="placeIdx" value="${placeRegisterVO.placeIdx}" />
+	<input type="hidden" name="placeIdx" value="${placeVO.placeIdx}" />
 	<div class="row mb-4">
 		<label>장소 이름</label>
-		<input type="text" name="placeName" required class="form-input" value="${placeRegisterVO.placeName}">
+		<input type="text" name="placeName" required class="form-input" value="${placeVO.placeName}">
 	</div>
 	<div class="row mb-4">
 		<label>카테고리</label>
 		<select name="lecCategoryName" required class="form-input">
 			<option value="">선택하세요</option>
 			<c:forEach var="val" items="${lecCategoryList}">
-				<option value="${val}" ${lecDetailVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
+				<option value="${val}" ${placeVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
 			</c:forEach>
 		</select>
 	</div>
 	<div class="row mb-4">
-		<label>강좌 상세내용</label>
-		<textarea rows="5" cols="20" name="placeDetail" required class="form-input">${placeRegisterVO.placeDetail}</textarea>
+		<label>강의장 상세내용</label>
+		<textarea rows="5" cols="20" name="placeDetail" required class="form-input">${placeVO.placeDetail}</textarea>
 	</div>
 	<div class="row mb-4">
-		<label>대여할 장소</label>
-		<input type="number" name="placeIdx" class="form-input" required value=9999>
-		<div class="border border-1 border-primary" id="selboxDirect"></div>
+		<label>장소 등록일</label>
+		<input type="text" name="placeRegistered" required class="form-input" value="${placeVO.placeRegistered}">
+	</div>		
+	<div class="row mb-4">
+		<label class="form-block">대여 시작일</label>
+		<input type="date" name="placeStart" required class="form-input form-inline" value="${placeVO.placeStart}">
 	</div>
 	<div class="row mb-4">
-		<label>수강료</label>
-		<input type="number" name="placePrice" required class="form-input" value="${placeRegisterVO.lecPrice}">
+		<label class="form-block">대여 마감일</label>
+		<input type="date" name="placeEnd" required class="form-input form-inline" value="${placeVO.placeEnd}">
 	</div>
 	<div class="row mb-4">
-		<label>수강 인원</label>
-		<input type="number" name="lecHeadCount" required class="form-input" value="${lecDetailVO.lecHeadCount}">
+		<label>최저 대여료</label>
+		<input type="number" name="placeMin" required class="form-input" value="${placeVO.placeMin}">
 	</div>
 	<div class="row mb-4">
-		<label>강의 수</label>
-		<input type="number" name="lecContainsCount" required class="form-input" value="${lecDetailVO.lecContainsCount}">
+		<label>최고 대여료</label>
+		<input type="number" name="placeMax" required class="form-input" value="${placeVO.placeMax}">
 	</div>
 	<div class="row mb-4">
-		<label class="form-block">강좌 시작 시간</label>
-		<input type="date" name="lecStart" required class="form-input form-inline" value="${lecDetailVO.lecStart}">
+		<label class="mail_name">이메일</label>
+	 	<div class="mail_input_box"> 
+			<input type="text" id="idMail" name="email_id" class="rowChk" required> @
+			<input type="text" id="inputMail" name="email_domain" required readonly>
+			<select id="emailBox" name="emailBox" required>
+				<option value="" class="pickMail">이메일 선택</option>
+				<option value="directly">직접입력</option>
+				<option value="naver.com">naver.com</option>
+				<option value="gmail.com">gmail.com</option>
+				<option value="daum.net">daum.net</option>
+				<option value="hanmail.net">hanmail.net</option>
+				<option value="nate.com">nate.com</option>
+			</select>
+			<input type="hidden" name="placeEmail" class="mail_input" >
+		</div>
 	</div>
 	<div class="row mb-4">
-		<label class="form-block">강좌 종료 시간</label>
-		<input type="date" name="lecEnd" required class="form-input form-inline" value="${lecDetailVO.lecEnd}">
+		<label class="phone_name">핸드폰 번호</label>
+		<div class="phone_wrap">
+	 			<input type="text" id="phone1" name="phone1" maxlength=3 required placeholder="000" class="phone"> -
+				<input type="text" id="phone2" name="phone2" maxlength=4  required placeholder="0000" class="phone"> -
+				<input type="text" id="phone3" name="phone3" maxlength=4  required placeholder="0000" class="phone">	
+				<input type="hidden" name="placePhone" id="phoneNum">
+		</div>
+	</div>
+	<div class="row mb-4">
+		<label>강의장 주소</label>
+		 	<input type="text" name="placePostcode" placeholder="우편번호" readonly id="placePostcode">
+			 	<button type="button" id="kakao_Address" class="find-address-btn" value="주소찾기">
+			 	주소 찾기
+			 	</button>
+		<label>강의장 상세주소</label>
+			<input type="text" id="placeAddress" name="placeAddress" placeholder="상세 주소" required readonly>
+		 <label>강의장 상세주소</label>
+			<input type="text" id="placeDetailAddress" name="placeDetailAddress" placeholder="상세 주소">
+			<input type="hidden" name="address" >
 	</div>
  	<div class="row mb-4">
  		<label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>

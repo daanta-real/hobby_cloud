@@ -3,7 +3,6 @@ package com.kh.hobbycloud.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,11 +26,12 @@ import com.kh.hobbycloud.repository.place.PlaceCategoryDao;
 import com.kh.hobbycloud.repository.place.PlaceDao;
 import com.kh.hobbycloud.repository.place.PlaceFileDao;
 import com.kh.hobbycloud.service.place.PlaceService;
-import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.place.PlaceCriteria;
 import com.kh.hobbycloud.vo.place.PlaceFileVO;
+import com.kh.hobbycloud.vo.place.PlaceListVO;
 import com.kh.hobbycloud.vo.place.PlacePageMaker;
-import com.kh.hobbycloud.vo.place.PlaceRegisterVO;
+import com.kh.hobbycloud.vo.place.PlaceSearchVO;
+import com.kh.hobbycloud.vo.place.PlaceVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,12 +66,16 @@ public class PlaceController {
 		return "place/list";
 	}
 	
-	//목록(검색 가능)
-	@RequestMapping("/list")
-	public String search(@RequestParam Map<String ,Object> param , Model model) {
-		List<LecListVO> listSearch = placeDao.listSearch(param);
-		model.addAttribute("listSearch", listSearch);
-		return "lec/list";
+	// 검색결과 목록 페이지
+	@PostMapping("/list")
+	public String search(@ModelAttribute PlaceSearchVO placeSearchVO, Model model) {
+//		log.debug("param.toString()   " + gatherSearchDto.toString());
+		log.debug("category={}", placeSearchVO);
+		List<PlaceListVO> list = placeDao.listSearch(placeSearchVO);
+		
+
+		model.addAttribute("list",list);
+		return "gather/list";
 	}
 	
 	// 장소 등록 폼 페이지
@@ -104,11 +108,11 @@ public class PlaceController {
 	public String detail(@PathVariable int placeIdx, Model model) {
 
 		// 데이터 획득: VO 및 DTO
-		PlaceRegisterVO placeRegisterVO = placeDao.get(placeIdx);
+		PlaceVO placeVO = placeDao.get(placeIdx);
 
 		// 획득된 데이터를 Model에 지정
 		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);
-		model.addAttribute("PlaceRegisterVO", placeRegisterVO);
+		model.addAttribute("PlaceListVO", placeVO);
 		model.addAttribute("list", list);
 				
 		// 페이지 리다이렉트 처리
@@ -128,9 +132,9 @@ public class PlaceController {
 		log.debug("ㅡㅡㅡ /place/update?" + placeIdx + " (장소 파일 수정 GET) 진입");
 		
 		// 데이터 획득: VO 및 DTO
-		PlaceRegisterVO placeRegisterVO = placeDao.get(placeIdx);
-		log.debug("ㅡㅡㅡ PlaceRegisterVO: {}", placeRegisterVO);
-		model.addAttribute("PlaceRegisterVO", placeRegisterVO);
+		PlaceVO placeVO = placeDao.get(placeIdx);
+		log.debug("ㅡㅡㅡ PlaceRegisterVO: {}", placeVO);
+		model.addAttribute("PlaceRegisterVO", placeVO);
 		
 		// 데이터 획득: 카테고리 목록
 		List<String> lecCategoryList = placeCategoryDao.select();
