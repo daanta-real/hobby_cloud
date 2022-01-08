@@ -154,8 +154,9 @@ window.addEventListener("load", () => {
 			$(this).val(encrypt);
 		});
 		
-		// 로그인 폼일 때에 한해서 Ajax 실시하며, 그 외에는 그대로 제출 실시
+		// 로그인 폼일 때에 한해서 AXIOS를 활용한 ASYNC(Ajax) 전송을 실시하며,
 		if(e.target.id === "topLoginBox") loginSubmit();
+		// 그 외에는 동기(SYNC)제출 실시
 		else this.submit();
 
 	});
