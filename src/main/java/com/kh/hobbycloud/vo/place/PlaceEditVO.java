@@ -19,6 +19,7 @@ public class PlaceEditVO {
 	private String placeName;
 	private String placeDetail;
 	private Date placeRegistered;
+	private String placeLocRegion;
 	private String placePostcode;
 	private String placeAddress;
 	private String placeDetailAddress;
@@ -35,7 +36,10 @@ public class PlaceEditVO {
 	//member 테이블
 	private int memberIdx;
 	
+	//취미 분류 이름
+	private String lecCategoryName;
+		
 	// 삭제할 파일 목록 (edit.jsp로부터 받아옴)
-	private List<String> placeFileDelTargetList; 
+	private List<String> placeFileDelTargetList; 	
 
 }

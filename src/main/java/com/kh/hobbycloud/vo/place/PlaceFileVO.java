@@ -15,6 +15,7 @@ public class PlaceFileVO {
 	private String placeName;
 	private String placeDetail;
 	private Date placeRegistered;
+	private String placeLocRegion;
 	private String placePostcode;
 	private String placeAddress;
 	private String placeDetailAddress;
@@ -30,5 +31,8 @@ public class PlaceFileVO {
 	
 	//member 테이블
 	private int memberIdx;
+	
+	//취미 분류 이름
+	private String lecCategoryName;
 
 }

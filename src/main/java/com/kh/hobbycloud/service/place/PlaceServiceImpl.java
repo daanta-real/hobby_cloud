@@ -9,10 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.place.PlaceDto;
 import com.kh.hobbycloud.entity.place.PlaceFileDto;
+import com.kh.hobbycloud.entity.place.PlaceTargetDto;
+import com.kh.hobbycloud.repository.place.PlaceCategoryDao;
 import com.kh.hobbycloud.repository.place.PlaceDao;
 import com.kh.hobbycloud.repository.place.PlaceFileDao;
+import com.kh.hobbycloud.vo.place.PlaceCriteria;
 import com.kh.hobbycloud.vo.place.PlaceEditVO;
 import com.kh.hobbycloud.vo.place.PlaceFileVO;
+import com.kh.hobbycloud.vo.place.PlaceListVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +30,9 @@ public class PlaceServiceImpl implements PlaceService{
 	@Autowired
 	private PlaceFileDao placeFileDao;
 	
+	@Autowired
+	private PlaceCategoryDao placeCategoryDao;
+	
 
 	@Override
 	public int save(PlaceFileVO placeFileVO) throws IllegalStateException, IOException {
@@ -35,7 +42,6 @@ public class PlaceServiceImpl implements PlaceService{
 		// 장소 DTO 설정
 		PlaceDto placeDto = new PlaceDto();
 		int placeIdx = placeDao.getSequence();
-		log.debug("==============placeFileVO:"+placeFileVO.toString());
 		placeDto.setPlaceIdx(placeIdx);
 		placeDto.setMemberIdx(placeFileVO.getMemberIdx());
 		placeDto.setPlaceName(placeFileVO.getPlaceName());
@@ -48,10 +54,18 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setPlaceMin(placeFileVO.getPlaceMin());
 		placeDto.setPlaceMax(placeFileVO.getPlaceMax());
 		placeDto.setPlaceEmail(placeFileVO.getPlaceEmail());
-		placeDto.setPlacePhone(placeFileVO.getPlacePhone());
+		placeDto.setPlacePhone(placeFileVO.getPlacePhone());		
 
 		// place DTO를 테이블에 삽입
 		placeDao.insert(placeDto);
+
+		// 장소 카테고리 DTO 설정
+		PlaceTargetDto placeTargetDto = new PlaceTargetDto();
+		placeTargetDto.setPlaceIdx(placeIdx);
+		placeTargetDto.setLecCategoryName(placeFileVO.getLecCategoryName());
+		
+		// 장소 카테고리 DTO를 테이블에 삽입
+		placeCategoryDao.insert(placeTargetDto);
 		
 		// 2. 장소 사진 저장
 		// 실제 파일 업로드 시도 → 성공 시 파일정보를 DB에 저장
@@ -79,7 +93,7 @@ public class PlaceServiceImpl implements PlaceService{
 	//장소 변경
 	@Override
 	public void update(PlaceEditVO placeEditVO) throws IllegalStateException, IOException {
-		log.debug("======================== PlaceService.edit(PlaceFileVO)가 실행되었습니다.");
+		log.debug("======================== PlaceService.edit(placeEditVO)가 실행되었습니다.");
 		// 장소 DTO 설정
 		PlaceDto placeDto = new PlaceDto();
 		
@@ -87,6 +101,7 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setMemberIdx(placeEditVO.getMemberIdx());
 		placeDto.setPlaceName(placeEditVO.getPlaceName());
 		placeDto.setPlaceDetail(placeEditVO.getPlaceDetail());
+		placeDto.setPlaceRegistered(placeEditVO.getPlaceRegistered());
 		placeDto.setPlacePostcode(placeEditVO.getPlacePostcode());
 		placeDto.setPlaceAddress(placeEditVO.getPlaceAddress());
 		placeDto.setPlaceDetailAddress(placeEditVO.getPlaceDetailAddress());
@@ -95,12 +110,22 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setPlaceMin(placeEditVO.getPlaceMin());
 		placeDto.setPlaceMax(placeEditVO.getPlaceMax());
 		placeDto.setPlaceEmail(placeEditVO.getPlaceEmail());
-		placeDto.setPlacePhone(placeEditVO.getPlacePhone());
+		placeDto.setPlacePhone(placeEditVO.getPlacePhone());		
 		
 		log.debug("======================== PlaceService.update() 실시. DTO = {}", placeDto);
 		// place DTO를 테이블에 삽입
 		boolean isSucceed = placeDao.update(placeDto);
 		log.debug("======================== PlaceService.update() 실시 완료. 결과 = {}", isSucceed);
+		
+		// 장소 카테고리 DTO 설정
+		PlaceTargetDto placeTargetDto = new PlaceTargetDto();
+		placeTargetDto.setPlaceIdx(placeEditVO.getPlaceIdx());
+		placeTargetDto.setLecCategoryName(placeEditVO.getLecCategoryName());
+		log.debug("======================== PlaceService.update() 실시. placeTargetDto = {}", placeTargetDto);
+		
+		// 장소 카테고리 DTO를 테이블에 삽입
+		boolean isSucceedCt = placeCategoryDao.update(placeTargetDto);
+		log.debug("======================== PlaceService.update() 실시 완료. 결과 = {}", isSucceedCt);
 		
 		// (선택) 파일삭제 idx 목록에 해당되는 첨부파일들을 place_file 테이블에서 삭제한다.
 		List<String> placeFileDelTargetList = placeEditVO.getPlaceFileDelTargetList();
@@ -148,4 +173,14 @@ public class PlaceServiceImpl implements PlaceService{
 					}
 				}
 			}
+
+	@Override
+	public List<PlaceListVO> list(PlaceCriteria cri) {
+		return placeDao.list(cri);
+	}
+
+	@Override
+	public int listCount() {
+		return placeDao.listCount();
+	}
 }

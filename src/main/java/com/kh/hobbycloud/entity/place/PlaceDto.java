@@ -20,6 +20,10 @@ public class PlaceDto {
 	private int placeMax;
 	private String placeEmail;
 	private String placePhone;
+	private String placeSido;
+	private String placeSigungu;
+	private String placeBname;
+
 }
 
 

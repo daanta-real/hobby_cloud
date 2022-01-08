@@ -158,7 +158,7 @@
 	
 	<!-- 관리자용: 멤버 목록 조회 -->
 	<!-- member_Idx로 list 조회 -->
- 	<select id="list" resultType="MemberListVO">
+<!--  	<select id="list" resultType="MemberListVO">
 		SELECT m.member_idx, m.member_grade_name, m.member_id,
                 	m.member_nick, m.member_email, m.member_phone, m.member_registered,
                 	m.member_point, m.member_region, m.member_gender, 
@@ -173,7 +173,7 @@
 				ON  m.member_idx = f.member_idx
 		where member_id = #{memberId};
 	</select>
-
+ -->
 <!-- 	<select id="search"
 			resultType="com.kh.hobbycloud.vo.pay.PaidVO"
 			parameterType="com.kh.hobbycloud.vo.pay.PaidSearchVO">

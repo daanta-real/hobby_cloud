@@ -23,9 +23,12 @@ public class PlaceRegisterVO {
 	private String placePhone;
 	
 	//장소사진 테이블
-	private int gatherFileIdx;
+	private int placeFileIdx;
 	
 	//member 테이블
 	private int memberIdx;
+	
+	//취미 분류 이름
+	private String lecCategoryName;
 
 }

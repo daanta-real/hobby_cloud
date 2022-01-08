@@ -3,6 +3,7 @@ package com.kh.hobbycloud.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,10 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.place.PlaceFileDto;
+import com.kh.hobbycloud.repository.place.PlaceCategoryDao;
 import com.kh.hobbycloud.repository.place.PlaceDao;
 import com.kh.hobbycloud.repository.place.PlaceFileDao;
 import com.kh.hobbycloud.service.place.PlaceService;
+import com.kh.hobbycloud.vo.lec.LecListVO;
+import com.kh.hobbycloud.vo.place.PlaceCriteria;
 import com.kh.hobbycloud.vo.place.PlaceFileVO;
+import com.kh.hobbycloud.vo.place.PlacePageMaker;
 import com.kh.hobbycloud.vo.place.PlaceRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,13 +49,29 @@ public class PlaceController {
 	@Autowired	
 	private PlaceFileDao placeFileDao;
 	
+	@Autowired	
+	private PlaceCategoryDao placeCategoryDao;
+	
 	// 내 장소 목록 페이지
 	@GetMapping("/list")
-	public String list(Model model) {
-		List<PlaceRegisterVO> list = placeDao.list();
-		model.addAttribute("list", list);
-		System.out.println(list);
+	public String list(Model model, PlaceCriteria cri) {
+		model.addAttribute("list", placeService.list(cri));
+		
+		PlacePageMaker pageMaker = new PlacePageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(placeService.listCount());
+		model.addAttribute("pageMaker",pageMaker);
+		
+		System.out.println(placeService.list(cri));
 		return "place/list";
+	}
+	
+	//목록(검색 가능)
+	@RequestMapping("/list")
+	public String search(@RequestParam Map<String ,Object> param , Model model) {
+		List<LecListVO> listSearch = placeDao.listSearch(param);
+		model.addAttribute("listSearch", listSearch);
+		return "lec/list";
 	}
 	
 	// 장소 등록 폼 페이지
@@ -89,19 +110,19 @@ public class PlaceController {
 		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);
 		model.addAttribute("PlaceRegisterVO", placeRegisterVO);
 		model.addAttribute("list", list);
-
+				
 		// 페이지 리다이렉트 처리
 		return "place/detail";
 	}
 	
 	// 장소 삭제 처리 페이지
-	@GetMapping("/delete")
+	@GetMapping("/delete/{placeIdx}")
 	public String delete(@RequestParam int placeIdx) {
 		placeDao.delete(placeIdx);
 		return "redirect:list";
 	}
 
-	// 장소 변경 폼 페이지
+	// 장소 수정 폼 페이지
 	@GetMapping("/update/{placeIdx}")
 	public String update(@PathVariable int placeIdx, Model model) {
 		log.debug("ㅡㅡㅡ /place/update?" + placeIdx + " (장소 파일 수정 GET) 진입");
@@ -110,9 +131,14 @@ public class PlaceController {
 		PlaceRegisterVO placeRegisterVO = placeDao.get(placeIdx);
 		log.debug("ㅡㅡㅡ PlaceRegisterVO: {}", placeRegisterVO);
 		model.addAttribute("PlaceRegisterVO", placeRegisterVO);
+		
+		// 데이터 획득: 카테고리 목록
+		List<String> lecCategoryList = placeCategoryDao.select();
+		model.addAttribute("lecCategoryList", lecCategoryList);
 
 		// 획득된 데이터를 Model에 지정
 		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);
+		log.debug("ㅡㅡㅡ List<PlaceFileDto> list = {}", list);
 		model.addAttribute("list", list);
 		
 		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");

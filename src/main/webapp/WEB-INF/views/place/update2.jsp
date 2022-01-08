@@ -73,23 +73,6 @@
 		                document.querySelector("input[name=placeAddress]").value = addr;
 		                //$("input[name=address]").val(addr);
 		                
-		              	//시도
-		                document.querySelector("input[name=placeSido]").value = data.sido;
-		                //시군구 (세종시는 sigungu에 null이 들어가서 따로 처리)
-		                if(document.querySelector("input[name=placeSido]").value == "세종특별자치시"){
-		                	document.querySelector("input[name=placeSigungu]").value = "세종시";
-		                }
-		                else{
-		                    document.querySelector("input[name=placeSigungu]").value = data.sigungu;
-		                }
-		                //읍면동
-		                if(data.bname1 == ""){
-		                    document.querySelector("input[name=placeBname]").value = data.bname;
-		                }
-		                else{
-		                	document.querySelector("input[name=placeBname]").value = data.bname1;
-		                }
-		                
 		                //원래 써있던 값지우기
 		            	document.querySelector("input[name=placeDetailAddress]").value = null;
 		                // 커서를 상세주소 필드로 이동한다.
@@ -105,7 +88,7 @@
 
 <div class="container-400 container-center">
 	<div class="row center">
-		<h1>강의장 등록 정보</h1>
+		<h1>강의장 수정 정보</h1>
 	</div>
 	<div>
 		<label>장소 이름</label>
@@ -117,7 +100,7 @@
 	</div>
 	<div class="row">
 		<label>강의장 용도</label>
-			<select name="lecCategoryName" required class="form-input">
+			<select id="room" name="roomBox" required>
 				<option value="" class="pickRoom">선택하세요</option>
 				<option>운동</option>
 				<option>요리</option>
@@ -189,13 +172,9 @@
 		<label class="place_file_name">장소 파일</label>
 		<input type="file" name="attach" accept="image/*" class="place_file_input" enctype="multipart/form-data" multiple>
 	</div>
-	
-	<input type="hidden" name="placeSido" required placeholder="광역시도">
-	<input type="hidden" name="placeSigungu" required placeholder="시군구">
-	<input type="hidden" name="placeBname" required placeholder="읍면동">
 
 	<div class="row">
-		<input type="submit" value="등록" class="form-btn" id="btnclick">
+		<input type="submit" value="수정" class="form-btn" id="btnclick">
 	</div>
 </div>
 
