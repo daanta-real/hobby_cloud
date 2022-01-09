@@ -20,7 +20,7 @@ public class MemberDaoImpl implements MemberDao{
 
 	@Autowired
 	private PasswordEncoder encoder;
-	
+
 	// 단일조회 - ID 기준
 	@Override
 	public MemberDto get(String memberId) {
@@ -37,9 +37,9 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public MemberDto login(MemberDto memberDto) {
 		System.out.println(">> DAO login() 메소드 실행");
-		System.out.println(">> DAO login() memberID----"+ memberDto.getMemberId());
+		System.out.println(">> DAO login() memberId----"+ memberDto.getMemberId());
 		System.out.println(">> DAO login() memberPw----"+ memberDto.getMemberPw());
-		
+
 		// ID와 비밀번호를 입력하였으므로, IDX가 아니라 ID로 조회해야 함
 		MemberDto foundDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
 		System.out.println(">> login() 메소드 foundDto.getMemberPw() ===> "+foundDto.toString());
@@ -63,7 +63,7 @@ public class MemberDaoImpl implements MemberDao{
 		memberDto.setMemberPw(encrypt);
 		sqlSession.insert("member.insert", memberDto);
 	}
-	
+
 
 	// 비밀번호 변경
 	@Override
@@ -107,7 +107,7 @@ public class MemberDaoImpl implements MemberDao{
 			return false;
 		}
 	}
-	
+
 
 	//tutor에서 이용할 등급 변경 기능
 	@Override
@@ -118,7 +118,7 @@ public class MemberDaoImpl implements MemberDao{
 	public void changeGradeNormal(int memberIdx) {
 		sqlSession.update("member.changeGradeNormal", memberIdx);
 	}
-	
+
 
 	//아이디 중복 검사
 	@Override
@@ -133,7 +133,7 @@ public class MemberDaoImpl implements MemberDao{
 		System.out.println(">> DAO checkNick() 메소드 실행");
 		return sqlSession.selectOne("member.findNick",memberNick);
 	}
-	
+
 	// 아이디찾기(이메일)
 	@Override
 	public MemberDto idFindMail(String memberNick, String memberEmail) {
@@ -143,31 +143,31 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectOne("member.idFindMail", map);
 	}
 
-	
+
 	// 비밀번호 찾기(이메일)
 	@Override
 	public MemberDto pwFindMail(String memberId, String memberNick, String memberEmail) {
-		
-		Map<String, String> map = new HashMap<>();		
+
+		Map<String, String> map = new HashMap<>();
 		map.put("memberId", memberId);
 		map.put("memberNick", memberNick);
-		map.put("memberEmail", memberEmail);		
+		map.put("memberEmail", memberEmail);
 		return sqlSession.selectOne("member.pwFindMail", map);
 	}
-	
+
 	//임시 비밀번호 업데이트
 	@Override
 	public boolean tempPw(MemberDto memberDto,String ChangePw) {
-		
+
 		Map<String ,Object> param = new HashMap<>();
 		//받은 난수를 암호화 하여 업데이트 진행
 		String origin =	ChangePw;
 		String encrypt = encoder.encode(origin);
-		memberDto.setMemberPw(encrypt);		
+		memberDto.setMemberPw(encrypt);
 		param.put("memberId", memberDto.getMemberId());
 		param.put("memberPw",memberDto.getMemberPw());
-		
-		//원래 비밀번호를 암호화 하여서 비밀번호 업데이트 
+
+		//원래 비밀번호를 암호화 하여서 비밀번호 업데이트
 		int result=sqlSession.update("member.tempPw",param);
 		return result>0;
 	}
