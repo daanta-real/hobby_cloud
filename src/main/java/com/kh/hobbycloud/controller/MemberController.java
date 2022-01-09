@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,13 +49,13 @@ public class MemberController {
 
 	@Autowired
 	private MemberProfileDao memberProfileDao;
-	
+
 	@Autowired
 	private EmailService service;
-	
+
 	@Autowired
 	private MemberCategoryDao memberCategoryDao;
-	
+
 
 	// 로그인 폼 페이지
 	@GetMapping("/login")
@@ -141,40 +142,40 @@ public class MemberController {
 		@PostMapping("/memberIdChk")
 		@ResponseBody
 		public String checkId(String memberId) throws Exception{
-			
+
 			log.info("memberIdChk() 실행");
 			log.info("memberId :"+ memberId);
 			MemberDto result = memberDao.checkId(memberId);
-			log.info("String checkId () result : "+ result); 
+			log.info("String checkId () result : "+ result);
 
 			if(result != null) {
 				//중복아이디
-				return "fail";	
+				return "fail";
 
 			} else {
 				//중복 아이디 x
-				return "success";		
-			}					
+				return "success";
+			}
 		}
-		
+
 		// 닉네임 중복 검사
 		@PostMapping("/memberNickChk")
 		@ResponseBody
 		public String checkNick(String memberNick) throws Exception{
-			
+
 			log.info("memberNickChk() 실행");
 			log.info("memberNick :"+ memberNick);
 			MemberDto result = memberDao.checkNick(memberNick);
-			log.info("String memberNick () result : "+ result); 
+			log.info("String memberNick () result : "+ result);
 
 			if(result != null) {
 				//중복닉네임
-				return "fail";	
+				return "fail";
 
 			} else {
 				//중복 닉네임 x
-				return "success";		
-			}					
+				return "success";
+			}
 		}
 
 
@@ -186,12 +187,12 @@ public class MemberController {
 		//데이터 획득(memberId, memberIdx)
 		String memberId = (String)session.getAttribute("memberId");
 		int memberIdx = (int) session.getAttribute("memberIdx");
-		//데이터 Model에 저장		
+		//데이터 Model에 저장
 		MemberDto memberDto = memberDao.get(memberId);
 		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberProfileDto", memberProfileDto);
-		//페이지 리다이렉트		
+		//페이지 리다이렉트
 		return "member/mypage";
 	}
 
@@ -242,30 +243,19 @@ public class MemberController {
 
 	// 개인정보 변경 처리 페이지
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute MemberJoinVO memberJoinVO, HttpSession session, MultipartFile attach) throws IllegalStateException, IOException {
-		log.debug("ㅡㅡMemberController - /member/edit POST> 회원정보 변경 DATA 입력됨");
-		String memberId = (String)session.getAttribute("memberId");
-		memberJoinVO.setMemberId(memberId);
+	public String edit(@ModelAttribute MemberDto memberDto, MultipartFile attach, HttpSession session) {
+		log.debug("ㅡㅡMemberController - /member/edit POST> 회원정보 변경 DATA 입력됨.");
+		String memberIdx = (String)session.getAttribute("memberIdx");
+		memberDto.setMemberId(memberIdx);
+		log.debug("ㅡㅡ변경할 대상 정보: {}", memberDto);
 
-		memberService.edit(memberJoinVO, attach);
+		boolean result = memberDao.changeInformation(memberDto);
+		if(result) {
 			return "redirect:edit_success";
 		}
-	
-	//이메일 변경 처리 페이지
-	@PostMapping("/updateMail")// AJAX와 URL을 매핑
-	@ResponseBody//AJAX후 값을 리턴하기위해 필요
-	public String updateMail(@ModelAttribute MemberDto memberDto, HttpSession session) {
-		log.debug("ㅡㅡMemberController - /member/updateMail POST> 회원정보 변경 DATA 입력됨");
-		String memberId = (String)session.getAttribute("memberId");
-		memberDto.setMemberId(memberId);
-		int result = memberDao.changeEmail(memberDto);
-		if(result == 1) {
-			log.debug("ㅡㅡMemberController -이메일 변경 성공");
-			return "success";
-		}
 		else {
-			log.debug("ㅡㅡMemberController - /member/edit?error GET> 이메일 변경 실패");
-			return "fail";
+			log.debug("ㅡㅡMemberController - /member/edit?error GET> 회원정보 변경 실패");
+			return "redirect:edit?error";
 		}
 	}
 
@@ -314,10 +304,10 @@ public class MemberController {
 
 
 	// 프로필 다운로드 처리 페이지
-	@GetMapping("/profile")
+	@GetMapping("/profile/{memberIdx}")
 	@ResponseBody
 	public ResponseEntity<ByteArrayResource> profile(
-				@RequestParam int memberIdx
+				@PathVariable int memberIdx
 			) throws IOException {
 
 		// 0. 매개변수로 memberIdx가 넘어와 있다.
@@ -353,55 +343,33 @@ public class MemberController {
 									.contentLength(memberProfileDto.getMemberProfileSize())
 								.body(resource);
 	}
-	
+
 	//프로필 이미지 삭제
 	@GetMapping("/profileDelete")
 	public String profileDelete(@RequestParam int memberIdx) {
 
 		memberProfileDao.delete(memberIdx);
-		
+
 		return "redirect:profileEdit";
 	}
-	
-	// 프로필 수정 폼
-	@GetMapping("/profileEdit")
-	public String profileEdit(Model model, HttpSession session) {
-		log.debug("ㅡㅡMemberController - /member/profileEdit POST> 회원 프로필 수정 DATA 입력됨");
-		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
-		
-		MemberJoinVO memberJoinVO = memberDao.getVO(memberIdx);
-		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
 
-		model.addAttribute("memberJoinVO", memberJoinVO);
-		model.addAttribute("memberProfileDto", memberProfileDto);
-		return "member/profileEdit";
-	}
-	
-	// 프로필 수정 처리 페이지
-	@PostMapping("/profileEdit")
-	public String profileEdit(@ModelAttribute MemberJoinVO memberJoinVO, MultipartFile attach) throws IllegalStateException, IOException {
 
-		memberService.edit(memberJoinVO, attach);
-		
-		return "redirect:profileEdit";
-	}
-	
-	// 메일보내기	
+	// 메일보내기
 	@PostMapping("/sendMail")// AJAX와 URL을 매핑
     @ResponseBody//AJAX후 값을 리턴하기위해 필요
     public String sendMail(@RequestParam String email) throws FileNotFoundException, MessagingException, IOException {
     	String result = service.sendCertification(email);
     	return result;
     }
-	
+
 	// 아이디찾기 폼 페이지
 	@GetMapping("/idfindMail")
 	public String findId() {
 		log.debug("ㅡㅡMemberController - /member/idfindMail GET> 아이디찾기");
 		return "member/idfindMail";
 	}
-	
-	// 아이디찾기(이메일)	
+
+	// 아이디찾기(이메일)
 	@PostMapping("/idfindMail")
 	@ResponseBody
 	public String idFindMail(MemberDto memberDto) {
@@ -409,7 +377,7 @@ public class MemberController {
 		System.out.println("idFindMail memberDto : " + memberDto);
 		MemberDto idFind = memberService.idFindMail(memberDto.getMemberNick(), memberDto.getMemberEmail());
 		System.out.println("idFind : " + idFind);
-		
+
 		if(idFind != null) {
 			String id = idFind.getMemberId();
 			System.out.println("id: " + id);
@@ -419,18 +387,18 @@ public class MemberController {
 		}
 	}
 	//
-	
+
 	// 비밀번호 찾기 폼 페이지
 	@GetMapping("/pwFindMail")
 	public String findPw() {
 		log.debug("ㅡㅡMemberController - /member/pwFindMail GET> 비밀번호 찾기");
 		return "member/pwFindMail";
 	}
-		
+
 	// 비밀번호 재설정(이메일)
 	@PostMapping("/pwFindMail")
 	@ResponseBody
-	@Transactional(rollbackFor = Exception.class) 
+	@Transactional(rollbackFor = Exception.class)
 	public String pwFindMail(MemberDto memberDto) throws FileNotFoundException, MessagingException, IOException {
 		System.out.println("pwFindMail");
 		System.out.println("pwFindMail memberDto : " + memberDto);
@@ -441,14 +409,14 @@ public class MemberController {
 			String changePw = service.sendTempPwMail(pwFind.getMemberEmail());
 			System.out.println("changePw : "  + changePw);
 			boolean result = memberDao.tempPw(memberDto, changePw);
-			System.out.println("result: " + result);			
+			System.out.println("result: " + result);
 			return "success";
-			
+
 		} else {
 			return "fail";
 		}
 	}
-	
+
 	// 이메일 변경 폼 페이지
 	@GetMapping("/updateMail")
 	public String updateMail() {

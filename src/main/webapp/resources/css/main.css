@@ -9,12 +9,16 @@
 .cursor-pointer { cursor:pointer; }
 .minWidthMaxContent { min-width:max-content; }
 .scrollXEnabler { overflow-x:auto; }
-a:hover, a:visited, a:active, a:link { color:inherit !important; text-decoration:none !important; }
+a:hover, a:visited, a:active, a:link { color: initial; text-decoration:none !important; }
 
 /* 엘레멘트별 속성 */
 #topProfileBox, ASIDE#accordionSideMenu div.accordion-body { cursor:pointer; }
 #topProfileImage { width:2rem; height:2rem; object-fit:cover; }
 NAV .navbar-brand { font-size:25px; padding-top:0; text-transform: capitalize; line-height: 40px; }
+.navbar-dark .navbar-nav .nav-link { word-break: keep-all; }
+.navLoginNick { font-size:1rem; word-break: keep-all; }
+.navLoginId { font-size:0.65rem; word-break: keep-all; }
+#topProfileImage { width: 2.5rem; height: 2.5rem; }
 HEADER .subject { font-weight:900; box-sizing: border-box; width:fit-content; margin:-3px; }
 ASIDE#accordionSideMenu div.accordion-body:hover { background:var(--bs-blue); color:var(--bs-white); }
 FOOTER { background:var(--bs-gray-400); }
@@ -37,6 +41,19 @@ FOOTER { background:var(--bs-gray-400); }
 @keyframes heartbeat {
     0% { transform: scale(1.05); }
     100% { transform: scale(1); }
+}
+
+/* 스피너 */
+:root { --spinner-size:1.25rem; --spinner-color:var(--bs-white); }
+@keyframes spinner { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.spinner { width:var(--spinner-size); height:var(--spinner-size); display:none; }
+.spinner.loading { display:block; }
+.spinner.loading:after {
+    content:""; float:left; width:var(--spinner-size); height:var(--spinner-size);
+    border-width: calc(var(--spinner-size) / 6); border-style: solid; border-color: transparent;
+    border-top-color: var(--spinner-color); border-bottom-color: var(--spinner-color);
+    border-radius: 50%; box-sizing: border-box;
+    animation: spinner 0.8s ease infinite;
 }
 
 /* 디버그용 */
