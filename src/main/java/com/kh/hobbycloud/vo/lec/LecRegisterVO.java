@@ -28,5 +28,5 @@ public class LecRegisterVO {
 	private String lecLocRegion;//강좌 주소 지역
 	private String lecLocLatitude;//강좌 주소 위도
 	private String lecLocLongitude;//강좌 주소 경도
-	private List<MultipartFile> attach;//파일
+	List<MultipartFile> attach; // 추가될 첨부파일들 정보 객체
 }
