@@ -1,203 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
-<c:set var="root" value="${pageContext.request.contextPath}"/>
-<!DOCTYPE HTML>
-<c:set var="isLogin" value="${memberIdx != null}" />
-<script>
-
-</script>
-<HTML LANG="ko">
-
-<!-- ************************************************ 헤드 영역 ************************************************ -->
-<HEAD>
-<jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
-<script type='text/javascript'>
-
-//문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
-window.addEventListener("load", function() {
-});
-$(function() {
-	//지도 생성 준비 코드
-	var container = document.querySelector("#map");
-	var options = {
-		center : new kakao.maps.LatLng($("input[name=gatherLocLongitude]").val(), $(
-				"input[name=gatherLocLatitude]").val()),
-		level : 3
-	};
-
-	//지도 생성 코드
-	var map = new kakao.maps.Map(container, options);
-
-	// 마커가 표시될 위치입니다 
-	var markerPosition = new kakao.maps.LatLng($("input[name=gatherLocLongitude]")
-			.val(), $("input[name=gatherLocLatitude]").val());
-
-	// 마커를 생성합니다
-	var marker = new kakao.maps.Marker({
-		position : markerPosition
-	});
-
-	// 마커가 지도 위에 표시되도록 설정합니다
-	marker.setMap(map);
-});
-
-</script>
-</HEAD>
-<BODY>
-<jsp:include page="/resources/template/body.jsp" flush="false" />
-
-
-
-<!-- ************************************************ 본문 대구역 시작 ************************************************ -->
-<!-- 본문 대구역 시작 -->
-<SECTION class="container-fluid"><DIV class="row d-flex flex-col justify-content-center pt-3 pt-sm-3 pt-md-5 pb-md-3">
-
-
-
-<!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
-<!-- 사이드메뉴 영역 시작 -->
-<!-- 사이드메뉴 영역 끝 -->
-
-
-
-<!-- ************************************************ 페이지 영역 ************************************************ -->
-<!-- 페이지 영역 시작 -->
-<ARTICLE class="d-flex flex-column align-items-start col-lg-8 mx-md-1 mt-xs-2 mt-md-3 pt-2">
-
-	<!-- 제목 영역 시작 -->
-	<!-- 제목 영역 끝 -->
-	<!-- 페이지 내용 시작 -->
-	<SECTION class="w-100 pt-0 fs-6">
-		<!-- 소단원 제목 -->
-		<HEADER class='w-100 mb-1 p-2 px-md-3'>
-		<div class='row border-bottom border-secondary border-1'>
-			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			소모임
-			</span>
-		</div>
-	</HEADER>
-		<!-- 소단원 내용 -->
-		<input type="text" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
-        <input type="text" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
-		<div id="map" style="width:50%;height:350px;"></div>
-		<h1>참여자 수 :${status.count} / ${GatherVO.gatherHeadCount}</h1> 
-		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
-		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5">
-			<div class="row row justify-content-end">
-				작성자 : ${GatherVO.memberNick}
-				|
-				장소 : ${GatherVO.gatherLocRegion}
-				</div>
-				<div class="row">
-				${GatherVO.gatherDetail}
-				</div>
-			
-			<c:set	var="isJoin" value="false" /> 
-			<c:set var="isFull" value="false" />
-				
-			
-				
-				
-
-					<!-- 참가자 인원을 확인 -->
-					<div class="row">
-					<c:if test="${status.count == GatherVO.gatherHeadCount}">  
-						<c:set var="isFull" value="true" />
-					</c:if>
-				
-				</div>
-				
-
-					<!-- 참가여부를 확인 -->
-					<c:if test="${GatherHeadsVO.memberIdx  eq memberIdx}">
-						<!-- 만약에 일치한다  -->
-						<c:set var="isJoin" value="true" />
-					</c:if>
-					
-					<!-- 참가자 리스트 반복문 -->
-				<div class="row">
-				 <c:forEach var="GatherHeadsVO" items="${list2}"
-					varStatus="status">
-					참여자 수 :<c:out value="${status.count}" />
-					</div>
-
-	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div> 
-	<div class="row p-sm-2 mx-1 mb-5">
-			<div class="scrollXEnabler">
-				<div class="card p-0 minWidthMaxContent">
-					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
-						<thead>
-							<tr class="table-danger">
-								<th scope="col" class="text-center align-middle text-nowrap">프로필</th>
-								<th scope="col" class="text-center align-middle text-nowrap">닉네임</th>
-							</tr>
-						</thead>
-						<tbody>
-								<tr class="cursor-pointer">
-									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.gatherIdx}</td>
-									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td>
-									</c:forEach>
-								</tr>	
-						</tbody>
-					</table>
-				</div>
-			</div> 	
-				
-				<c:choose>
-					<c:when test="${isFull}">
-					</c:when>
-				</c:choose> <!-- 게시판 사진 반복문 --> 
-				<c:forEach var="GatherFileDto" items="${list}">
-					<span><${GatherFileDto.gatherFileUserName}</span>
-					<br>
-					
-					<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
-						width="30%" class="image image-round image-border">
-				</c:forEach></td>
-
-		</tr>
-		<!-- 소모임 참가 /취소 버튼 -->
-		<tr>
-			<td>
-				<!-- 참가하기 버튼 --> <c:choose>
-				
-					<c:when test="${isJoin}">
-						<a class="btn btn-warning"
-							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
-					</c:when>
-					<c:when test="${isFull}">
-						<a class="btn btn-secondary"
-							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">완료</a>
-					</c:when>
-					<c:when test="${isLogin}"> 
-						<a class="btn btn-primary"
-							href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
-					</c:when>
-				</c:choose>
-			</td>
-		</tr>
-
-</div>
-	</SECTION>
-	<!-- 페이지 내용 끝. -->
-	
-</ARTICLE>
-<!-- 페이지 영역 끝 -->
-
-
-</DIV></SECTION>
-<!-- 본문 대구역 끝 -->
-
-<!-- ************************************************ 풋터 영역 ************************************************ -->
-<jsp:include page="/resources/template/footer.jsp" flush="false" />
-</BODY>
-</HTML>
-
-<%--디자인 적용 전 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -205,6 +5,12 @@ $(function() {
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.js" integrity="sha512-7Fh4YXugCSzbfLXgGvD/4mUJQty68IFFwB65VQwdAf1vnJSG02RjjSCslDPK0TnGRthFI8/bSecJl6vlUHklaw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+
+   
+    
     <script>
     $(function() {
 		//지도 생성 준비 코드
@@ -844,8 +650,6 @@ function deleteReply(gatherReplyIdxValue){
 	});
 }
 </script>
---%>
-
 
 
 
