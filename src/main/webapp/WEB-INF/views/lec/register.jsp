@@ -181,7 +181,7 @@ function setLoc(el) {
         longitude: el.getAttribute("data-longitude"),
         latitude : el.getAttribute("data-latitude")
     };
-
+	// 장소 만들어지면 value값 대체해야함
     // 추출된 값을 각 INPUT 태그에 넣어주기
 //     document.querySelector("input[name='loc_idx']"      ).value = data.idx;
     document.querySelector("input[name='lecLocRegion']"   ).value = data.region;
@@ -298,39 +298,39 @@ function setLoc(el) {
 <script>
 	$(function() {
 		$("#showList").click(function() {
-						$.ajax({
-						url : "${pageContext.request.contextPath}/gatherData/gatherList",
-						type : "get",
-						dataType : "json",
-						success:function(resp){
-							
-							console.log("성공", resp);
-							var results = resp;
-							console.log(results);
-							var totalStr = "";
-							$.each(results, function(i) {
-								var jsonStr = results[i];
-								console.log(i + "번째 TR: ", jsonStr);
-								totalStr += '<tr scope="row" data-idx="' + jsonStr.lecIdx + '"'
-									+ ' data-region="'+jsonStr.lecLocRegion+'" data-longitude="'+jsonStr.lecLocLongitude+'"'
-									+ ' data-latitude="' + jsonStr.lecLocLatitude+'"'
-									+ ' onclick="setLoc(this)">'
-									+ '<td class="text-center">' + jsonStr.lecIdx +'</td>'
-									+ '<td class="text-center">' + jsonStr.lecName +'</td>'
-									+ '<td>' + jsonStr.lecLocRegion +'</td></tr>';
-							});
-							console.log("전체 HTML: ", totalStr);
-							
-							var listTarget = document.querySelector(".locTBody");
-							console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
-							listTarget.innerHTML = totalStr;
-							
-						},
-						error : function(e) {
-						console.log("실패", e);
-									}
-								});
-						});
+			$.ajax({
+			url : "${pageContext.request.contextPath}/lecData/lecList",
+			type : "get",
+			dataType : "json",
+			success:function(resp){
+				
+				console.log("성공", resp);
+				var results = resp;
+				console.log(results);
+				var totalStr = "";
+				$.each(results, function(i) {
+					var jsonStr = results[i];
+					console.log(i + "번째 TR: ", jsonStr);
+					totalStr += '<tr scope="row" data-idx="' + jsonStr.lecIdx + '"'
+						+ ' data-region="'+jsonStr.lecLocRegion+'" data-longitude="'+jsonStr.lecLocLongitude+'"'
+						+ ' data-latitude="' + jsonStr.lecLocLatitude+'"'
+						+ ' onclick="setLoc(this)">'
+						+ '<td class="text-center">' + jsonStr.lecIdx +'</td>'
+						+ '<td class="text-center">' + jsonStr.lecName +'</td>'
+						+ '<td>' + jsonStr.lecLocRegion +'</td></tr>';
+				});
+				console.log("전체 HTML: ", totalStr);
+				
+				var listTarget = document.querySelector(".locTBody");
+				console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
+				listTarget.innerHTML = totalStr;
+				
+			},
+			error : function(e) {
+			console.log("실패", e);
+						}
+					});
+			});
 	});
 </script>
 

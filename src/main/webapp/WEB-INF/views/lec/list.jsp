@@ -49,7 +49,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="lecListVO" items="${list}">
+			
+			<!-- 아니 이거 조건을 어케걸어; -->
+			<c:if test="${param} != null">
+			<c:forEach var="lecListVO" items="${listSearch}">
 				<tr>
 					<td>${lecListVO.lecIdx}</td>
 					<td>${lecListVO.lecCategoryName}</td>
@@ -69,7 +72,31 @@
 					</c:if>
 					</td>
 				</tr>
-				</c:forEach>
+			</c:forEach>
+			</c:if>
+			
+			<c:forEach var="lecListVO" items="${list}">
+				<tr>
+					<td>${lecListVO.lecIdx}</td>
+					<td>${lecListVO.lecCategoryName}</td>
+					<td><a href="detail/${lecListVO.lecIdx}">${lecListVO.lecName}</a></td>
+					<td>${lecListVO.memberNick}</td>
+					<td>${lecListVO.lecPrice}</td>
+					<td>${lecListVO.lecHeadCount}</td>
+					<td>${lecListVO.lecLike}</td>
+					<td>${lecListVO.lecContainsCount}</td>
+					<td>${lecListVO.lecStart}</td>
+					<td>${lecListVO.lecEnd}</td>
+					<td>${lecListVO.lecLocRegion}</td>
+					<td>
+					<c:if test="${memberGrade == admin}">
+						<a href="edit/${lecListVO.lecIdx}">수정</a>
+						<a href="delete/${lecListVO.lecIdx}">삭제</a>
+					</c:if>
+					</td>
+				</tr>
+			</c:forEach>
+
 			</tbody>
 		</table>
 	</div>

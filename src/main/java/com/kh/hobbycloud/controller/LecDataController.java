@@ -22,6 +22,7 @@ import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
+import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecReplyVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,9 @@ public class LecDataController {
 
 	@Autowired
 	private LecService lecService;
+	
+	@Autowired
+	private LecDao lecDao;
 
 	@ResponseBody
 	@PostMapping("/update")
@@ -133,5 +137,11 @@ public class LecDataController {
 		}
 
 		return map;
+	}
+	
+	//모달창에 쓸 목록 조회(임시용. 장소 만들어지면 대체해야함)
+	@GetMapping("/lecList")
+	public List<LecListVO> lecList(){
+		return lecDao.list();
 	}
 }
