@@ -8,6 +8,29 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
+
+
+
+<!-- 파일 업로드 모듈 사전 설정 -->
+<%--
+파일 업로드 모듈을 적용하기 위한 준비물
+1. 아래 사전 변수 설정에 경로 정확히 입력하기 ('/'기호 조심)
+   - fileImageStorePath: 이미지를 불러오기 위한 이미지 호출 경로
+   - fileUploadTargetPage: AJAX로 데이터를 전송할 대상 페이지
+2. AJAX 컨트롤러측 패러미터 VO에는, 아래 필드가 존재해야 한다.
+   - List<MultipartFile> attach: 추가할 파일들 정보가 넘어오는 필드
+   - List<String> fileDelTargetList: 삭제대상 file idx 목록 (String으로 되어 있음)
+     (단, 편집이 아니라 신규작성인 경우에는 fileDelTargetList를 만들지 않아도 된다.)
+3. HTML FORM의 class에는 fileUploadForm 항목이 있어야 한다.
+--%>
+<SCRIPT TYPE="text/javascript">
+const fileImageStorePath = "${root}/lec/lecFile/";
+const fileUploadTargetPage = "${root}/lecData/register/";
+</SCRIPT>
+<!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
+<SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fileUpload.css" />
+
 <TITLE>HobbyCloud - 강좌 등록</TITLE>
 <style type="text/css">
 
@@ -267,7 +290,7 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form name="lecForm" method="get" class="row container d-flex justify-content-center">
+				<form name="lecForm" method="get" class="row container d-flex justify-content-center fileUploadForm">
 					<div class="form-group row mb-4">
 						<label>강좌 이름</label>
 						<input type="text" name="lecName" required class="form-input p-1 border-radius-all-25" />
@@ -277,7 +300,7 @@ window.addEventListener("load", function() {
 						<select name="lecCategoryName" required class="form-input p-1 border-radius-all-25">
 							<option value="">선택하세요</option>
 							<c:forEach var="val" items="${lecCategoryList}">
-								<option value="${val}" ${lecDetailVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
+								<option value="${val}">${val}</option>
 							</c:forEach>
 						</select>
 					</div>
@@ -374,7 +397,7 @@ window.addEventListener("load", function() {
 						</div>
 					</div>
 					<div class="row mb-4">
-						<input type="button" id="lecForm_submitBtn" value="수정 완료" class="form-btn p-1 border-radius-all-25">
+						<input type="button" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
 					</div>
 				</form>
 			</div>

@@ -1,5 +1,6 @@
 package com.kh.hobbycloud.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
+import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 import com.kh.hobbycloud.vo.lec.LecReplyVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,20 @@ public class LecDataController {
 	@Autowired
 	private LecService lecService;
 
+	// 변수준비: 서버 주소 관련
+	@Autowired private String SERVER_ROOT;   // 환경변수로 설정한 사용자 루트 주소
+	@Autowired private String SERVER_PORT;   // 환경변수로 설정한 사용자 포트 번호
+	@Autowired private String CONTEXT_NAME; // 환경변수로 설정한 사용자 콘텍스트명
+
+	@ResponseBody
+	@PostMapping("/register")
+	public String register(@ModelAttribute LecRegisterVO lecRegisterVO, HttpSession session)
+			throws IllegalStateException, IOException {
+		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
+		int lecIdx = lecService.register(lecRegisterVO);
+		return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/lec/detail/" + lecIdx;
+	}
+
 	@ResponseBody
 	@PostMapping("/update")
 	public String update(@ModelAttribute LecEditVO lecEditVO) {
@@ -45,7 +61,7 @@ public class LecDataController {
 			log.debug("==================== 수정내용: {}", lecEditVO);
 			lecService.edit(lecEditVO);
 			log.debug("==================== 수정이 끝났습니다. 상세보기로 돌아갑니다.", lecEditVO);
-			return "success";
+			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/lec/detail/" + idx;
 		} catch(Exception e) {
 			return "failed";
 		}

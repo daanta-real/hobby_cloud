@@ -18,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,7 +37,6 @@ import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecPageMaker;
-import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -90,15 +88,15 @@ public class LecController {
 
 	//강좌 등록
 	@GetMapping("/register")
-	public String insert() {
-		return "lec/register";
-	}
+	public String insert(Model model) {
 
-	@PostMapping("/register")
-	public String register(@ModelAttribute LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
-//		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
-		int lecIdx = lecService.register(lecRegisterVO);
-		return "redirect:detail/" + lecIdx;
+		// 데이터 획득: 카테고리 목록
+		List<String> lecCategoryList = lecCategoryDao.select();
+		model.addAttribute("lecCategoryList", lecCategoryList);
+		log.debug("=================================강좌 카테고리 리스트: {}", lecCategoryList);
+
+		return "lec/register";
+
 	}
 
 	@GetMapping("/register_success")

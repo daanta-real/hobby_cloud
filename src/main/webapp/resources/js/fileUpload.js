@@ -201,7 +201,7 @@ function sendForm() {
 	axios.post(fileUploadTargetPage, formData, {
 		headers: { "Content-type": "multipart/form-data" }
 	}).then((response) => {
-		location.href = fileUploadAfterPage;
+		location.href = response.data;
 	}).catch((response) => {
 		console.log("에러");
 		console.log(response);
