@@ -41,17 +41,18 @@ public class PlaceDaoImpl implements PlaceDao{
 	}
 
 	@Override
-	public List<PlaceListVO> list(PlaceCriteria cri) {
-		return sqlSession.selectList("place.list");
-	}
-
-	@Override
 	public boolean update(PlaceDto placeDto) {
 		int count  = sqlSession.update("place.update",placeDto);
 		System.out.println(count+"카운트개수");
 		return count>0;
 		
 	}
+	
+	@Override
+	public List<PlaceListVO> list(PlaceCriteria cri) {
+		return sqlSession.selectList("place.list");
+	}
+
 
 	@Override
 	public int listCount() {

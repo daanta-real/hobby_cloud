@@ -2,6 +2,8 @@ package com.kh.hobbycloud.vo.member;
 
 import java.sql.Date;
 
+import lombok.Data;
+@Data
 public class MemberListVO {
 	
 	private int memberIdx;

@@ -14,7 +14,9 @@ import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberCategoryDao;
 import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.member.MemberProfileDao;
+import com.kh.hobbycloud.vo.member.MemberCriteria;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
+import com.kh.hobbycloud.vo.member.MemberListVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -95,23 +97,25 @@ public class MemberServiceImpl implements MemberService{
 	//회원 수정
 	@Override
 	public void edit(MemberJoinVO memberJoinVO, MultipartFile attach) throws IllegalStateException, IOException {
+		log.debug("======================== MemberService.edit(memberJoinVO)가 실행되었습니다.");		
 		//검사값 false를 변수에 담고
 		boolean check = false;
 		//파일이 있는지 없는 체크
 		MultipartFile multipartFile = attach;
 		//만약 파일이 비어있지 않다면
 		if(!multipartFile.isEmpty()) {
+			log.debug("파일 정보를 담고 있는 MultipartFile attach 값이 존재합니다. attach 정보 = {}", attach);
 			check = true;
 		}
 		//파일이 있다면 기존 파일을 삭제하고 새로운 파일을 추가
 		if(check) {
-			
-			//해당 번호에 파일 업로드 되어 있는지 확인한다
-			
+			log.debug("파일 정보를 담고 있는 MultipartFile attach가 존재합니다. 파일을 삭제하겠습니다.");
+			//해당 번호에 파일 업로드 되어 있는지 확인한다			
 			MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberJoinVO.getMemberIdx());
-			
+			log.debug("================memberJoinVO"+memberJoinVO.toString());
 			if(memberProfileDto != null) {
 				//파일이 있다면 삭제
+					log.debug("파일 정보를 담고 있는 memberProfileDto 존재합니다."+memberProfileDto.toString());
 					File target = new File(STOREPATH_MEMBER, String.valueOf(memberProfileDto.getMemberProfileSavename()));
 					target.delete();
 					//테이블에서도 파일 삭제
@@ -129,22 +133,6 @@ public class MemberServiceImpl implements MemberService{
 						memberProfileDto.setMemberProfileType(multipartFile.getContentType());
 						memberProfileDto.setMemberProfileSize(multipartFile.getSize());
 						memberProfileDao.save(memberProfileDto, multipartFile);
-						
-				
-					//memberDto
-					MemberDto memberDto = new MemberDto();
-					
-					memberDto.setMemberIdx(memberJoinVO.getMemberIdx());
-					memberDto.setMemberId(memberJoinVO.getMemberId());
-					memberDto.setMemberPw(memberJoinVO.getMemberPw());
-					memberDto.setMemberNick(memberJoinVO.getMemberNick());
-					memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
-					memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
-					memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
-					memberDto.setMemberGender(memberJoinVO.getMemberGender());
-					
-					//memberDto를 테이블 업데이트
-					memberDao.changeInformation(memberDto);
 					
 			//		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
 			//		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
@@ -164,6 +152,22 @@ public class MemberServiceImpl implements MemberService{
 			//			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
 			//			memberCategoryDao.update(memberCategoryDto);			
 			//		}
+						//memberDto
+						MemberDto memberDto = new MemberDto();
+						
+						memberDto.setMemberIdx(memberJoinVO.getMemberIdx());
+						memberDto.setMemberId(memberJoinVO.getMemberId());
+						memberDto.setMemberPw(memberJoinVO.getMemberPw());
+						memberDto.setMemberNick(memberJoinVO.getMemberNick());
+						memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
+						memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
+						memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
+						memberDto.setMemberGender(memberJoinVO.getMemberGender());
+						log.debug("======================== MemberService.edit() 실시. DTO = {}", memberJoinVO);
+						//memberDto를 테이블 업데이트
+						boolean isSucceed = memberDao.changeInformation(memberDto);
+						
+						log.debug("======================== MemberService.edit() 실시 완료. 결과 = {}", isSucceed);
 			
 				}
 			}
@@ -195,10 +199,16 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.pwFindMail(memberId, memberNick, memberEmail);
 	}
 	
+
 	@Override
-	public List<MemberJoinVO> list(MemberJoinVO memberJoinVO) {
-		return sqlSession.selectList("member.list");
-	}	
+	public List<MemberListVO> list(MemberCriteria cri) {
+		return memberDao.list(cri);
+	}
+
+	@Override
+	public int listCount() {
+		return memberDao.listCount();
+	}
 	
 	
 }

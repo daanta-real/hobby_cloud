@@ -82,12 +82,12 @@
 	</update>
 	
 <!-- 장소 목록 -->
-<select id="list" resultType="com.kh.hobbycloud.vo.place.PlaceRegisterVO">
+<select id="list" resultType="com.kh.hobbycloud.vo.place.PlaceListVO">
 select * from place p left outer join
  (select distinct place_idx, min(place_file_idx) as place_file_idx
   from place_file group by place_idx) f  
   on  f.place_idx = p.place_idx  
-order by p.place_idx desc;
+order by p.place_idx desc
 </select>
 
 	<!-- 장소 총 개수 구하기 -->
@@ -133,7 +133,7 @@ select count(*) as BNO from (
 </select>
 	
 	<!-- 장소 목록 및 검색 -->
-<select id ="listSearch" parameterType="PlaceListVO" resultType="PlaceListVO">
+<select id ="listSearch" parameterType="PlaceSearchVO" resultType="PlaceVO">
  select * from  place p left outer join
   (select distinct place_idx, min(place_file_idx) as place_file_idx
   from place_file group by place_idx) f 
@@ -142,7 +142,7 @@ select count(*) as BNO from (
  	<if test="placeName != '' ">
   	AND instr(place_name,#{placeName}) >0
  	 </if>
-  	<if test="PLACE_SIDO != null">
+  	<if test="placeSido != null">
    	AND instr(PLACE_SIDO,#{placeSido}) >0
  	</if>
  	<if test="category != null">

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.place.PlaceFileDto;
 import com.kh.hobbycloud.repository.place.PlaceDao;
@@ -137,6 +138,17 @@ public class PlaceController {
 		
 		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
 		return "place/update";
+	}
+	
+	// 장소 변경 처리 페이지
+	@PostMapping("/update/{placeIdx}")
+	public String edit(@ModelAttribute PlaceFileVO placeFileVO, MultipartFile attach, HttpSession session) throws IllegalStateException, IOException {
+		log.debug("ㅡㅡMemberController - /member/edit POST> 장소 파일 변경 DATA 입력됨.");
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		placeFileVO.setMemberIdx(memberIdx);
+		System.out.println("-------장소 변경 : "+placeFileVO);
+		int placeIdx = placeFileVO.getPlaceIdx();
+		return "redirect:place/detail/"+ placeIdx;
 	}
 	
 	// 장소 사진 전송 실시

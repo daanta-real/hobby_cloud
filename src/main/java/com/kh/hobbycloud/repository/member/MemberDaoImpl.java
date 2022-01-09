@@ -1,6 +1,7 @@
 package com.kh.hobbycloud.repository.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -9,7 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.vo.member.MemberCriteria;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
+import com.kh.hobbycloud.vo.member.MemberListVO;
+import com.kh.hobbycloud.vo.member.MemberSearchVO;
 
 
 @Repository
@@ -91,7 +95,7 @@ public class MemberDaoImpl implements MemberDao{
 	// 개인정보 변경 (비밀번호 제외)
 	@Override
 	public boolean changeInformation(MemberDto memberDto) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
+		MemberDto findDto = sqlSession.selectOne("member.getbyIdx", memberDto.getMemberIdx());
 		if(encoder.matches(memberDto.getMemberPw(), findDto.getMemberPw())) {
 			int count = sqlSession.update("member.changeInformation", memberDto);
 			return count > 0;
@@ -183,6 +187,30 @@ public class MemberDaoImpl implements MemberDao{
 		//원래 비밀번호를 암호화 하여서 비밀번호 업데이트
 		int result=sqlSession.update("member.tempPw",param);
 		return result>0;
+	}
+	
+	@Override
+	public List<MemberListVO> list(MemberCriteria cri) {
+		return sqlSession.selectList("member.list");
+	}
+
+	@Override
+	public int listCount() {
+		return sqlSession.selectOne("member.listCount");
+	}
+	
+	//페이지네이션을 이용한 목록조회
+	@Override
+	public List<MemberListVO> listPage(int startRow, int endRow) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("startRow", startRow);
+		param.put("endRow", endRow);
+		return sqlSession.selectList("member.listPage",param);
+	}
+
+	@Override
+	public List<MemberListVO> listSearch(MemberSearchVO memberSearchVO) {
+		return sqlSession.selectList("member.listSearch", memberSearchVO);
 	}
 	
 

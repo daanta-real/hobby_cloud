@@ -19,4 +19,6 @@ public interface MemberProfileDao {
 	void delete(int memberIdx);
 	//변경(profileIdx)
 	void edit(MemberProfileDto memberProfileDto);
+	
+	boolean deleteAjax(int memberProfileIdx);
 }

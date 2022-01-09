@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.vo.member.MemberCriteria;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
+import com.kh.hobbycloud.vo.member.MemberListVO;
 
 public interface MemberService {
 	//회원가입
@@ -27,7 +29,10 @@ public interface MemberService {
 	//회원 정보 수정
 	void edit(MemberJoinVO memberJoinVO, MultipartFile attach) throws IllegalStateException, IOException;
 	
-	//회원 목록
-	List<MemberJoinVO> list(MemberJoinVO memberJoinVO);
+	//회원 목록 조회
+	List<MemberListVO> list(MemberCriteria cri);
+	
+	//장소 총 인원
+	int listCount();
 
 }

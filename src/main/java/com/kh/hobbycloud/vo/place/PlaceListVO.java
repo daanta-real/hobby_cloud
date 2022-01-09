@@ -28,5 +28,8 @@ public class PlaceListVO {
 	
 	//카테고리 이름
 	private String lecCategoryName;
+	
+	//place_file 테이블 
+	private int placeFileIdx;
 
 }

@@ -1,7 +1,12 @@
 package com.kh.hobbycloud.repository.member;
 
+import java.util.List;
+
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.vo.member.MemberCriteria;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
+import com.kh.hobbycloud.vo.member.MemberListVO;
+import com.kh.hobbycloud.vo.member.MemberSearchVO;
 
 public interface MemberDao {
 
@@ -53,4 +58,12 @@ public interface MemberDao {
 	//임시 비밀번호 변경
 	boolean tempPw(MemberDto memberDto, String ChangePw);
 
+	//Place 목록 조회
+	List<MemberListVO> list(MemberCriteria cri);
+	//Place 총개수
+	int listCount();
+	//Place 검색
+	List<MemberListVO> listSearch(MemberSearchVO memberSearchVO);
+	//Place 페이지
+	List<MemberListVO> listPage(int startRow, int endRow);
 }

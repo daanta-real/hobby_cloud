@@ -31,8 +31,8 @@
 					<c:when test="${memberProfileDto == null}">
 						<img src="https://via.placeholder.com/300x300?text=User">
 					</c:when>
-					<c:otherwise>					
-						<img src="profile?memberIdx=${memberProfileDto.memberIdx}" width="100%">
+					<c:otherwise>	
+						<img src="profile/${memberProfileDto.memberIdx}" width="100%">
 					</c:otherwise>
 				</c:choose>			
 			</div>

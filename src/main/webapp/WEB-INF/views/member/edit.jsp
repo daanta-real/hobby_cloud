@@ -92,6 +92,29 @@ window.addEventListener("load", function() {
 	})
 	
 });
+
+
+$(function(){
+	$(".remove-btn").click(function(){
+		console.log($(this).data("memberProfileIdx"));
+		deleteFile($(this).data("memberProfileIdx"));
+	});
+});
+function deleteFile(memberProfileIdxValue){
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/gatherData/fileDelete?memberProfileIdx="+memberProfileIdxValue,
+		type:"delete",
+		dataType:"text",
+		success:function(resp){
+			console.log("성공",resp);
+			
+		},
+		error:function(e){
+			console.log("실패");
+		}
+	});
+}
 </script>
 </HEAD>
 <BODY>
@@ -147,7 +170,7 @@ window.addEventListener("load", function() {
 						<label class="form-label mb-0">이메일</label>
 						<div>
 							<span>${memberDto.memberEmail}</span>
-							<input type="button" id="emailCheck" class="adCheck" value="메일변경하기" onclick="location.href='updateMail.jsp'">
+							<input type="button" id="emailCheck" class="adCheck" value="메일변경하기" onclick="location.href='updateMail'">
 						</div>
 					</div>
 					<div class="form-group mb-4 col-12 container">
@@ -163,7 +186,7 @@ window.addEventListener("load", function() {
 					<div class="form-group mb-4 col-12">
 						<label for="region" class="form-label mb-0">주소</label>
 						<input id="region" name="memberRegion" type="text" class="form-control" value="${memberDto.memberRegion}" readonly>
-						<button type="button" class="">주소 찾기</button>
+						<button type="button" class="findRegion">주소 찾기</button>
 						<div id="regioncheck" class="fs-6"></div>
 					</div>
 					<div class="form-group mb-4 col-12">
@@ -175,8 +198,8 @@ window.addEventListener("load", function() {
 									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100" src="https://via.placeholder.com/300x300?text=사진을%20첨부하세요.">
 								</c:when>
 								<c:otherwise>
-									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100"" src="profile?memberIdx=${memberProfileDto.memberIdx}" width="100%">
-									<a href="profileDelete?memberIdx=${memberProfileDto.memberIdx}">삭제</a>
+									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100"" src="profile/${memberProfileDto.memberIdx}" width="100%">
+									<button class="remove-btn" data-gatherfileidx="${memberProfileDto.memberProfileIdx}">삭제</button>
 								</c:otherwise>
 							</c:choose>
 						</div>

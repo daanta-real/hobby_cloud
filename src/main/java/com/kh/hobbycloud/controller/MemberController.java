@@ -3,6 +3,7 @@ package com.kh.hobbycloud.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
@@ -31,7 +32,11 @@ import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.member.MemberProfileDao;
 import com.kh.hobbycloud.service.member.EmailService;
 import com.kh.hobbycloud.service.member.MemberService;
+import com.kh.hobbycloud.vo.member.MemberCriteria;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
+import com.kh.hobbycloud.vo.member.MemberListVO;
+import com.kh.hobbycloud.vo.member.MemberPageMaker;
+import com.kh.hobbycloud.vo.member.MemberSearchVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -234,29 +239,23 @@ public class MemberController {
 	public String edit(HttpSession session, Model model) {
 		log.debug("ㅡㅡMemberController - /member/edit GET> 회원정보 변경");
 		String memberId = (String) session.getAttribute("memberId");
+		int memberIdx = (int) session.getAttribute("memberIdx");
 		MemberDto memberDto = memberDao.get(memberId);
-
+		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
 		model.addAttribute("memberDto", memberDto);
-
+		model.addAttribute("memberProfileDto", memberProfileDto);
 		return "member/edit";
 	}
 
 	// 개인정보 변경 처리 페이지
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute MemberDto memberDto, MultipartFile attach, HttpSession session) {
+	public String edit(@ModelAttribute MemberJoinVO memberJoinVO, MultipartFile attach, HttpSession session) throws IllegalStateException, IOException {
 		log.debug("ㅡㅡMemberController - /member/edit POST> 회원정보 변경 DATA 입력됨.");
-		String memberIdx = (String)session.getAttribute("memberIdx");
-		memberDto.setMemberId(memberIdx);
-		log.debug("ㅡㅡ변경할 대상 정보: {}", memberDto);
-
-		boolean result = memberDao.changeInformation(memberDto);
-		if(result) {
-			return "redirect:edit_success";
-		}
-		else {
-			log.debug("ㅡㅡMemberController - /member/edit?error GET> 회원정보 변경 실패");
-			return "redirect:edit?error";
-		}
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		memberJoinVO.setMemberIdx(memberIdx);
+		memberService.edit(memberJoinVO, attach);
+		System.out.println("수정"+memberJoinVO);
+		return "redirect:edit_success";
 	}
 
 	// 개인정보 변경 성공 페이지
@@ -422,6 +421,32 @@ public class MemberController {
 	public String updateMail() {
 		log.debug("ㅡㅡMemberController - /member/updateMail GET> 이메일 변경");
 		return "member/updateMail";
+	}
+	
+	// 내 장소 목록 페이지
+	@GetMapping("/list")
+	public String list(Model model, MemberCriteria cri) {
+		model.addAttribute("list", memberService.list(cri));
+		
+		MemberPageMaker pageMaker = new MemberPageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(memberService.listCount());
+		model.addAttribute("pageMaker",pageMaker);
+		
+		System.out.println(memberService.list(cri));
+		return "member/list";
+	}
+	
+	// 검색결과 목록 페이지
+	@PostMapping("/list")
+	public String search(@ModelAttribute MemberSearchVO memberSearchVO, Model model) {
+//		log.debug("param.toString()   " + gatherSearchDto.toString());
+		log.debug("category={}", memberSearchVO);
+		List<MemberListVO> list = memberDao.listSearch(memberSearchVO);
+		
+
+		model.addAttribute("list",list);
+		return "member/list";
 	}
 
 }
