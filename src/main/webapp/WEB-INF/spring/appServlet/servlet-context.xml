@@ -91,7 +91,6 @@
 	 	- 서버를 bean으로 등록해둔 뒤 웹소켓의 처리를 담당하도록 설정한다
 	  -->
 	<bean id="basicServer" class="com.kh.hobbycloud.websocket.BasicWebsocketServer"></bean>
-	<bean id="memberServer" class="com.kh.hobbycloud.websocket.MemberWebsocketServer"></bean>
 
 	
 	
@@ -102,7 +101,7 @@
 			(주의) http에 같은 주소가 있으면 접속이 안된다 (sockjs 라는 기술로 해결 가능)
 		-->
 		<websocket:mapping handler="basicServer" path="/basicServer" />
-		<websocket:mapping handler="memberServer" path="/memberServer" />
+		
 		
 		
 		<!-- 
