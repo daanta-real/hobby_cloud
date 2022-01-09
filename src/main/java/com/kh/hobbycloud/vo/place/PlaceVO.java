@@ -19,7 +19,7 @@ public class PlaceVO {
 	private int placeMin;//장소 최소금액
 	private int placeMax;//장소 최대금액
 	private String placeEmail;//장소 이메일
-	private String placePhone;//장소 번호
+	private String placePhone;//장소 전화번호
 	private String placeSido;//장소 시도
 	private String placeSigungu;//장소 시군구
 	private String placeBname;//장소 읍면동
@@ -31,7 +31,7 @@ public class PlaceVO {
 	//place_file 테이블 
 	private int placeFileIdx;
 	
-	//카테고리 이름
+	//place_target 테이블
 	private String lecCategoryName;
 
 }

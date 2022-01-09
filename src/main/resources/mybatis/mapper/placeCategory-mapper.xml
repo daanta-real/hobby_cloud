@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="PlaceCategory">
+<mapper namespace="placeCategory">
 	
 	<!-- 취미구분 등록 -->
 	<insert id="insert" parameterType="PlaceTargetDto">
@@ -23,7 +23,7 @@
 	</select>
 	
 	<!-- 취미구분 수정 -->
-	<update id="update" parameterType="placeTargetDto">
+	<update id="update" parameterType="PlaceTargetDto">
 		UPDATE
 			place_target
 		SET

@@ -9,27 +9,28 @@ import org.springframework.stereotype.Repository;
 import com.kh.hobbycloud.entity.place.PlaceTargetDto;
 
 @Repository
-public abstract class PlaceCategoryDaoImpl implements PlaceCategoryDao {
+public class PlaceCategoryDaoImpl implements PlaceCategoryDao {
 
 	@Autowired SqlSession sqlSession;
 
 	// 추가
 	@Override
 	public void insert(PlaceTargetDto placeTargetDto) {
-		sqlSession.insert("PlaceCategory.insert", placeTargetDto);
+		sqlSession.insert("placeCategory.insert", placeTargetDto);
 	}
 
 	// 목록획득
 	@Override
 	public List<String> select() {
-		List<String> list = sqlSession.selectList("PlaceCategory.select");
+		List<String> list = sqlSession.selectList("placeCategory.select");
 		return list;
 	}
 
 	// 수정
 	@Override
 	public boolean update(PlaceTargetDto placeTargetDto) {
-		int count = sqlSession.update("PlaceCategory.update", placeTargetDto);
+		int count = sqlSession.update("placeCategory.update", placeTargetDto);
+		System.out.println(count+"카운트개수");
 		return count > 0;
 	}
 
@@ -37,7 +38,7 @@ public abstract class PlaceCategoryDaoImpl implements PlaceCategoryDao {
 	// 삭제
 	@Override
 	public void delete(PlaceTargetDto placeTargetDto) {
-		sqlSession.delete("PlaceCategory.delete", placeTargetDto);
+		sqlSession.delete("placeCategory.delete", placeTargetDto);
 	}
 
 

@@ -52,9 +52,8 @@ public class PlaceFileDaoImpl implements PlaceFileDao{
 	// 파일 저장 정보 DTO List 획득: placeIdx로
 	@Override	
 	public List<PlaceFileDto> getListByPlaceIdx(int placeIdx) {
-		return sqlSession.selectList("placeFile.getByPlaceIdx", placeIdx);
+		return sqlSession.selectList("placeFile.getListByPlaceIdx", placeIdx);
 	}
-	
 	
 	// 파일 실제 데이터 byte[]를 리턴
 	@Override

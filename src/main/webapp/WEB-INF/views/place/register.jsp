@@ -13,12 +13,10 @@
 	   		let placePhone = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
 	   		$('input[name="placePhone"]').val(placePhone);
 	   		console.log("합해진 핸드폰 번호 placePhone : " +$("#phone1").val() + $("#phone2").val() + $("#phone3").val());
-			alert("실행"+placePhone);
 	   			   		
 	   		let placeEmail = $("#idMail").val() + "@" + $("#inputMail").val();
 	   		$('input[name="placeEmail"]').val(placeEmail);
 	   		console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
-	   		alert("실행"+placeEmail);
 		})
 	
 		   $("#emailBox").change(function() {

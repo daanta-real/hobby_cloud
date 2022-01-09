@@ -32,7 +32,6 @@ public class PlaceServiceImpl implements PlaceService{
 	
 	@Autowired
 	private PlaceCategoryDao placeCategoryDao;
-	
 
 	@Override
 	public int save(PlaceFileVO placeFileVO) throws IllegalStateException, IOException {

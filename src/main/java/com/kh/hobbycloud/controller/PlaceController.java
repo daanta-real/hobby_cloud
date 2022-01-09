@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.place.PlaceFileDto;
-import com.kh.hobbycloud.repository.place.PlaceCategoryDao;
 import com.kh.hobbycloud.repository.place.PlaceDao;
 import com.kh.hobbycloud.repository.place.PlaceFileDao;
 import com.kh.hobbycloud.service.place.PlaceService;
@@ -41,16 +40,11 @@ import lombok.extern.slf4j.Slf4j;
 public class PlaceController {
 	// 변수준비
 	@Autowired
-	private PlaceDao placeDao;
-	
+	private PlaceDao placeDao;	
 	@Autowired
-	private PlaceService placeService;
-	
+	private PlaceService placeService;	
 	@Autowired	
-	private PlaceFileDao placeFileDao;
-	
-	@Autowired	
-	private PlaceCategoryDao placeCategoryDao;
+	private PlaceFileDao placeFileDao;	
 	
 	// 내 장소 목록 페이지
 	@GetMapping("/list")
@@ -104,15 +98,15 @@ public class PlaceController {
 	}
 	
 	// 장소 상세 보기
-	@RequestMapping("/myplace/{placeIdx}")
+	@RequestMapping("/detail/{placeIdx}")
 	public String detail(@PathVariable int placeIdx, Model model) {
-
+		log.debug("ㅡㅡPlaceController - /place/detail REQUEST> 장소 상세보기 시작");
 		// 데이터 획득: VO 및 DTO
 		PlaceVO placeVO = placeDao.get(placeIdx);
-
+		log.debug("ㅡㅡPlaceController - /place/detail REQUEST> 장소 PlaceVO"+placeVO);
 		// 획득된 데이터를 Model에 지정
 		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);
-		model.addAttribute("PlaceListVO", placeVO);
+		model.addAttribute("placeVO", placeVO);
 		model.addAttribute("list", list);
 				
 		// 페이지 리다이렉트 처리
@@ -135,10 +129,6 @@ public class PlaceController {
 		PlaceVO placeVO = placeDao.get(placeIdx);
 		log.debug("ㅡㅡㅡ PlaceRegisterVO: {}", placeVO);
 		model.addAttribute("PlaceRegisterVO", placeVO);
-		
-		// 데이터 획득: 카테고리 목록
-		List<String> lecCategoryList = placeCategoryDao.select();
-		model.addAttribute("lecCategoryList", lecCategoryList);
 
 		// 획득된 데이터를 Model에 지정
 		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);

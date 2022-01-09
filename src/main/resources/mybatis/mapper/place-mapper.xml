@@ -25,14 +25,14 @@
 	<insert id="save" parameterType="com.kh.hobbycloud.entity.place.PlaceDto">
 		INSERT INTO PLACE(
 		PLACE_IDX, MEMBER_IDX, PLACE_NAME, 
-		PLACE_DETAIL, place_loc_region, PLACE_POSTCODE,
+		PLACE_DETAIL, PLACE_POSTCODE,
 		PLACE_ADDRESS,PLACE_DETAIL_ADDRESS,
 		PLACE_START,PLACE_END,PLACE_MIN,PLACE_MAX,
 		PLACE_EMAIL,PLACE_PHONE,
 		PLACE_SIDO,PLACE_SIGUNGU,PLACE_BNAME)
 		VALUES(
 			#{placeIdx}, #{memberIdx}, #{placeName}, 
-			#{placeDetail}, #{placeLocRegion}, #{placePostcode}, 
+			#{placeDetail}, #{placePostcode}, 
 			#{placeAddress}, #{placeDetailAddress}, 
 			#{placeStart}, #{placeEnd}, #{placeMin}, #{placeMax}, 
 			#{placeEmail}, #{placePhone}, 
@@ -47,7 +47,7 @@
 	</select>
 	
 	<!-- 장소 DTO 획득 by idx -->
-	<select id="get" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
+	<select id="getIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
 		SELECT * FROM place
 		WHERE place_idx = #{placeIdx}
 	</select>
@@ -115,12 +115,21 @@ select count(*) as BNO from (
 	
 <!-- 장소 상세 -->
 <select id="get" parameterType="int" resultType="PlaceVO">
-	select p.*, m.member_nick 
+	select p.*, 
+			m.member_nick, 
+			f.place_file_idx, 
+			c.lec_category_name
 	from place p  
-	left outer join
-	member m  
-	ON p.member_idx = m.member_idx
-	 where place_idx=#{placeIdx}
+			left outer join
+			member m 
+			ON p.member_idx = m.member_idx
+		    left outer join
+		    place_file f
+		    on p.place_idx = f.place_idx
+		    left outer join
+		    place_target c
+		    on p.place_idx = c.place_idx
+	where p.place_idx = #{placeIdx}
 </select>
 	
 	<!-- 장소 목록 및 검색 -->

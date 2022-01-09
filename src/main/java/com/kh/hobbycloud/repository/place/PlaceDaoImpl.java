@@ -68,7 +68,7 @@ public class PlaceDaoImpl implements PlaceDao{
 		Map<String, Object> param = new HashMap<>();
 		param.put("startRow", startRow);
 		param.put("endRow", endRow);
-		return sqlSession.selectList("lec.listPage",param);
+		return sqlSession.selectList("place.listPage",param);
 	}
 
 
