@@ -109,6 +109,7 @@ public class LecController {
 	//상세
 	@RequestMapping("/detail/{lecIdx}")
 	public String detail(@PathVariable int lecIdx, HttpSession session, Model model) {
+		log.debug("==================== /lec/edit?" + lecIdx + " (강좌 파일 상세보기 GET) 진입");
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
 
 		List<LecFileDto> list = lecFileDao.getListByLecIdx(lecIdx);
@@ -142,11 +143,11 @@ public class LecController {
 	// 강좌 수정 폼 페이지 불러오기
 	@GetMapping("/edit/{lecIdx}")
 	public String update(@PathVariable int lecIdx, Model model) {
-		log.debug("ㅡㅡㅡ /lec/edit?" + lecIdx + " (강좌 파일 수정 GET) 진입");
+		log.debug("==================== /lec/edit?" + lecIdx + " (강좌 파일 수정 GET) 진입");
 
 		// 데이터 획득: VO 및 DTO
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-		log.debug("ㅡㅡㅡ lecDetailVO: {}", lecDetailVO);
+		log.debug("==================== lecDetailVO: {}", lecDetailVO);
 		model.addAttribute("lecDetailVO", lecDetailVO);
 
 		// 데이터 획득: 카테고리 목록
@@ -155,10 +156,10 @@ public class LecController {
 
 		// 획득된 데이터를 Model에 지정
 		List<LecFileDto> fileList = lecFileDao.getListByLecIdx(lecIdx);
-		log.debug("ㅡㅡㅡ List<LecFileDto> fileList = {}", fileList);
+		log.debug("==================== List<LecFileDto> fileList = {}", fileList);
 		model.addAttribute("fileList", fileList);
 
-		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
+		log.debug("==================== 수정 화면으로 진입합니다.");
 		return "lec/edit";
 	}
 
@@ -175,15 +176,15 @@ public class LecController {
 	public ResponseEntity<ByteArrayResource> file(@PathVariable int lecFileIdx) throws IOException {
 
 		// 0. 매개변수로 lecIdx가 넘어와 있다.
-		System.out.println("ㅡㅡㅡㅡㅡㅡ 0. 요청된 lecIdx : " + lecFileIdx);
+		System.out.println("======================================== 0. 요청된 lecIdx : " + lecFileIdx);
 
 		// 1. lecIdx를 이용하여, 이미지 파일정보 전체를 DTO로 갖고 온다.
 		LecFileDto lecFileDto = lecFileDao.getByLecFileIdx(lecFileIdx);
-		System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 lecFileDto : "+lecFileDto);
+		System.out.println("======================================== 1. 갖고온 lecFileDto : "+lecFileDto);
 
 		// 2. 갖고 온 DTO에서 실제 저장 파일명(save name)을 찾아낸다.
 		String savename = lecFileDto.getLecFileServerName();
-		System.out.println("ㅡㅡㅡㅡㅡㅡ 2. 찾아낸 파일명: " + savename);
+		System.out.println("======================================== 2. 찾아낸 파일명: " + savename);
 
 		// 3-1. 프로필번호(memberProfileIdx)를 이용하여 내가 전송할 실제 파일 정보를 불러온다
 		byte[] data = lecFileDao.load(lecFileIdx);
