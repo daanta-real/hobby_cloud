@@ -185,7 +185,20 @@ public class GatherController {
 		
 	}
 
+	@GetMapping("/sockjs")
+	public String sockjs() {
+		return "sockjs";
+	}
 
+	@GetMapping("/basic")
+	public String basic() {
+		return "gather/basic";
+	}
+	
+	@GetMapping("/member")
+	public String member() {
+		return "gather/member";
+	}
 	// 파일 전송 실시
 	@GetMapping("/file/{gatherFileIdx}")
 	@ResponseBody
