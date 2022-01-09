@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.hobbycloud.entity.lec.LecDto;
-import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
@@ -42,10 +41,10 @@ public class LecDataController {
 	public String update(@ModelAttribute LecEditVO lecEditVO) {
 		try {
 			Integer idx = lecEditVO.getLecIdx();
-			log.debug("ㅡㅡㅡ /lec/edit/{} (강좌 파일 수정 POST) 진입", idx);
-			log.debug("ㅡㅡㅡ 수정내용: {}", lecEditVO);
+			log.debug("==================== /lec/edit/{} (강좌 파일 수정 POST) 진입", idx);
+			log.debug("==================== 수정내용: {}", lecEditVO);
 			lecService.edit(lecEditVO);
-			log.debug("ㅡㅡㅡ 수정이 끝났습니다. 상세보기로 돌아갑니다.", lecEditVO);
+			log.debug("==================== 수정이 끝났습니다. 상세보기로 돌아갑니다.", lecEditVO);
 			return "success";
 		} catch(Exception e) {
 			return "failed";
