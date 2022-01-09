@@ -132,7 +132,7 @@ function renderImageFromFile(file, targetEl) {
 	});
 }
 
-// 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+// ************************ 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다. ***********************
 window.addEventListener("load", () => {
 
 	// 모달 변수 정의

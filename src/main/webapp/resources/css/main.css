@@ -10,6 +10,12 @@
 .minWidthMaxContent { min-width:max-content; }
 .scrollXEnabler { overflow-x:auto; }
 a:hover, a:visited, a:active, a:link { color: initial; text-decoration:none !important; }
+.border-radius-all-25 { border-style:solid !important; border-width:1px !important; border-radius: 0.25rem !important; }
+
+/* 색상 속성 */
+:root {
+    --input-border-color: rgb(118, 118, 118);
+}
 
 /* 엘레멘트별 속성 */
 #topProfileBox, ASIDE#accordionSideMenu div.accordion-body { cursor:pointer; }
