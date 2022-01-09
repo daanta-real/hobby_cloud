@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
+<c:set var="isLogin" value="${memberIdx != null}" />
 <script>
 
 </script>
@@ -78,7 +79,10 @@ $(function() {
 		</div>
 	</HEADER>
 		<!-- 소단원 내용 -->
+		<input type="text" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
+        <input type="text" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
 		<div id="map" style="width:50%;height:350px;"></div>
+		<h1>참여자 수 :${status.count} / ${GatherVO.gatherHeadCount}</h1> 
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
 		<!-- 소단원 내용 -->
@@ -97,19 +101,14 @@ $(function() {
 				
 			
 				
-				<!-- 참가자 리스트 반복문 -->
-				<div class="row">
-				 <c:forEach var="GatherHeadsVO" items="${list2}"
-					varStatus="status">
-					참여자 수 :<c:out value="${status.count}" />
-					</div>
+				
 
 					<!-- 참가자 인원을 확인 -->
 					<div class="row">
 					<c:if test="${status.count == GatherVO.gatherHeadCount}">  
 						<c:set var="isFull" value="true" />
 					</c:if>
-				</c:forEach>
+				
 				</div>
 				
 
@@ -118,6 +117,13 @@ $(function() {
 						<!-- 만약에 일치한다  -->
 						<c:set var="isJoin" value="true" />
 					</c:if>
+					
+					<!-- 참가자 리스트 반복문 -->
+				<div class="row">
+				 <c:forEach var="GatherHeadsVO" items="${list2}"
+					varStatus="status">
+					참여자 수 :<c:out value="${status.count}" />
+					</div>
 
 	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div> 
 	<div class="row p-sm-2 mx-1 mb-5">
@@ -132,9 +138,10 @@ $(function() {
 						</thead>
 						<tbody>
 								<tr class="cursor-pointer">
-									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.gatherIdx}</td>
-									
+									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td>
+									</c:forEach>
+								</tr>	
 						</tbody>
 					</table>
 				</div>
@@ -151,8 +158,6 @@ $(function() {
 					<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
 						width="30%" class="image image-round image-border">
 				</c:forEach></td>
-
-	<h1>참여자 수 :${status.count} / ${GatherVO.gatherHeadCount}</h1> 
 
 		</tr>
 		<!-- 소모임 참가 /취소 버튼 -->
