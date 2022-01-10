@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,15 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.hobbycloud.entity.lec.LecDto;
+import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
-
 import com.kh.hobbycloud.vo.lec.LecListVO;
-
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
-
 import com.kh.hobbycloud.vo.lec.LecReplyVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -162,4 +161,33 @@ public class LecDataController {
 	public List<LecListVO> lecList(){
 		return lecDao.list();
 	}
+	
+	//평점입력
+//	@PostMapping("/reviewInsert")
+//	public void reviewInsert(@ModelAttribute LecReviewDto lecReviewDto,HttpSession session) {
+//	
+//		int memberIdx =(int) session.getAttribute("memberIdx");
+//		lecReviewDto.setMemberIdx(memberIdx);
+//		System.out.println(lecReviewDto);
+//		
+//		lecReviewDao.insert(lecReviewDto);
+//	}
+//	//평점목록
+//	@GetMapping("/reviewList")
+//	public List<LecReviewVO> list(int lecIdx){
+//		return lecReviewDao.list(lecIdx);
+//	}
+//	//평점삭제
+//	@DeleteMapping("/reviewDelete")
+//	public boolean reviewDelete(@RequestParam int lecReviewIdx) {
+//		System.out.println("확인");
+//		System.out.println(lecReviewIdx);
+//		return lecReviewDao.delete(lecReviewIdx);
+//	}
+//	//평점수정
+//	@PostMapping("/reviewEdit")
+//	public void reviewEdit(@ModelAttribute LecReviewDto lecReviewDto) {	
+//		System.out.println("수정+"+lecReviewDto);
+//		lecReviewDao.edit(lecReviewDto);
+//	}
 }
