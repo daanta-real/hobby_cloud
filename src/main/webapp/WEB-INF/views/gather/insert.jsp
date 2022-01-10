@@ -226,6 +226,42 @@ window.addEventListener("load", function() {
 		}
 	);
 });
+$(function() {
+	$("#showList").click(function() {
+					$.ajax({
+					url : "${pageContext.request.contextPath}/gatherData/gatherList",
+					type : "get",
+					dataType : "json",
+					success:function(resp){
+						
+						console.log("성공", resp);
+						var results = resp;
+						console.log(results);
+						
+						var totalStr = "";
+						$.each(results, function(i) {
+							var jsonStr = results[i];
+							console.log(i + "번째 TR: ", jsonStr);
+							totalStr += '<tr scope="row" data-idx="' + jsonStr.gatherIdx + '"'
+								+ ' data-region="'+jsonStr.gatherLocRegion+'" data-longitude="'+jsonStr.gatherLocLongitude+'"'
+								+ ' data-latitude="' + jsonStr.gatherLocLatitude+'"'
+								+ ' onclick="setLoc(this)">'
+								+ '<td class="text-center">' + jsonStr.gatherIdx +'</td>'
+								+ '<td class="text-center">' + jsonStr.gatherName +'</td>'
+								+ '<td>' + jsonStr.gatherLocRegion +'</td></tr>';
+						});
+						console.log("전체 HTML: ", totalStr);
+						
+						var listTarget = document.querySelector(".locTBody");
+						listTarget.innerHTML = totalStr;
+						
+					},
+					error : function(e) {
+					console.log("실패", e);
+								}
+							});
+					});
+});
 
 </script>
 </HEAD>
@@ -355,9 +391,41 @@ window.addEventListener("load", function() {
     </div>
 					
 					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">검색</button>
+						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">등록</button>
 					</div>
 				</form>
+				<!-- 모달 여는 버튼 -->
+<button type="button" id="showList"class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">모달 열기</button>
+
+<!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
+<div id="modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <!-- 모달 제목 영역 -->
+            <div class="modal-header">
+                <!-- 모달 타이틀 -->
+                <h5 class="modal-title">장소를 고르세요.</h5>
+                <!-- 모달 닫기 버튼 -->
+                <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- 모달 본문 영역 -->
+            <table class="modal-body table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">순</th>
+                        <th scope="col" class="text-center">이름</th>
+                        <th scope="col" class="text-center">지역</th>
+                    </tr>
+                </thead>
+                <tbody class="locTBody">
+                <!-- ajax로 리스트 목록이 나오는 장소 -->
+                </tbody>
+            </table>
+            <!-- 모달 꼬리말 영역 -->
+        </div>
+    </div>
+</div>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
