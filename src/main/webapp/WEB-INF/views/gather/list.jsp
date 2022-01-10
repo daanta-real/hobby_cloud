@@ -90,6 +90,16 @@
 		
 	});
 </script>
+<style>
+ .tableImg {
+    max-width: 7rem;
+    max-height: 7rem;
+    width: 100%;
+    object-fit: cover;
+}
+
+</style>
+
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
@@ -177,11 +187,14 @@ window.addEventListener("load", function() {
 							<c:forEach var="GatherVO" items="${list}"> 
 								<tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}'">
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td>
-									<td class="text-center align-middle text-nowrap"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%"></td>
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%"></td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherLocRegion}</td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherHeadCount}</td>
+									<input type="hidden" class="fgTitle" value="${GatherVO.gatherName}">
+									<input type="hidden" class="fgLatitude" value="${GatherVO.gatherLocLatitude}">
+			 					<input type="hidden" class="fgLongitude" value="${GatherVO.gatherLocLongitude}">
 								</tr>
 							</c:forEach>
 						</tbody>
