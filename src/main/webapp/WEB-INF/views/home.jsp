@@ -248,30 +248,29 @@ window.addEventListener("load", function() {
 				</div>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-		<button type="button"
-			class="col-auto btn btn-sm btn-outline-primary">목록으로</button>
-		<ul class="col-auto pagination pagination-sm m-0">
-			<li class="page-item disabled">
-				<a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
-			</li>
-			<li class="page-item active">
-				<a class="page-link" href="#">1</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">2</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">3</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">»</a>
-			</li>
-		</ul>
-		<button type="button"
-			class="col-auto btn btn-sm btn-outline-primary">글작성</button>
-	</nav>
-
-</div>
+				<button type="button"
+					class="col-auto btn btn-sm btn-outline-primary">목록으로</button>
+				<ul class="col-auto pagination pagination-sm m-0">
+					<li class="page-item disabled">
+						<a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+					</li>
+					<li class="page-item active">
+						<a class="page-link" href="#">1</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">2</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">3</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">»</a>
+					</li>
+				</ul>
+				<button type="button"
+					class="col-auto btn btn-sm btn-outline-primary">글작성</button>
+			</nav>
+		</div>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
 	
