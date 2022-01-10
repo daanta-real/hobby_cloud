@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="point_history">
+	
+	<!-- 신규 시퀀스 번호 획득 -->
+	<select id="getSequence" resultType="integer">
+		SELECT point_history_seq.NEXTVAL FROM DUAL
+	</select>
+	
+	<!-- point_history_idx로 단일 데이터 획득 -->
+	<select id="getByIdx" parameterType="integer" resultType="PointHistoryDto">
+		SELECT * FROM point_history
+		WHERE point_history_idx = #{val}
+	</select>
+	
+	<!-- paid_idx로 단일 데이터 획득 -->
+	<select id="getByPaidIdx" parameterType="string" resultType="PointHistoryDto">
+		SELECT * FROM point_history
+		WHERE paid_idx = #{val}
+	</select>
+	
+	<!-- 검색조건을 넣어 목록 획득 -->
+	<select id="select" parameterType="PointHistorySearchVO" resultType="PointHistoryDto">
+		SELECT
+			h.point_history_idx, h.member_idx,
+			h.paid_idx, h.point_idx, h.point_history_registered,
+			h.point_history_amount, h.point_history_memo,
+			m.member_id, m.member_nick
+		FROM point_history h
+		LEFT OUTER JOIN paid p
+			ON p.paid_idx = h.paid_idx
+		INNER JOIN member m
+			ON m.member_idx = p.member_idx
+	 	<where>
+			<if test="memberIdx != null">AND h.member_idx = #{memberIdx},</if>
+			<if test="pointHistoryIdx != null">AND h.point_history_idx = #{pointHistoryIdx},</if>
+			<if test="paidIdx != null">AND h.paid_idx = #{paidIdx},</if>
+			<if test="pointIdx != null">AND h.point_idx = #{pointIdx},</if>
+			<if test="pointHistoryRegistered_min != null">AND h.point_idx = #{pointIdx},</if>
+			<if test="pointHistoryRegistered_start != null and !pointHistoryRegistered_start.equals('')">
+				AND h.point_history_registered <![CDATA[>=]]> TO_DATE(#{pointHistoryRegistered_start}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="pointHistoryRegistered_end != null and !pointHistoryRegistered_end.equals('')">
+				AND h.point_history_registered <![CDATA[<=]]> TO_DATE(#{pointHistoryRegistered_end}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="pointHistoryAmount_min != null">
+				AND h.point_history_amount <![CDATA[>=]]> #{pointHistoryAmount_min}
+			</if>
+			<if test="pointHistoryAmount_max != null">
+				AND h.point_history_amount <![CDATA[<=]]> #{pointHistoryAmount_max}
+			</if>
+			<if test="pointHistoryMemo != null and !pointHistoryMemo.equals('')">
+				AND INSTR(h.point_history_memo, #{pointHistoryMemo}) > 0
+			</if>
+		</where>-->
+		ORDER BY h.point_history_idx DESC
+	</select>
+	
+	<!-- 포인트상품 등록 -->
+	<insert id="insert" parameterType="PointHistoryDto">
+		INSERT INTO point_history(
+			point_history_idx, paid_idx, point_idx, point_history_amount, point_history_memo
+		)
+		VALUES (
+			point_history_seq.NEXTVAL, #{paidIdx}, #{pointIdx}, #{pointHistoryAmount}, #{pointHistoryMemo}
+		)
+	</insert>
+	
+	<!-- 포인트상품 삭제 -->
+	<delete id="delete" parameterType="integer">
+		DELETE FROM point_history
+		WHERE point_history_idx = #{val}
+	</delete>
+
+	<!-- 포인트상품 내용 수정 -->
+	<update id="update" parameterType="PointHistoryDto">
+		UPDATE point_history
+		SET
+			<if test="paidIdx != null">paid_idx = #{paidIdx},</if>
+			<if test="pointIdx != null">point_idx = #{pointIdx},</if>
+			<if test="pointHistoryAmount != null">point_history_amount = #{pointHistoryAmount},</if>
+			<if test="pointHistoryMemo != null">point_history_memo = #{pointHistoryMemo}</if>
+		WHERE
+			point_history_idx = #{pointHistoryIdx}
+	</update>
+	
+</mapper>
