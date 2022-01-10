@@ -226,42 +226,6 @@ window.addEventListener("load", function() {
 		}
 	);
 });
-$(function() {
-	$("#showList").click(function() {
-					$.ajax({
-					url : "${pageContext.request.contextPath}/gatherData/gatherList",
-					type : "get",
-					dataType : "json",
-					success:function(resp){
-						
-						console.log("성공", resp);
-						var results = resp;
-						console.log(results);
-						
-						var totalStr = "";
-						$.each(results, function(i) {
-							var jsonStr = results[i];
-							console.log(i + "번째 TR: ", jsonStr);
-							totalStr += '<tr scope="row" data-idx="' + jsonStr.gatherIdx + '"'
-								+ ' data-region="'+jsonStr.gatherLocRegion+'" data-longitude="'+jsonStr.gatherLocLongitude+'"'
-								+ ' data-latitude="' + jsonStr.gatherLocLatitude+'"'
-								+ ' onclick="setLoc(this)">'
-								+ '<td class="text-center">' + jsonStr.gatherIdx +'</td>'
-								+ '<td class="text-center">' + jsonStr.gatherName +'</td>'
-								+ '<td>' + jsonStr.gatherLocRegion +'</td></tr>';
-						});
-						console.log("전체 HTML: ", totalStr);
-						
-						var listTarget = document.querySelector(".locTBody");
-						listTarget.innerHTML = totalStr;
-						
-					},
-					error : function(e) {
-					console.log("실패", e);
-								}
-							});
-					});
-});
 
 </script>
 </HEAD>
@@ -312,120 +276,45 @@ $(function() {
 					</div>
 					<div class="form-group col-12"">
 						<label for="searchForm_memberId" class="form-label mb-0">취미분류 이름</label>
-						<input name="lecCategoryName" value="운동" id="searchForm_memberId" type="text" class="form-control" placeholder="취미입력" value="${param.memberId}">
+						<input name="memberId" id="searchForm_memberId" type="text" class="form-control" placeholder="회원 아이디를 입력하세요" value="${param.memberId}">
 						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 					</div>
 					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">장소idx</label>
-						<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999" id="searchForm_memberNick"  class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
+						<label for="searchForm_memberNick" class="form-label mb-0">닉네임</label>
+						<input name="memberNick" id="searchForm_memberNick" type="text" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
 						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">상세내용</label>
-						<input name="gatherDetail" value="내용" id="searchForm_memberNick" type="text" class="form-control" placeholder="상세내용입력" value="${param.memberNick}">
+					<div class="form-group mb-4 col-md-6 container">
+						<div class="row">
+							<span class="form-label mb-0 text-nowrap">결제 금액</span>
+						</div>
+						<div class="row d-flex flex-start align-items-center">
+							<div class="col-5">
+								<input name="paidPrice_min" id="searchForm_paidPrice_min" type="number" class="form-control" placeholder="최소 금액" value="${param.paidPrice_min}">
+							</div>
+							<div class="col-auto d-flex justify-content-center align-items-center p-0">
+								<span>~</span>
+							</div>
+							<div class="col-5">
+								<input name="paidPrice_max" id="searchForm_paidPrice_max" type="number" class="form-control" placeholder="최대 금액" value="${param.paidPrice_max}">
+							</div>
+						</div>
 						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">작성일</label>
-						<input name="gatherRegistered" id="searchForm_memberNick" type="date" class="form-control" placeholder="작성일입력" value="${param.memberNick}">
+					<div class="form-group mb-4 col-lg-6">
+						<label for=searchForm_paidPrice_min class="form-label mb-0 d-block">결제여부</label>
+						<div class="btn-group w-100">
+							<input name="paidStatusList" type="checkbox" value="1" class="btn-check" id="chkbox_paid_done" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '1').get() ? 'checked' : ''}>
+							<label class="btn btn-outline-primary" for="chkbox_paid_done">결제 완료</label>
+							<input name="paidStatusList" type="checkbox" value="0" class="btn-check" id="chkbox_paid_canceled" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '0').get() ? 'checked' : ''}>
+							<label class="btn btn-outline-primary" for="chkbox_paid_canceled">결제 취소</label>
+						</div>
 						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">인원</label>
-						<input name="gatherHeadCount" value="1" id="searchForm_memberNick" type="text" class="form-control" placeholder="인원수 입력" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">상세내용</label>
-						<input name="gatherDetail" value="내용"id="searchForm_memberNick" type="text" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">지역</label>
-						<input name="gatherLocRegion" value="지역" id="searchForm_memberNick" type="text" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">위도</label>
-						<input id="placeLatiHolder" name="gatherLocLatitude"id="searchForm_memberNick placeLatiHolder" type="text" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">경도</label>
-						<input name="gatherLocLongitude" id="searchForm_memberNick placeLongHolder" type="text" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">시작시간 기간</label>
-						<input id="searchForm_memberNick startDate" type="date" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">시작시간 시간</label>
-						<input id="searchForm_memberNick startTime" type="time" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">종료시간 기간</label>
-						<input id="searchForm_memberNick endDate" type="date" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">종료시간 시간</label>
-						<input id="searchForm_memberNick endTime" type="time" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">최대인원수</label>
-						<input name="gatherMax" value="1" id="searchForm_memberNick" type="text" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group col-12"">
-						<label for="searchForm_memberNick" class="form-label mb-0">현재오픈여부</label>
-						<input name="gatherStaus" value="1" id="searchForm_memberNick" type="text" class="form-control" placeholder="닉네임을 입력하세요" value="${param.memberNick}">
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
-					</div>
-					<div class="form-group justify-content-center">
-      <label for="formFile" class="form-label mt-4"></label>
-      <input class="form-control" type="file" id="formFile" name="attach" enctype="multipart/form-data" multiple>
-    </div>
-					
 					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">등록</button>
+						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">검색</button>
 					</div>
 				</form>
-				<!-- 모달 여는 버튼 -->
-<button type="button" id="showList"class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">모달 열기</button>
-
-<!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
-<div id="modal" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content p-3">
-            <!-- 모달 제목 영역 -->
-            <div class="modal-header">
-                <!-- 모달 타이틀 -->
-                <h5 class="modal-title">장소를 고르세요.</h5>
-                <!-- 모달 닫기 버튼 -->
-                <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- 모달 본문 영역 -->
-            <table class="modal-body table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-center">순</th>
-                        <th scope="col" class="text-center">이름</th>
-                        <th scope="col" class="text-center">지역</th>
-                    </tr>
-                </thead>
-                <tbody class="locTBody">
-                <!-- ajax로 리스트 목록이 나오는 장소 -->
-                </tbody>
-            </table>
-            <!-- 모달 꼬리말 영역 -->
-        </div>
-    </div>
-</div>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->

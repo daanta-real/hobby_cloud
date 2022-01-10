@@ -43,7 +43,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			청원
+			공지사항
 			</span>
 		</div>
 	</HEADER>
@@ -51,34 +51,35 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${PetitionsVO.petitionsName }</div>
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${NoticeVO.noticeName }</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5 container">
 			<!-- 글내용 -->
 			<div class="row justify-content-end">
-				등록일 : ${PetitionsVO.petitionsRegistered}
+				등록일 : ${NoticeVO.noticeRegistered}
 				|
-				작성자 : ${PetitionsVO.memberNick}
+				작성자 : ${NoticeVO.memberNick}
 				|
-				조회수 : ${PetitionsVO.petitionsViews}
+				조회수 : ${NoticeVO.noticeViews}
 			</div>
 			<div class="row">
-			${PetitionsVO.petitionsDetail }
-			<c:forEach var="PetitionsFileDto" items="${list}"> 
-<img src="${pageContext.request.contextPath}/petitions/file/${PetitionsFileDto.petitionsFileIdx}" width="30%" 
+			${NoticeVO.noticeDetail }
+			<c:forEach var="NoticeFileDto" items="${list}"> 
+<img src="${pageContext.request.contextPath}/notice/file/${NoticeFileDto.noticeFileIdx}" width="30%" 
 class="image image-round image-border">
 </c:forEach>
 			</div>
 			<!-- 각종 버튼들 -->
 			<nav class="row p-0 pt-4 d-flex justify-content-end">
-				<a href="${pageContext.request.contextPath}/petitions/list"
+				<a href="${pageContext.request.contextPath}/notice/list"
 				 class="col-auto btn btn-sm btn-outline-primary mx-1">목록 보기</a>
-				<a href="${root }/petitions/write" class="col-auto btn btn-sm btn-outline-primary mx-1">글 작성</a>
-				<a href="${pageContext.request.contextPath}/petitions/edit?petitionsIdx=${PetitionsVO.petitionsIdx }"
+				<c:if test="${admin }">
+				<a href="${root }/notice/write" class="col-auto btn btn-sm btn-outline-primary mx-1">글 작성</a>
+				<a href="${pageContext.request.contextPath}/notice/edit?noticeIdx=${NoticeVO.noticeIdx }"
 				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
-				<a href="${pageContext.request.contextPath}/petitions/delete?petitionsIdx=${PetitionsVO.petitionsIdx }" 
+				<a href="${pageContext.request.contextPath}/notice/delete?noticeIdx=${NoticeVO.noticeIdx }" 
 				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>
-				
+				</c:if>
 			</nav>
 		</div>
 	</SECTION>
@@ -239,60 +240,3 @@ function loadList(){
 	});
 }
 </script>
-<%--원래 청원상세
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
-<c:set var="login" value="${memberIdx != null }"></c:set>
-
-
-
-<h2>${PetitionsVO.petitionsIdx}번 게시글</h2>
-
-<table border="1" width="80%">
-	<tbody>
-		<tr>
-			<td>
-				<h3>${PetitionsVO.petitionsName }</h3>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				등록일 : ${PetitionsVO.petitionsRegistered}
-				|
-				작성자 : ${PetitionsVO.memberNick}
-				|
-				조회수 : ${PetitionsVO.petitionsViews}
-			</td>
-		</tr>
-		<!-- 답답해 보이지 않도록 기본높이를 부여 -->
-		<!-- 
-			pre 태그를 사용하여 내용을 있는 그대로 표시되도록 설정
-			(주의) 태그 사이에 쓸데없는 엔터, 띄어쓰기 등이 들어가지 않도록 해야 한다.(모두 표시된다) 
-		-->
-		<tr height="250" valign="top">
-			<td>
-				<pre>${PetitionsVO.petitionsDetail }</pre>
-				<c:forEach var="PetitionsFileDto" items="${list}"> 
-<img src="${pageContext.request.contextPath}/petitions/file/${PetitionsFileDto.petitionsFileIdx}" width="30%" 
-class="image image-round image-border">
-</c:forEach>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-			<c:if test="${login }">
-				<a href="write">글쓰기</a>
-				</c:if>
-				<a href="${pageContext.request.contextPath}/petitions/list">목록보기</a>
-				<c:if test="${login }">
-				<a href="${pageContext.request.contextPath}/petitions/edit?petitionsIdx=${PetitionsVO.petitionsIdx }">수정하기</a>
-				<a href="${pageContext.request.contextPath}/petitions/delete?petitionsIdx=${PetitionsVO.petitionsIdx }">삭제하기</a>
-				</c:if>
-	
-	</tbody>
-</table>
-<br><br>
-<!-- 댓글란 -->
---%>

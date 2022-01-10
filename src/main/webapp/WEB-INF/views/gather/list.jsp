@@ -189,7 +189,7 @@ window.addEventListener("load", function() {
 				</div>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-			<button type="button"class="col-auto btn btn-sm btn-outline-primary">목록으로</button>
+			<a href="${pageContext.request.contextPath}/gather/list" type="button" class="col-auto btn btn-sm btn-outline-primary">목록으로</a>
   <ul class="col-auto pagination pagination-sm m-0">
     <c:if test="${pageMaker.prev}">
     	<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
