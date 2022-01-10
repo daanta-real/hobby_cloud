@@ -1,8 +1,7 @@
-package com.kh.hobbycloud.entity.pay;
+package com.kh.hobbycloud.entity.point;
 
 import lombok.Data;
 
-// 포인트상품 정보 DTO
 @Data
 public class PointDto {
 	private Integer pointIdx;   // 포인트상품 idx
@@ -10,8 +9,3 @@ public class PointDto {
 	private Integer pointPrice; // 포인트상품 판매가
 	private Integer pointAmount; // 포인트상품 충전액
 }
-
-
-
-
-

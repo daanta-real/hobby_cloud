@@ -8,12 +8,16 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
+<TITLE>HobbyCloud - 포인트상품 조회</TITLE>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
 });
+
+function deleteConfirm() {
+	if(confirm('정말로 삭제하시겠습니까?')) location.href = "${root}/point/delete/${pointIdx}";
+}
 
 </script>
 </HEAD>
@@ -30,7 +34,6 @@ window.addEventListener("load", function() {
 
 <!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
 <!-- 사이드메뉴 영역 시작 -->
-
 <!-- 사이드메뉴 영역 끝 -->
 
 
@@ -43,29 +46,38 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			회원 정보 수정
+			포인트상품 조회
 			</span>
 		</div>
 	</HEADER>
 	<!-- 제목 영역 끝 -->
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
-		<!-- 소단원 제목 -->
-		
 		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5 jstify-content-center">
-		<div class="container jstify-content-center">
-			<div class="form-group col-12">
-			<h2>정보 수정 완료</h2>
-			<a class="col-auto btn btn-sm btn-outline-primary mt-4 jstify-content-center" href="${root }/member/mypage">마이페이지로</a>
-			</div>
+		<div class="form-group my-5 col-12">
+			<h3 class="text-info">포인트상품 번호</h3>
+			<h5>${dto.getPointIdx()}</h5>
 		</div>
+		<div class="form-group my-5 col-12">
+			<h3 class="text-info">포인트상품명</h3>
+			<h5>${dto.getPointName()}</h5>
 		</div>
-		
-		<!-- 소단원 제목 -->
-		
-		<!-- 소단원 내용 -->
-		</SECTION>
+		<div class="form-group my-5 col-12">
+			<h3 class="text-info">포인트상품 가격</h3>
+			<h5>&#8361;&nbsp;<fmt:formatNumber value="${dto.getPointPrice()}" pattern="#,###" /></h5>
+		</div>
+		<div class="form-group my-5 col-12">
+			<h3 class="text-info">포인트상품 포인트 충전량</h3>
+			<h5><fmt:formatNumber value="${dto.getPointAmount()}" pattern="#,###" /></h5>
+		</div>
+		<div class="row p-sm-2 mx-1 mb-5">
+			<nav class="row p-0 pt-4 d-flex justify-content-between">
+				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/point/';">전체 목록</a></button>
+				<button type="button" class="col-auto btn btn-sm btn-outline-primary mx-3" onclick="location.href='${root}/point/update/${dto.getPointIdx()}';" style="margin-left:auto !important;">상품 수정</button>
+				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="deleteConfirm();">상품 삭제</button>
+			</nav>
+		</div>
+	</SECTION>
 	<!-- 페이지 내용 끝. -->
 	
 </ARTICLE>
@@ -79,12 +91,3 @@ window.addEventListener("load", function() {
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
 </BODY>
 </HTML>
-
-<%--디자인 적용전
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
-
-<h2>정보 변경 완료</h2>
---%>
-

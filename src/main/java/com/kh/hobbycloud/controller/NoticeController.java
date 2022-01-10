@@ -70,79 +70,79 @@ public class NoticeController {
 	
 	@RequestMapping("/detail/{noticeIdx}")
 	public String detail(@PathVariable int noticeIdx, Model model, HttpSession session) {
-		int count = 1;
+		//int count = 1;
 		//데이터 획득: VO 및 DTO
-		// noticeDao.views(noticeIdx);
+		noticeDao.views(noticeIdx);
 		NoticeDto noticeDto = new NoticeDto();
 		noticeDto.setNoticeIdx(noticeIdx);
-		System.out.println(count++);
+		//System.out.println(count++);
 		//boolean owner = boardDto.getBoardWriter().equals(memberId);
 		
-		System.out.println("세션은 = "+session);
-		if(session != null) {
-		int memberIdx= (int)session.getAttribute("memberIdx");
+		//System.out.println("세션은 = "+session);
+		//if(session != null) {
+		//int memberIdx= (int)session.getAttribute("memberIdx");
 		
-		System.out.println("회원idx="+memberIdx);
-		System.out.println(count++);
-		noticeDto.setMemberIdx(memberIdx);
-		System.out.println(count++);
+		//System.out.println("회원idx="+memberIdx);
+		//System.out.println(count++);
+		//noticeDto.setMemberIdx(memberIdx);
+		//System.out.println(count++);
 		//noticeDao.read(noticeDto);
 		
 		
 		// 1. 조회한 글 번호 모음인 Set<Integer> NoticeViewedNo를 준비한다.
 		// 1-1. noticeViewedNo 라는 이름의 저장소를 세션에서 꺼내어 본다.
-		Set<Integer> noticeViewedNo = (Set<Integer>)session.getAttribute("noticeViewedNo");
-		System.out.println(count++);
+		//Set<Integer> noticeViewedNo = (Set<Integer>)session.getAttribute("noticeViewedNo");
+		//System.out.println(count++);
 		// 1-2. boardViewedNo 가 null 이면 "처음 글을 읽는 상태"임을 말하므로 저장소를 신규로 생성
-		if(noticeViewedNo == null){
-			noticeViewedNo = new HashSet<>();
+		//if(noticeViewedNo == null){
+		//	noticeViewedNo = new HashSet<>();
 			//System.out.println("처음으로 글을 읽기 시작했습니다(저장소 생성)");
-		}
+		//}
 		
 
-		// 2. 본격적으로 상세 글정보를 얻어온다.
+		//2. 본격적으로 상세 글정보를 얻어온다.
 		
 		NoticeVO noticeVO = noticeDao.get(noticeIdx);//단일조회
 		
-		System.out.println(count++);
+		//System.out.println(count++);
 		// 획득된 데이터를 Model에 지정
 		List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
-		System.out.println(count++);
+		//System.out.println(count++);
 		model.addAttribute("NoticeVO", noticeVO);
-		System.out.println(count++);
+		//System.out.println(count++);
 		model.addAttribute("list", list);
-		System.out.println(count++);
+		//System.out.println(count++);
 		
 		
 		
 		// 3. 현재 글 번호를 저장소에 추가해본다
 		// 3-1. 추가가 된다면 이 글은 처음 읽는 글
 		// 3-2. 추가가 안된다면 이 글은 두 번 이상 읽은 글
-		if(memberIdx != noticeVO.getMemberIdx() && noticeViewedNo.add(noticeIdx)){//처음 읽은 글인 경우
-			noticeDao.read(noticeDto);//조회수 증가(남에 글일때만)
+		//if(memberIdx != noticeVO.getMemberIdx() && noticeViewedNo.add(noticeIdx)){//처음 읽은 글인 경우
+		//	noticeDao.read(noticeDto);//조회수 증가(남에 글일때만)
 			//System.out.println("이 글은 처음 읽는 글입니다");
-		}
-		else{
+		//}
+		//else{
 			//System.out.println("이 글은 읽은 적이 있습니다");
-		}
+		//}
 		
 		//System.out.println("저장소 : "+noticeViewedNo);
 		
 		//3. 갱신된 조회한 글 번호 모음을 다시 세션에 저장한다.
-		session.setAttribute("noticeViewedNo", noticeViewedNo);
-		System.out.println(count++);
-		}
-		else {
-			NoticeVO noticeVO = noticeDao.get(noticeIdx);//단일조회
-			System.out.println(count++);
+		//session.setAttribute("noticeViewedNo", noticeViewedNo);
+		//System.out.println(count++);
+		//}
+		//else {
+			//NoticeVO noticeVO = noticeDao.get(noticeIdx);//단일조회
+		//	System.out.println(count++);
 			// 획득된 데이터를 Model에 지정
-			List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
-			System.out.println(count++);
-			model.addAttribute("NoticeVO", noticeVO);
-			System.out.println(count++);
-			model.addAttribute("list", list);
-			System.out.println(count++);
-		}
+			//List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
+		//	System.out.println(count++);
+			//model.addAttribute("NoticeVO", noticeVO);
+			//System.out.println(count++);
+			//model.addAttribute("list", list);
+			//System.out.println(count++);
+		//}
 		
 	
 	

@@ -29,7 +29,7 @@ public class PlaceVO {
 	private String memberNick;
 	
 	//place_file 테이블 
-	private int placeFileIdx;
+//	private int placeFileIdx;
 	
 	//place_target 테이블
 	private String lecCategoryName;

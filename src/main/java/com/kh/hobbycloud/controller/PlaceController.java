@@ -152,7 +152,7 @@ public class PlaceController {
 	}
 	
 	// 장소 사진 전송 실시
-	@GetMapping("/file/{placeFileIdx}")
+	@GetMapping("/placeFile/{placeFileIdx}")
 	@ResponseBody
 	public ResponseEntity<ByteArrayResource> file(@PathVariable int placeFileIdx) throws IOException {
 

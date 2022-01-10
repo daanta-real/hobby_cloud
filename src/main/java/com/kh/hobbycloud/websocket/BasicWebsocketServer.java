@@ -1,11 +1,13 @@
 package com.kh.hobbycloud.websocket;
 
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
+
 import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.PongMessage;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import com.kh.hobbycloud.vo.gather.UserVO;
 
 import lombok.extern.slf4j.Slf4j;
 

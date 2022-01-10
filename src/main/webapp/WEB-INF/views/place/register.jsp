@@ -61,12 +61,6 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 	             $("#inputMail").attr("readonly", true);
 	         }
 		   });
-		
-		 $("#placeAddress").change(function(){
-			 alert("placeAddress 값이 변경되었습니다.");
-				var placeAddress = $('#placeAddress').val();
-			     	console.log("주소값"+  $('#placeAddress').val());
-			})
     });
     
     /* 주소 검색 모듈 
@@ -78,9 +72,11 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
      */
     
 		 $(function(){
+			
 			$(".find-address-btn").click(function(){
 		    	findAddress();
 		    });
+			
 		    function findAddress(){
 		        new daum.Postcode({
 		            oncomplete: function(data) {
@@ -134,59 +130,57 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 		            }
 		        }).open();
 		    };	
-		 })
-window.addEventListener("load", function() {
+			 //지도 생성 준비 코드
+		    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		        mapOption = {
+		            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+		            level: 3 // 지도의 확대 레벨
+		        };  
 
-//지도 생성 준비 코드
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };  
+		    // 지도를 생성합니다    
+		    var map = new kakao.maps.Map(mapContainer, mapOption); 
 
-// 지도를 생성합니다    
-var map = new kakao.maps.Map(mapContainer, mapOption); 
+		    // 주소-좌표 변환 객체를 생성합니다
+		    var geocoder = new kakao.maps.services.Geocoder();
 
-// 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
+		    // 주소로 좌표를 검색합니다
+		    geocoder.addressSearch(addr,
+		    	function(result, status) {
 
-// 주소로 좌표를 검색합니다
-geocoder.addressSearch($("input[name=placeAddress]").val(), 
-	function(result, status) {
+		        // 정상적으로 검색이 완료됐으면 
+		         if (status === kakao.maps.services.Status.OK) {
+		        	 alert("좌표검색 완료"); 
+		            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+		    		var message = 'latlng: new kakao.maps.LatLng(' + result[0].y + ', ';
+		    		message += result[0].x + ')';
+		    		
+		    		var resultDiv = document.getElementById('clickLatlng'); 
+		    		resultDiv.innerHTML = message;
+		    		
+		    		$("input[name=placeLocLongitude]").val(result[0].y);
+		    		$("input[name=placeLocLatitude]").val(result[0].x);
 
-    // 정상적으로 검색이 완료됐으면 
-     if (status === kakao.maps.services.Status.OK) {
-    	 alert("좌표검색 완료"); 
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-		var message = 'latlng: new kakao.maps.LatLng(' + result[0].y + ', ';
-		message += result[0].x + ')';
-		
-		var resultDiv = document.getElementById('clickLatlng'); 
-		resultDiv.innerHTML = message;
-		
-		$("input[name=placeLocLongitude]").val(result[0].y);
-		$("input[name=placeLocLatitude]").val(result[0].x);
+		    		console.log("result[0].y"+result[0].y);
+		    		console.log("result[0].x"+result[0].x);
+		    		
+		            // 결과값으로 받은 위치를 마커로 표시합니다
+		            var marker = new kakao.maps.Marker({
+		                map: map,
+		                position: coords
+		            });
 
-		console.log("result[0].y"+result[0].y);
-		console.log("result[0].x"+result[0].x);
-		
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords
-        });
+		            // 인포윈도우로 장소에 대한 설명을 표시합니다
+		            var infowindow = new kakao.maps.InfoWindow({
+		                content: '<div style="width:150px;text-align:center;padding:6px 0;">장소</div>'
+		            });
+		            infowindow.open(map, marker);
 
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">장소</div>'
-        });
-        infowindow.open(map, marker);
+		            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+		            map.setCenter(coords);
+		        } 
+		    });  		    
+		 });
 
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
-    } 
-});    
-});    
 
 </script>
 </HEAD>

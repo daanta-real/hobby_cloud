@@ -42,7 +42,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			청원
+			공지사항
 			</span>
 		</div>
 	</HEADER>
@@ -59,12 +59,13 @@ window.addEventListener("load", function() {
 
 		<div class="mb-3 justify-content-center">
     <label for="" class="form-label">제목</label>
-    <input type="text" name="petitionsName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">  
-  	</div>
-		
+    <input type="text" name="noticeName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    
+  </div>
+			
 			<div class="form-group justify-content-center">
       <label for="exampleTextarea" class="form-label mt-4">내용</label>
-      <textarea class="form-control" name="petitionsDetail" id="exampleTextarea" rows="15" style="resize:none"
+      <textarea class="form-control" name="noticeDetail" id="exampleTextarea" rows="15" style="resize:none"
       ></textarea>
     </div>
     
@@ -74,7 +75,7 @@ window.addEventListener("load", function() {
     </div>
     <div class="form-row text-center">
     <div class="col-12 pt-3">
-        <a href="${pageContext.request.contextPath}/petitions/list"
+        <a href="${pageContext.request.contextPath}/notice/list"
 				 class="col-auto btn  btn-secondary mx-1 my-3">취소</a>
         <button type="submit" class="btn btn-primary my-3" >등록</button>
     </div>
@@ -94,23 +95,20 @@ window.addEventListener("load", function() {
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
 </BODY>
 </HTML>
-<%--원래 청원작성
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+
+<%--나의 원래 폼 
 <form method="post" enctype="multipart/form-data">
 <table border="0">
 	<tbody>
 		<tr>
 			<th>제목</th>
-			<td><input type="text" name="petitionsName" required></td>
+			<td><input type="text" name="noticeName" required></td>
 			
 		</tr>
 		<tr>
 			<th>내용</th>
 			<td>
-				<textarea name="petitionsDetail" required rows="10" cols="60"></textarea>
+				<textarea name="noticeDetail" required rows="10" cols="60"></textarea>
 			</td>
 		</tr>
 		<tr>

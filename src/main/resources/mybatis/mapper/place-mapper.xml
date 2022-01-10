@@ -117,15 +117,15 @@ select count(*) as BNO from (
 <select id="get" parameterType="int" resultType="PlaceVO">
 	select p.*, 
 			m.member_nick, 
-			f.place_file_idx, 
+<!-- 			f.place_file_idx,  -->
 			c.lec_category_name
 	from place p  
 			left outer join
 			member m 
 			ON p.member_idx = m.member_idx
-		    left outer join
-		    place_file f
-		    on p.place_idx = f.place_idx
+<!-- 		    left outer join -->
+<!-- 		    place_file f -->
+<!-- 		    on p.place_idx = f.place_idx -->
 		    left outer join
 		    place_target c
 		    on p.place_idx = c.place_idx

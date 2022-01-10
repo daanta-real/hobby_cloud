@@ -64,7 +64,7 @@ $(function(){
 		</c:when>
 		<c:otherwise>
 		<c:forEach var="PlaceFileDto" items="${list}"> 
-			<img src="${pageContext.request.contextPath}/place/placeFile/${placeVO.placeFileIdx}" width="50%" 
+			<img src="${pageContext.request.contextPath}/place/placeFile/${PlaceFileDto.placeFileIdx}" width="50%" 
 			class="image image-round image-border">
 		</c:forEach>
 		</c:otherwise>

@@ -1,21 +1,32 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
-<c:set var="root" value="${pageContext.request.contextPath}"/>
-<c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
-<c:set var="login" value="${memberIdx != null }"></c:set>
-<!DOCTYPE HTML>
-<HTML LANG="ko">
-<!-- ************************************************ 헤드 영역 ************************************************ -->
-<HEAD>
-<jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
-<script type='text/javascript'>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b
+&libraries=services"></script>
+<!-- LINKS -->
+<!-- Bootstrap Theme -->
+<LINK rel="stylesheet"
+	href="https://bootswatch.com/5/journal/bootstrap.css">
+<!-- Bootstrap -->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap"
+	rel="stylesheet">
+<!-- JQuery 3.6.0 -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- XE Icon -->
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 
-//문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
-window.addEventListener("load", function() {
-});
-
-</script>
 <style>
 #map {
 	width: 500px;
@@ -228,63 +239,52 @@ function setLoc(el) {
 					});
 		        });
 				</script>
-				
-<script>
-	$(function() {
-		$("#showList").click(function() {
-						$.ajax({
-						url : "${pageContext.request.contextPath}/gatherData/gatherList",
-						type : "get",
-						dataType : "json",
-						success:function(resp){
-							
-							console.log("성공", resp);
-							var results = resp;
-							console.log(results);
 
-							// 제목
-							document.querySelector(".modal-title").innerText = "장소를 고르세요.";
-							
-							// 내용
-							// 표 제목부
-							var totalStr
-							    = '<table class="table table-striped">'
-			                	+ 	'<thead><tr>'
-			                    + 		'<th scope="col" class="text-center">순</th>'
-			                    + 		'<th scope="col" class="text-center">이름</th>'
-			                    +		'<th scope="col" class="text-center">지역</th>'
-			                    + 	'</tr></thead>'
-			                	+ 	'<tbody class="locTBody">';
-							$.each(results, function(i) {
-								var jsonStr = results[i];
-								console.log(i + "번째 TR: ", jsonStr);
-			                	totalStr += '<tr scope="row" data-idx="' + jsonStr.gatherIdx + '"'
-									+ 			' data-region="'+jsonStr.gatherLocRegion+'" data-longitude="'+jsonStr.gatherLocLongitude+'"'
-									+ 			' data-latitude="' + jsonStr.gatherLocLatitude+'"'
-									+ 			' onclick="setLoc(this)">'
-									+ 	'<td class="text-center">' + jsonStr.gatherIdx +'</td>'
-									+ 	'<td class="text-center">' + jsonStr.gatherName +'</td>'
-									+	'<td>' + jsonStr.gatherLocRegion +'</td>'
-									+ '</tr>';
-							});
-							// 표 꼬리부
-							totalStr += '</tbody></table>';
-							console.log("전체 HTML: ", totalStr);
-							
-							var listTarget = document.querySelector(".modal-body");
-							listTarget.innerHTML = totalStr;
-							
-						},
-						error : function(e) {
-						console.log("실패", e);
-									}
-								});
-						});
-	});
-</script>
-</HEAD>
-<BODY>
-<jsp:include page="/resources/template/body.jsp" flush="false" />
+
+
+
+<h1>소모임 등록창</h1>
+<div id="map"></div>
+
+<form action="insert" method="post" enctype="multipart/form-data" id="insert-form">
+
+
+	
+	 취미분류 <input type="text" name="lecCategoryName" value="운동">
+	  <br>
+	장소 idx<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999">
+	 제목	<input type="text" name="gatherName"value="제목"> 
+		상세내용<input type="text" name="gatherDetail" value="내용"> <br>
+		 작성일<input type="date"	name="gatherRegistered"> 
+		인원<input type="text"	name="gatherHeadCount" value="1">
+		 지역<input type="text"	name="gatherLocRegion" value="지역">
+		 <br> 
+		 위도<input	id="placeLatiHolder" type="text" name="gatherLocLatitude">
+		 경도<input id="placeLongHolder" type="text" name="gatherLocLongitude">
+		
+		 시작시간<input id="startDate" type="date">
+		 	 <input id="startTime" type="time">
+		 <input id="start" type="hidden" name="gatherStart">
+		<br>
+		 종료시간 	<input id="endDate" type="date">
+		 		<input id="endTime" type="time">
+		<input id="end" type="hidden" name="gatherEnd">
+		 최대원인원수<input	type="text" name="gatherMax" value="1">
+		 현재오픈여부 <input	type="text" name="gatherStaus" value="1"> <br>
+		 
+		 <input type="file" name="attach" enctype="multipart/form-data" multiple>
+		<input id="insert-btn" type="submit" value="전송하기">
+	 <br> 
+	
+	</form>
+
+
+
+
+
+
+<!-- 모달 여는 버튼 -->
+<button type="button" id="showList"class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">모달 열기</button>
 
 <!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
 <div id="modal" class="modal" tabindex="-1">
@@ -299,7 +299,7 @@ function setLoc(el) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- 모달 본문 영역 -->
-            <table class="table table-striped">
+            <table class="modal-body table table-striped">
                 <thead>
                     <tr>
                         <th scope="col" class="text-center">순</th>
@@ -317,122 +317,44 @@ function setLoc(el) {
 </div>
 
 
-<!-- ************************************************ 본문 대구역 시작 ************************************************ -->
-<!-- 본문 대구역 시작 -->
-<SECTION class="container-fluid"><DIV class="row d-flex flex-col justify-content-center pt-3 pt-sm-3 pt-md-5 pb-md-3">
 
 
 
-<!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
-<!-- 사이드메뉴 영역 시작 -->
-<!-- 사이드메뉴 영역 끝 -->
-
-
-
-<!-- ************************************************ 페이지 영역 ************************************************ -->
-<!-- 페이지 영역 시작 -->
-<ARTICLE class="d-flex flex-column align-items-start col-lg-8 mx-md-1 mt-xs-2 mt-md-3 pt-2 justify-content-center">
-
-	<!-- 제목 영역 시작 -->
-	<HEADER class='w-100 mb-1 p-2 px-md-3'>
-		<div class='row border-bottom border-secondary border-1'>
-			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			소모임
-			</span>
-		</div>
-	</HEADER>
-	<!-- 제목 영역 끝 -->
-	<!-- 페이지 내용 시작 -->
-	<SECTION class="w-100 pt-0 fs-6">
-		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>글작성</div>
-		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5 container justify-content-center">
-			<!-- 글내용 -->
-			<div class="row justify-content-center">
-				
-			<div id="map"></div>
-				
-	<form action="insert" method="post" enctype="multipart/form-data" id="insert-form">
-
-	<div class="mb-3 justify-content-center">
-    <label for="" class="form-label">제목</label>
-    <input type="text" name="gatherName" class="form-control">
-  </div>
-			 	
-		 취미분류 <select name="lecCategoryName" class="selectpicker" data-style="btn-inverse">
-    	 <option>운동</option>
-    	  <option>미술</option>
-      	<option>음악</option>
-  		</select>
-	<div class="form-group justify-content-center">
-      <label for="exampleTextarea" class="form-label mt-4">내용</label>
-      <textarea class="form-control" name="gatherDetail" id="exampleTextarea" rows="10" style="resize:none"
-      ></textarea>
-    </div>
-	
-	
-
-  	<div class="mb-3 justify-content-center">
-    <label for="" class="form-label">시작시간</label>
-    <input type="date"   id="startDate">
-    <input type="time"  id="startTime"> 
-    <input id="start" type="hidden" name="gatherStart">
-  </div>
-  
-    	<div class="mb-3 justify-content-center">
-    <label for="" class="form-label">종료시간</label>
-    <input type="date"   id="endDate">
-    <input type="time"  id="endTime"> 
-    <input id="end" type="hidden" name="gatherEnd">
-  </div>
-  
-  	<div class="mb-3 justify-content-center">
-    <label for="" class="form-label">인원</label>
-    <input type="number" name="gatherHeadCount" class="form-control">
-  </div>
- <button type="button" id="showList"class="btn btn-primary m-3 p-3" 
-data-bs-toggle="modal" data-bs-target="#modal">장소 찾기</button> 
-  	<div class="mb-3 justify-content-center">
-    <label for="" class="form-label">지역</label>
-    <input type="text" name="gatherLocRegion" class="form-control">
-  </div>
-
- <div class="form-group justify-content-center">
-      <label for="formFile" class="form-label mt-4"></label>
-      <input class="form-control" type="file" id="formFile" name="attach" enctype="multipart/form-data" multiple>
-    </div>
-	
-	  <br>
-	<input id="placeIdxHolder" type="hidden" name="placeIdx" value="9999">
-	<input	id="placeLatiHolder" type="hidden" name="gatherLocLatitude">
-	<input id="placeLongHolder" type="hidden" name="gatherLocLongitude">
-	
-			<div class="form-row text-center">
-		 <div class="col-12 pt-3"> 
-		  <input type="submit"  id="insert-btn"class="btn btn-primary my-3"> 
-        <a href="${pageContext.request.contextPath}/gather/list"
-				 class="col-auto btn  btn-secondary mx-1 my-3">취소</a>
-    </div>
-	</div>
-	</form>
-
-
-
-			</div>
-			
-			<!-- 각종 버튼들 -->
-		</div>
-	</SECTION>
-	<!-- 페이지 내용 끝. -->
-	
-</ARTICLE>
-<!-- 페이지 영역 끝 -->
-
-
-
- 
-<!-- ************************************************ 풋터 영역 ************************************************ -->
-<jsp:include page="/resources/template/footer.jsp" flush="false" />
-</BODY>
-</HTML>
+<script>
+	$(function() {
+		$("#showList").click(function() {
+						$.ajax({
+						url : "${pageContext.request.contextPath}/gatherData/gatherList",
+						type : "get",
+						dataType : "json",
+						success:function(resp){
+							
+							console.log("성공", resp);
+							var results = resp;
+							console.log(results);
+							
+							var totalStr = "";
+							$.each(results, function(i) {
+								var jsonStr = results[i];
+								console.log(i + "번째 TR: ", jsonStr);
+								totalStr += '<tr scope="row" data-idx="' + jsonStr.gatherIdx + '"'
+									+ ' data-region="'+jsonStr.gatherLocRegion+'" data-longitude="'+jsonStr.gatherLocLongitude+'"'
+									+ ' data-latitude="' + jsonStr.gatherLocLatitude+'"'
+									+ ' onclick="setLoc(this)">'
+									+ '<td class="text-center">' + jsonStr.gatherIdx +'</td>'
+									+ '<td class="text-center">' + jsonStr.gatherName +'</td>'
+									+ '<td>' + jsonStr.gatherLocRegion +'</td></tr>';
+							});
+							console.log("전체 HTML: ", totalStr);
+							
+							var listTarget = document.querySelector(".locTBody");
+							listTarget.innerHTML = totalStr;
+							
+						},
+						error : function(e) {
+						console.log("실패", e);
+									}
+								});
+						});
+	});
+</script>

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
  <c:set var="login" value="${memberIdx != null }"></c:set>
+ <c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
 
@@ -44,7 +45,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			청원
+			공지 사항
 			</span>
 		</div>
 	</HEADER>
@@ -71,15 +72,15 @@ window.addEventListener("load", function() {
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="PetitionsVO" items="${list}">
+							<c:forEach var="NoticeVO" items="${list}">
 								<tr class="cursor-pointer">
-									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsIdx}</td>
+									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeIdx}</td>
 									<td class="text-center align-middle text-nowrap"></td>
-									<td class="text-center align-middle text-nowrap"><a href="detail/${PetitionsVO.petitionsIdx }">${PetitionsVO.petitionsName }</a></td>
-									<td class="text-center align-middle text-nowrap">${PetitionsVO.memberNick }</td>
-									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsRegistered }</td>
-									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsViews }</td>
-									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsReplies }</td>
+									<td class="text-center align-middle text-nowrap"><a href="detail/${NoticeVO.noticeIdx }">${NoticeVO.noticeName }</a></td>
+									<td class="text-center align-middle text-nowrap">${NoticeVO.memberNick }</td>
+									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeRegistered }</td>
+									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeViews }</td>
+									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeReplies }</td>
 									
 								</tr>
 							</c:forEach>
@@ -91,8 +92,8 @@ window.addEventListener("load", function() {
 <form method="post" class="mt-5">
 	
 	<select name="column">
-		<option value="petitions_name" selected>제목</option>
-		<option value="petitions_detail">내용</option>
+		<option value="notice_name" selected>제목</option>
+		<option value="notice_detail">내용</option>
 		<option value="member_nick">작성자</option>
 	</select>
 	
@@ -122,9 +123,9 @@ window.addEventListener("load", function() {
 				<a class="page-link" href="#">»</a>
 			</li>
 		</ul>
-       
+       <c:if test="${admin }">
 		<a class="col-auto btn btn-sm btn-outline-primary" href="write">글쓰기</a>
-		
+		</c:if>
 	</nav>
 
 </div>
@@ -142,3 +143,65 @@ window.addEventListener("load", function() {
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
 </BODY>
 </HTML>
+
+<%--디자인 적용전
+<h1>공지 게시판</h1>
+<br><br>
+<table border="1" width="90%">
+	<thead>
+		<tr>
+			<th>번호</th>
+			<th width="45%">제목</th>
+			<th>작성자</th>
+			<th>작성일</th>
+			<th>조회수</th>
+			<th>댓글수</th>
+		</tr>
+	</thead>
+
+
+	<tbody align="center">
+		<c:forEach var="NoticeVO" items="${list}">
+			<tr>
+				<td>${NoticeVO.noticeIdx}</td>
+				<td align="left">
+				<a href="detail/${NoticeVO.noticeIdx }">${NoticeVO.noticeName }</a>
+				</td>
+				<td>${NoticeVO.memberNick }</td>
+				<td>${NoticeVO.noticeRegistered }</td>
+				<td>${NoticeVO.noticeViews }</td>
+				<td>${NoticeVO.noticeReplies }</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
+<br>
+
+
+<h1>${memberIdx}</h1>
+<h1>${memberGrade }</h1>
+
+
+<c:if test="${admin }">
+<a href="write">글쓰기</a>
+
+</c:if>
+
+
+
+
+<!-- 검색창 -->
+<form method="post">
+	
+	<select name="column">
+		<option value="notice_name" selected>제목</option>
+		<option value="notice_detail">내용</option>
+		<option value="member_nick">작성자</option>
+	</select>
+	
+	<input type="search" name="keyword" placeholder="검색어 입력" required >
+	
+	<input type="submit" value="검색">
+	
+</form>
+--%>
