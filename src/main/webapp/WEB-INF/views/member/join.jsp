@@ -486,9 +486,10 @@ $("#reKey").keyup(function(){
 				<form name="searchForm" method="post" class="row" enctype="multipart/form-data" id="join_form">
 					<div id="map"></div>
 					<div class="form-group col-12">
-						<label for="searchForm_memberId" class="form-label mb-0">아이디</label>
+						<label for="searchForm_memberId" class="form-label mb-0 id_input">아이디</label>
 						<input name="memberId" id="searchForm_memberId" type="text" class="form-control" placeholder="4~12자의 영문소문자, 숫자로만 입력해주세요" value="">
 						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
+						<div id="idCheck"></div>
 					</div>
 					<div class="form-group col-12">
 						<label for="searchForm_memberNick" class="form-label mb-0">비밀번호</label>
@@ -607,7 +608,7 @@ $("#reKey").keyup(function(){
 		 
 					
 					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">가입</button>
+						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8" id="btnclick">가입</button>
 					</div>
 				</form>
 			</div>
