@@ -247,14 +247,28 @@ window.addEventListener("load", function() {
 					</table>
 				</div>
 			</div>
-			<nav class="row pt-4">
-				<ul class="pagination justify-content-center">
-					<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a></li>
-					<li class="page-item active"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+			<nav class="row p-0 pt-4 d-flex justify-content-between">
+				<button type="button"
+					class="col-auto btn btn-sm btn-outline-primary">목록으로</button>
+				<ul class="col-auto pagination pagination-sm m-0">
+					<li class="page-item disabled">
+						<a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+					</li>
+					<li class="page-item active">
+						<a class="page-link" href="#">1</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">2</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">3</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">»</a>
+					</li>
 				</ul>
+				<button type="button"
+					class="col-auto btn btn-sm btn-outline-primary">글작성</button>
 			</nav>
 		</div>
 	</SECTION>

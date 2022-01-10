@@ -18,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,7 +37,6 @@ import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecPageMaker;
-import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,7 +53,7 @@ public class LecController {
 
 	@Autowired
 	private LecDao lecDao;
-	
+
 	@Autowired
 	private MemberDao memberDao;
 
@@ -91,25 +89,21 @@ public class LecController {
 
 	//강좌 등록
 	@GetMapping("/register")
-	public String insert() {
+	public String insert(Model model) {
+
+		// 데이터 획득: 카테고리 목록
+		List<String> lecCategoryList = lecCategoryDao.select();
+		model.addAttribute("lecCategoryList", lecCategoryList);
+		log.debug("=================================강좌 카테고리 리스트: {}", lecCategoryList);
+
 		return "lec/register";
-	}
 
-	@PostMapping("/register")
-	public String register(@ModelAttribute LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
-//		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
-		int lecIdx = lecService.register(lecRegisterVO);
-		return "redirect:detail/" + lecIdx;
-	}
-
-	@GetMapping("/register_success")
-	public String register_success() {
-		return "lec/register_success";
 	}
 
 	//상세
 	@RequestMapping("/detail/{lecIdx}")
 	public String detail(@PathVariable int lecIdx, HttpSession session, Model model) {
+		log.debug("==================== /lec/edit?" + lecIdx + " (강좌 파일 상세보기 GET) 진입");
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
 
 		List<LecFileDto> list = lecFileDao.getListByLecIdx(lecIdx);
@@ -143,11 +137,11 @@ public class LecController {
 	// 강좌 수정 폼 페이지 불러오기
 	@GetMapping("/edit/{lecIdx}")
 	public String update(@PathVariable int lecIdx, Model model) {
-		log.debug("ㅡㅡㅡ /lec/edit?" + lecIdx + " (강좌 파일 수정 GET) 진입");
+		log.debug("==================== /lec/edit?" + lecIdx + " (강좌 파일 수정 GET) 진입");
 
 		// 데이터 획득: VO 및 DTO
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-		log.debug("ㅡㅡㅡ lecDetailVO: {}", lecDetailVO);
+		log.debug("==================== lecDetailVO: {}", lecDetailVO);
 		model.addAttribute("lecDetailVO", lecDetailVO);
 
 		// 데이터 획득: 카테고리 목록
@@ -156,10 +150,10 @@ public class LecController {
 
 		// 획득된 데이터를 Model에 지정
 		List<LecFileDto> fileList = lecFileDao.getListByLecIdx(lecIdx);
-		log.debug("ㅡㅡㅡ List<LecFileDto> fileList = {}", fileList);
+		log.debug("==================== List<LecFileDto> fileList = {}", fileList);
 		model.addAttribute("fileList", fileList);
 
-		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
+		log.debug("==================== 수정 화면으로 진입합니다.");
 		return "lec/edit";
 	}
 
@@ -176,15 +170,15 @@ public class LecController {
 	public ResponseEntity<ByteArrayResource> file(@PathVariable int lecFileIdx) throws IOException {
 
 		// 0. 매개변수로 lecIdx가 넘어와 있다.
-		System.out.println("ㅡㅡㅡㅡㅡㅡ 0. 요청된 lecIdx : " + lecFileIdx);
+		System.out.println("======================================== 0. 요청된 lecIdx : " + lecFileIdx);
 
 		// 1. lecIdx를 이용하여, 이미지 파일정보 전체를 DTO로 갖고 온다.
 		LecFileDto lecFileDto = lecFileDao.getByLecFileIdx(lecFileIdx);
-		System.out.println("ㅡㅡㅡㅡㅡㅡ 1. 갖고온 lecFileDto : "+lecFileDto);
+		System.out.println("======================================== 1. 갖고온 lecFileDto : "+lecFileDto);
 
 		// 2. 갖고 온 DTO에서 실제 저장 파일명(save name)을 찾아낸다.
 		String savename = lecFileDto.getLecFileServerName();
-		System.out.println("ㅡㅡㅡㅡㅡㅡ 2. 찾아낸 파일명: " + savename);
+		System.out.println("======================================== 2. 찾아낸 파일명: " + savename);
 
 		// 3-1. 프로필번호(memberProfileIdx)를 이용하여 내가 전송할 실제 파일 정보를 불러온다
 		byte[] data = lecFileDao.load(lecFileIdx);
@@ -210,7 +204,7 @@ public class LecController {
 	@RequestMapping("/cart/insert")
 	public String insert(@ModelAttribute LecCartVO lecCartVO, HttpSession session) {
 		//@ModelAttribute로 submit된 form의 내용을 저장해서 전달받고, 다시 뷰로 넘겨서 출력하기 위해 사용
-		//로그인 여부를 체크	
+		//로그인 여부를 체크
 		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
 			return "redirect:/member/login";//로그인 화면으로 리다이렉트
 		}
@@ -281,10 +275,10 @@ public class LecController {
 			return "redirect:/member/login";
 		}
 		model.addAttribute("lecDetailVO", lecDetailVO);
-		
+
 		return "lec/check";
 	}
-	
+
 	//강좌 신청 페이지 - 포인트 차감
 	//강사님 예전에 구현했던 포인트기능 적용?
 //	@PostMapping("/check")
@@ -297,8 +291,9 @@ public class LecController {
 //		//내 포인트 감소, 내 강좌 추가, 그리고 강좌 신청 인원 차면 막기
 //		//내강좌에 강좌가 등록된 db idx
 //		}
-//	
+//
 //	}
+
 	
 	//내 강좌
 	@GetMapping("/my_lec")
@@ -307,4 +302,5 @@ public class LecController {
 //		MyLecDto myLecDto = myLecDao.getMyLec(memberId);
 		return "lec/my_lec";
 	}
+
 }

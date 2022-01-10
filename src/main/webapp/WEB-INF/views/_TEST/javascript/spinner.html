@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type='text/css'>
+            @keyframes spinner { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            :root { --spinner-size: 7rem; --spinner-color: #f19022; }
+            .spinner { position:relative; width:var(--spinner-size); height:var(--spinner-size); display:none; }
+            .spinner.loading { display:block; }
+            .spinner.loading:after {
+                content:""; position: absolute; width:var(--spinner-size); height:var(--spinner-size);
+                border-width: calc(var(--spinner-size) / 6); border-style: solid; border-color: transparent;
+                border-top-color: var(--spinner-color); border-bottom-color: var(--spinner-color);
+                border-radius: 50%; box-sizing: border-box;
+                animation: spinner 0.8s ease infinite;
+            }
+        </style>
+        <script type='text/javascript'>
+
+            window.onload = () => {
+                window.el = document.querySelector("body > div.spinner");
+                window.btn = document.querySelector("input");
+                window.power = false;
+            }
+
+            function toggle() {
+                if(!power) el.classList.add("loading");
+                else       el.classList.remove("loading");
+                power = !power;
+                btn.value = power;
+            }
+
+        </script>
+    </head>
+    <body>
+        <div class="spinner"></div>
+        <input type=button onclick="toggle()" value=toggle style="position:absolute; top:300px; left:400px;"/>
+    </body>
+</html>

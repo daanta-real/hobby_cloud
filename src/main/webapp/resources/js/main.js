@@ -94,13 +94,51 @@ function arr_remove_val(arr, val) {
  return arr;
 }
 
-// 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+// 라이브러리. 메인화면에서 쓰인다.
+// 로그인 시도하고 바로 메인페이지로 간다.
+function loginSubmit() {
+
+	// Form값 가져오기
+	let formData = new FormData(document.getElementById("topLoginBox"));
+	
+	// 버튼 사라지게 하고 스피너 ON
+	const span = document.getElementById("topLoginBtnSpan");
+	const spinner = document.querySelector("#topLoginBox .spinner");
+	span.style.display = "none";
+	spinner.classList.add("loading");
+	
+	// AXIOS를 이용하여 FORM DATA 제출
+	axios.post(CONFIG_ROOTPATH + "/member/login", formData
+	).then((response) => {
+		span.style.display = "inline-block";
+		spinner.classList.remove("loading");
+		location.href = CONFIG_ROOTPATH;
+	}).catch((response) => {
+		console.log("에러\n", response);
+	});
+	
+}
+
+// 라이브러리. 내가 올린 파일의 이미지를 로드시켜 준다.
+// 파일 객체와 이미지 태그 엘리먼트를 넘기면,
+// FileReader에 이미지 로딩을 예약하여,
+// 이미지 내용물이 로드되는 대로 이미지 태그에 반영하게끔 할 수 있다.
+function renderImageFromFile(file, targetEl) {
+	console.log(file.name);
+	const reader = new FileReader();
+	reader.readAsDataURL(file);
+	reader.addEventListener('load', (e) => {
+		targetEl.src = e.target.result;
+	});
+}
+
+// ************************ 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다. ***********************
 window.addEventListener("load", () => {
 
 	// 모달 변수 정의
 	window.modal = new bootstrap.Modal(document.getElementById("modal"), {
 	    keyboard: false
-	});
+	}); 
 	
 	// FORM 제출 시 자동 실행: 비밀번호 암호화
 	$("form").submit(function(e){
@@ -116,8 +154,10 @@ window.addEventListener("load", () => {
 			$(this).val(encrypt);
 		});
 		
-		// 제출
-		this.submit();
+		// 로그인 폼일 때에 한해서 AXIOS를 활용한 ASYNC(Ajax) 전송을 실시하며,
+		if(e.target.id === "topLoginBox") loginSubmit();
+		// 그 외에는 동기(SYNC)제출 실시
+		else this.submit();
 
 	});
 	

@@ -36,6 +36,7 @@ public class LecSerivceImpl implements LecService{
 
 	@Override
 	public int register(LecRegisterVO lecRegisterVO) throws IllegalStateException, IOException {
+
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
 		//= LecRegisterVO에서 정보를 뽑아서 LecDto를 생성
 		int lecIdx = lecDao.getSequence();
@@ -54,7 +55,6 @@ public class LecSerivceImpl implements LecService{
 		lecDto.setLecLocRegion(lecRegisterVO.getLecLocRegion());
 		lecDto.setLecLocLatitude(lecRegisterVO.getLecLocLatitude());
 		lecDto.setLecLocLongitude(lecRegisterVO.getLecLocLongitude());
-
 		lecDao.register(lecDto);
 
 		//(선택) 강사 파일을 파일 테이블과 실제 하드디스크에 저장
@@ -80,7 +80,10 @@ public class LecSerivceImpl implements LecService{
 
 	@Override
 	public void edit(LecEditVO lecEditVO) throws IllegalStateException, IOException {
+
 		log.debug("======================== LecService.edit(lecEditVO)가 실행되었습니다.");
+
+		log.debug("======================== 1. 변경된 강의글을 저장합니다.");
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
 		//= MemberJoinVO에서 정보를 뽑아서 MemberDto를 생성
 		LecDto lecDto = new LecDto();
@@ -101,26 +104,26 @@ public class LecSerivceImpl implements LecService{
 		lecDto.setLecLocRegion(lecEditVO.getLecLocRegion());
 		lecDto.setLecLocLatitude(lecEditVO.getLecLocLatitude());
 		lecDto.setLecLocLongitude(lecEditVO.getLecLocLongitude());
-
 		log.debug("======================== lecDao.update() 실시. DTO = {}", lecDto);
 		boolean isSucceed = lecDao.update(lecDto);
 		log.debug("======================== lecDao.update() 실시 완료. 결과 = {}", isSucceed);
 
-
 		// (선택) 파일삭제 idx 목록에 해당되는 첨부파일들을 lec_file 테이블에서 삭제한다.
-		List<String> lecFileDelTargetList = lecEditVO.getLecFileDelTargetList();
-		log.debug("========삭제할 파일 리스트: {}", lecFileDelTargetList);
-		if(lecFileDelTargetList != null && lecFileDelTargetList.size() > 0) {
+		log.debug("======================== 2. 삭제요청한 첨부자료를 삭제합니다.");
+		List<String> fileRemoveList = lecEditVO.getFileDelTargetList();
+		log.debug("  ㄴ 삭제요청된 파일 리스트: {}", fileRemoveList);
+		if(fileRemoveList != null && fileRemoveList.size() > 0) {
 			log.debug("==== 삭제할 파일 리스트가 있으므로 이에 대해 삭제 작업합니다.");
-			lecFileDao.deleteList(lecEditVO.getLecIdx(), lecEditVO.getLecFileDelTargetList());
+			lecFileDao.deleteList(lecEditVO.getLecIdx(), fileRemoveList);
 		}
 
+		log.debug("======================== 2. 추가된 첨부파일을 저장합니다.");
 		// (선택) 강좌 파일을 파일 테이블과 실제 하드디스크에 저장
 		List<MultipartFile> attach = lecEditVO.getAttach();
-		// 만약에 attach가 아예 안 넘어왔다면, 이 강좌와 관련된 모든 파일을 지운다. (왜 이렇게 함??)
+		// attach가 하나도 안 넘어왔다면, 아무 처리도 하지 않고 넘긴다.
+		// (때문에 기존 첨부파일을 삭제하고 싶다면 글 수정 페이지에서 파일을 하나하나 눌러 삭제해야 한다.
 		if(attach==null) {
-			log.debug("파일 정보를 담고 있는 List<MultipartFile> attach이 비었습니다. attach 정보 = {}", attach);
-			lecFileDao.delete(lecEditVO.getLecIdx());
+			log.debug("파일 정보를 담고 있는 List<MultipartFile> attach이 비었습니다. 진짜인가 한번 보세요. attach 정보 = {}", attach);
 		}
 		// 만약에 impl로 넘어온 attach가 존재한다면, 모든 파일을 업로드 처리한다.
 		else {
@@ -183,7 +186,7 @@ public class LecSerivceImpl implements LecService{
 	public int likeCountEvery(int lecIdx) {
 		return lecLikeDao.likeCountEvery(lecIdx);
 	}
-	
+
 	@Override
 	public List<LecListVO> list(LecCriteria cri) {
 		return lecDao.list(cri);
