@@ -15,14 +15,14 @@ public interface PaidDao {
 	public PaidVO getByIdx(String idx);
 	public PaidVO getByIdx(Integer idx);
 
+	// 결제이력 검색
+	public List<PaidVO> select(PaidSearchVO searchVO);
+
 	// 결제이력 등록
-	public void insert(PaidDto dto);
+	public boolean insert(PaidDto dto);
 
 	// 결제 취소
-	public boolean cancel(String idx);
-	public boolean cancel(Integer idx);
-
-	// 결제이력 검색
-	public List<PaidVO> search(PaidSearchVO searchVO);
+	public boolean markCancel(String idx);
+	public boolean markCancel(Integer idx);
 
 }

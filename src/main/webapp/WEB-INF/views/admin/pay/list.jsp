@@ -225,18 +225,18 @@ value="${param.paidRegistered_end}"--%>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="PaidVO" items="${paidList}">
+							<c:forEach var="paidVO" items="${paidList}">
 								<tr class="cursor-pointer">
-									<td class="text-center align-middle text-nowrap">${PaidVO.paidIdx}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.memberIdx}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.memberId}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.memberNick}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.paidTid}</td>
-									<td class="text-center align-middle text-nowrap">${PaidVO.paidRegisteredStr}</td>
-									<td class="text-end align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${PaidVO.paidPrice}" pattern="#,###" /></td>
-									<td class="text-center align-middle text-nowrap text-${paidStatus ? 'success' : 'danger'}">
+									<td class="text-center align-middle text-nowrap">${paidVO.paidIdx}</td>
+									<td class="text-center align-middle text-nowrap">${paidVO.memberIdx}</td>
+									<td class="text-center align-middle text-nowrap">${paidVO.memberId}</td>
+									<td class="text-center align-middle text-nowrap">${paidVO.memberNick}</td>
+									<td class="text-center align-middle text-nowrap">${paidVO.paidTid}</td>
+									<td class="text-center align-middle text-nowrap">${paidVO.paidRegisteredStr}</td>
+									<td class="text-end align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${paidVO.paidPrice}" pattern="#,###" /></td>
+									<td class="text-center align-middle text-nowrap text-${paidVO.paidStatus ? 'success' : 'danger'}">
 										<c:choose>
-											<c:when test="${paidStatus}">
+											<c:when test="${paidVO.paidStatus}">
 												결제 완료&nbsp;<a href="${root}/pay/cancel/${PaidVO.paidIdx}" class="btn btn-warning btn-sm">결제 취소</a>
 											</c:when>
 											<c:otherwise>
