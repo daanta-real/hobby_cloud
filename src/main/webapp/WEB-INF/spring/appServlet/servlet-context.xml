@@ -100,7 +100,7 @@
 			basicServer에게 ws://host:port/context/basicServer 을 처리하도록 위임
 			(주의) http에 같은 주소가 있으면 접속이 안된다 (sockjs 라는 기술로 해결 가능)
 		-->
-		<websocket:mapping handler="basicServer" path="/basicServer" />
+		<websocket:mapping handler="basicServer" path="/basicServer" /> 
 		
 		
 		
