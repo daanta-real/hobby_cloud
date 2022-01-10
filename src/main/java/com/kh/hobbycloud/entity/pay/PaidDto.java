@@ -12,16 +12,12 @@ public class PaidDto {
 	private Integer memberIdx;   // 회원 idx
 	private String paidTid;      // 결제 tid
 	private Date paidRegistered; // 결제 일시
+	private String paidName;    // 결제한 상품명
 	private Integer paidPrice;   // 결제 금액(원)
 	private Character paidStatus;   // 결제 상태
 
 	// 결제 상태 관련 조작 메소드
-	boolean getStatus() { return paidStatus == '1'; } // 1 = 성공, 0 = 취소됨
-	void setStatus(boolean status) { this.paidStatus = status ? '1' : '0'; } // true = 성공처리, false = 실패처리
+	public boolean getStatus() { return paidStatus == '1'; } // 1 = 성공, 0 = 취소됨
+	public void setStatus(boolean status) { this.paidStatus = status ? '1' : '0'; } // true = 성공처리, false = 실패처리
 
 }
-
-
-
-
-

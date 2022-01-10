@@ -52,10 +52,6 @@ window.addEventListener("load", function() {
 						<input name="item_name" id="newPayForm_item_name" type="text" class="form-control" placeholder="아이템명을 입력하세요">
 					</div>
 					<div class="form-group mb-4 col-md-6 col-lg-4">
-						<label for="newPayForm_quantity" class="form-label mb-0">수량</label>
-						<input name="quantity" id="newPayForm_quantity" type="number" class="form-control" placeholder="수량을 입력하세요" value=1>
-					</div>
-					<div class="form-group mb-4 col-md-6 col-lg-4">
 						<label for="newPayForm_total_amount" class="form-label mb-0">결제금액</label>
 						<input name="total_amount" id="newPayForm_total_amount" type="number" class="form-control" placeholder="금액을 입력하세요">
 					</div>

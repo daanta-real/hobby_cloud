@@ -26,7 +26,8 @@ public class AdminController {
 	@GetMapping("/pay")
 	public String payList(@ModelAttribute PaidSearchVO paidSearchVO, Model model) {
 		if(paidSearchVO != null) log.debug("ㅡㅡㅡPaidSearchVO 입수: {}", paidSearchVO);
-		List<PaidVO> paidList = paidDao.search(paidSearchVO);
+		List<PaidVO> paidList = paidDao.select(paidSearchVO);
+		log.debug("ㅡㅡㅡ검색 결과 paidList: {}", paidList);
 		model.addAttribute("paidList", paidList);
 		return "admin/pay/list";
 	}

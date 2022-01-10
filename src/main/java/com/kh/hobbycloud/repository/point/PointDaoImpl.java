@@ -17,14 +17,7 @@ public class PointDaoImpl implements PointDao {
 	// 새 시퀀스 획득
 	@Override
 	public Integer getSequence() {
-		return sqlSession.selectOne("point.getSeq");
-	}
-
-	// 검색조건을 넣어 목록 획득
-	// 아무 검색조건을 넣지 않으면, 그냥 전체 목록을 갖고 옴.
-	@Override
-	public List<PointDto> select(PointSearchVO vo) {
-		return sqlSession.selectList("point.select", vo);
+		return sqlSession.selectOne("point.getSequence");
 	}
 
 	// IDX로 단일 데이터 획득
@@ -37,6 +30,13 @@ public class PointDaoImpl implements PointDao {
 	@Override
 	public PointDto getByName(String pointName) {
 		return sqlSession.selectOne("point.getByName", pointName);
+	}
+
+	// 검색조건을 넣어 목록 획득
+	// 아무 검색조건을 넣지 않으면, 그냥 전체 목록을 갖고 옴.
+	@Override
+	public List<PointDto> select(PointSearchVO vo) {
+		return sqlSession.selectList("point.select", vo);
 	}
 
 	// 포인트상품 신규
