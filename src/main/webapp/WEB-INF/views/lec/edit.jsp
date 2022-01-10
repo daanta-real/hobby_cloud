@@ -8,325 +8,251 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
-<style type='text/css'>
-/*
 
-			
-${SERVER_ROOT}
-${SERVER_PORT}
-${CONTEXT_NAME}
-*/
 
-	/* 기본 애니메이션 정의 */
-	@keyframes slideInFromLeft {
-		0% { transform:scale(0.98); }
-		50% { transform:scale(1.03); }
-		100% { transform:scale(1); }
-	}
-	
 
-	#selboxDirect { min-width:200px; min-height:200px; }
-    
-	/* 파일 드롭존 관련 설정 */
-	#fileDropZoneBox { display:flex; justify-content:center; align-items:center; }
-	#fileDropZone { border-style:double; display:grid; justify-content:center; grid-template-columns: repeat(auto-fit, minmax(7.5rem, max-content)); }
+<!-- 파일 업로드 모듈 사전 설정 -->
+<%--
+파일 업로드 모듈을 적용하기 위한 준비물
+1. 아래 사전 변수 설정에 경로 정확히 입력하기 ('/'기호 조심)
+   - fileImageStorePath: 이미지를 불러오기 위한 이미지 호출 경로
+   - fileUploadTargetPage: AJAX로 데이터를 전송할 대상 페이지
+2. AJAX 컨트롤러측 패러미터 VO에는, 아래 필드가 존재해야 한다.
+   - List<MultipartFile> attach: 추가할 파일들 정보가 넘어오는 필드
+   - List<String> fileDelTargetList: 삭제대상 file idx 목록 (String으로 되어 있음)
+     (단, 편집이 아니라 신규작성인 경우에는 위의 fileDelTargetList는 만들지 않아도 된다.)
+3. HTML FORM의 class에는 fileUploadForm 항목이 있어야 한다.
+--%>
+<SCRIPT TYPE="text/javascript">
+const fileImageStorePath = "${root}/lec/lecFile/";
+const fileSubmitAjaxPage = "${root}/lecData/update/";
+</SCRIPT>
+<!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
+<SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fileUpload.css" />
 
-    /* 파일 첨부 시 미리보기 이미지 표시 관련 설정 */
-    .fileBox { width:7.5rem; height:9.5rem; animation: 0.2s ease-out 0s 1 slideInFromLeft; }
-    .fileBox.deleted { cursor:pointer; }
-    .fileBox.deleted:after {
-	    content: "삭 제";
-	    position: absolute; left:1.5%; top:1.5%; width: 97%; height: 97%;
-	    display: flex; justify-content: center; align-items: center;
-	    color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); border-radius: 1rem;
-	    cursor: pointer;
-	}
-	.fileBox.deleted > .fileRemoveBtn { display:none; }
-	.fileTxt {
-		width:7rem; max-width:7rem; height:2rem; max-height:2rem;
-		font-size:0.6rem; text-align:center; word-break:break-all; text-overflow:ellipsis;
-	}
-    .fileImg { width:7rem; height:7rem; object-fit:contain; }
-    .fileRemoveBtn { right:-1rem; top:-1rem; }
-    
-    /* 수정 완료 버튼 */
-    #lecForm_submitBtn { cursor:pointer; }
-    
+<TITLE>HobbyCloud - 강좌 수정</TITLE>
+
+<style type="text/css">
+#map { padding-top:56.25%; }
+.grayInputGroup :is(div, input) { border-color: var(--input-border-color) !important; }
 </style>
+
+<!-- 카카오지도 관련 처리부 -->
 <script type='text/javascript'>
 
+///////////////////////////////////// 전역변수부 /////////////////////////////////////
 
+// 카카오맵 전역변수 선언. 이렇게 안 하면 onload 이후 관련기능을 쓸 수 없기 때문에 전역변수로 미리 불러와 준다.
+let container, options, map, geocoder, marker, infowindow;
 
-///////////////////////////////////// 엘리먼트 생성/조작/데이터조회 관련 라이브러리 /////////////////////////////////////
+///////////////////////////////////// 라이브러리부 /////////////////////////////////////
 
-// 드롭존 내용을 초기화해주는 함수
-function initializeDropZone() {
-	
-	// "파일 드래그하세요" 안내문 제거
-	document.getElementById("fileDropZone").removeChild(document.getElementById("fileDropZoneDefaultText"));
-	
-	// 미리 걸어논 속성들 제거
-	dropZoneEl.classList.remove(
-		"p-5", "border-5", "border-light", // 보더 속성
-		"bg-secondary", "bg-gradient", // 흰 글씨와 그래디언트 배경 제거
-		"align-items-center" // 텍스트를 중앙에 표시하는 속성
-	);
-
-	// 새 속성 추가
-	dropZoneEl.classList.add("border-1", "border-secondary", "p-2");
-
+// 좌표로 행정동 주소 정보를 요청합니다
+function searchAddrFromCoords(coords, callback) {
+	geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
 }
 
-// 첨부파일 이미지의 텍스트 설명 엘리먼트 생성 및 회신
-function makeFileTxtEl(name, size) {
-	return createEl("small", { 
-		class:['fileTxt'],
-		child: [
-			createEl("span", { text: name }),
-			createEl("span", { text: " " }),
-			createEl("span", { text: "(" + byteString(size, 3) + ")" })
-		]
-	});
+// 좌표로 법정동 상세 주소 정보를 요청합니다
+function searchDetailAddrFromCoords(coords, callback) {
+	geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 }
 
-// 첨부파일 이미지의 삭제 버튼 엘리먼트 생성 및 회신
-function makeFileDeleteBtnEl() {
-	const el = createEl("i", {
-		class:[
-			'fileRemoveBtn', 'text-danger', 'fs-3',
-			'position-absolute', 'xi-close-circle', 'top-0', 'end-0',
-			'cursor-pointer'
-		]
-	});
-	return el;
-}
-
-// 첨부파일 이미지의 삭제 버튼 엘리먼트 생성 및 회신
-function makeFileBoxEl(type, name, size, serverIdx) {
-	let result = { boxEl:null, imgEl:null };
-	result.imgEl = createEl('img', {class:['fileImg']});
-	result.btnEl = makeFileDeleteBtnEl();
-	result.boxEl = createEl("div", {
-		class:[
-			'fileBox',
-			'd-flex', 'flex-column',
-			'justify-content-center', 'align-items-center', 'position-relative'
-		],
-		attr:{
-			'data-type': type, // 기존 파일인 경우 old, 새 파일인 경우 new
-			'data-seq': ++fileTempSeq, // 본 페이지 내에서만 쓰는 파일의 고유 일련번호
-			'data-server-idx': serverIdx || ""
-		},
-		child:[
-			result.imgEl, // 파일 이미지
-			makeFileTxtEl(name, size), // 파일 설명
-			result.btnEl // 이미지 삭제 버튼
-		]
-	});
-	return result;
-}
-
-// data 태그로부터 정보를 읽어와 기존 파일의 정보 배열인 orgFilesArr에 추가해주는 함수
-function readyOrgFiles() {
-	const orgFileList = document.querySelectorAll("#orgFileData > div");
-	orgFileList.forEach((one) => {
-		let newFile = {
-			idx: one.getAttribute("data-server-idx"),
-			name: one.getAttribute("data-name"),
-			size: one.getAttribute("data-size")
-		};
-		orgFilesArr.push(newFile);
-	});
-}
-
-
-
-///////////////////////////////////// 첨부파일의 추가/삭제 처리 /////////////////////////////////////
-
-// 기존 글의 첨부파일을 첨부파일 뷰에 추가해 주는 함수
-function loadOrgFiles() {
-	//orgFilesArr
-	for(var i in orgFilesArr) {
-		const oneFile = orgFilesArr[i]; // 각 파일 정보 획득 (idx, 이름, 크기)
-		const boxObj = makeFileBoxEl('old', oneFile.name, oneFile.size, oneFile.idx); // 첨부파일 이미지 박스 오브젝트 생성
-		dropZoneEl.append(boxObj.boxEl); // 이미지 박스 엘리먼트를 첨부파일 뷰어에 추가
-		boxObj.imgEl.src = "${pageContext.request.contextPath}/lec/lecFile/" + oneFile.idx;
-		boxObj.btnEl.addEventListener("click", removeFileOrg);
+// 지도 좌측 상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+function displayCenterInfo(result, status) {
+	if (status === kakao.maps.services.Status.OK) {
+		var infoDiv = document.getElementById("centerAddr");
 	}
 }
 
-// 새 파일이 접수되면, 첨부파일 뷰에도 추가하고 저장소에도 추가해 주는 함수
-function addFiles(filesObjArr) {
-	
-	// 입수된 모든 파일 객체에 대해서 실시
-	for(var i in filesObjArr) {
-		const oneFile = filesObjArr[i]; // 각 파일 객체 획득
-		const boxObj = makeFileBoxEl('new', oneFile.name, oneFile.size); // 첨부파일 이미지 박스 오브젝트 생성
-		dropZoneEl.append(boxObj.boxEl); // 이미지 박스 엘리먼트를 첨부파일 뷰어에 추가
-		boxObj.btnEl.addEventListener("click", removeFileNew);
+// TR로부터 지역/위도/경도값을 취해 FORM INPUT 안에 넣어주는 함수
+function setLoc(el) {
 
-		// 이미지 여부에 따른 미리보기 로드 처리
-		if(oneFile.type.substr(0, 5) === "image") {
-			// 이미지 로드 예약 걸기
-			renderImageFromFile(oneFile, boxObj.imgEl);
-		} else {
-			console.log("이미지 타입이 아니네요");
-			// 파일 아이콘 보여주기
-			boxObj.imgEl.src="${pageContext.request.contextPath}/resources/img/normalFile.png";
-		}
-		
-		// 파일 저장소 변수에 새 파일 정보를 추가
-		fileStageArr[fileTempSeq] = oneFile;
-	}
-	
-
+	// 이벤트 버블링 막기
+	stopEvent();
+  
+	// 내가 클릭한 TR 태그로부터 값 추출
+	const data = {
+		idx: el.getAttribute("data-idx"),
+		region: el.getAttribute("data-region"),
+		longitude: el.getAttribute("data-longitude"),
+		latitude: el.getAttribute("data-latitude"),
+	};
+  
+	// 추출된 값을 각 INPUT 태그에 넣어주기
+	//	 document.querySelector("input[name='loc_idx']"	  ).value = data.idx;
+	document.querySelector("input[name='lecLocRegion']").value = data.region;
+	document.querySelector("input[name='lecLocLongitude']").value =
+		data.longitude;
+	document.querySelector("input[name='lecLocLatitude']").value = data.latitude;
+  
+	// 모달 토글
+	modal.toggle();
+  
 }
-
-// 파일 첨부현황에서 특정 기존파일을 삭제 예약하는 함수
-function removeFileOrg(e) {
-	// 이벤트 버블링 방지
-	e.preventDefault(); e.stopPropagation();
-	// 이벤트대상 엘리먼트 획득
-	const target = e.target.parentNode;
-	// 첨부목록 뷰에 있는 파일은 음영 처리한다.
-	target.classList.add("deleted");
-	// 삭제대상 lecFileIdx 획득
-	const serverIdx = target.getAttribute("data-server-idx");
-	// fileDeleteTargets 배열에는 DB의 idx를 추가한다.
-	fileDeleteTargets.push(serverIdx);
-	// 이벤트대상 엘리먼트에, 클릭 시 복구시키는 함수를 실행시키도록 리스너를 걸어놓는다.
-	target.removeEventListener("click", removeFileOrg);
-	target.addEventListener("click", restoreFileOrg);
-}
-
-// 파일 첨부현황에 삭제예약된 특정 기존파일을 다시 복구시키는 함수 
-function restoreFileOrg(e) {
-	// 이벤트 버블링 방지
-	e.preventDefault(); e.stopPropagation();
-	// 이벤트대상 객체 획득
-	const target = e.target;
-	// 첨부목록 뷰에 있는 파일의 음영 처리를 원복시킨다.
-	target.classList.remove("deleted");
-	// 삭제예약된 lecFileIdx 획득
-	const serverIdx = target.getAttribute("data-server-idx");
-	// fileDeleteTargets 배열에서 lecFileIdx를 뺀다.
-	fileDeleteTargets = arr_remove_val(fileDeleteTargets, serverIdx);
-	// 이벤트대상 엘리먼트에, 클릭 시 복구시키는 함수를 제거한다.
-	target.removeEventListener("click", restoreFileOrg);
-}
-
-//파일 첨부현황에서 특정 신규파일을 삭제 예약하는 함수
-function removeFileNew(e) {
-	// 이벤트 버블링 방지
-	e.preventDefault(); e.stopPropagation();
-	// 이벤트대상 엘리먼트 획득
-	const target = e.target.parentNode;
-	// 삭제대상 일련번호인 fileTempSeq 획득
-	const fileTempSeq = target.getAttribute("data-seq");
-	// 해당하는 fileTempSeq 일련번호 위치의 파일 데이터를 fileStageArr로부터 제거한다.
-	console.log(fileTempSeq + "번 원소 제거", fileStageArr);
-	delete fileStageArr[fileTempSeq]; 
-	console.log(fileTempSeq + "번 원소 제거 결과:", fileStageArr);
-	// 첨부파일 뷰에서도 엘리먼트를 정리한다.
-	document.getElementById("fileDropZone").removeChild(
-		document.querySelector("#fileDropZone > div.fileBox[data-seq='" + fileTempSeq + "']")
-	);
-}
-
-
-
-///////////////////////////////////// FORM의 최종 제출 처리 /////////////////////////////////////
-
-// 파일 저장소 정보 내용대로 <input type=file> 태그를 새로 만들어 리턴해줌
-function sendForm() {
-	
-	// formData 객체 생성: 기존 Form의 입력값을 전부 품은 객체 
-	let formData = new FormData(document.querySelector("#lecFormEl"));
-	
-	// formData에 파일 정보 모두 추가
-	for(var i in fileStageArr) formData.append("attach", fileStageArr[i]);
-	
-	// formData에 삭제 대상 파일 정보 추가
-	fileDeleteTargets.map((idx) => { formData.append("lecFileDelTargetList", idx)});
-	
-	// 완성된 전체 formData 확인
-	console.log("완성된 formData:");
-	for (var p of formData) console.log(p);
-
-	// AXIOS를 이용하여 FORM DATA 제출
-	axios.post("${pageContext.request.contextPath}/lecData/update", formData, {
-		headers: { "Content-type": "multipart/form-data" }
-	}).then((response) => {
-		location.href = "${pageContext.request.contextPath}/lec/detail/${lecDetailVO.lecIdx}";
-	}).catch((response) => {
-		console.log("에러");
-		console.log(response);
-	});
-
-}
-
-
-
-///////////////////////////////////// 실행부 /////////////////////////////////////
-
-// 변수설정
-let fileStageArr = {}; // 새 첨부파일 정보저장 오브젝트 (files 안에 Object형 file 객체들이 들어감)
-let fileTempSeq = -1; // 첨부파일 뷰에서 표시될 파일 고유 순번 (기존/신규 안 가림)
-let orgFilesArr = []; // 기존 파일의 정보를 담은 배열
-let fileDeleteTargets = []; // 삭제할 대상의 파일 정보를 담은 배열
-
 
 // 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
+	
+	
+	
+	//////////////////////////////////// 일반 ////////////////////////////////
+	
+	// 대여할 장소 방식 DIV에서 장소 방식을 선택하면, 해당 장소 방식의 DIV만 디스플레이시킨다. 
+	document.querySelector("form[name='lecForm'] div[data-toggles='placeType']").addEventListener("change", () => {
+		const type = document.forms['lecForm'].placeType.value;
+		document.querySelectorAll("form[name='lecForm'] div.layerPlaceDIVs").forEach((el) => {
+			if(el.getAttribute("data-layerType") === type) {
+				el.classList.add("d-flex");
+				el.classList.add("mb-4");
+				el.classList.remove("d-none");
+				if(el.getAttribute("data-layerType") === "map") {
+					map.relayout();
+				}
+			} else {
+				el.classList.add("d-none");
+				el.classList.remove("mb-4");
+				el.classList.remove("d-flex");
+			}
+		})
+	})
+	
+	
+	
+	////////////////////////////////////// 이 밑으로는 모두 카카오지도 관련이다. ///////////////////////
 
-    // 엘리먼트 및 환경변수 선언
-    console.log("엘리먼트 선언");
-    window.dropZoneEl = document.getElementById("fileDropZone");
-    window.dropZoneClassList = ["dragenter", "dragleave", "dragover", "drop"];
 
-    // 드래그한 파일이 드롭존에 진입했을 때
-    dropZoneEl.addEventListener("dragenter", (e) => { e.stopPropagation(); e.preventDefault(); onSpecificClasses(dropZoneEl, "dragenter", dropZoneClassList); });
-    // 드래그한 파일이 드롭존을 벗어났을 때
-    dropZoneEl.addEventListener("dragleave", (e) => { e.stopPropagation(); e.preventDefault(); onSpecificClasses(dropZoneEl, "dragleave", dropZoneClassList); });
-    // 드래그한 파일이 드롭존에 머물러 있을 때
-    dropZoneEl.addEventListener("dragover", (e) => { e.stopPropagation(); e.preventDefault(); onSpecificClasses(dropZoneEl, "dragover", dropZoneClassList); });
-    // 드래그한 파일이 마우스를 뗌으로써 최종 드랍되었을 때
-    dropZoneEl.addEventListener("drop", (e) => { e.preventDefault(); onSpecificClasses(dropZoneEl, "drop", dropZoneClassList);
-    
-    	// 첫 파일 올릴 때 드롭존 초기화함.
-    	if(orgFilesArr.length == 0 && Object.keys(fileStageArr).length === 0) initializeDropZone();
-    	
-        // 접수된 파일(들) 전송 정보 객체를 이벤트 객체에서 캐냄
-        var receivedFilesList = e.dataTransfer && e.dataTransfer.files;
-        
-        // 파일 유형 검사.
-        // 검사 1) 폴더일 경우 업로드 불가 = 빠꾸
-        // ※ 폴더도 객체 1개로 취급되기 때문에 length로 에러 검출하면 안 될 것 같다. 넣어도 작동은 하니 냅둠.
-        if(receivedFilesList.length < 1) { alert("폴더는 업로드 불가능합니다."); return; }
-        // 검사 2) .type 빈값이다 = 폴더다 = 에러 = 빠꾸
-        Array.from(receivedFilesList).forEach((one) => {
-            if(one.type.length == 0) { alert("일반 파일 외에는 업로드할 수 없습니다."); return; }
-        });
-        
-        // 검사가 끝났으면, 이걸로 업로드된 파일 정보 배열을 생성
-        const filesObjArr = Object.keys(receivedFilesList).map((i) => receivedFilesList[i]);
-        console.log("파일 오브젝트 목록 생성:fileObjArr\n", filesObjArr);
-        // 파일 정보 배열을 이용해 파일 목록에 추가 처리를 함
-        addFiles(filesObjArr);
-        
-    });
-    
-    // 기존 파일의 이미지 모두 로드
-    readyOrgFiles();
-    loadOrgFiles();
-    
-    // 수정 완료 버튼 클릭 시 이벤트 실행
-    document.getElementById("lecForm_submitBtn").addEventListener("click", sendForm);
 
+	///////////////////////////////////// 생성자부 /////////////////////////////////////
+	
+	// 카카오지도 객체 준비
+	// 1-1) 지도를 표시할 HTML 엘리먼트
+	container = document.querySelector("#map");
+	// 1-2) 지도 생성 옵션 객체
+	options = {
+		center: new kakao.maps.LatLng(37.5339851357212, 126.897094049199),
+		level: 4,
+	};
+	// 1-3) 지도 클래스
+	map = new kakao.maps.Map(container, options);
+	// 1-4) 주소 ↔ 좌표 변환 객체
+	geocoder = new kakao.maps.services.Geocoder();
+	// 1-5) 클릭한 위치를 표시할 마커(핀) 객체
+	marker = new kakao.maps.Marker();
+	// 1-6) 클릭한 위치에 대한 주소를 표시할 인포윈도우(말풍선) 객체
+	infowindow = new kakao.maps.InfoWindow({
+		zindex: 1,
+	});
+	// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+	searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+
+
+	///////////////////////////////////// 이벤트부 /////////////////////////////////////
+
+	// search-btn 클래스의 HTML 엘리먼트를 누르면,
+	// 지도 중심을 해당 클릭위치로 이동시켜줍니다.
+	$(".search-btn").click(function () {
+		// 주소로 좌표를 검색한 후, 
+		geocoder.addressSearch(
+			$("input[name=keyword]").val(),
+			function (result, status) {
+				// 정상적으로 검색이 완료됐으면
+				if (status === kakao.maps.services.Status.OK) {
+					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+					map.setCenter(coords);
+				}
+			}
+		);
+	});
+
+	// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+	kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+		searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
+			if (status === kakao.maps.services.Status.OK) {
+				var detailAddr = !!result[0].road_address
+					? "<div>도로명주소 : " + result[0].road_address.address_name + "</div>"
+					: "";
+				detailAddr += "<div>지번 주소 : " + result[0].address.address_name + "</div>";
+				var content =
+					'<div class="bAddr">'
+					+ '<span class="title">법정동 주소정보</span>'
+					+ detailAddr
+					+ "</div>";
+	  
+			// 마커를 클릭한 위치에 표시합니다
+			marker.setPosition(mouseEvent.latLng);
+			marker.setMap(map);
+	  
+			// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+			infowindow.setContent(content);
+			infowindow.open(map, marker);
+			$("input[name=lecLocRegion]").val(result[0].address.address_name);
+			var address = $("input[name=lecLocRegion]").val();
+	  
+			// 2. 카카오 장소변환 샘플 코드를 복사 후 일부 수정
+			// 주소로 좌표를 검색합니다
+			geocoder.addressSearch(address, function (result, status) {
+				var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+				$("input[name=lecLocLatitude]").val(result[0].y);
+				$("input[name=lecLocLongitude]").val(result[0].x);
+			});
+		  }
+		});
+	});
+
+	// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+	kakao.maps.event.addListener(map, "idle", function () {
+		searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+	});
+	
+
+	$("#showList").click(function() {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/gatherData/gatherList",
+			type : "get",
+			dataType : "json",
+			success:function(resp){
+				
+				var results = resp;
+				console.log("성공");
+				console.log(resp);
+				console.log(results);
+				
+				var totalStr = "";
+				$.each(results, function(i) {
+					var jsonStr = results[i];
+					console.log(i + "번째 TR: ", jsonStr);
+					totalStr += '<tr scope="row" data-idx="' + jsonStr.lecIdx + '"'
+						+ ' data-region="'+jsonStr.lecLocRegion+'" data-longitude="'+jsonStr.lecLocLongitude+'"'
+						+ ' data-latitude="' + jsonStr.lecLocLatitude+'"'
+						+ ' onclick="setLoc(this)">'
+						+ '<td class="text-center">' + jsonStr.lecIdx +'</td>'
+						+ '<td class="text-center">' + jsonStr.lecName +'</td>'
+						+ '<td>' + jsonStr.lecLocRegion +'</td></tr>';
+				});
+				console.log("전체 HTML: ", totalStr);
+				
+				var listTarget = document.querySelector(".locTBody");
+				console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
+				listTarget.innerHTML = totalStr;
+				
+			},
+			
+			error : function(e) {
+				console.log("실패", e);
+			}
+			
+		});
+	});
+	
 });
 
 </script>
+
+
+
 </HEAD>
 <BODY>
 <jsp:include page="/resources/template/body.jsp" flush="false" />
@@ -365,7 +291,7 @@ window.addEventListener("load", function() {
 			<div class="container">
 
 
-<form id="lecFormEl" name="lecForm" method="post" enctype="multipart/form-data" class="container">
+<form id="lecFormEl" name="lecForm" method="post" enctype="multipart/form-data" class="container fileUploadForm">
 	<input type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}" />
 	<div class="row mb-4">
 		<label>강좌 이름</label>
@@ -384,21 +310,31 @@ window.addEventListener("load", function() {
 		<label>강좌 상세내용</label>
 		<textarea rows="5" cols="20" name="lecDetail" required class="form-input">${lecDetailVO.lecDetail}</textarea>
 	</div>
-	<div class="row mb-4">
-		<label>대여할 장소</label>
-		<!-- 1. 장소 리스트에 있는 곳을 고를 경우  -->
-		<!-- 2. 직접 장소를 고를 경우(지도 api에서 클릭) -->
-		<!-- 3. 온라인 or null -->
-<!-- 		<select name="placeIdx" required class="form-input" id="selbox"> -->
-<%-- 		<c:forEach var="placeDto" items="${placeList}"> --%>
-<%-- 			<option>${placeDto.placeName}</option> --%>
-<%-- 		</c:forEach> --%>
-<!-- 			<option value="direct">직접입력</option> -->
-<!-- 		</select> -->
-		<!-- 상단의 select box에서 '직접입력'을 선택하면 나타날 인풋박스 -->
-<!-- 		<input type="text" id="selboxDirect" name="lecLocRegion"/> -->
-		<input type="number" name="placeIdx" class="form-input" required value=9999>
-		<div class="border border-1 border-primary" id="selboxDirect"></div>
+	<div class="row form-group">
+		<label for="placeType">대여할 장소 선택</label>
+		<div class="input-group p-0">
+			<div class="btn-group" data-toggles="placeType">
+				<input type="radio" name="placeType" class="btn-check" id="radioPlaceList" value="list">
+				<label class="btn btn-primary" for="radioPlaceList">장소 목록에서 선택</label>
+				<input type="radio" name="placeType" class="btn-check" id="radioPlaceMap" value="map">
+				<label class="btn btn-primary" for="radioPlaceMap">지도에서 선택</label>
+				<input type="radio" name="placeType" class="btn-check" id="radioPlaceOnline" value="online">
+				<label class="btn btn-primary" for="radioPlaceOnline">온라인</label>
+			</div>
+			<input type="hidden" name="placeType" />
+		</div>
+	</div>
+	<div class="row p-2 bg-warning rounded layerPlaceDIVs d-none" data-layerType="list">
+		<label>장소 목록</label>
+		<input type="text" name="lecName" required class="form-input" />
+	</div>
+	<div class="row p-2 bg-warning rounded container layerPlaceDIVs d-none" data-layerType="map">
+		<label for="searchForm_memberIdx" class="form-label mb-0">지도 검색</label>
+		<div id="map" class="md-3"></div>
+		<label>지역<input type="text" name="lecLocRegion"></label>
+		<input id="placeIdxHolder" type="text" name="placeIdx"	value="9999">
+		<label>위도<input id="placeLatiHolder" type="text" name="lecLocLatitude"></label>
+		<label>경도<input id="placeLongHolder" type="text" name="lecLocLongitude"></label>
 	</div>
 	<div class="row mb-4">
 		<label>수강료</label>
@@ -436,14 +372,14 @@ window.addEventListener("load", function() {
 					 		w-100 fs-4 border-5 border-light rounded p-5
 				 			justify-content-center align-items-center
 				 			text-dark bg-secondary bg-gradient">
-						<span id="fileDropZoneDefaultText">파일을 여기에 드래그하여 첨부해 보세요.</span>
+						<div id="fileDropZoneDefaultText" class="text-center">파일을 여기에 드래그하여 첨부해 보세요.</div>
 					</div>
 	 			</c:otherwise>
 	 		</c:choose>
  		</div>
  	</div>
 	<div class="row mb-4">
-		<input type="button" id="lecForm_submitBtn" value="수정 완료" class="form-btn">
+		<input type="button" id="fileUploadForm_submitBtn" value="수정 완료" class="form-btn">
 	</div>
 	<div id="orgFileData" class="d-none">
 		<c:forEach items="${fileList}" var="file">
