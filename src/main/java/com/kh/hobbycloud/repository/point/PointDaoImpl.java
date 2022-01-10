@@ -24,19 +24,19 @@ public class PointDaoImpl implements PointDao {
 	// 아무 검색조건을 넣지 않으면, 그냥 전체 목록을 갖고 옴.
 	@Override
 	public List<PointDto> select(PointSearchVO vo) {
-		return sqlSession.selectList("point.select");
+		return sqlSession.selectList("point.select", vo);
 	}
 
 	// IDX로 단일 데이터 획득
 	@Override
 	public PointDto getByIdx(Integer pointIdx) {
-		return sqlSession.selectOne("point.getByIdx");
+		return sqlSession.selectOne("point.getByIdx", pointIdx);
 	}
 
 	// 이름으로 단일 데이터 획득
 	@Override
-	public PointDto getByName(Integer pointName) {
-		return sqlSession.selectOne("point.getByName");
+	public PointDto getByName(String pointName) {
+		return sqlSession.selectOne("point.getByName", pointName);
 	}
 
 	// 포인트상품 신규

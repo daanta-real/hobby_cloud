@@ -9,7 +9,7 @@ public interface PointDao {
 	public Integer getSequence();
 	public List<PointDto> select(PointSearchVO vo);
 	public PointDto getByIdx(Integer pointIdx);
-	public PointDto getByName(Integer pointName);
+	public PointDto getByName(String pointName);
 	public boolean insert(PointDto dto);
 	public boolean delete(Integer pointIdx);
 	public boolean update(PointDto dto);

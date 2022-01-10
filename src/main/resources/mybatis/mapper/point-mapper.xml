@@ -13,25 +13,25 @@
 	<!-- idx로 단일 데이터 획득 -->
 	<select id="getByIdx" parameterType="integer" resultType="PointDto">
 		SELECT * FROM point
-		WHERE point_idx = #{val};
+		WHERE point_idx = #{val}
 	</select>
 	
 	<!-- idx로 단일 데이터 획득 -->
 	<select id="getByName" parameterType="string" resultType="PointDto">
 		SELECT * FROM point
-		WHERE point_name = #{val};
+		WHERE point_name = #{point}
 	</select>
 	
 	<!-- 검색조건을 넣어 목록 획득 -->
 	<select id="select" parameterType="PointSearchVO" resultType="PointDto">
 		SELECT * FROM point
 		<where>
-			<if test="pointIdx != null and !pointIdx.equals('')">AND point_idx = #{pointIdx}</if>
-			<if test="pointName != null and !pointName.equals('')">AND INSTR(point_name, #{pointName})</if>
-			<if test="pointPriceMin != null and !pointPriceMin.equals('')">AND point_price <![CDATA[>=]]> #{pointPriceMin}</if>
-			<if test="pointPriceMax != null and !pointPriceMax.equals('')">AND point_price <![CDATA[<=]]> #{pointPriceMax}</if>
-			<if test="pointAmountMin != null and !pointAmountMin.equals('')">AND point_amount <![CDATA[>=]]> #{pointAmountMin}</if>
-			<if test="pointAmountMax != null and !pointAmountMax.equals('')">AND point_amount <![CDATA[<=]]> #{pointAmountMax}</if>
+			<if test="pointIdx != null">AND point_idx = #{pointIdx}</if>
+			<if test="pointName != null and !pointName.equals('')">AND INSTR(point_name, #{pointName}) > 0</if>
+			<if test="pointPriceMin != null">AND point_price <![CDATA[>=]]> #{pointPriceMin}</if>
+			<if test="pointPriceMax != null">AND point_price <![CDATA[<=]]> #{pointPriceMax}</if>
+			<if test="pointAmountMin != null">AND point_amount <![CDATA[>=]]> #{pointAmountMin}</if>
+			<if test="pointAmountMax != null">AND point_amount <![CDATA[<=]]> #{pointAmountMax}</if>
 		</where>
 		ORDER BY point_idx DESC
 	</select>
@@ -54,12 +54,13 @@
 
 	<!-- 포인트상품 내용 수정 -->
 	<update id="update" parameterType="PointDto">
-		UPDATE INTO point
-		SET (
+		UPDATE point
+		SET
 			point_name = #{pointName},
 			point_price = #{pointPrice},
 			point_amount = #{pointAmount}
-		) WHERE point_idx = #{pointIdx}
+		WHERE
+			point_idx = #{pointIdx}
 	</update>
 	
 </mapper>

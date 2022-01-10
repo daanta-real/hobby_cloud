@@ -35,10 +35,11 @@ public class PointController {
 	// 포인트 상품 상세조회 페이지 (여기서는 무조건 idx로만)
 	@GetMapping("/detail/{pointIdx}")
 	public String detail(@PathVariable int pointIdx, Model model) {
-		log.debug("=============== /point/detail/{} GET 포인트상품 상세조회 페이지 진입. 입력 pointIdx: {}", pointIdx);
+		log.debug("=============== /point/detail/{} GET 포인트상품 상세조회 페이지 진입. 입력 pointIdx: {}", pointIdx, pointIdx);
 		PointDto dto = pointDao.getByIdx(pointIdx);
+		log.debug("=============== /point/detail/{} GET 뽑아낸 DTO 내용: {}", pointIdx, dto);
 		model.addAttribute("dto", dto);
-		return "point/detail/" + pointIdx;
+		return "point/detail";
 	}
 
 	// 포인트 상품 등록 페이지
@@ -54,15 +55,16 @@ public class PointController {
 		log.debug("=============== /point/insert POST 포인트상품 등록 처리기 진입. 입력 PointDto: {}", dto);
 		pointDao.insert(dto);
 		log.debug("=============== /point/insert POST 포인트상품 등록이 정상적으로 완료되었습니다.");
-		return "redirect:"; // 포인트 목록으로 돌아감
+		return "redirect:/point"; // 포인트 목록으로 돌아감
 	}
 
 	// 포인트 상품 삭제 처리기
 	@GetMapping("/delete/{pointIdx}")
 	public String delete(@PathVariable int pointIdx) {
-		log.debug("=============== /point/delete/{} GET 포인트상품 삭제 처리기 진입. 입력 pointIdx: {}", pointIdx);
+		log.debug("=============== /point/delete/{} GET 포인트상품 삭제 처리기 진입. 입력 pointIdx: {}", pointIdx, pointIdx);
 		pointDao.delete(pointIdx);
-		return "redirect:select";
+		log.debug("=============== /point/delete/{} GET 포인트상품 삭제 처리가 정상적으로 완료되었습니다.", pointIdx, pointIdx);
+		return "redirect:/point"; // 포인트 목록으로 돌아감
 	}
 
 	// 포인트 상품 수정 페이지
@@ -79,7 +81,8 @@ public class PointController {
 	public String udpate_execute(PointDto dto, Model model) {
 		log.debug("=============== /point/update POST 포인트상품 수정 처리기 진입. 입력 PointDto: {}", dto);
 		pointDao.update(dto);
-		return "redirect:"; // 포인트 목록으로 돌아감
+		log.debug("=============== /point/update POST 포인트상품 수정 처리가 정상적으로 완료되었습니다.", dto);
+		return "redirect:/point"; // 포인트 목록으로 돌아감
 	}
 
 }

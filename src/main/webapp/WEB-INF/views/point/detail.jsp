@@ -15,8 +15,8 @@
 window.addEventListener("load", function() {
 });
 
-deleteConfirm() {
-	if(confirm('정말로 삭제하시겠습니까?')) location.href = "delete/${pointIdx}";
+function deleteConfirm() {
+	if(confirm('정말로 삭제하시겠습니까?')) location.href = "${root}/point/delete/${pointIdx}";
 }
 
 </script>
@@ -54,25 +54,26 @@ deleteConfirm() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 내용 -->
-		<div class="form-group mb-4 col-12">
-			<h3>포인트상품 번호</h3>
-			<h4>${dto.getPointIdx()}</h4>
+		<div class="form-group my-5 col-12">
+			<h3 class="text-info">포인트상품 번호</h3>
+			<h5>${dto.getPointIdx()}</h5>
 		</div>
-		<div class="form-group mb-4 col-12">
-			<h3>포인트상품명</h3>
-			<h4>${dto.getPointName()}</h4>
+		<div class="form-group my-5 col-12">
+			<h3 class="text-info">포인트상품명</h3>
+			<h5>${dto.getPointName()}</h5>
 		</div>
-		<div class="form-group mb-4 col-12">
-			<h3>포인트상품 가격</h3>
-			<h4>$&#8361;&nbsp;<fmt:formatNumber value="${dto.getPointPrice()}" pattern="#,###" /></h4>
+		<div class="form-group my-5 col-12">
+			<h3 class="text-info">포인트상품 가격</h3>
+			<h5>&#8361;&nbsp;<fmt:formatNumber value="${dto.getPointPrice()}" pattern="#,###" /></h5>
 		</div>
-		<div class="form-group mb-4 col-12">
-			<h3>포인트상품 포인트 충전량</h3>
-			<h4><fmt:formatNumber value="${dto.getPointAmount()}" pattern="#,###" /></h4>
+		<div class="form-group my-5 col-12">
+			<h3 class="text-info">포인트상품 포인트 충전량</h3>
+			<h5><fmt:formatNumber value="${dto.getPointAmount()}" pattern="#,###" /></h5>
 		</div>
 		<div class="row p-sm-2 mx-1 mb-5">
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-				<a href="/" class="col-auto btn btn-sm btn-outline-primary">전체 목록</a>
+				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/point/';">전체 목록</a></button>
+				<button type="button" class="col-auto btn btn-sm btn-outline-primary mx-3" onclick="location.href='${root}/point/update/${dto.getPointIdx()}';" style="margin-left:auto !important;">상품 수정</button>
 				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="deleteConfirm();">상품 삭제</button>
 			</nav>
 		</div>

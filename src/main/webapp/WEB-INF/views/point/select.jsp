@@ -69,13 +69,13 @@ window.addEventListener("load", function() {
 						</div>
 						<div class="row d-flex flex-start justify-content-center">
 							<div class="col-5">
-								<input name="pointPriceMin" id="searchForm_pointPriceMin" type="number" class="form-control" placeholder="최소 금액" value="${param.pointPriceMin}">
+								<input name="pointPriceMin" id="searchForm_pointPriceMin" type="number" class="form-control" placeholder="최소 금액" value="${param.pointPriceMin}" min=1000 max=1000000>
 							</div>
 							<div class="col-auto d-flex justify-content-center align-items-center p-0">
 								<span>~</span>
 							</div>
 							<div class="col-5">
-								<input name="pointPriceMax" id="searchForm_pointPriceMax" type="number" class="form-control" placeholder="최대 금액" value="${param.pointPriceMax}">
+								<input name="pointPriceMax" id="searchForm_pointPriceMax" type="number" class="form-control" placeholder="최대 금액" value="${param.pointPriceMax}" min=1000 max=1000000>
 							</div>
 						</div>
 					</div>
@@ -85,13 +85,13 @@ window.addEventListener("load", function() {
 						</div>
 						<div class="row d-flex flex-start justify-content-center">
 							<div class="col-5">
-								<input name="pointAmountMin" id="searchForm_pointAmountMin" type="number" class="form-control" placeholder="최소 충전량" value="${param.pointAmountMin}">
+								<input name="pointAmountMin" id="searchForm_pointAmountMin" type="number" class="form-control" placeholder="최소 충전량" value="${param.pointAmountMin}" min=1000 max=10000000>
 							</div>
 							<div class="col-auto d-flex justify-content-center align-items-center p-0">
 								<span>~</span>
 							</div>
 							<div class="col-5">
-								<input name="pointAmountMax" id="searchForm_pointAmountMin" type="number" class="form-control" placeholder="최대 충전량" value="${param.pointAmountMax}">
+								<input name="pointAmountMax" id="searchForm_pointAmountMin" type="number" class="form-control" placeholder="최대 충전량" value="${param.pointAmountMax}" min=1000 max=10000000>
 							</div>
 						</div>
 					</div>
@@ -118,7 +118,7 @@ window.addEventListener("load", function() {
 						</thead>
 						<tbody>
 							<c:forEach var="PointDto" items="${list}">
-								<tr class="cursor-pointer" onclick="location.href='/detail/${PointDto.getPointIdx()}'">
+								<tr class="cursor-pointer" onclick="location.href='${root}/point/detail/${PointDto.getPointIdx()}'">
 									<td class="text-center align-middle text-nowrap">${PointDto.getPointIdx()}</td>
 									<td class="text-center align-middle text-nowrap">${PointDto.getPointName()}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${PointDto.getPointPrice()}" pattern="#,###" /></td>
@@ -130,8 +130,8 @@ window.addEventListener("load", function() {
 				</div>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-				<a href="${root}/point" class="col-auto btn btn-sm btn-outline-primary text-primary">전체 목록</a>
-				<a href="${root}/point/insert" class="col-auto btn btn-sm btn-outline-primary text-primary">신규상품 추가</a>
+				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/point/';">전체 목록</a></button>
+				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/point/insert';">신규상품 추가</a></button>
 			</nav>
 		</div>
 	</SECTION>

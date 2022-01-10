@@ -37,9 +37,7 @@
 	</delete>
 	
 	<!-- 관리자용: 결제이력 목록 조회 -->
-	<select id="search"
-			resultType="PaidVO"
-			parameterType="PaidSearchVO">
+	<select id="search" parameterType="PaidSearchVO" resultType="PaidVO">
 		SELECT p.*, m.member_id, m.member_nick
 		FROM paid p
 		INNER JOIN member m

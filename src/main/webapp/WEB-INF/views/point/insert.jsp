@@ -55,12 +55,12 @@ window.addEventListener("load", function() {
 				<form name="pointForm" method="post" class="row container d-flex justify-content-center">
 					<div class="form-group row mb-4">
 						<label for="form_pointName" class="form-label mb-0">포인트상품명</label>
-						<input name="pointName" id="form_pointName" type="text" class="form-input p-1 border-radius-all-25" placeholder="포인트상품 이름을 입력하세요" required>
+						<input name="pointName" id="form_pointName" type="text" class="form-input p-2 px-3 border-radius-all-25" placeholder="포인트상품 이름을 입력하세요" required>
 					</div>
 					<div class="row mb-4">
 						<label>포인트상품 가격</label>
 						<div class="input-group flex-nowrap grayInputGroup p-0">
-							<div class="input-group-text">$&#8361;</div>
+							<div class="input-group-text">&#8361;</div>
 							<input type="number" name="pointPrice" placeholder="가격을 입력하세요" required class="form-control">
 						</div>
 					</div>
@@ -73,7 +73,7 @@ window.addEventListener("load", function() {
 					</div>
 					<div class="row p-sm-2 mx-1 mb-5">
 						<nav class="row p-0 pt-4 d-flex justify-content-between">
-							<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href(-1);">취소</button>
+							<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="history.go(-1);">취소</button>
 							<button type="submit" class="col-auto btn btn-sm btn-outline-primary">등록</button>
 						</nav>
 					</div>
