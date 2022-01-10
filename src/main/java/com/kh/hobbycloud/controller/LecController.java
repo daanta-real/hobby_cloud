@@ -294,11 +294,17 @@ public class LecController {
 //		MemberDto memberDto = memberDao.get(memberId);
 //		if(memberPw == memberDto.getMemberPw()) {
 //		//입력받은 비밀번호와 세션에 저장된 비밀번호가 같다면
-//		//내 포인트 감소, 내 강좌 추가, 그리고 강좌 신청 인원
+//		//내 포인트 감소, 내 강좌 추가, 그리고 강좌 신청 인원 차면 막기
 //		//내강좌에 강좌가 등록된 db idx
 //		}
 //	
 //	}
 	
-
+	//내 강좌
+	@GetMapping("/my_lec")
+	public String my_lec(HttpSession session, Model model) {
+		String memberId = (String)session.getAttribute("memberId");
+//		MyLecDto myLecDto = myLecDao.getMyLec(memberId);
+		return "lec/my_lec";
+	}
 }

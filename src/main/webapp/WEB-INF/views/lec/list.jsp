@@ -50,8 +50,6 @@
 			</thead>
 			<tbody>
 			
-			<!-- 아니 이거 조건을 어케걸어; -->
-			<c:if test="${param} != null">
 			<c:forEach var="lecListVO" items="${listSearch}">
 				<tr>
 					<td>${lecListVO.lecIdx}</td>
@@ -73,7 +71,6 @@
 					</td>
 				</tr>
 			</c:forEach>
-			</c:if>
 			
 			<c:forEach var="lecListVO" items="${list}">
 				<tr>
