@@ -38,10 +38,6 @@ const fileUploadTargetPage = "${root}/lecData/register/";
 	padding-top:56.25%;
 }
 
-.grayInputGroup :is(div, input) {
-	border-color: var(--input-border-color) !important;
-}
-
 </style>
 <script type='text/javascript'>
 

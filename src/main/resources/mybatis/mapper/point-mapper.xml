@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="point">
+	
+	<!-- 신규 시퀀스 번호 획득 -->
+	<select id="getSequence" resultType="integer">
+		SELECT point.NEXTVAL FROM DUAL
+	</select>
+	
+	<!-- idx로 단일 데이터 획득 -->
+	<select id="getByIdx" parameterType="integer" resultType="PointDto">
+		SELECT * FROM point
+		WHERE point_idx = #{val};
+	</select>
+	
+	<!-- idx로 단일 데이터 획득 -->
+	<select id="getByName" parameterType="string" resultType="PointDto">
+		SELECT * FROM point
+		WHERE point_name = #{val};
+	</select>
+	
+	<!-- 검색조건을 넣어 목록 획득 -->
+	<select id="select" parameterType="PointSearchVO" resultType="PointDto">
+		SELECT * FROM point
+		<where>
+			<if test="pointIdx != null and !pointIdx.equals('')">AND point_idx = #{pointIdx}</if>
+			<if test="pointName != null and !pointName.equals('')">AND INSTR(point_name, #{pointName})</if>
+			<if test="pointPriceMin != null and !pointPriceMin.equals('')">AND point_price <![CDATA[>=]]> #{pointPriceMin}</if>
+			<if test="pointPriceMax != null and !pointPriceMax.equals('')">AND point_price <![CDATA[<=]]> #{pointPriceMax}</if>
+			<if test="pointAmountMin != null and !pointAmountMin.equals('')">AND point_amount <![CDATA[>=]]> #{pointAmountMin}</if>
+			<if test="pointAmountMax != null and !pointAmountMax.equals('')">AND point_amount <![CDATA[<=]]> #{pointAmountMax}</if>
+		</where>
+		ORDER BY point_idx DESC
+	</select>
+	
+	<!-- 포인트상품 등록 -->
+	<insert id="insert" parameterType="PointDto">
+		INSERT INTO point(
+			point_idx, point_name, point_price, point_amount
+		)
+		VALUES (
+			point_seq.NEXTVAL, #{pointName}, #{pointPrice}, #{pointAmount}
+		)
+	</insert>
+	
+	<!-- 포인트상품 삭제 -->
+	<delete id="delete" parameterType="integer">
+		DELETE FROM point
+		WHERE point_idx = #{val}
+	</delete>
+
+	<!-- 포인트상품 내용 수정 -->
+	<update id="update" parameterType="PointDto">
+		UPDATE INTO point
+		SET (
+			point_name = #{pointName},
+			point_price = #{pointPrice},
+			point_amount = #{pointAmount}
+		) WHERE point_idx = #{pointIdx}
+	</update>
+	
+</mapper>

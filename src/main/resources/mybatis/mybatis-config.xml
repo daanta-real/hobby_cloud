@@ -44,11 +44,14 @@
 		<package name="com.kh.hobbycloud.entity.pay"/>
 		<package name="com.kh.hobbycloud.entity.petitions"/>
 		<package name="com.kh.hobbycloud.entity.place"/>
+		<package name="com.kh.hobbycloud.entity.point"/>
     <!-- VO들 -->
 		<package name="com.kh.hobbycloud.vo.gather"/>
 		<package name="com.kh.hobbycloud.vo.lec"/>
 		<package name="com.kh.hobbycloud.vo.notice"/>
 		<package name="com.kh.hobbycloud.vo.petitions" />
+		<package name="com.kh.hobbycloud.vo.pay" />
+		<package name="com.kh.hobbycloud.vo.point" />
 	</typeAliases>
 	
 </configuration>
