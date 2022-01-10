@@ -355,38 +355,69 @@ function setLoc(el) {
 				
 	<form action="insert" method="post" enctype="multipart/form-data" id="insert-form">
 
+	<div class="mb-3 justify-content-center">
+    <label for="" class="form-label">제목</label>
+    <input type="text" name="gatherName" class="form-control">
+  </div>
+			 	
+		 취미분류 <select name="lecCategoryName" class="selectpicker" data-style="btn-inverse">
+    	 <option>운동</option>
+    	  <option>미술</option>
+      	<option>음악</option>
+  		</select>
+	<div class="form-group justify-content-center">
+      <label for="exampleTextarea" class="form-label mt-4">내용</label>
+      <textarea class="form-control" name="gatherDetail" id="exampleTextarea" rows="10" style="resize:none"
+      ></textarea>
+    </div>
+	
+	
 
+  	<div class="mb-3 justify-content-center">
+    <label for="" class="form-label">시작시간</label>
+    <input type="date"   id="startDate">
+    <input type="time"  id="startTime"> 
+    <input id="start" type="hidden" name="gatherStart">
+  </div>
+  
+    	<div class="mb-3 justify-content-center">
+    <label for="" class="form-label">종료시간</label>
+    <input type="date"   id="endDate">
+    <input type="time"  id="endTime"> 
+    <input id="end" type="hidden" name="gatherEnd">
+  </div>
+  
+  	<div class="mb-3 justify-content-center">
+    <label for="" class="form-label">인원</label>
+    <input type="number" name="gatherHeadCount" class="form-control">
+  </div>
+ <button type="button" id="showList"class="btn btn-primary m-3 p-3" 
+data-bs-toggle="modal" data-bs-target="#modal">장소 찾기</button> 
+  	<div class="mb-3 justify-content-center">
+    <label for="" class="form-label">지역</label>
+    <input type="text" name="gatherLocRegion" class="form-control">
+  </div>
+
+ <div class="form-group justify-content-center">
+      <label for="formFile" class="form-label mt-4"></label>
+      <input class="form-control" type="file" id="formFile" name="attach" enctype="multipart/form-data" multiple>
+    </div>
 	
-	 취미분류 <input type="text" name="lecCategoryName" value="운동">
 	  <br>
-	장소 idx<input id="placeIdxHolder" type="hidden" name="placeIdx"	value="9999">
-	 제목	<input type="text" name="gatherName"value="제목"> 
-		상세내용<input type="text" name="gatherDetail" value="내용"> <br>
-		 작성일<input type="date"	name="gatherRegistered"> 
-		인원<input type="text"	name="gatherHeadCount" value="1">
-		 지역<input type="text"	name="gatherLocRegion" value="지역">
-		 <br> 
-		 위도<input	id="placeLatiHolder" type="text" name="gatherLocLatitude">
-		 경도<input id="placeLongHolder" type="text" name="gatherLocLongitude">
-		
-		 시작시간<input id="startDate" type="date">
-		 	 <input id="startTime" type="time">
-		 <input id="start" type="hidden" name="gatherStart">
-		<br>
-		 종료시간 	<input id="endDate" type="date">
-		 		<input id="endTime" type="time">
-		<input id="end" type="hidden" name="gatherEnd">
-		 최대원인원수<input	type="text" name="gatherMax" value="1">
-		 현재오픈여부 <input	type="text" name="gatherStaus" value="1"> <br>
-		 
-		 <input type="file" name="attach" enctype="multipart/form-data" multiple>
-		<input id="insert-btn" type="submit" value="전송하기">
-	 <br> 
+	<input id="placeIdxHolder" type="hidden" name="placeIdx" value="9999">
+	<input	id="placeLatiHolder" type="hidden" name="gatherLocLatitude">
+	<input id="placeLongHolder" type="hidden" name="gatherLocLongitude">
 	
+			<div class="form-row text-center">
+		 <div class="col-12 pt-3"> 
+		  <input type="submit"  id="insert-btn"class="btn btn-primary my-3"> 
+        <a href="${pageContext.request.contextPath}/gather/list"
+				 class="col-auto btn  btn-secondary mx-1 my-3">취소</a>
+    </div>
+	</div>
 	</form>
 
-<button type="button" id="showList"class="btn btn-primary m-3 p-3" 
-data-bs-toggle="modal" data-bs-target="#modal">모달 열기</button>
+
 
 			</div>
 			
