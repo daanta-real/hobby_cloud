@@ -5,7 +5,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha1.min.js"></script>
-    
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51857ee590e6cc2b1c3f4879f1fdf7b2&libraries=services,clusterer,drawing"></script>
 <script>
 	 
     $(function(){    	
@@ -29,6 +29,12 @@
 	             $("#inputMail").attr("readonly", true);
 	         }
 		   });
+		
+		 $("#placeAddress").change(function(){
+			 alert("placeAddress 값이 변경되었습니다.");
+				var placeAddress = $('#placeAddress').val();
+			     	console.log("주소값"+  $('#placeAddress').val());
+			})
     });
     
     /* 주소 검색 모듈 
@@ -96,9 +102,58 @@
 		            }
 		        }).open();
 		    };	
-		 });
-</script>
+		 })
+    
+	$(function(){
+		//지도 생성 준비 코드
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		    mapOption = {
+		        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+		        level: 3 // 지도의 확대 레벨
+		    };  
+		
+		// 지도를 생성합니다    
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+		
+		// 주소-좌표 변환 객체를 생성합니다
+		var geocoder = new kakao.maps.services.Geocoder();
+		
+		// 주소로 좌표를 검색합니다
+		geocoder.addressSearch('input[name=placeAddress]', function(result, status) {
+		
+		    // 정상적으로 검색이 완료됐으면 
+		     if (status === kakao.maps.services.Status.OK) {
+				
+				// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
 
+				var address = $("input[name=placeAddress]").val();
+					
+		        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+				var message = 'latlng: new kakao.maps.LatLng(' + result[0].y + ', ';
+				message += result[0].x + ')';
+				var resultDiv = document.getElementById('clickLatlng'); 
+				resultDiv.innerHTML = message;
+				console.log("위도 : "+result[0].y);
+				console.log("경도 : "+result[0].x);
+				
+		        // 결과값으로 받은 위치를 마커로 표시합니다
+		        var marker = new kakao.maps.Marker({
+		            map: map,
+		            position: coords
+		        });
+		
+		        // 인포윈도우로 장소에 대한 설명을 표시합니다
+		        var infowindow = new kakao.maps.InfoWindow({
+		            content: '<div style="width:150px;text-align:center;padding:6px 0;">장소</div>'
+		        });
+		        infowindow.open(map, marker);
+		
+		        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+		        map.setCenter(coords);
+		    } 
+		});
+	});
+</script>
 <form method="post" enctype="multipart/form-data">
 
 <div class="container-400 container-center">
@@ -133,10 +188,12 @@
 			 	주소 찾기
 			 	</button>
 		<label>강의장 상세주소</label>
-			<input type="text" id="placeAddress" name="placeAddress" placeholder="상세 주소" required readonly>
+			<input type="text"  id="placeAddress" name="placeAddress" placeholder="상세 주소" required readonly>
 		 <label>강의장 상세주소</label>
 			<input type="text" id="placeDetailAddress" name="placeDetailAddress" placeholder="상세 주소">
 			<input type="hidden" name="address" >
+			<div id="map" style="width:100%;height:350px;"></div>
+			<div id="clickLatlng"></div>
 	</div>
 	</div>
 	<div class="row">
