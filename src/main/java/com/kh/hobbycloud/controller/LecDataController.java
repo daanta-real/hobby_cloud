@@ -22,7 +22,11 @@ import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
+
+import com.kh.hobbycloud.vo.lec.LecListVO;
+
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
+
 import com.kh.hobbycloud.vo.lec.LecReplyVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +41,9 @@ public class LecDataController {
 
 	@Autowired
 	private LecService lecService;
+	
+	@Autowired
+	private LecDao lecDao;
 
 	// 변수준비: 서버 주소 관련
 	@Autowired private String SERVER_ROOT;   // 환경변수로 설정한 사용자 루트 주소
@@ -148,5 +155,11 @@ public class LecDataController {
 		}
 
 		return map;
+	}
+	
+	//모달창에 쓸 목록 조회(임시용. 장소 만들어지면 대체해야함)
+	@GetMapping("/lecList")
+	public List<LecListVO> lecList(){
+		return lecDao.list();
 	}
 }
