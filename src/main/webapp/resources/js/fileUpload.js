@@ -198,7 +198,7 @@ function sendForm() {
 	for (var p of formData) console.log(p);
 
 	// AXIOS를 이용하여 FORM DATA 제출
-	axios.post(fileUploadTargetPage, formData, {
+	axios.post(fileSubmitAjaxPage, formData, {
 		headers: { "Content-type": "multipart/form-data" }
 	}).then((response) => {
 		location.href = response.data;
