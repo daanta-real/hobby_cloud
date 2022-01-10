@@ -43,6 +43,6 @@ public class PlaceEditVO {
 	private String lecCategoryName;
 		
 	// 삭제할 파일 목록 (edit.jsp로부터 받아옴)
-	private List<String> placeFileDelTargetList; 	
+	private List<String> fileDelTargetList; 	
 
 }

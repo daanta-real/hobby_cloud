@@ -1,6 +1,9 @@
 package com.kh.hobbycloud.vo.place;
 
 import java.sql.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
@@ -27,11 +30,11 @@ public class PlaceRegisterVO {
 	
 	//장소사진 테이블
 	private int placeFileIdx;
+	List<MultipartFile> attach; // 추가될 첨부파일들 정보 객체
 	
 	//member 테이블
 	private int memberIdx;
 	
 	//취미 분류 이름
 	private String lecCategoryName;
-
 }

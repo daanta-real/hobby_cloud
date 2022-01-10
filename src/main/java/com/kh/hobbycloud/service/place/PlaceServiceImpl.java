@@ -133,11 +133,11 @@ public class PlaceServiceImpl implements PlaceService{
 		log.debug("======================== PlaceService.update() 실시 완료. 결과 = {}", isSucceedCt);
 		
 		// (선택) 파일삭제 idx 목록에 해당되는 첨부파일들을 place_file 테이블에서 삭제한다.
-		List<String> placeFileDelTargetList = placeEditVO.getPlaceFileDelTargetList();
-		log.debug("========삭제할 파일 리스트: {}", placeFileDelTargetList);
-		if(placeFileDelTargetList != null && placeFileDelTargetList.size() > 0) {
+		List<String> fileRemoveList = placeEditVO.getFileDelTargetList();
+		log.debug("========삭제할 파일 리스트: {}", fileRemoveList);
+		if(fileRemoveList != null && fileRemoveList.size() > 0) {
 			log.debug("==== 삭제할 파일 리스트가 있으므로 이에 대해 삭제 작업합니다.");
-			placeFileDao.deleteList(placeEditVO.getPlaceIdx(), placeEditVO.getPlaceFileDelTargetList());
+			placeFileDao.deleteList(placeEditVO.getPlaceIdx(), fileRemoveList);
 		}
 		
 		// (선택) 장소 파일을 파일 테이블과 실제 하드디스크에 저장
