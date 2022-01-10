@@ -25,20 +25,19 @@
 --%>
 <SCRIPT TYPE="text/javascript">
 const fileImageStorePath = "${root}/lec/lecFile/";
-const fileUploadTargetPage = "${root}/lecData/register/";
+const fileSubmitAjaxPage = "${root}/lecData/register/";
 </SCRIPT>
 <!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
 <SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fileUpload.css" />
 
 <TITLE>HobbyCloud - 강좌 등록</TITLE>
+
 <style type="text/css">
-
-#map {
-	padding-top:56.25%;
-}
-
+#map { padding-top:56.25%; }
 </style>
+
+<!-- 카카오지도 관련 처리부 -->
 <script type='text/javascript'>
 
 ///////////////////////////////////// 전역변수부 /////////////////////////////////////

@@ -160,8 +160,8 @@
 						<td>${GatherHeadsVO.memberNick}</td>
 						<td>${GatherHeadsVO.gatherIdx}</td>
 					</tr>
-				</c:forEach> 
-				
+				</c:forEach>   
+				<h1>참여자 수 :${status.count} / ${GatherVO.gatherHeadCount}</h1> 
 				<c:choose>
 					<c:when test="${isFull}">
 					</c:when>
@@ -174,7 +174,7 @@
 						width="30%" class="image image-round image-border">
 				</c:forEach></td>
 
-	<h1>참여자 수 :${status.count} / ${GatherVO.gatherHeadCount}</h1> 
+	
 
 		</tr>
 		<!-- 소모임 참가 /취소 버튼 -->
@@ -250,6 +250,7 @@
         <label for="1-star" class="star">★</label>
      </div>  
 	내용 : <input type="text" name="gatherReviewDetail">
+	<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
 		 <input	type="submit" value="전송하기">
 </form>
 
@@ -266,11 +267,11 @@
 </div>
 </template>
 
-<div id="resultReivew"></div>
+<div id="resultReivew"></div> 
 
 <h1>차트 예제</h1>
-
-<canvas id="myChart" width="10" height="10"></canvas>
+ 
+<canvas id="myChart" width="1%" height="1%"></canvas>
 
 
 

@@ -99,11 +99,6 @@ public class LecController {
 
 	}
 
-	@GetMapping("/register_success")
-	public String register_success() {
-		return "lec/register_success";
-	}
-
 	//상세
 	@RequestMapping("/detail/{lecIdx}")
 	public String detail(@PathVariable int lecIdx, HttpSession session, Model model) {

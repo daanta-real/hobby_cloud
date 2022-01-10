@@ -8,7 +8,6 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
 
 
 
@@ -26,17 +25,233 @@
 --%>
 <SCRIPT TYPE="text/javascript">
 const fileImageStorePath = "${root}/lec/lecFile/";
-const fileUploadTargetPage = "${root}/lecData/update/";
+const fileSubmitAjaxPage = "${root}/lecData/update/";
 </SCRIPT>
 <!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
 <SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fileUpload.css" />
 
-
+<TITLE>HobbyCloud - 강좌 수정</TITLE>
 
 <style type="text/css">
-#selboxDirect { min-width:200px; min-height:200px; }
+#map { padding-top:56.25%; }
+.grayInputGroup :is(div, input) { border-color: var(--input-border-color) !important; }
 </style>
+
+<!-- 카카오지도 관련 처리부 -->
+<script type='text/javascript'>
+
+///////////////////////////////////// 전역변수부 /////////////////////////////////////
+
+// 카카오맵 전역변수 선언. 이렇게 안 하면 onload 이후 관련기능을 쓸 수 없기 때문에 전역변수로 미리 불러와 준다.
+let container, options, map, geocoder, marker, infowindow;
+
+///////////////////////////////////// 라이브러리부 /////////////////////////////////////
+
+// 좌표로 행정동 주소 정보를 요청합니다
+function searchAddrFromCoords(coords, callback) {
+	geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+}
+
+// 좌표로 법정동 상세 주소 정보를 요청합니다
+function searchDetailAddrFromCoords(coords, callback) {
+	geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+}
+
+// 지도 좌측 상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+function displayCenterInfo(result, status) {
+	if (status === kakao.maps.services.Status.OK) {
+		var infoDiv = document.getElementById("centerAddr");
+	}
+}
+
+// TR로부터 지역/위도/경도값을 취해 FORM INPUT 안에 넣어주는 함수
+function setLoc(el) {
+
+	// 이벤트 버블링 막기
+	stopEvent();
+  
+	// 내가 클릭한 TR 태그로부터 값 추출
+	const data = {
+		idx: el.getAttribute("data-idx"),
+		region: el.getAttribute("data-region"),
+		longitude: el.getAttribute("data-longitude"),
+		latitude: el.getAttribute("data-latitude"),
+	};
+  
+	// 추출된 값을 각 INPUT 태그에 넣어주기
+	//	 document.querySelector("input[name='loc_idx']"	  ).value = data.idx;
+	document.querySelector("input[name='lecLocRegion']").value = data.region;
+	document.querySelector("input[name='lecLocLongitude']").value =
+		data.longitude;
+	document.querySelector("input[name='lecLocLatitude']").value = data.latitude;
+  
+	// 모달 토글
+	modal.toggle();
+  
+}
+
+// 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
+window.addEventListener("load", function() {
+	
+	
+	
+	//////////////////////////////////// 일반 ////////////////////////////////
+	
+	// 대여할 장소 방식 DIV에서 장소 방식을 선택하면, 해당 장소 방식의 DIV만 디스플레이시킨다. 
+	document.querySelector("form[name='lecForm'] div[data-toggles='placeType']").addEventListener("change", () => {
+		const type = document.forms['lecForm'].placeType.value;
+		document.querySelectorAll("form[name='lecForm'] div.layerPlaceDIVs").forEach((el) => {
+			if(el.getAttribute("data-layerType") === type) {
+				el.classList.add("d-flex");
+				el.classList.add("mb-4");
+				el.classList.remove("d-none");
+				if(el.getAttribute("data-layerType") === "map") {
+					map.relayout();
+				}
+			} else {
+				el.classList.add("d-none");
+				el.classList.remove("mb-4");
+				el.classList.remove("d-flex");
+			}
+		})
+	})
+	
+	
+	
+	////////////////////////////////////// 이 밑으로는 모두 카카오지도 관련이다. ///////////////////////
+
+
+
+	///////////////////////////////////// 생성자부 /////////////////////////////////////
+	
+	// 카카오지도 객체 준비
+	// 1-1) 지도를 표시할 HTML 엘리먼트
+	container = document.querySelector("#map");
+	// 1-2) 지도 생성 옵션 객체
+	options = {
+		center: new kakao.maps.LatLng(37.5339851357212, 126.897094049199),
+		level: 4,
+	};
+	// 1-3) 지도 클래스
+	map = new kakao.maps.Map(container, options);
+	// 1-4) 주소 ↔ 좌표 변환 객체
+	geocoder = new kakao.maps.services.Geocoder();
+	// 1-5) 클릭한 위치를 표시할 마커(핀) 객체
+	marker = new kakao.maps.Marker();
+	// 1-6) 클릭한 위치에 대한 주소를 표시할 인포윈도우(말풍선) 객체
+	infowindow = new kakao.maps.InfoWindow({
+		zindex: 1,
+	});
+	// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+	searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+
+
+	///////////////////////////////////// 이벤트부 /////////////////////////////////////
+
+	// search-btn 클래스의 HTML 엘리먼트를 누르면,
+	// 지도 중심을 해당 클릭위치로 이동시켜줍니다.
+	$(".search-btn").click(function () {
+		// 주소로 좌표를 검색한 후, 
+		geocoder.addressSearch(
+			$("input[name=keyword]").val(),
+			function (result, status) {
+				// 정상적으로 검색이 완료됐으면
+				if (status === kakao.maps.services.Status.OK) {
+					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+					map.setCenter(coords);
+				}
+			}
+		);
+	});
+
+	// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+	kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+		searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
+			if (status === kakao.maps.services.Status.OK) {
+				var detailAddr = !!result[0].road_address
+					? "<div>도로명주소 : " + result[0].road_address.address_name + "</div>"
+					: "";
+				detailAddr += "<div>지번 주소 : " + result[0].address.address_name + "</div>";
+				var content =
+					'<div class="bAddr">'
+					+ '<span class="title">법정동 주소정보</span>'
+					+ detailAddr
+					+ "</div>";
+	  
+			// 마커를 클릭한 위치에 표시합니다
+			marker.setPosition(mouseEvent.latLng);
+			marker.setMap(map);
+	  
+			// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+			infowindow.setContent(content);
+			infowindow.open(map, marker);
+			$("input[name=lecLocRegion]").val(result[0].address.address_name);
+			var address = $("input[name=lecLocRegion]").val();
+	  
+			// 2. 카카오 장소변환 샘플 코드를 복사 후 일부 수정
+			// 주소로 좌표를 검색합니다
+			geocoder.addressSearch(address, function (result, status) {
+				var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+				$("input[name=lecLocLatitude]").val(result[0].y);
+				$("input[name=lecLocLongitude]").val(result[0].x);
+			});
+		  }
+		});
+	});
+
+	// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+	kakao.maps.event.addListener(map, "idle", function () {
+		searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+	});
+	
+
+	$("#showList").click(function() {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/gatherData/gatherList",
+			type : "get",
+			dataType : "json",
+			success:function(resp){
+				
+				var results = resp;
+				console.log("성공");
+				console.log(resp);
+				console.log(results);
+				
+				var totalStr = "";
+				$.each(results, function(i) {
+					var jsonStr = results[i];
+					console.log(i + "번째 TR: ", jsonStr);
+					totalStr += '<tr scope="row" data-idx="' + jsonStr.lecIdx + '"'
+						+ ' data-region="'+jsonStr.lecLocRegion+'" data-longitude="'+jsonStr.lecLocLongitude+'"'
+						+ ' data-latitude="' + jsonStr.lecLocLatitude+'"'
+						+ ' onclick="setLoc(this)">'
+						+ '<td class="text-center">' + jsonStr.lecIdx +'</td>'
+						+ '<td class="text-center">' + jsonStr.lecName +'</td>'
+						+ '<td>' + jsonStr.lecLocRegion +'</td></tr>';
+				});
+				console.log("전체 HTML: ", totalStr);
+				
+				var listTarget = document.querySelector(".locTBody");
+				console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
+				listTarget.innerHTML = totalStr;
+				
+			},
+			
+			error : function(e) {
+				console.log("실패", e);
+			}
+			
+		});
+	});
+	
+});
+
+</script>
+
+
 
 </HEAD>
 <BODY>
@@ -95,21 +310,31 @@ const fileUploadTargetPage = "${root}/lecData/update/";
 		<label>강좌 상세내용</label>
 		<textarea rows="5" cols="20" name="lecDetail" required class="form-input">${lecDetailVO.lecDetail}</textarea>
 	</div>
-	<div class="row mb-4">
-		<label>대여할 장소</label>
-		<!-- 1. 장소 리스트에 있는 곳을 고를 경우  -->
-		<!-- 2. 직접 장소를 고를 경우(지도 api에서 클릭) -->
-		<!-- 3. 온라인 or null -->
-<!-- 		<select name="placeIdx" required class="form-input" id="selbox"> -->
-<%-- 		<c:forEach var="placeDto" items="${placeList}"> --%>
-<%-- 			<option>${placeDto.placeName}</option> --%>
-<%-- 		</c:forEach> --%>
-<!-- 			<option value="direct">직접입력</option> -->
-<!-- 		</select> -->
-		<!-- 상단의 select box에서 '직접입력'을 선택하면 나타날 인풋박스 -->
-<!-- 		<input type="text" id="selboxDirect" name="lecLocRegion"/> -->
-		<input type="number" name="placeIdx" class="form-input" required value=9999>
-		<div class="border border-1 border-primary" id="selboxDirect"></div>
+	<div class="row form-group">
+		<label for="placeType">대여할 장소 선택</label>
+		<div class="input-group p-0">
+			<div class="btn-group" data-toggles="placeType">
+				<input type="radio" name="placeType" class="btn-check" id="radioPlaceList" value="list">
+				<label class="btn btn-primary" for="radioPlaceList">장소 목록에서 선택</label>
+				<input type="radio" name="placeType" class="btn-check" id="radioPlaceMap" value="map">
+				<label class="btn btn-primary" for="radioPlaceMap">지도에서 선택</label>
+				<input type="radio" name="placeType" class="btn-check" id="radioPlaceOnline" value="online">
+				<label class="btn btn-primary" for="radioPlaceOnline">온라인</label>
+			</div>
+			<input type="hidden" name="placeType" />
+		</div>
+	</div>
+	<div class="row p-2 bg-warning rounded layerPlaceDIVs d-none" data-layerType="list">
+		<label>장소 목록</label>
+		<input type="text" name="lecName" required class="form-input" />
+	</div>
+	<div class="row p-2 bg-warning rounded container layerPlaceDIVs d-none" data-layerType="map">
+		<label for="searchForm_memberIdx" class="form-label mb-0">지도 검색</label>
+		<div id="map" class="md-3"></div>
+		<label>지역<input type="text" name="lecLocRegion"></label>
+		<input id="placeIdxHolder" type="text" name="placeIdx"	value="9999">
+		<label>위도<input id="placeLatiHolder" type="text" name="lecLocLatitude"></label>
+		<label>경도<input id="placeLongHolder" type="text" name="lecLocLongitude"></label>
 	</div>
 	<div class="row mb-4">
 		<label>수강료</label>
