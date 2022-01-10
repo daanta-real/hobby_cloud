@@ -35,7 +35,6 @@ const fileSubmitAjaxPage = "${root}/lecData/register/";
 
 <style type="text/css">
 #map { padding-top:56.25%; }
-.grayInputGroup :is(div, input) { border-color: var(--input-border-color) !important; }
 </style>
 
 <!-- 카카오지도 관련 처리부 -->

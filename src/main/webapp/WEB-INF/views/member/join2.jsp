@@ -478,7 +478,6 @@ window.addEventListener("load", function() {
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<form name="searchForm" method="post" class="row" enctype="multipart/form-data" id="join_form">
-					<div id="map"></div>
 					<div class="form-group col-12">
 						<label for="searchForm_memberId" class="form-label mb-0 id_input">아이디</label>
 						<input name="memberId" id="searchForm_memberId userId" type="text" class="form-control" placeholder="4~12자의 영문소문자, 숫자로만 입력해주세요" value="">
