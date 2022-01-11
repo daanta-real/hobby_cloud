@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.kh.hobbycloud.entity.point.PointHistoryDto;
 import com.kh.hobbycloud.repository.point.PointHistoryDao;
 import com.kh.hobbycloud.vo.point.PointHistorySearchVO;
+import com.kh.hobbycloud.vo.point.PointHistoryVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +26,7 @@ public class PointHistoryController {
 	@GetMapping("")
 	public String list(PointHistorySearchVO vo, Model model) {
 		log.debug("=============== /pointHistory GET 포인트 증감이력 목록/검색 페이지 진입. 입력 VO: {}", vo);
-		List<PointHistoryDto> list = pointHistoryDao.select(vo);
+		List<PointHistoryVO> list = pointHistoryDao.select(vo);
 		model.addAttribute("list", list);
 		return "pointHistory/select";
 	}

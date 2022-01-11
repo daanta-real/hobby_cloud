@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.point.PointHistoryDto;
 import com.kh.hobbycloud.vo.point.PointHistorySearchVO;
+import com.kh.hobbycloud.vo.point.PointHistoryVO;
 
 @Repository
 public class PointHistoryDaoImpl implements PointHistoryDao {
@@ -35,7 +36,7 @@ public class PointHistoryDaoImpl implements PointHistoryDao {
 	// 검색조건을 넣어 목록 획득
 	// 아무 검색조건을 넣지 않으면, 그냥 전체 목록을 갖고 옴.
 	@Override
-	public List<PointHistoryDto> select(PointHistorySearchVO vo) {
+	public List<PointHistoryVO> select(PointHistorySearchVO vo) {
 		return sqlSession.selectList("pointHistory.select", vo);
 	}
 

@@ -23,7 +23,7 @@
 	</select>
 	
 	<!-- 검색조건을 넣어 목록 획득 -->
-	<select id="select" parameterType="PointHistorySearchVO" resultType="PointHistoryDto">
+	<select id="select" parameterType="PointHistorySearchVO" resultType="PointHistoryVO">
 		SELECT
 			h.point_history_idx, h.member_idx,
 			h.paid_idx, h.point_idx, h.point_history_registered,
