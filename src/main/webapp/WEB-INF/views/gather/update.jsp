@@ -428,9 +428,6 @@ data-bs-toggle="modal" data-bs-target="#modal">장소 찾기</button>
 	
 </ARTICLE>
 <!-- 페이지 영역 끝 -->
-
-
-
  
 <!-- ************************************************ 풋터 영역 ************************************************ -->
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
