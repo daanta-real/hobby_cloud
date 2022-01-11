@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51857ee590e6cc2b1c3f4879f1fdf7b2&libraries=services,clusterer,drawing"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
@@ -46,9 +45,12 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 let mapContainer, mapOptions, map, geocoder, marker, infowindow;
 
 ///////////////////////////////////// 라이브러리부 /////////////////////////////////////
+
+// 주소 입력 input 태그 안에 주소 value를 채워주는, 우편번호 찾기 기능
 function findAddress() {
 	new daum.Postcode({
 		oncomplete: function (data) {
+			console.log("주소가 선택되었습니다.");
 			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 			// 각 주소의 노출 규칙에 따라 주소를 조합한다.
 			// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
@@ -103,12 +105,71 @@ function findAddress() {
 			// 커서를 상세주소 필드로 이동한다.
 			document.querySelector("input[name=placeDetailAddress]").focus();
 			//$("input[name=detailAddress]").focus();
+			
+			// 지도 렌더링
+			renderMap();
+			
 		},
 	}).open();
 }
 
+//주소 input창의 내용이 변경되면, 지도 영역에 지도를 표시해주고, 위도/경도/주소 input창에 값을 채워준다.
+function renderMap() {
+	console.log("지도 input이 변경되었다. 지도 영역을 렌더링하겠습니다");
+	//지도 생성 준비 코드
+	mapContainer = document.getElementById("map"); // 지도를 표시할 div
+	mapOption = {
+		center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+		level: 3, // 지도의 확대 레벨
+	};
+	// 주소-좌표 변환 객체를 생성합니다
+	geocoder = new kakao.maps.services.Geocoder();
+	// 주소로 좌표를 검색합니다
+	console.log("geocoder start:", geocoder);
+	let searchKeyword = $("#placeAddress").val();
+	console.log(searchKeyword);
+	geocoder.addressSearch(searchKeyword, function (result, status) {
+		// 정상적으로 검색이 완료됐으면
+		if (status === kakao.maps.services.Status.OK) {
+			var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			var message =
+				"latlng: new kakao.maps.LatLng(" + result[0].y + ", ";
+			message += result[0].x + ")";
+
+			var resultDiv = document.getElementById("clickLatlng");
+			resultDiv.innerHTML = message;
+
+			$("input[name=placeLocLongitude]").val(result[0].y);
+			$("input[name=placeLocLatitude]").val(result[0].x);
+			console.log("result[0].y" + result[0].y);
+			console.log("result[0].x" + result[0].x);
+
+			// 지도를 생성합니다
+			map = new kakao.maps.Map(mapContainer, mapOption);
+			// 결과값으로 받은 위치를 마커로 표시합니다
+			marker = new kakao.maps.Marker({
+				map: map,
+				position: coords,
+			});
+			// 인포윈도우로 장소에 대한 설명을 표시합니다
+			infowindow = new kakao.maps.InfoWindow({
+				content:
+					'<div style="width:150px;text-align:center;padding:6px 0;">장소</div>',
+			});
+			infowindow.open(map, marker);
+			// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+			map.setCenter(coords);
+		}
+	});
+}
+
+// 문서가 로드되면 실행할 코드 영역
 $(function () {
+	
+	// 작성 완료 버튼을 누르면 > 이메일과 폰번호 값을 하나로 합쳐줌
+	// 이후에 이벤트 버블링 때문에 폼 객체의 .submit()이 실행된다.
 	$("#btnclick").click(function () {
+		console.log("작성완료 버튼 누름");
 		let placePhone =
 			$("#phone1").val() + $("#phone2").val() + $("#phone3").val();
 		$('input[name="placePhone"]').val(placePhone);
@@ -126,7 +187,9 @@ $(function () {
 		);
 	});
 
+	// 이메일 영역 전체에 대한 change 리스너
 	$("#emailBox").change(function () {
+		console.log("이메일박스 버튼 누름");
 		if ($("#emailBox").val() == "directly") {
 			$("#inputMail").attr("readonly", false);
 			$("#inputMail").val("");
@@ -145,58 +208,12 @@ $(function () {
 	 *  - input[name=placeDetailAddress] 에 커서 이동
 	 */
 
+	// 주소찾기 버튼 누르면 > 주소 찾는 창이 뜸
 	$(".find-address-btn").click(function () {
+		console.log("주소찾기 버튼 누름");
 		findAddress();
 	});
 
-	$("#placeAddress").change(function () {
-		//지도 생성 준비 코드
-		mapContainer = document.getElementById("map"); // 지도를 표시할 div
-		mapOption = {
-			center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-			level: 3, // 지도의 확대 레벨
-		};
-		// 지도를 생성합니다
-		map = new kakao.maps.Map(mapContainer, mapOption);
-		// 주소-좌표 변환 객체를 생성합니다
-		geocoder = new kakao.maps.services.Geocoder();
-		// 주소로 좌표를 검색합니다
-		console.log("geocoder start:", geocoder);
-		let searchKeyword = $("#placeAddress").val();
-		console.log(searchKeyword);
-		geocoder.addressSearch(searchKeyword, function (result, status) {
-			// 정상적으로 검색이 완료됐으면
-			if (status === kakao.maps.services.Status.OK) {
-				alert("좌표검색 완료");
-				var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-				var message =
-					"latlng: new kakao.maps.LatLng(" + result[0].y + ", ";
-				message += result[0].x + ")";
-
-				var resultDiv = document.getElementById("clickLatlng");
-				resultDiv.innerHTML = message;
-
-				$("input[name=placeLocLongitude]").val(result[0].y);
-				$("input[name=placeLocLatitude]").val(result[0].x);
-				console.log("result[0].y" + result[0].y);
-				console.log("result[0].x" + result[0].x);
-
-				// 결과값으로 받은 위치를 마커로 표시합니다
-				marker = new kakao.maps.Marker({
-					map: map,
-					position: coords,
-				});
-				// 인포윈도우로 장소에 대한 설명을 표시합니다
-				infowindow = new kakao.maps.InfoWindow({
-					content:
-						'<div style="width:150px;text-align:center;padding:6px 0;">장소</div>',
-				});
-				infowindow.open(map, marker);
-				// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-				map.setCenter(coords);
-			}
-		});
-	});
 });
 </script>
 </HEAD>
