@@ -24,8 +24,8 @@
 	paid_status = 기본 1(성공)
 	-->
 	<insert id="insert" parameterType="PaidDto">
-		INSERT INTO paid ( paid_idx, member_idx, paid_tid, paid_price )
-		VALUES ( #{paidIdx}, #{memberIdx}, #{paidTid}, #{paidPrice} )
+		INSERT INTO paid ( paid_idx, member_idx, paid_tid, paid_name, paid_price )
+		VALUES ( #{paidIdx}, #{memberIdx}, #{paidTid}, #{paidName}, #{paidPrice} )
 	</insert>
 	
 	<!-- 결제 취소처리. 삭제하지 않는 대신, 결제상태를 0(취소)로 돌린다.

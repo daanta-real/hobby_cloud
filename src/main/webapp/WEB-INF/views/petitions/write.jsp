@@ -59,10 +59,9 @@ window.addEventListener("load", function() {
 
 		<div class="mb-3 justify-content-center">
     <label for="" class="form-label">제목</label>
-    <input type="text" name="petitionsName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    
-  </div>
-			
+    <input type="text" name="petitionsName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">  
+  	</div>
+		
 			<div class="form-group justify-content-center">
       <label for="exampleTextarea" class="form-label mt-4">내용</label>
       <textarea class="form-control" name="petitionsDetail" id="exampleTextarea" rows="15" style="resize:none"

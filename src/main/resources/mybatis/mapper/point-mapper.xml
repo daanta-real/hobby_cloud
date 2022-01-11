@@ -7,7 +7,7 @@
 	
 	<!-- 신규 시퀀스 번호 획득 -->
 	<select id="getSequence" resultType="integer">
-		SELECT point.NEXTVAL FROM DUAL
+		SELECT point_seq.NEXTVAL FROM DUAL
 	</select>
 	
 	<!-- idx로 단일 데이터 획득 -->
@@ -56,9 +56,9 @@
 	<update id="update" parameterType="PointDto">
 		UPDATE point
 		SET
-			point_name = #{pointName},
-			point_price = #{pointPrice},
-			point_amount = #{pointAmount}
+			<if test="pointName != null and !pointName.equals('')">point_name = #{pointName},</if>
+			<if test="pointPrice != null">point_price = #{pointPrice},</if>
+			<if test="pointAmount != null">point_amount = #{pointAmount},</if>
 		WHERE
 			point_idx = #{pointIdx}
 	</update>
