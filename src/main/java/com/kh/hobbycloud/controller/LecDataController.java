@@ -19,14 +19,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.hobbycloud.entity.lec.LecDto;
+import com.kh.hobbycloud.entity.lec.LecReviewDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecReplyDao;
+import com.kh.hobbycloud.repository.lec.LecReviewDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 import com.kh.hobbycloud.vo.lec.LecReplyVO;
+import com.kh.hobbycloud.vo.lec.LecReviewVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +46,9 @@ public class LecDataController {
 	
 	@Autowired
 	private LecDao lecDao;
+	
+	@Autowired
+	private LecReviewDao lecReviewDao;
 
 	// 변수준비: 서버 주소 관련
 	@Autowired private String SERVER_ROOT;   // 환경변수로 설정한 사용자 루트 주소
@@ -163,31 +169,31 @@ public class LecDataController {
 	}
 	
 	//평점입력
-//	@PostMapping("/reviewInsert")
-//	public void reviewInsert(@ModelAttribute LecReviewDto lecReviewDto,HttpSession session) {
-//	
-//		int memberIdx =(int) session.getAttribute("memberIdx");
-//		lecReviewDto.setMemberIdx(memberIdx);
-//		System.out.println(lecReviewDto);
-//		
-//		lecReviewDao.insert(lecReviewDto);
-//	}
-//	//평점목록
-//	@GetMapping("/reviewList")
-//	public List<LecReviewVO> list(int lecIdx){
-//		return lecReviewDao.list(lecIdx);
-//	}
-//	//평점삭제
-//	@DeleteMapping("/reviewDelete")
-//	public boolean reviewDelete(@RequestParam int lecReviewIdx) {
-//		System.out.println("확인");
-//		System.out.println(lecReviewIdx);
-//		return lecReviewDao.delete(lecReviewIdx);
-//	}
-//	//평점수정
-//	@PostMapping("/reviewEdit")
-//	public void reviewEdit(@ModelAttribute LecReviewDto lecReviewDto) {	
-//		System.out.println("수정+"+lecReviewDto);
-//		lecReviewDao.edit(lecReviewDto);
-//	}
+	@PostMapping("/reviewInsert")
+	public void reviewInsert(@ModelAttribute LecReviewDto lecReviewDto,HttpSession session) {
+	
+		int memberIdx = (int)session.getAttribute("memberIdx");
+		lecReviewDto.setMemberIdx(memberIdx);
+		System.out.println(lecReviewDto);
+		
+		lecReviewDao.insert(lecReviewDto);
+	}
+	//평점목록
+	@GetMapping("/reviewList")
+	public List<LecReviewVO> list(int lecIdx){
+		return lecReviewDao.list(lecIdx);
+	}
+	//평점삭제
+	@DeleteMapping("/reviewDelete")
+	public boolean reviewDelete(@RequestParam int lecReviewIdx) {
+		System.out.println("확인");
+		System.out.println(lecReviewIdx);
+		return lecReviewDao.delete(lecReviewIdx);
+	}
+	//평점수정
+	@PostMapping("/reviewEdit")
+	public void reviewEdit(@ModelAttribute LecReviewDto lecReviewDto) {	
+		System.out.println("수정+" + lecReviewDto);
+		lecReviewDao.edit(lecReviewDto);
+	}
 }

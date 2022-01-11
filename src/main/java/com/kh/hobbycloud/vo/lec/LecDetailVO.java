@@ -17,7 +17,7 @@ public class LecDetailVO {
 	private String lecDetail;//강좌 상세내용
 	private Date lecRegistered;//강좌 작성일
 	private int lecPrice;//강좌 수강료
-	//현재 강좌 신청 인원 컬럼을 추가
+	//현재 강좌 신청 인원 컬럼을 추가 X
 	//lec_my에서 count(*)를 불러오면된다
 	private int lecCurrentCount;
 	private int lecHeadCount;//강좌 최대 수강인원
