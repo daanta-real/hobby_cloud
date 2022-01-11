@@ -57,6 +57,8 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setPlaceSido(placeFileVO.getPlaceSido());
 		placeDto.setPlaceSigungu(placeFileVO.getPlaceSigungu());
 		placeDto.setPlaceBname(placeFileVO.getPlaceBname());
+		placeDto.setPlaceLocLatitude(placeFileVO.getPlaceLocLatitude());
+		placeDto.setPlaceLocLongitude(placeFileVO.getPlaceLocLongitude());
 		
 		// place DTO를 테이블에 삽입
 		placeDao.insert(placeDto);
@@ -103,7 +105,6 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setMemberIdx(placeEditVO.getMemberIdx());
 		placeDto.setPlaceName(placeEditVO.getPlaceName());
 		placeDto.setPlaceDetail(placeEditVO.getPlaceDetail());
-		placeDto.setPlaceRegistered(placeEditVO.getPlaceRegistered());
 		placeDto.setPlacePostcode(placeEditVO.getPlacePostcode());
 		placeDto.setPlaceAddress(placeEditVO.getPlaceAddress());
 		placeDto.setPlaceDetailAddress(placeEditVO.getPlaceDetailAddress());
@@ -116,6 +117,8 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setPlaceSido(placeEditVO.getPlaceSido());
 		placeDto.setPlaceSigungu(placeEditVO.getPlaceSigungu());
 		placeDto.setPlaceBname(placeEditVO.getPlaceBname());
+		placeDto.setPlaceLocLatitude(placeEditVO.getPlaceLocLatitude());
+		placeDto.setPlaceLocLongitude(placeEditVO.getPlaceLocLongitude());
 		
 		log.debug("======================== PlaceService.update() 실시. DTO = {}", placeDto);
 		// place DTO를 테이블에 삽입

@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.place.PlaceFileDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class PlaceFileDaoImpl implements PlaceFileDao{
 	
@@ -28,18 +31,19 @@ public class PlaceFileDaoImpl implements PlaceFileDao{
 	// 파일 정보를 DB로 저장한 뒤, 저장된 파일의 placeFileIdx를 회신
 	@Override
 	public void save(PlaceFileDto placeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
-
+		log.debug("=================PlaceFileDao.save 실행");
 		// 0. 시퀀스 획득
 		int sequence = sqlSession.selectOne("placeFile.getSequence");
-
+		log.debug("=================PlaceFileDao sequence 획득:"+sequence);
 		// 1. 실제 파일을 업로드 폴더에 저장
 		File target = new File(STOREPATH_PLACE, String.valueOf(sequence));
 		multipartFile.transferTo(target);
-
+		
 		// 2. 파일의 정보를 DB에 저장
 		placeFileDto.setPlaceFileIdx(sequence);
 		placeFileDto.setPlaceFileServerName(String.valueOf(sequence));
 		sqlSession.insert("placeFile.save",placeFileDto);
+		log.debug("=================PlaceFileDao placeFile.save 실행:"+placeFileDto);
 
 	}
 	

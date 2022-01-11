@@ -128,8 +128,8 @@ public class PlaceController {
 		
 		// 데이터 획득: VO 및 DTO
 		PlaceVO placeVO = placeDao.get(placeIdx);
-		log.debug("ㅡㅡㅡ PlaceRegisterVO: {}", placeVO);
-		model.addAttribute("PlaceRegisterVO", placeVO);
+		log.debug("ㅡㅡㅡ PlaceVO: {}", placeVO);
+		model.addAttribute("placeVO", placeVO);
 
 		// 획득된 데이터를 Model에 지정
 		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);

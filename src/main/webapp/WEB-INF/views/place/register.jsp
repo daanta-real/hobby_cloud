@@ -45,7 +45,15 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 let mapContainer, mapOptions, map, geocoder, marker, infowindow;
 
 ///////////////////////////////////// 라이브러리부 /////////////////////////////////////
-
+	
+	/* 주소 검색 모듈
+	 *  .find-address-btn을 누르면 자동으로 주소검색창이 나옴
+	 *
+	 *  - input[name=placePostcode] 에 우편번호 작성
+	 *  - input[name=placeAddress] 에 기본주소 작성
+	 *  - input[name=placeDetailAddress] 에 커서 이동
+	 */
+	 
 // 주소 입력 input 태그 안에 주소 value를 채워주는, 우편번호 찾기 기능
 function findAddress() {
 	new daum.Postcode({
@@ -200,14 +208,6 @@ $(function () {
 		}
 	});
 
-	/* 주소 검색 모듈
-	 *  .find-address-btn을 누르면 자동으로 주소검색창이 나옴
-	 *
-	 *  - input[name=placePostcode] 에 우편번호 작성
-	 *  - input[name=placeAddress] 에 기본주소 작성
-	 *  - input[name=placeDetailAddress] 에 커서 이동
-	 */
-
 	// 주소찾기 버튼 누르면 > 주소 찾는 창이 뜸
 	$(".find-address-btn").click(function () {
 		console.log("주소찾기 버튼 누름");
@@ -263,10 +263,17 @@ $(function () {
 	<div class="row mb-4">
 						<label>카테고리</label>
 						<select name="lecCategoryName" required class="form-input p-1 border-radius-all-25">
-							<option value="">선택하세요</option>
+							<option value="" class="">선택하세요</option>
+							<option value="운동">운동</option>
+							<option value="요리">요리</option>
+							<option value="문화">문화</option>
+							<option value="예술">예술</option>
+							<option value="IT">IT</option>
+							<option value="directly">직접입력</option>														
+<%-- 							<option value="">선택하세요</option>
 							<c:forEach var="val" items="${lecCategoryList}">
 								<option value="${val}">${val}</option>
-							</c:forEach>
+							</c:forEach> --%>
 						</select>
 	</div>
 	<div class="row mb-4">
@@ -355,7 +362,7 @@ $(function () {
 						</div>
 					</div>
 					<div class="row mb-4">
-						<input type="button" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
+						<input type="submit" id="col-auto btn btn-sm btn-outline-primary" value="작성 완료" class="form-btn p-1 border-radius-all-25">
 					</div>
 				</form>
 			</div>

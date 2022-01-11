@@ -29,14 +29,16 @@
 		PLACE_ADDRESS,PLACE_DETAIL_ADDRESS,
 		PLACE_START,PLACE_END,PLACE_MIN,PLACE_MAX,
 		PLACE_EMAIL,PLACE_PHONE,
-		PLACE_SIDO,PLACE_SIGUNGU,PLACE_BNAME)
+		PLACE_SIDO,PLACE_SIGUNGU,PLACE_BNAME,
+		PLACE_LOC_LATITUDE,PLACE_LOC_LONGITUDE)
 		VALUES(
 			#{placeIdx}, #{memberIdx}, #{placeName}, 
 			#{placeDetail}, #{placePostcode}, 
 			#{placeAddress}, #{placeDetailAddress}, 
 			#{placeStart}, #{placeEnd}, #{placeMin}, #{placeMax}, 
 			#{placeEmail}, #{placePhone}, 
-			#{placeSido}, #{placeSigungu}, #{placeBname}
+			#{placeSido}, #{placeSigungu}, #{placeBname},
+			#{PlaceLocLatitude},{PlaceLocLongitude}
 		)
 	</insert>
 	
@@ -63,7 +65,6 @@
 		SET 
 			PLACE_NAME = #{placeName},
 			PLACE_DETAIL = #{placeDetail}, 
-			PLACE_REGISTERED = sysdate, 
 			PLACE_POSTCODE =  #{placePostcode},
 			PLACE_ADDRESS =  #{placeAddress},
 			PLACE_DETAIL_ADDRESS = #{placeDetailAddress},
@@ -75,7 +76,9 @@
 			PLACE_PHONE  = #{placePhone},
 			PLACE_SIDO = #{placeSido},
 			PLACE_SIGUNGU = #{placeSigungu},
-			PLACE_BNAME = #{placeBname}
+			PLACE_BNAME = #{placeBname},
+			PLACE_LOC_LATITUDE = #{PlaceLocLatitude},
+			PLACE_LOC_LONGITUDE = #{PlaceLocLongitude}
 			)
 		WHERE
 			PLACE_IDX = #{placeIdx}

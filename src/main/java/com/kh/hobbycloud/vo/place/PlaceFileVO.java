@@ -28,6 +28,8 @@ public class PlaceFileVO {
 	private String placeSido;
 	private String placeSigungu;
 	private String placeBname;
+	private String placeLocLatitude;
+	private String placeLocLongitude;
 	
 	//장소사진 테이블
 	private List<MultipartFile> attach;
