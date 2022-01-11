@@ -15,7 +15,8 @@ public class PlaceFileVO {
 	private String placeName;
 	private String placeDetail;
 	private Date placeRegistered;
-	private int placePostcode;
+	private String placeLocRegion;
+	private String placePostcode;
 	private String placeAddress;
 	private String placeDetailAddress;
 	private Date placeStart;
@@ -24,11 +25,17 @@ public class PlaceFileVO {
 	private int placeMax;
 	private String placeEmail;
 	private String placePhone;
+	private String placeSido;
+	private String placeSigungu;
+	private String placeBname;
 	
 	//장소사진 테이블
 	private List<MultipartFile> attach;
 	
 	//member 테이블
 	private int memberIdx;
+	
+	//취미 분류 이름
+	private String lecCategoryName;
 
 }

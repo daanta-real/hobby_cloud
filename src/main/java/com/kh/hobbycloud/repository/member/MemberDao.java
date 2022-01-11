@@ -1,16 +1,25 @@
 package com.kh.hobbycloud.repository.member;
 
+import java.util.List;
+
 import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.vo.member.MemberCriteria;
+import com.kh.hobbycloud.vo.member.MemberJoinVO;
+import com.kh.hobbycloud.vo.member.MemberListVO;
+import com.kh.hobbycloud.vo.member.MemberSearchVO;
 
 public interface MemberDao {
 
 	// 가입
 	void join(MemberDto memberDto);
 
-	// 단일조회
+	// 단일조회(memberId)
 	MemberDto get(String memberId);
-
+	//단일조회(memberIdx)
 	MemberDto get(Integer memberIdx);
+	
+	//memberJoinVO  단일 조회
+	MemberJoinVO getVO(Integer memberIdx);
 
 	// 비밀번호 검사까지 통과 로그인
 	MemberDto login(MemberDto memberDto);
@@ -20,6 +29,9 @@ public interface MemberDao {
 
 	// 개인정보 변경
 	boolean changeInformation(MemberDto memberDto);
+	
+	// 개인정보 변경(이메일)
+	int changeEmail(MemberDto memberDto);	
 
 	// 회원 탈퇴
 	boolean quit(Integer memberIdx, String memberPw);
@@ -46,4 +58,12 @@ public interface MemberDao {
 	//임시 비밀번호 변경
 	boolean tempPw(MemberDto memberDto, String ChangePw);
 
+	//Place 목록 조회
+	List<MemberListVO> list(MemberCriteria cri);
+	//Place 총개수
+	int listCount();
+	//Place 검색
+	List<MemberListVO> listSearch(MemberSearchVO memberSearchVO);
+	//Place 페이지
+	List<MemberListVO> listPage(int startRow, int endRow);
 }

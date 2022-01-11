@@ -16,7 +16,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <!-- JQuery 3.6.0 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha1.min.js"></script>
 
 <style type="text/css">
 
@@ -28,20 +31,6 @@ tbody.locTBody { cursor:pointer; }
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
-    
-    // 모달 변수 정의
-    window.modal = new bootstrap.Modal(document.getElementById("modal"), {
-        keyboard: false
-    });
-});
-
-//라이브러리: 이벤트 버블링 막기
-function stopEvent() {
-    if(typeof window.event == 'undefined') return;
-    if (!e) var e = window.event;
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-}
 
 	$(function(){
 		let email = '${memberDto.memberEmail}';
@@ -49,13 +38,7 @@ function stopEvent() {
 		$('input[name="email_id"]').val(email.substr(0,email.indexOf("@")));
 		$('input[name="email_domain"]').val(email.substr(email.indexOf("@")+1,email.length));
 		
-	})
-
-	$(function(){
-		
-		 // 이벤트 버블링 막기
-		stopEvent();
-		
+	})		
 		/* 정규표현식 변수 */
 		var email_id = RegExp(/^[a-zA-Z0-9_-]{4,20}$/); 
 		var email_domail = RegExp(/^[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/); 
@@ -120,36 +103,54 @@ function stopEvent() {
 
     		$('input[name="email"]').val(email);
     	})
+    	
+ 	//이메일 변경
+	$("#findbtn").click(function(){
+		console.log("이메일 수정 ajax 실행");
 		
-    	//이메일 수정
-    	$("#findbtn").click(function(){
-    		//합해진 이메일 주소
-    		console.log("이메일 수정 ajax 실행");
-			let memberEmail = $("#idMail").val() + "@" + $("#inputMail").val();
+		//합해진 이메일 주소
+		let memberEmail = $("#idMail").val() + "@" + $("#inputMail").val();
 
-			 $.ajax({
-			    	type : "post",
-			        url : "edit",
-			        data : {"memberEmail" : memberEmail},
-			        success : function(resp){
-			        	if(resp == "redirect:edit_success") {
-			        		$('.popup-wrap').css('opacity','1').css('display','block');
-			        		$(".popup-detail").text("");
-					        $(".popup-detail").html("Email이 정상적으로 수정되었습니다.");
+		 $.ajax({
+		    	type : "post",
+		        url : "updateMail",
+		        data : {"memberEmail" : memberEmail},
+		        success : function(resp){
+		        	if(resp == "success") {
+		        		alert("이메일 수정이 성공적으로 진행되었습니다.");
+		        		$('.modal').css('opacity','1').css('display','block');
+		        		$(".modal-detail").text("");
+				        $(".modal-detail").html("Email이 정상적으로 수정되었습니다.");
 
-			        	} else {
-			        		$('.popup-wrap').css('opacity','1').css('display','block');
-			        		$(".popup-detail").text("");
-					        $(".popup-detail").html("Email 변경에 실패했습니다. <br> 다시 시도해주세요");
-			        	}
-			        }, 
-			    });		
-	 });		
+		        	} else {
+		        		$('.modal').css('opacity','1').css('display','block');
+		        		$(".modal-detail").text("");
+				        $(".modal-detail").html("Email 변경에 실패했습니다. <br> 다시 시도해주세요");
+		        	}
+		        }, 
+		    });
+		});	
+    // 모달 변수 정의
+    window.modal = new bootstrap.Modal(document.getElementById("modal"), {
+        keyboard: false
+	});	
 });
 
-		//이메일 인증 
-		function sendMail() {
-			var mailAddr = $("#idMail").val() +"@"+ $("#inputMail").val();
+
+	//라이브러리: 이벤트 버블링 막기
+	function stopEvent() {
+	    if(typeof window.event == 'undefined') return;
+	    if (!e) var e = window.event;
+	    e.cancelBubble = true;
+	    if (e.stopPropagation) e.stopPropagation();
+	}
+	
+//이메일 인증
+
+	function sendMail() {	
+		alert("작동시작");
+			
+		var mailAddr = $("#idMail").val() +"@"+ $("#inputMail").val();
 		
 			$.ajax({
 		    	type : "post",
@@ -159,10 +160,10 @@ function stopEvent() {
 		        	alert("메일이 성공적으로 보내졌습니다."+resp);
 		        	$("#reKeyCheck").click(function(){
 		        		if(resp == $("#reKey").val()) {
-		        			alert("인증이 완료");
+		        			alert("인증 완료");
 						
 		            		$("#findbtn").prop("disabled", false);
-		    		        $("#findbtn").css("color", "white");
+		    		        $("#findbtn").css("color", "black");
 		            	} else {
 		            		alert("인증번호가 다릅니다. 다시 인증해주세요");
 		            		$("#reKey").focus();
@@ -172,53 +173,55 @@ function stopEvent() {
 		        	});
 		        },
 				error : function(jqXHR, textStatus, errorThrown){
-					alert("Ajax 처리 실패 : \n"
-							+"jqXHR.readyState : " + jqXHR.readyState + "\n"
-							+"textStatus : " + textStatus + "\n"
-							+"errorThrown : " + errorThrown);
+					alert("메일보내기 실패 다시 시도해주세요");
 					
 				}
 			})
 		}
+
 		  
 </script>
+
 </HEAD>
 
 <body>
+
 <!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
 <div id="modal" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content p-3">
+	<div class="modal-dialog">
+		 <div class="modal-content p-3">
             <!-- 모달 제목 영역 -->
             <div class="modal-header">
                 <!-- 모달 타이틀 -->
                 <h5 class="modal-title">이메일 수정</h5>
-                <!-- 모달 닫기 버튼 -->               
+                <!-- 모달 닫기 버튼 -->
                 <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>               
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                
             </div>
             <!-- 모달 본문 영역 -->
-            <div class="modal-body table table-striped">
-            	<div>
-            		  <p class="modal-detail">            		  	
-            		  </p>
-            		 <div class="buttons">
-                        <button class="button reser payment" onclick="location.href='main'">확인</button>
-                      </div>
-                      
-                      <button type="button" class="popup-close">
-                      </button>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-		<body>
+             <div class="modal-body table table-striped">
+					<div>
+						<p class="modal-detail">     
+						                               
+						</p>
+					<div class="buttons">                                    
+						<button class="button reser clear" onclick="location.href='login'">로그인</button>
+						<button class="button reser payment" onclick="location.href='edit'">확인</button>
+					</div>
+				</div>				                     
+                            
+			<!-- 모달 꼬리말 영역 -->
+			</div>
+		</div>
+	</div>
+</div>
+
 	    <div class="wrap" >
             <div id="cont1">
                 <div id = "panel" class="panel panel-default">
                 <div class="panel-heading">
-                     Email 변경하기
+                     이메일 수정
                 </div>
                  <div class="panel-body">
 					<br>
@@ -235,25 +238,23 @@ function stopEvent() {
                         </select>
                         <input type="button" id="emailCheck" class="adCheck" value="인증하기">
                         <input type="hidden" name="email" >
-                        <div id="mailComm"></div>
-
+                   	<div id="mailComm"></div>
+					
 					<input type="text" id="reKey" class="input form-control" maxlength="20" placeholder="인증번호를 입력해주세요" required>
                    	<input type="button" id="reKeyCheck" class="adCheck" value="확인">
                   <br>
                   <br>
                 </div>
-            </div>
-                <div class="button-box">
-				<input type="button" class="btn btn-default btn01" value="뒤로가기" onclick="history.back()">   
-				 
-				 <!-- 모달 여는 버튼 -->
-				<button type="button" id="findbtn" class="btn btn-primary m-3 p-3">변경하기</button>
-			</div>     
-
-
+            </div> 
         </div>
-
-    </div>
+       </div>
+       
+ <!-- 모달 여는 버튼 -->
+		<div class="button-box">
+            <button class="button reser clear" onclick="location.href='login'">로그인</button>
+            <button class="button reser clear" onclick="location.href='edit'">뒤로가기</button>
+            <button type="button" id="findbtn" class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">이메일 변경</button>
+		</div>   
 	
 </body>
 </html>

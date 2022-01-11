@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class MemberProfileDaoImpl implements MemberProfileDao{
 
@@ -39,6 +42,7 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 		memberProfileDto.setMemberProfileSavename(String.valueOf(sequence));
 		sqlSession.insert("memberProfile.save", memberProfileDto);
 	}
+	
 	// 한 개의 프로필 첨부파일 Dto 얻기
 	@Override
 	public MemberProfileDto getMemberProfileIdx(int memberProfileIdx) {
@@ -63,8 +67,24 @@ public class MemberProfileDaoImpl implements MemberProfileDao{
 	// 삭제
 	@Override
 	public void delete(int memberIdx) {
+		log.debug("=================memberProfileDto 실행");
 		sqlSession.delete("memberProfile.delete",memberIdx);		
 	}
+	
+	//변경(프로필 Idx)
+	@Override
+	public void edit(MemberProfileDto memberProfileDto) {
+		sqlSession.update("memberProfile.edit", memberProfileDto);
+	}
+	
+	//프로필 사진 ajax 삭제
+	@Override
+	public boolean deleteAjax(int memberProfileIdx) {
+		int count =sqlSession.delete("memberProfile.deleteAjax",memberProfileIdx);
+		
+		return count >0;
+	}
+
 
 
 }

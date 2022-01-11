@@ -46,6 +46,14 @@
 	<delete id="delete" parameterType="int">
 		delete member_profile where member_idx = #{memberIdx}
 	</delete>
+	
+	<update id="edit" parameterType="MemberProfileDto">
+		update member_profile set member_profile_no = #{memberProfileNo} where member_idx = #{memberIdx}
+	</update>
+	
+	<delete id="deleteAjax" parameterType="int">
+	delete from member_profile where member_profile_idx=#{memberProfileIdx}
+	</delete>
 
 
 </mapper>
