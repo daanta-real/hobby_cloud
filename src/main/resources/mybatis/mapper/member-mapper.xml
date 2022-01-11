@@ -21,12 +21,13 @@
 		SELECT member_seq.nextval FROM DUAL
 	</select>
 	
-	<!-- 단일조회 -->
+	<!-- memberId로 단일조회 -->
 	<select id="get" parameterType="string" resultType="MemberDto">
 		SELECT * FROM member
 		WHERE member_id = #{memberId}
 	</select>
 	
+	<!--memberIdx로 단일조회 -->
 	<select id="getbyIdx" parameterType="Integer" resultType="MemberDto">
 		SELECT * FROM member
 		WHERE member_idx = #{memberIdx}
@@ -45,9 +46,15 @@
 	</insert>
 	
 	<!-- 비밀번호 변경 -->
-	<update id="changePassword" parameterType="map">
+	<update id="changePassword" parameterType="MemberDto">
 		UPDATE member SET member_pw = #{changePw}
 		WHERE member_idx = #{memberIdx}
+	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changeEmail" parameterType="map">
+		UPDATE member SET member_email = #{memberEmail}
+		WHERE member_id = #{memberId}
 	</update>
 	
 	<!-- 
@@ -105,7 +112,8 @@
 			</if>
 		</set>
 		WHERE member_idx = #{memberIdx}
-	</update>
+	</update>	
+
 	
 	<!-- 탈퇴 -->
 	<delete id="quit" parameterType="integer">
@@ -147,6 +155,79 @@
 		UPDATE member SET member_pw = #{memberPw}
 		WHERE member_id = #{memberId} 
 	</update>
+	
+	<!-- 회원 목록 -->
+	<select id="list" resultType="MemberListVO">
+		select * from member m left outer join
+	 (select distinct member_idx, min(member_Profile_idx) as member_Profile_idx
+	  from member_Profile group by member_idx) f 
+	  on  f.member_idx = m.member_idx  
+	order by m.member_idx desc
+	</select>
+
+	<!-- 회원 총 개수 구하기 -->
+	<select id="listCount" resultType="int" >
+	select count(*) as BNO from (
+	  select * from member m left outer join
+	 (select distinct member_idx, min(member_Profile_idx) as member_Profile_idx
+	  from member_Profile group by member_idx) f 
+	  on  f.member_idx = m.member_idx )
+	</select>
+	
+	<!-- 목록페이지 목록 페이지 네이션 적용 -->	
+	<select id="listPage" resultType="MemberListVO" parameterType="Criteria">
+		select * from(
+		select rownum  rn , TMP.* from(
+		select * from member m left outer join
+		 (select distinct member_idx, min(member_Profile_idx) as member_Profile_idx
+		 from member_Profile group by member_idx) f 
+		on  f.member_idx = m.member_idx 
+		 order by m.member_idx desc
+		  )TMP
+		) where rn between #{rowStart} and #{rowEnd}
+	</select>
+	
+
+	<!-- 상세 조회 -->	
+<!--   	<select id="get" resultType="MemberListVO">
+    select m.*,  
+			f.member_profile_idx, 
+			c.lec_category_name
+	from member m  
+			left outer join
+			member_profile f 
+			ON f.member_idx = m.member_idx
+		    left outer join
+		    member_category c
+		    on m.member_idx = c.member_idx
+	where m.member_idx = #{memberIdx};
+	</select> -->
+
+ 		<!-- 회원 목록 및 검색 -->
+		<select id ="listSearch" parameterType="MemberSearchVO" resultType="MemberListVO">
+		 select * from member m left outer join
+			 (select distinct member_idx, min(member_Profile_idx) as member_Profile_idx
+			  from member_Profile group by member_idx) f 
+		  on  f.member_idx = m.member_idx  
+		  <where> 
+		 	<if test="memberId != '' ">
+		  	AND instr(member_id,#{memberId}) >0
+		 	 </if>
+		  	<if test="memberNick != null">
+		   	AND instr(member_nick,#{memberNick}) >0
+		 	</if>
+		 	<if test="memberGradeName != null">
+		   	AND instr(member_grade_name,#{memberGradeName}) >0
+		 	</if>
+		 	<if test="category != null">
+		 	AND lec_category_name in
+			<foreach item="statOne" collection="category" open="(" close=")" separator="," >
+			#{statOne}
+			</foreach>
+		</if> 
+		  </where>
+		  order by m.member_idx desc
+		</select>
 
 
 </mapper>

@@ -27,8 +27,7 @@
    	 *	 주소 검색창
    	 *  .findRegion을 누르면 자동으로 주소검색창이 나옴    
    	 *  - input[name=memberRegion] 에 기본주소 작성
-   	 */
-   	 
+   	 */   	 
     	  
    	 $(function(){
    		$(".findRegion").click(function(){
@@ -510,8 +509,11 @@ $(document).ready(function(){
 	<div class="lecCategory_wrap">
 		<div class="lecCategory_name">관심분야</div>
 		<input type="checkbox" name="lecCategoryName"  value="운동">운동
-		<input type="checkbox" name="lecCategoryName"  value="음악">음악
-		<input type="checkbox" name="lecCategoryName"  value="미술">미술	   		 
+		<input type="checkbox" name="lecCategoryName"  value="요리">요리
+		<input type="checkbox" name="lecCategoryName"  value="문화">문화	
+		<input type="checkbox" name="lecCategoryName"  value="예술">예술
+		<input type="checkbox" name="lecCategoryName"  value="IT">IT
+		<input type="checkbox" name="lecCategoryName"  value="기타">기타	    		
 	</div>
 
 <div class="mail_wrap">
