@@ -4,6 +4,40 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
+<style>
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  justify-content: space-around;
+  padding: 0 0.2em;
+  text-align: center;
+  width: 5em;
+}
+ 
+.star-rating input {
+  display: none;
+}
+ 
+.star-rating label {
+  -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 2.3px;
+  -webkit-text-stroke-color: #2b2a29;
+  cursor: pointer;
+}
+ 
+.star-rating :checked ~ label {
+  -webkit-text-fill-color: gold;
+}
+ 
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  -webkit-text-fill-color: #fff58c;
+}
+
+</style>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -237,9 +271,189 @@
 
 <div id="result"></div>
 
+<!-- 평점 -->
+<input type="radio" id="5-stars" name="lecReviewScore" value="5" v-model="ratings"/>
+<form id="insertReview-form">
+ 	<div class="star-rating space-x-4 mx-auto"> 
+        <input type="radio" id="5-stars" name="lecReviewScore" value="5" v-model="ratings"/>
+        <label for="5-stars" class="star pr-4">★</label>
+        <input type="radio" id="4-stars" name="lecReviewScore" value="4" v-model="ratings"/>
+        <label for="4-stars" class="star">★</label>
+        <input type="radio" id="3-stars" name="lecReviewScore" value="3" v-model="ratings"/>
+        <label for="3-stars" class="star">★</label>
+        <input type="radio" id="2-stars" name="lecReviewScore" value="2" v-model="ratings"/>
+        <label for="2-stars" class="star">★</label>
+        
+        <input type="radio" id="1-star" name="lecReviewScore" value="1" v-model="ratings" />
+        <label for="1-star" class="star">★</label>
+     </div> 
+	내용 : <input type="text" name="lecReviewDetail">
+	<input	type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}">
+		 <input	type="submit" value="전송하기">
+</form>
+
+<!-- 평점목록 -->
+<template id="lecReviewVO-template">
+<div class="item">
+	<span class="lecReviewIdx">{{lecReviewIdx}}</span> 
+	<span	class="memberNick">{{memberNick}}</span> 
+	<span class="lecIdx">{{lecIdx}}</span>
+	<span class="lecReviewScore">{{lecReviewScore}}</span> 
+	<span	class="lecReviewDetail">{{lecReviewDetail}}</span>
+	<button class="edit-btn" data-lecreview-idx="{{lecReviewIdx}}">수정</button>
+	<button class="remove-btn" data-lecreview-idx="{{lecReviewIdx}}">삭제</button>
+</div>
+</template>
+
+<div id="resultReview"></div> 
 
 
 <a href="insert">글쓰기</a>
 <a href="${pageContext.request.contextPath}/lec/list">목록보기</a>
 <a href="${pageContext.request.contextPath}/lec/edit/${lecDetailVO.lecIdx}">수정</a>			
 <a href="${pageContext.request.contextPath}/lec/delete/${lecDetailVO.lecIdx}">삭제</a>	
+
+
+<!-- 평점 등록 -->
+<script>
+$(function(){
+	//처음 들어오면 목록 출력.
+	loadReview();
+	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
+	$("#insertReview-form").submit(function(e){
+		console.log("누름");
+		//this == #insert-form
+		e.preventDefault();
+		
+		var dataValue =$(this).serialize();
+		
+		$.ajax({
+			url:"${pageContext.request.contextPath}/lecData/reviewInsert",
+			type:"post",
+			data : dataValue,
+			//dataType 없음
+			success:function(resp){
+				console.log("성공", resp);
+				$("#insertReview-form")[0].reset();
+				
+				//성공하면 목록 갱신
+				loadReview();
+			
+			},
+			error:function(e){
+				console.log("실패", e);
+				console.log(dataValue);
+			}
+		});
+	});
+});
+</script>
+
+<!-- 평점 조회 -->
+<script>
+function loadReview(){
+	var lecIdxValue = $("#lecIdxValue").data("lec-idx");
+	$.ajax({
+		url:"${pageContext.request.contextPath}/lecData/reviewList",
+		type:"get",
+		data:{
+			lecIdx:lecIdxValue
+		},
+		dateType:"json",
+		success:function(resp){
+			console.log("성공",resp);
+			$("#resultReview").empty();//내부영역 청소
+			//$("#result").html("");
+			//$("#result").text("");
+			
+			for(var i=0; i < resp.length; i++){
+				var template = $("#lecReviewVO-template").html();
+				
+				template = template.replace("{{lecReviewIdx}}", resp[i].lecReviewIdx);
+				template = template.replace("{{lecReviewIdx}}", resp[i].lecReviewIdx);
+				template = template.replace("{{lecReviewIdx}}", resp[i].lecReviewIdx);
+				template = template.replace("{{memberNick}}", resp[i].memberNick);
+				template = template.replace("{{lecReviewScore}}", resp[i].lecReviewScore);
+				template = template.replace("{{lecIdx}}", resp[i].lecIdx);
+				template = template.replace("{{lecReviewDetail}}", resp[i].lecReviewDetail);
+		
+				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
+	
+				console.log(tag.find(".remove-btn"));
+				
+				//별점 삭제
+				tag.find(".remove-btn").click(function(){
+					console.log("누름");
+					deleteReview($(this).data("lecreview-idx"));
+				});
+				
+				//별점 수정
+				tag.find(".edit-btn").click(function(){
+					
+					var lecReviewIdx = $(this).prevAll(".lecReviewIdx").text();
+					var lecReviewDetail = $(this).prevAll(".lecReviewDetail").text();
+					var lecReviewScore = $(this).prevAll(".lecReviewScore").text();
+				
+					var form = $("<form>");
+					form.append("<input type='hidden' name='lecReviewIdx' value='"+lecReviewIdx+"'>");
+					form.append("<input type='text' name='lecReviewDetail' value='"+lecReviewDetail+"'>");
+					form.append("<div class='star-rating space-x-4 mx-auto'> <input type='radio' id='5-stars' name='lecReviewScore'value='5' v-model='ratings'/> <label for='5-stars' class='star pr-4'>★</label> <input type='radio' id='4-stars' name='lecReviewScore' value='4' v-model='ratings'/>   <label for='4-stars' class='star'>★</label>  <input type='radio' id='3-stars' name='lecReviewScore' value='3' v-model='ratings'/><label for='3-stars' class='star'>★</label><input type='radio' id='2-stars' name='lecReviewScore' value='2' v-model='ratings'/>    <label for='2-stars' class='star'>★</label> <input type='radio' id='1-star' name='lecReviewScore' value='1' v-model='ratings' /> <label for='1-star' class='star'>★</label>");
+					form.append("</div>");
+					form.append("<button type='submit'>수정</button>");
+					
+					form.submit(function(e){
+					e.preventDefault();
+						
+					var dataValue = $(this).serialize();
+					console.log(dataValue);
+					
+					$.ajax({
+						url:"${pageContext.request.contextPath}/lecData/reviewEdit",
+						type:"post",
+						data:dataValue,
+						success:function(resp){
+							console.log("성공", resp);
+						
+							$("#result").empty();
+							
+							loadReview();
+						},
+						error:function(e){}
+					});
+				});	
+				
+				var div = $(this).parent();
+				div.html(form);
+				
+			});
+		
+				$("#resultReview").append(tag);
+			}
+		},
+		error:function(e){
+			console.log("실패",e);
+		}
+	});
+}
+
+
+//리뷰 삭제
+function deleteReview(lecReviewIdxValue){
+
+	$.ajax({
+//			url:"${pageContext.request.contextPath}/data/data8?examId="+examIdValue,
+		url:"${pageContext.request.contextPath}/lecData/reviewDelete?"+$.param({"lecReviewIdx":lecReviewIdxValue}),
+		type:"delete",
+			data:{
+				lecReviewIdx : lecReviewIdxValue
+			},
+		dataType:"text",
+		success:function(resp){
+			console.log("성공", resp);
+			
+			loadReview();//데이터가 변하면 무조건 갱신
+		},
+		error:function(e){}
+	});
+}
+</script>
