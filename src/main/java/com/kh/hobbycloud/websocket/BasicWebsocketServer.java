@@ -1,10 +1,5 @@
 package com.kh.hobbycloud.websocket;
 
-import org.springframework.web.socket.handler.TextWebSocketHandler;
-
-import lombok.extern.slf4j.Slf4j;
-
-
 /**
  * 기본 웹소켓 서버
  * 	= 상속은 인터페이스 or 클래스 선택하여 받는다
@@ -14,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
  * 		= 퇴장알림(afterConnectionClosed) - 사용자의 접속 종료 이후에 사용자의 정보를 알려주는 메소드
  * 		= 메세지
  */
-@Slf4j
+//@Slf4j
 //public class BasicWebsocketServer implements WebSocketHandler{
-public class BasicWebsocketServer extends TextWebSocketHandler {
+public class BasicWebsocketServer {//extends TextWebSocketHandler {
 
 	/*@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {

@@ -93,9 +93,9 @@
 		
 		<!-- 
 			slf4j 내부에 포함된 log4j의 보안이슈(2021.12.11)에 의한 의존성 교체 설정
-			- 영향을 받는 버전 : 2.0-beta 부터 2.14.1 까지
+			- 영향을 받는 버전 : 2.0-beta 부터 2.17.0 까지
 			- 다음 중 하나를 적용하여 문제 해결
-				- 최신버전(2.15.0)으로 교체하여 문제되는 부분의 수정 버전 적용
+				- 최신버전(2.17.1)으로 교체하여 문제되는 부분의 수정 버전 적용
 				- JndiLookup 클래스를 수동으로 제거
 				- Runtime 실행변수 추가
 					-Dlog4j2.formatMsgNoLookups=TRUE
@@ -264,22 +264,21 @@
 			웹소켓(Websocket) 의존성
 			- spring-websocket : 스프링 웹소켓 모듈
 			- jackson-databind : 웹소켓에서 주고받는 데이터 변환 객체
-		 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- 웹소켓 의존성 추가 이후 JUnit 테스트 환경 에러 해결을 위한 TOMCAT EMBEDED WEBSOCKET 설정 -->
-		<!-- JUnit에서만 사용할 것이기 때문에 scope는 test에 한정한다. -->
-		<!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-websocket -->
+		웹소켓 의존성 추가 이후 JUnit 테스트 환경 에러 해결을 위한 TOMCAT EMBEDED WEBSOCKET 설정
+		JUnit에서만 사용할 것이기 때문에 scope는 test에 한정한다. -->
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-websocket 
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-websocket</artifactId>
 			<version>10.0.14</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 
 		
 	</dependencies>
