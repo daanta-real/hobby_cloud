@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -48,12 +49,12 @@ public class PointHistoryController {
 		return "pointHistory/insert";
 	}
 
-	// 포인트 변동이력 등록 처리기
+	// 포인트 변동이력 등록 처리기 (포인트결제, 선물 등 모든 타입 이거 하나로 대응함)
 	@PostMapping("/insert")
-	public String insert_execute(PointHistoryDto dto, Model model) {
-		log.debug("=============== /pointHistory/insert POST 포인트 증감이력 등록 처리기 진입. 입력 PointHistoryDto: {}", dto);
-		pointHistoryDao.insert(dto);
-		log.debug("=============== /pointHistory/insert POST 포인트 증감이력 등록이 정상적으로 완료되었습니다.");
+	public String insert_execute(@ModelAttribute PointHistoryDto pointHistoryDto, Model model) {
+		log.debug("=============== /pointHistory/insert POST 포인트 증감이력 등록 처리기 진입. 입력 PointHistoryDto: {}", pointHistoryDto);
+		pointHistoryDao.insert(pointHistoryDto);
+		log.debug("=============== /pointHistory/insert POST 포인트 증감이력 등록 처리기가 정상적으로 실행 완료되었습니다.");
 		return "redirect:/pointHistory"; // 포인트 목록으로 돌아감
 	}
 
