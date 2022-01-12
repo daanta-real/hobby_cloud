@@ -111,7 +111,10 @@ window.addEventListener("load", function() {
 				<a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"tabindex="-1" aria-disabled="true">«</a>
 			</li>
 			</c:if>
-			<li class="page-item active">
+			<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+    </c:forEach>
+			<!-- <li class="page-item active">
 				<a class="page-link" href="#">1</a>
 			</li>
 			<li class="page-item">
@@ -122,7 +125,7 @@ window.addEventListener("load", function() {
 			</li>
 			<li class="page-item">
 				<a class="page-link" href="#">»</a>
-			</li>
+			</li>-->
 		</ul>
        
 		<a class="col-auto btn btn-sm btn-outline-primary" href="write">글쓰기</a>
