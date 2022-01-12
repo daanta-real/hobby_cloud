@@ -9,6 +9,12 @@
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 마이 페이지</TITLE>
+<style type="text/css">
+
+.replyDepth1 { margin-left:3rem !important; }
+.replyDepth2 { margin-left:6rem !important; }
+
+</style>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -148,10 +154,60 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 조건</div>
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>댓글 목록</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
+				
+				<!--
+				댓글 및 대댓글 depth에 따라 클래스명을 다르게 붙이면 된다.
+				0레벨: 아무 것도 안 붙임
+				1레벨: replyDepth1
+				2레벨: replyDepth2
+				-->
+				<div class="card mb-2 border border-1 border-secondary p-0">
+					<div class="card-header d-flex align-items-center p-1 px-2">
+						<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+						<span class="memberReplyNick">내 닉네임</span>
+						<span class="memberReplyRegistered ms-auto">2000-00-00 15:23</span>
+					</div>
+					<div class="card-body position-relative p-1 px-2">
+						<div class="card-text p-1 px-3">[댓글 내용]</div>
+						<div class="floatRightTop position-absolute top-0 end-0 p-1">
+							<button type="button" class="btn btn-sm btn-secondary p-1 me-1" onclick="modifyReply();">삭제</button>
+							<button type="button" class="btn btn-sm btn-secondary p-1 me-1" onclick="modifyReply();">수정</button>
+						</div>
+					</div>
+				</div>
+				<div class="card mb-2 border border-1 border-secondary p-0 replyDepth1">
+					<div class="card-header d-flex align-items-center p-1 px-2">
+						<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+						<span class="memberReplyNick">내 닉네임</span>
+						<span class="memberReplyRegistered ms-auto">2000-00-00 15:23</span>
+					</div>
+					<div class="card-body position-relative p-1 px-2">
+						<div class="card-text p-1 px-3">[댓글 내용]</div>
+						<div class="floatRightTop position-absolute top-0 end-0 p-1">
+							<button type="button" class="btn btn-sm btn-secondary p-1 me-1" onclick="modifyReply();">삭제</button>
+							<button type="button" class="btn btn-sm btn-secondary p-1 me-1" onclick="modifyReply();">수정</button>
+						</div>
+					</div>
+				</div>
+				<div class="card mb-2 border border-1 border-secondary p-0 replyDepth2">
+					<div class="card-header d-flex align-items-center p-1 px-2">
+						<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+						<span class="memberReplyNick">내 닉네임</span>
+						<span class="memberReplyRegistered ms-auto">2000-00-00 15:23</span>
+					</div>
+					<div class="card-body position-relative p-1 px-2">
+						<div class="card-text p-1 px-3">[댓글 내용]</div>
+						<div class="floatRightTop position-absolute top-0 end-0 p-1">
+							<button type="button" class="btn btn-sm btn-secondary p-1 me-1" onclick="modifyReply();">삭제</button>
+							<button type="button" class="btn btn-sm btn-secondary p-1 me-1" onclick="modifyReply();">수정</button>
+						</div>
+					</div>
+				</div>
+				
 				<form name="searchForm" method="get" class="row">
 					<div class="form-group mb-4 col-md-6 col-lg-4">
 						<label for="searchForm_memberIdx" class="form-label mb-0">회원 번호</label>

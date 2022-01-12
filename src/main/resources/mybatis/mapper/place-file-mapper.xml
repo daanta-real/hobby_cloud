@@ -23,31 +23,50 @@
 	
 	<!-- 장소 추가 -->
 	<insert id="save" parameterType="placeFileDto">
-		INSERT INTO place_file
+		INSERT INTO place_file(
+		PLACE_FILE_IDX, PLACE_IDX, 
+		PLACE_FILE_USER_NAME,PLACE_FILE_SERVER_NAME,
+		PLACE_FILE_SIZE,PLACE_FILE_TYPE
+		)
 		VALUES(
-			#{placeFileIdx}, #{placeIdx}, #{placeFileUserName}, #{placeFileServerName}, #{placeFileSize}, #{placeFileType}
+			#{placeFileIdx}, #{placeIdx}, #{placeFileUserName},
+			#{placeFileServerName}, #{placeFileSize}, #{placeFileType}
 		)
 	</insert>
 	
-	<!-- 장소 첨부파일 DTO 획득 by 파일번호 -->
-	<select id="getNo" parameterType="int" resultType="placeFileDto">
-		SELECT * FROM place_file
-		WHERE place_file_idx = #{placeFileIdx}
-	</select>
-	
 	<!-- 장소 첨부파일 DTO 획득 by idx -->
-	<select id="getIdx" parameterType="int" resultType="placeFileDto">
+	<select id="getByPlaceIdx" parameterType="int" resultType="placeFileDto">
 		SELECT * FROM place_file
 		WHERE place_idx = #{placeIdx}
 	</select>
 	
-	<!-- 장소 첨부파일 삭제 -->
+	<!-- 장소 첨부파일 DTO 획득 by 파일번호 -->
+	<select id="getByPlaceFileIdx" parameterType="int" resultType="placeFileDto">
+		SELECT * FROM place_file
+		WHERE place_file_idx = #{placeFileIdx}
+	</select>	
+	
+	<!--삭제 -->
 	<delete id="delete" parameterType="int">
 	  delete from place_file where place_idx=#{placeIdx}
 	</delete>
 	
+	<!-- 실시간 삭제 -->
 	<delete id="deleteAjax" parameterType="int">
 	delete from place_file where place_file_idx=#{placeFileIdx}
+	</delete>
+	
+	<!-- 장소 목록 및 검색 -->
+	<delete id="deleteList" parameterType="map">
+		DELETE FROM
+			place_file
+		WHERE
+			place_idx = #{placeIdx}
+			<if test="list != null">
+				AND place_file_idx IN
+				<foreach collection="list" item="one" open="(" close=")" separator=",">#{one}</foreach>
+			</if>
+			
 	</delete>
 	
 </mapper>

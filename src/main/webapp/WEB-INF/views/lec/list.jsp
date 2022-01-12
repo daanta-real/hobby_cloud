@@ -1,9 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
+<%@ taglib uri="http://www.springframework.org/tags"  prefix="spring"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
+<c:set var="root" value="${pageContext.request.contextPath}"/>
+<!DOCTYPE HTML>
+<HTML LANG="ko">
+
+<!-- ************************************************ 헤드 영역 ************************************************ -->
+<HEAD>
+<jsp:include page="/resources/template/header.jsp" flush="false" />
+<TITLE>HobbyCloud - 강좌 목록</TITLE>
 <style type="text/css">
 	li {list-style: none; float: left; padding: 6px;}
 </style>
+</HEAD>
 <form method="post">
 <div class="container-900 container-center">
 
@@ -120,4 +131,9 @@
     	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
     </c:if> 
   </ul>
-</nav>	
+</nav>
+
+<!-- ************************************************ 풋터 영역 ************************************************ -->
+<jsp:include page="/resources/template/footer.jsp" flush="false" />
+</BODY>
+</HTML>

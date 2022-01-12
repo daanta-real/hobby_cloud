@@ -23,11 +23,20 @@
 	
 	<!-- 장소 추가 -->
 	<insert id="save" parameterType="com.kh.hobbycloud.entity.place.PlaceDto">
-		INSERT INTO PLACE(PLACE_IDX, MEMBER_IDX, PLACE_NAME, PLACE_DETAIL, PLACE_POSTCODE,
-		PLACE_ADDRESS,PLACE_DETAIL_ADDRESS,PLACE_START,PLACE_END,PLACE_MIN,PLACE_MAX,PLACE_EMAIL,PLACE_PHONE)
+		INSERT INTO PLACE(
+		PLACE_IDX, MEMBER_IDX, PLACE_NAME, 
+		PLACE_DETAIL, PLACE_POSTCODE,
+		PLACE_ADDRESS,PLACE_DETAIL_ADDRESS,
+		PLACE_START,PLACE_END,PLACE_MIN,PLACE_MAX,
+		PLACE_EMAIL,PLACE_PHONE,
+		PLACE_SIDO,PLACE_SIGUNGU,PLACE_BNAME)
 		VALUES(
-			#{placeIdx}, #{memberIdx}, #{placeName}, #{placeDetail}, #{placePostcode}, #{placeAddress}, #{placeDetailAddress}, 
-			#{placeStart}, #{placeEnd}, #{placeMin}, #{placeMax}, #{placeEmail}, #{placePhone}
+			#{placeIdx}, #{memberIdx}, #{placeName}, 
+			#{placeDetail}, #{placePostcode}, 
+			#{placeAddress}, #{placeDetailAddress}, 
+			#{placeStart}, #{placeEnd}, #{placeMin}, #{placeMax}, 
+			#{placeEmail}, #{placePhone}, 
+			#{placeSido}, #{placeSigungu}, #{placeBname}
 		)
 	</insert>
 	
@@ -38,21 +47,23 @@
 	</select>
 	
 	<!-- 장소 DTO 획득 by idx -->
-	<select id="get" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
+	<select id="getIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
 		SELECT * FROM place
 		WHERE place_idx = #{placeIdx}
 	</select>
 	
+	<!-- 삭제 -->
 	<delete id="delete" parameterType="int">
 	  delete from place where place_idx=#{placeIdx}
 	</delete>
 	
+	<!-- 수정 -->
 	<update id="update" parameterType="com.kh.hobbycloud.entity.place.PlaceDto">
 			UPDATE PLACE 
 		SET 
 			PLACE_NAME = #{placeName},
 			PLACE_DETAIL = #{placeDetail}, 
-			PLACE_REGISTERED = #{placeRegistered}, 
+			PLACE_REGISTERED = sysdate, 
 			PLACE_POSTCODE =  #{placePostcode},
 			PLACE_ADDRESS =  #{placeAddress},
 			PLACE_DETAIL_ADDRESS = #{placeDetailAddress},
@@ -61,18 +72,87 @@
 			PLACE_MIN = #{placeMin},
 			PLACE_MAX = #{placeMax},
 			PLACE_EMAIL = #{placeEmail},
-			PLACE_PHONE  = #{placePhone}
+			PLACE_PHONE  = #{placePhone},
+			PLACE_SIDO = #{placeSido},
+			PLACE_SIGUNGU = #{placeSigungu},
+			PLACE_BNAME = #{placeBname}
 			)
 		WHERE
-			MEMBER_IDX = #{memberIdx}
+			PLACE_IDX = #{placeIdx}
 	</update>
 	
-<select id="list" resultType="com.kh.hobbycloud.vo.place.PlaceRegisterVO">
-  select * from place p left outer join
+<!-- 장소 목록 -->
+<select id="list" resultType="com.kh.hobbycloud.vo.place.PlaceListVO">
+select * from place p left outer join
  (select distinct place_idx, min(place_file_idx) as place_file_idx
   from place_file group by place_idx) f  
   on  f.place_idx = p.place_idx  
-  order by p.place_idx desc;
+order by p.place_idx desc
+</select>
+
+	<!-- 장소 총 개수 구하기 -->
+<select id="listCount" resultType="int" >
+select count(*) as BNO from (
+  select * from place p left outer join
+ (select distinct place_idx, min(place_file_idx) as place_file_idx
+  from place_file group by place_idx) f  
+ on  f.place_idx = p.place_idx )
+</select>
+	
+<!-- 목록페이지 목록 페이지 네이션 적용 -->	
+<select id="listPage" resultType="PlaceRegisterVO" parameterType="Criteria">
+	select * from(
+	select rownum  rn , TMP.* from(
+	select * from  place p left outer join
+	 (select distinct place_idx, min(place_file_idx) as place_file_idx
+	  from place_file group by place_idx) f  
+	  on  f.place_idx = p.place_idx  
+	 left outer join member m on p.member_idx = m.member_idx
+	 order by p.place_idx desc
+	  )TMP
+	) where rn between #{rowStart} and #{rowEnd}
+	</select>
+	
+<!-- 장소 상세 -->
+<select id="get" parameterType="int" resultType="PlaceVO">
+	select p.*, 
+			m.member_nick, 
+<!-- 			f.place_file_idx,  -->
+			c.lec_category_name
+	from place p  
+			left outer join
+			member m 
+			ON p.member_idx = m.member_idx
+<!-- 		    left outer join -->
+<!-- 		    place_file f -->
+<!-- 		    on p.place_idx = f.place_idx -->
+		    left outer join
+		    place_target c
+		    on p.place_idx = c.place_idx
+	where p.place_idx = #{placeIdx}
+</select>
+	
+	<!-- 장소 목록 및 검색 -->
+<select id ="listSearch" parameterType="PlaceSearchVO" resultType="PlaceVO">
+ select * from  place p left outer join
+  (select distinct place_idx, min(place_file_idx) as place_file_idx
+  from place_file group by place_idx) f 
+  on  f.place_idx = p.place_idx
+  <where> 
+ 	<if test="placeName != '' ">
+  	AND instr(place_name,#{placeName}) >0
+ 	 </if>
+  	<if test="placeSido != null">
+   	AND instr(PLACE_SIDO,#{placeSido}) >0
+ 	</if>
+ 	<if test="category != null">
+ 	AND lec_category_name in
+	<foreach item="statOne" collection="category" open="(" close=")" separator="," >
+	#{statOne}
+	</foreach>
+</if> 
+  </where>
+  order by p.place_idx desc
 </select>
 	
 	

@@ -1,12 +1,278 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
+<%@ taglib uri="http://www.springframework.org/tags"  prefix="spring"%>
+<c:set var="root" value="${pageContext.request.contextPath}"/>
+<!DOCTYPE HTML>
+<HTML LANG="ko">
 
-</body>
-</html>
+<!-- ************************************************ 헤드 영역 ************************************************ -->
+<HEAD>
+<jsp:include page="/resources/template/header.jsp" flush="false" />
+<TITLE>HobbyCloud - 장소 수정 페이지</TITLE>
+
+<!-- 파일 업로드 모듈 사전 설정 -->
+<%--
+파일 업로드 모듈을 적용하기 위한 준비물
+1. 아래 사전 변수 설정에 경로 정확히 입력하기 ('/'기호 조심)
+   - fileImageStorePath: 이미지를 불러오기 위한 이미지 호출 경로
+   - fileUploadTargetPage: AJAX로 데이터를 전송할 대상 페이지
+2. AJAX 컨트롤러측 패러미터 VO에는, 아래 필드가 존재해야 한다.
+   - List<MultipartFile> attach: 추가할 파일들 정보가 넘어오는 필드
+   - List<String> fileDelTargetList: 삭제대상 file idx 목록 (String으로 되어 있음)
+     (단, 편집이 아니라 신규작성인 경우에는 위의 fileDelTargetList는 만들지 않아도 된다.)
+3. HTML FORM의 class에는 fileUploadForm 항목이 있어야 한다.
+--%>
+
+<SCRIPT TYPE="text/javascript">
+const fileImageStorePath = "${root}/place/placeFile/";
+const fileSubmitAjaxPage = "${root}/placeData/update/";
+</SCRIPT>
+<!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
+<SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fileUpload.css" />
+
+<style type="text/css">
+#map { padding-top:56.25%; }
+.grayInputGroup :is(div, input) { border-color: var(--input-border-color) !important; }
+</style>
+
+<script>
+
+    $(function(){    	
+		$("#btnclick").click(function(){
+	   		let placePhone = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
+	   		$('input[name="placePhone"]').val(placePhone);
+	   		console.log("합해진 핸드폰 번호 placePhone : " +$("#phone1").val() + $("#phone2").val() + $("#phone3").val());
+			alert("실행"+placePhone);
+	   			   		
+	   		let placeEmail = $("#idMail").val() + "@" + $("#inputMail").val();
+	   		$('input[name="placeEmail"]').val(placeEmail);
+	   		console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
+	   		alert("실행"+placeEmail);
+		})
+	
+		   $("#emailBox").change(function() {
+	         if ($("#emailBox").val() == "directly") {
+	             $("#inputMail").attr("readonly", false);
+	             $("#inputMail").val("");
+	             $("#inputMail").focus();
+	         }  else {
+	             $('#inputMail').val($('#emailBox').val());
+	             $("#inputMail").attr("readonly", true);
+	         }
+		   });
+    });
+    
+    /* 주소 검색 모듈 
+     *  .find-address-btn을 누르면 자동으로 주소검색창이 나옴
+     *  
+     *  - input[name=placePostcode] 에 우편번호 작성
+     *  - input[name=placeAddress] 에 기본주소 작성
+     *  - input[name=placeDetailAddress] 에 커서 이동
+     */
+    
+		 $(function(){
+			$(".find-address-btn").click(function(){
+		    	findAddress();
+		    });
+		    function findAddress(){
+		        new daum.Postcode({
+		            oncomplete: function(data) {
+		                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+		                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+		                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+		                var addr = ""; // 주소 변수
+		                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+		                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+		                if (data.userSelectedType === "R") { // 사용자가 도로명 주소를 선택했을 경우
+		                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+		                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+		                    if(data.bname !== "" && /[동|로|가]$/g.test(data.bname)){
+		                        addr = data.roadAddress + " (" + data.bname + ")";
+		                    }
+		                    else{
+		                        addr = data.roadAddress;
+		                    }
+		                } 
+		                else { // 사용자가 지번 주소를 선택했을 경우(J)
+		                    addr = data.jibunAddress;
+		                }
+		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		                document.querySelector("input[name=placePostcode]").value = data.zonecode;
+		                //$("input[name=postcode]").val(data.zonecode);
+		                document.querySelector("input[name=placeAddress]").value = addr;
+		                //$("input[name=address]").val(addr);
+		                
+		                //원래 써있던 값지우기
+		            	document.querySelector("input[name=placeDetailAddress]").value = null;
+		                // 커서를 상세주소 필드로 이동한다.
+		                document.querySelector("input[name=placeDetailAddress]").focus();
+		                //$("input[name=detailAddress]").focus();
+		            }
+		        }).open();
+		    };	
+		 });
+</script>
+
+</HEAD>
+<BODY>
+<jsp:include page="/resources/template/body.jsp" flush="false" />
+
+
+
+<!-- ************************************************ 본문 대구역 시작 ************************************************ -->
+<!-- 본문 대구역 시작 -->
+<SECTION class="container-fluid"><DIV class="row d-flex flex-col justify-content-center pt-3 pt-sm-3 pt-md-5 pb-md-3">
+
+
+
+<!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
+<!-- 사이드메뉴 영역 시작 -->
+<!-- 사이드메뉴 영역 끝 -->
+
+
+
+<!-- ************************************************ 페이지 영역 ************************************************ -->
+<!-- 페이지 영역 시작 -->
+<ARTICLE class="d-flex flex-column align-items-start col-lg-8 mx-md-1 mt-xs-2 mt-md-3 pt-2">
+
+	<!-- 제목 영역 시작 -->
+	<HEADER class='w-100 mb-1 p-2 px-md-3'>
+		<div class='row border-bottom border-secondary border-1'>
+			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
+			강의장 수정
+			</span>
+		</div>
+	</HEADER>
+	<!-- 제목 영역 끝 -->
+	<!-- 페이지 내용 시작 -->
+	<SECTION class="w-100 pt-0 fs-6">
+		<!-- 소단원 내용 -->
+		<div class="row p-sm-2 mx-1 mb-5">
+			<div class="container">
+
+<form id="placeFormEl" name="placeForm" method="post" enctype="multipart/form-data" class="container fileUploadForm">
+	<input type="hidden" name="placeIdx" value="${placeVO.placeIdx}" />
+	<div class="row mb-4">
+		<label>장소 이름</label>
+		<input type="text" name="placeName" required class="form-input" value="${placeVO.placeName}">
+	</div>
+	<div class="row mb-4">
+		<label>카테고리</label>
+		<select name="lecCategoryName" required class="form-input">
+			<option value="">선택하세요</option>
+			<c:forEach var="val" items="${lecCategoryList}">
+				<option value="${val}" ${placeVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
+			</c:forEach>
+		</select>
+	</div>
+	<div class="row mb-4">
+		<label>강의장 상세내용</label>
+		<textarea rows="5" cols="20" name="placeDetail" required class="form-input">${placeVO.placeDetail}</textarea>
+	</div>
+	<div class="row mb-4">
+		<label>장소 등록일</label>
+		<input type="text" name="placeRegistered" required class="form-input" value="${placeVO.placeRegistered}">
+	</div>		
+	<div class="row mb-4">
+		<label class="form-block">대여 시작일</label>
+		<input type="date" name="placeStart" required class="form-input form-inline" value="${placeVO.placeStart}">
+	</div>
+	<div class="row mb-4">
+		<label class="form-block">대여 마감일</label>
+		<input type="date" name="placeEnd" required class="form-input form-inline" value="${placeVO.placeEnd}">
+	</div>
+	<div class="row mb-4">
+		<label>최저 대여료</label>
+		<input type="number" name="placeMin" required class="form-input" value="${placeVO.placeMin}">
+	</div>
+	<div class="row mb-4">
+		<label>최고 대여료</label>
+		<input type="number" name="placeMax" required class="form-input" value="${placeVO.placeMax}">
+	</div>
+	<div class="row mb-4">
+		<label class="mail_name">이메일</label>
+	 	<div class="mail_input_box"> 
+			<input type="text" id="idMail" name="email_id" class="rowChk" required> @
+			<input type="text" id="inputMail" name="email_domain" required readonly>
+			<select id="emailBox" name="emailBox" required>
+				<option value="" class="pickMail">이메일 선택</option>
+				<option value="directly">직접입력</option>
+				<option value="naver.com">naver.com</option>
+				<option value="gmail.com">gmail.com</option>
+				<option value="daum.net">daum.net</option>
+				<option value="hanmail.net">hanmail.net</option>
+				<option value="nate.com">nate.com</option>
+			</select>
+			<input type="hidden" name="placeEmail" class="mail_input" >
+		</div>
+	</div>
+	<div class="row mb-4">
+		<label class="phone_name">핸드폰 번호</label>
+		<div class="phone_wrap">
+	 			<input type="text" id="phone1" name="phone1" maxlength=3 required placeholder="000" class="phone"> -
+				<input type="text" id="phone2" name="phone2" maxlength=4  required placeholder="0000" class="phone"> -
+				<input type="text" id="phone3" name="phone3" maxlength=4  required placeholder="0000" class="phone">	
+				<input type="hidden" name="placePhone" id="phoneNum">
+		</div>
+	</div>
+	<div class="row mb-4">
+		<label>강의장 주소</label>
+		 	<input type="text" name="placePostcode" placeholder="우편번호" readonly id="placePostcode">
+			 	<button type="button" id="kakao_Address" class="find-address-btn" value="주소찾기">
+			 	주소 찾기
+			 	</button>
+		<label>강의장 상세주소</label>
+			<input type="text" id="placeAddress" name="placeAddress" placeholder="상세 주소" required readonly>
+		 <label>강의장 상세주소</label>
+			<input type="text" id="placeDetailAddress" name="placeDetailAddress" placeholder="상세 주소">
+			<input type="hidden" name="address" >
+	</div>
+ 	<div class="row mb-4">
+ 		<label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>
+ 		<!-- 드롭존 겸 파일리스트 -->
+ 		<div id="fileDropZoneBox" class="w-100 p-0">
+	 		<c:choose>
+	 			<c:when test="${fileList != null and fileList.size() > 0}">
+	 				<div id="fileDropZone" class="
+	 						w-100 fs-4 rounded text-dark
+	 						border-1 border-secondary p-2">
+					</div>
+	 			</c:when>
+	 			<c:otherwise>
+	 				<div id="fileDropZone" class="
+					 		w-100 fs-4 border-5 border-light rounded p-5
+				 			justify-content-center align-items-center
+				 			text-dark bg-secondary bg-gradient">
+						<div id="fileDropZoneDefaultText" class="text-center">파일을 여기에 드래그하여 첨부해 보세요.</div>
+					</div>
+	 			</c:otherwise>
+	 		</c:choose>
+ 		</div>
+ 	</div>
+	<div class="row mb-4">
+		<input type="button" id="fileUploadForm_submitBtn" value="수정 완료" class="form-btn">
+	</div>
+	<div id="orgFileData" class="d-none">
+		<c:forEach items="${fileList}" var="file">
+			<div data-server-idx="${file.placeFileIdx}" data-name="${file.placeFileUserName}" data-size="${file.placeFileSize}"></div> 
+		</c:forEach>
+	</div>
+</form>
+	
+			</div>
+		</div>
+	</SECTION>
+	<!-- 페이지 내용 끝. -->
+	
+</ARTICLE>
+<!-- 페이지 영역 끝 -->
+
+
+</DIV></SECTION>
+<!-- 본문 대구역 끝 -->
+
+<!-- ************************************************ 풋터 영역 ************************************************ -->
+<jsp:include page="/resources/template/footer.jsp" flush="false" />
+</BODY>
+</HTML>

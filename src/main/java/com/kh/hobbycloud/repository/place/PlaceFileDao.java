@@ -8,17 +8,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.hobbycloud.entity.place.PlaceFileDto;
 
 public interface PlaceFileDao {
-
+	
+	// CREATE
 	void save(PlaceFileDto placeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException;
-
-	PlaceFileDto getNo(int placeFileIdx);
-
-	List<PlaceFileDto> getIdx(int placeIdx);
-
+	
+	// SELECT
+	PlaceFileDto getByPlaceFileIdx(int placeFileIdx);
+	List<PlaceFileDto> getListByPlaceIdx(int placeIdx);
 	byte[] load(int placeFileIdx) throws IOException;
-	//파일삭제
+	
+	// DELETE
 	boolean delete(int placeIdx);
-	//실시간삭제
 	boolean deleteAjax(int placeFileIdx);
+	boolean deleteList(int placeIdx, List<String> placeFileDelTargetList);
 
 }

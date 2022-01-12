@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
 <HTML LANG="ko">
@@ -14,7 +15,6 @@
 .squareImgContainer img { transform:translate(-50%, -50%); object-fit:contain; }
 </style>
 <script type='text/javascript'>
-
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
 	
@@ -24,23 +24,26 @@ window.addEventListener("load", function() {
 		renderImageFromFile(e.target.files[0], document.getElementById("profileImageOutput"));
 	})
 	
-	// 비밀번호 유효성 검사
-	$("#pw").keyup(function(){
-		if(!RegExp(/^[A-Za-z0-9!@#$\s_-]{8,16}$/).test($("#pw").val())){
-			console.log("사용불가능" + $("#pw").val());
-			$("#pwComm").text("");
-			$("#pwComm").css("color", "red");
-			$("#pwComm").html("영문,숫자,특수문자 8자 이상 16자 이내로 입력하세요");
-			pwCheck = false;
-		} else {
-			console.log("사용가능" + $("#pw").val());
-			$("#pwComm").text("");
-			$("#pwComm").css("color", "green");
-			$("#pwComm").html("사용가능한 비밀번호입니다.");
-			pwCheck = true;
-		}
-	})
-
+	// 비밀번호 동일한지 여부
+	 $("#pwch").keyup(function(){
+	      if($("#pwch").val() != $("#pw").val()){
+		         $("#pwComm2").text("");
+		         $("#pwComm2").css("color", "red");
+		         $("#pwComm2").html("비밀번호가 동일하지 않습니다.");
+		         		         
+		         pwchCkeck = false;
+		         $("#btnclick").prop("disabled", true);
+		         $("#btnclick").css("color", "gray");
+				
+	         } else {
+		         $("#pwComm2").html("");
+		         $(this).prop("disabled",false);     	
+		         
+		         pwchCkeck = true;
+		         $("#btnclick").css("color", "white");
+		         $("#btnclick").prop("disabled", false);
+	         } 
+	  });
 	// 주소 검색창 기능
 	// findRegion을 누르면 자동으로 주소검색창이 나옴    
 	// → input[name=memberRegion] 에 기본주소 작성한다.
@@ -71,14 +74,6 @@ window.addEventListener("load", function() {
 			}
 		}).open();
 	});
-
-	let id = '${memberDto.memberIdx}';
-	let social = id.substr(id.indexOf("@"),id.length);
-	console.log("dfd :" + social);
-	if(social == "@n" || social == "@k") {
-		$(".social").hide();
-		
-	}
 		
 	let email = '${memberDto.memberEmail}';
 	$('input[name="email_id"]').val(email.substr(0,email.indexOf("@")));
@@ -96,6 +91,28 @@ window.addEventListener("load", function() {
 	
 });
 
+
+$(function(){
+	$(".remove-btn").click(function(){
+		console.log($(this).data("memberProfileIdx"));
+		deleteFile($(this).data("memberProfileIdx"));
+	});
+});
+function deleteFile(memberProfileIdxValue){
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/gatherData/fileDelete?memberProfileIdx="+memberProfileIdxValue,
+		type:"delete",
+		dataType:"text",
+		success:function(resp){
+			console.log("성공",resp);
+			
+		},
+		error:function(e){
+			console.log("실패");
+		}
+	});
+}
 </script>
 </HEAD>
 <BODY>
@@ -134,14 +151,15 @@ window.addEventListener("load", function() {
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<form method="post" enctype="multipart/form-data" id="join_form" class="row">
+					<input type="hidden" name="memberPw" id="pw" class="mail_input" value="${memberDto.memberId}">
 					<div class="form-group mb-4 col-12">
 						<label class="id_name form-label mb-0">아이디</label>
 						<input type="text" class="form-control" value="${memberDto.memberId}" readonly>
 					</div>
 					<div class="form-group mb-4 col-12">
 						<label for="pw" class="form-label mb-0">비밀번호</label>
-						<input id="pw" name="memberPw" type="password" class="form-control" placeholder="회원 번호를 입력하세요" value="${param.memberIdx}">
-						<font id="pwComm" class="form-text fs-6"><c:if test="${param.error != null}">비밀번호가 일치하지 않습니다</c:if></font>
+						<input id="pwch" name="memberPw2" type="password" class="form-control" placeholder="비밀번호를 입력하세요" >
+						<div id="pwComm2"></div>
 					</div>
 					<div class="form-group mb-4 col-12">
 						<label class="id_name form-label mb-0">닉네임</label>
@@ -151,7 +169,7 @@ window.addEventListener("load", function() {
 						<label class="form-label mb-0">이메일</label>
 						<div>
 							<span>${memberDto.memberEmail}</span>
-							<input type="button" id="emailCheck" class="adCheck" value="메일변경하기" onclick="location.href='updateMail.jsp'">
+							<input type="button" id="emailCheck" class="adCheck" value="메일변경하기" onclick="location.href='updateMail'">
 						</div>
 					</div>
 					<div class="form-group mb-4 col-12 container">
@@ -167,7 +185,7 @@ window.addEventListener("load", function() {
 					<div class="form-group mb-4 col-12">
 						<label for="region" class="form-label mb-0">주소</label>
 						<input id="region" name="memberRegion" type="text" class="form-control" value="${memberDto.memberRegion}" readonly>
-						<button type="button" class="">주소 찾기</button>
+						<button type="button" class="findRegion">주소 찾기</button>
 						<div id="regioncheck" class="fs-6"></div>
 					</div>
 					<div class="form-group mb-4 col-12">
@@ -179,8 +197,8 @@ window.addEventListener("load", function() {
 									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100" src="https://via.placeholder.com/300x300?text=사진을%20첨부하세요.">
 								</c:when>
 								<c:otherwise>
-									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100"" src="profile?memberIdx=${memberProfileDto.memberIdx}" width="100%">
-									<a href="profileDelete?memberIdx=${memberProfileDto.memberIdx}">삭제</a>
+									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100"" src="profile/${memberProfileDto.memberIdx}" width="100%">
+									<button class="remove-btn" data-gatherfileidx="${memberProfileDto.memberProfileIdx}">삭제</button>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -194,7 +212,7 @@ window.addEventListener("load", function() {
 						</div>
 					</div>
 					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">수정하기</button>
+						<button type="submit" id="btnclick" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">수정하기</button>
 					</div>
 				</form>
 			</div>
@@ -204,11 +222,8 @@ window.addEventListener("load", function() {
 	
 </ARTICLE>
 <!-- 페이지 영역 끝 -->
-
-
 </DIV></SECTION>
 <!-- 본문 대구역 끝 -->
-
 <!-- ************************************************ 풋터 영역 ************************************************ -->
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
 </BODY>
