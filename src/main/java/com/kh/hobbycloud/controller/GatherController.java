@@ -64,7 +64,7 @@ public class GatherController {
 	@GetMapping("/list")
 	public String list(Model model,Criteria cri) {
 		
-		
+		 
 		model.addAttribute("list", gatherService.list(cri));
 		
 		PageMaker pageMaker = new PageMaker();
