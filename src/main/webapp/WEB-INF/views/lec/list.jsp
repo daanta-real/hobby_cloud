@@ -95,14 +95,15 @@
 						</div>
 						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 					</div>
+					<!-- 카테고리 체크박스 부분인데 지금 제대로 구현이 안됌 -->
 					<div class="form-group mb-4 col-6">
 						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
-						<c:forEach var="lecCategory" items="${lecCategoryList}">
 							<div class="btn-group w-100">
-								<input name="lecCategoryName" type="checkbox" value="서울" class="btn-check" id="category" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
-								<label class="btn btn-outline-primary" for="category">${lecCategory.lecCategoryName}</label>
+								<c:forEach var="lecCategory" items="${lecCategoryList}">
+									<input name="lecCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="category" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
+									<label class="btn btn-outline-primary" for="category">${lecCategory}</label>
+								</c:forEach>
 							</div>
-						</c:forEach>
 					</div>
 					<div class="form-group mb-4 col-12">
 						<label for="searchForm_lecName" class="form-label mb-0">강좌 이름</label>
