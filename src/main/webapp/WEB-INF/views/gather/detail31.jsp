@@ -1,16 +1,23 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %> 
+
+<c:set var="root" value="${pageContext.request.contextPath}"/>
+
+<!DOCTYPE HTML>
+<HTML LANG="ko">
+
+<!-- ************************************************ 헤드 영역 ************************************************ -->
+<HEAD>
+ 
+<jsp:include page="/resources/template/header.jsp" flush="false" />
+
+<TITLE>HobbyCloud - 상세 페이지</TITLE>
+</HEAD>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.js" integrity="sha512-7Fh4YXugCSzbfLXgGvD/4mUJQty68IFFwB65VQwdAf1vnJSG02RjjSCslDPK0TnGRthFI8/bSecJl6vlUHklaw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-
-
-   
-    
     <script>
     $(function() {
 		//지도 생성 준비 코드
@@ -76,204 +83,194 @@
 </style>
 
 
-<!-- Bootstrap -->
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-	crossorigin="anonymous"></script>
-<!-- Google Font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap"
-	rel="stylesheet">
-<!-- JQuery 3.6.0 -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<!-- XE Icon -->
-<link rel="stylesheet"
-	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<script src="https://code.jquery.com/jquery-latest.js"></script>
+<BODY>
+<jsp:include page="/resources/template/body.jsp" flush="false" />
 
 
-<c:set var="isLogin" value="${memberIdx != null}" />
+
+<!-- ************************************************ 본문 대구역 시작 ************************************************ -->
+<!-- 본문 대구역 시작 -->
+<SECTION class="container-fluid"><DIV class="row d-flex flex-col justify-content-center pt-3 pt-sm-3 pt-md-5 pb-md-3">
 
 
-<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번게시글</h2>
-<input type="text" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
-<input type="text" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
 
-<!--상세페이지 지도 -->
-<div id="map" style="width:50%;height:350px;"></div>
- 
-<table border="1" width="80%">
-	<tbody>
-		<tr>
-			<td>
-				<h3>${GatherVO.gatherName}</h3>
-			</td>
-		</tr>
-		<tr>
-			<td>작성자 :${GatherVO.memberNick} | 장소 :
-				${GatherVO.gatherLocRegion}</td>
-		</tr>
-		<!-- 답답해 보이지 않도록 기본높이를 부여 -->
-		<!-- 
-			pre 태그를 사용하여 내용을 있는 그대로 표시되도록 설정
-			(주의) 태그 사이에 쓸데없는 엔터, 띄어쓰기 등이 들어가지 않도록 해야 한다.(모두 표시된다) 
-		-->
-		<tr height="250" valign="top">
-			<td class="participate"><pre>${GatherVO.gatherDetail}</pre> 
-			
-			
-			
-			<c:set	var="isJoin" value="false" /> 
-			<c:set var="isFull" value="false" />
-				
-			
-				
-				<!-- 참가자 리스트 반복문 -->
-				 <c:forEach var="GatherHeadsVO" items="${list2}"
-					varStatus="status">
-					<c:out value="${status.count}" />
+<!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
+<!-- 사이드메뉴 영역 시작 -->
+<!-- 사이드메뉴 영역 끝 -->
 
-					<!-- 참가자 인원을 확인 -->
-					<c:if test="${status.count == GatherVO.gatherHeadCount}">  
-						<c:set var="isFull" value="true" />
-					</c:if>
-				
-				
 
-					<!-- 참가여부를 확인 -->
-					<c:if test="${GatherHeadsVO.memberIdx  eq memberIdx}">
-						<!-- 만약에 일치한다  -->
-						<c:set var="isJoin" value="true" />
-					</c:if>
 
-	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div>  
+<!-- ************************************************ 페이지 영역 ************************************************ -->
+<!-- 페이지 영역 시작 -->
+<ARTICLE class="d-flex flex-column align-items-start col-lg-8 mx-md-1 mt-xs-2 mt-md-3 pt-2">
 
-					<tr>
-						<th>닉네임</th>
-						<th>프로필</th>
-					</tr>
-					<tr>
-						<td>${GatherHeadsVO.memberNick}</td>
-						<td>${GatherHeadsVO.gatherIdx}</td>
-					</tr>
-				</c:forEach>   
-				<h1>참여자 수 :${status.count} / ${GatherVO.gatherHeadCount}</h1> 
-				<c:choose>
-					<c:when test="${isFull}">
-					</c:when>
-				</c:choose> <!-- 게시판 사진 반복문 --> 
-				<c:forEach var="GatherFileDto" items="${list}">
-					<span><${GatherFileDto.gatherFileUserName}</span>
-					<br>
-					
-					<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
-						width="30%" class="image image-round image-border">
-				</c:forEach></td>
-
+	<!-- 제목 영역 시작 -->
+	<HEADER class='w-100 mb-1 p-2 px-md-3'>
+		<div class='row border-bottom border-secondary border-1'>
+			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
+			소모임
+			</span>
+		</div>
+	</HEADER>
+	<!-- 제목 영역 끝 -->
 	
+	<!-- 페이지 내용 시작 -->
+	<SECTION class="w-100 pt-0 fs-6">
+		<!-- 소단원 제목 -->
+		<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번 게시글</h2>
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
+		<!-- 소단원 내용 -->
+		<div class="row p-sm-2 mx-1 mb-5 container">
+	<c:set var = "start" value = " ${GatherVO.gatherStart}"/>
+      <c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
+      <c:set var = "end" value = " ${GatherVO.gatherEnd}"/>
+      <c:set var = "endTime" value = "${fn:substring(end, 0, 17)}" />
 
-		</tr>
-		<!-- 소모임 참가 /취소 버튼 -->
-		<tr>
-			<td>
-				<!-- 참가하기 버튼 --> <c:choose>
-				
-					<c:when test="${isJoin}">
-						<a class="btn btn-warning"
-							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
-					</c:when>
-					<c:when test="${isFull}">
-						<a class="btn btn-secondary"
-							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">완료</a>
-					</c:when>
-					<c:when test="${isLogin}"> 
-						<a class="btn btn-primary"
-							href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
-					</c:when>
-				</c:choose>
-			</td>
-		</tr>
-		<tr>
-			<td><a href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
-				<a href="${pageContext.request.contextPath}/gather/list">목록보기</a> <a
-				href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}">수정</a>
+	<input type="hidden" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
+	<input type="hidden" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
+     <div id="map" style="width: 100%; height: 250px; border-radius: 250px;"></div>  
+			<!-- 글내용 --> 
+			<div class="row justify-content-end">
+				등록일 :
+				|
+				작성자 : ${GatherVO.memberNick}
+				|
+				소모임시간 : ${startTime} ~ ${endTime} 
+				|
+				장소 : ${GatherVO.gatherLocRegion}
+			</div>
+			<div class="row">
+			${GatherVO.gatherDetail} 
+			<c:forEach var="GatherFileDto" items="${list}"> 
+				<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
+					width="30%" class="image image-round image-border">
+				</c:forEach>
+			</div>
+			<!-- 각종 버튼들 -->
+			<nav class="row p-0 pt-4 d-flex justify-content-end">
+				<a href="${pageContext.request.contextPath}/gather/list"
+				 class="col-auto btn btn-sm btn-outline-primary mx-1">목록 보기</a>
+				<a href="${root }/gather/insert" class="col-auto btn btn-sm btn-outline-primary mx-1">글 작성</a>
+				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}"
+				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a
-				href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}">삭제</a>
+				href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
+				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>
+				
+			</nav>
+		</div>
+		
+		
+		<!-- 소단원 제목 -->
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>댓글</div>
+		<!-- 소단원 내용 -->
+		<div class="row p-sm-2 mx-1 mb-5">
+			<!-- 댓글 작성 -->
+			<form id="insert-form">
+				<div class="card mb-2 border border-1 border-secondary p-0">
+					<div class="card-header d-flex align-items-center p-1 px-2">
+						<span>댓글을 입력해주세요</span>
+					</div>
+					<div class="card-body position-relative p-1 px-2">
+						<input type="text" class="card-text p-1 px-3 gatherReplyDetail" name="gatherReplyDetail"> 
+						<button type="button" class="btn btn-sm btn-secondary p-1 me-1">등록</button>
+						<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
+					</div>   						
+			  		<div class="floatRightTop position-absolute top-0 end-0 p-1">	
+			
+					</div> 
+				</div>
+			</form>
+			<!-- 댓글 결과창 --> 
+			<div id="result"></div> 
+			<!-- 게시판 댓글 목록 -->
+			<template id="gatherVO-template">
+				<div class="card mb-2 border border-1 border-secondary p-0">
+					<div class="card-header d-flex align-items-center p-1 px-2">
+						<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+						<span class="memberNick">{{memberNick}}</span>
+						<span class="memberReplyRegistered ms-auto gatherReplyDate">{{gatherReplyDate}}</span>
+					</div>
+					<div class="card-body position-relative p-1 px-2">
+						<div class="card-text p-1 px-3 gatherReplyDetail">{{gatherReplyDetail}}</div>
+						
+						
+						
+						<div class="floatRightTop position-absolute top-0 end-0 p-1">
+							<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
+						<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
+						</div>
+					</div>  
+				</div>
+			</template>
+		
+		</div>
+		
+		
+		<!-- 소단원 제목 -->
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>평점 </div>
+		<!-- 소단원 내용 -->
+		<div class="row p-sm-2 mx-1 mb-5">
+			<form id="insertReview-form">
+			 	<div class="star-rating space-x-4 mx-auto"> 
+			        <input type="radio" id="5-stars" name="gatherReviewScore" value="5" v-model="ratings"/>
+			        <label for="5-stars" class="star pr-4">★</label>
+			        <input type="radio" id="4-stars" name="gatherReviewScore" value="4" v-model="ratings"/>
+			        <label for="4-stars" class="star">★</label>
+			        <input type="radio" id="3-stars" name="gatherReviewScore" value="3" v-model="ratings"/>
+			        <label for="3-stars" class="star">★</label>
+			        <input type="radio" id="2-stars" name="gatherReviewScore" value="2" v-model="ratings"/>
+			        <label for="2-stars" class="star">★</label>
+			        
+			        <input type="radio" id="1-star" name="gatherReviewScore" value="1" v-model="ratings" />
+			        <label for="1-star" class="star">★</label>
+			     </div>  
+				내용 : <input type="text" name="gatherReviewDetail">
+				<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
+					 <input	type="submit" value="전송하기">
+			</form>
+			
+			<!-- 평점목록 -->
+			<template id="gatherReviewVO-template">
+			<div class="item">
+				<span 	class="gatherReviewIdx">{{gatherReviewIdx}}</span> 
+				<span	class="memberNick">{{memberNick}}</span> 
+				<span 	class="gatherIdx">{{gatherIdx}}</span>
+				<span 	class="gatherReviewScore">{{gatherReviewScore}}</span> 
+				<span	class="gatherReviewDetail">{{gatherReviewDetail}}</span>
+				<button class="edit-btn" data-gatherreview-idx="{{gatherReviewIdx}}">e</button>
+				<button class="remove-btn" data-gatherreview-idx="{{gatherReviewIdx}}">엑스</button>
+			</div>
+			</template>
+			
+			<div id="resultReivew"></div> 
+		</div>
+		
+		
+		
+		
+		
+		<!-- 소단원 제목 -->
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>차트차</div>
+		<!-- 소단원 내용 -->
+		<div class="row p-sm-2 mx-1 mb-5">
+			<canvas id="myChart" width="1%" height="1%"></canvas>
+		</div>
+	</SECTION>
+	<!-- 페이지 내용 끝. -->
+	
+</ARTICLE>
+<!-- 페이지 영역 끝 -->
 
-			</td>
-		</tr>
-	</tbody>
-</table>
 
-<!-- 게시판 댓글 작성 -->
-<h1>댓글</h1>
+</DIV></SECTION>
 
-<form id="insert-form">
-	내용 : <input type="text" name="gatherReplyDetail"> <br> 
-	<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
-	<input type="hidden" name="memberIdx" value="1">
-	<button type="submit">등록</button>
-</form>
+<!-- 본문 대구역 끝 -->
 
-
-<!-- 게시판 댓글 목록 -->
-<template id="gatherVO-template">
-<div class="item">
-	<span class="gatherReplyIdx">{{gatherReplyIdx}}</span> <span
-		class="memberNick">{{memberNick}}</span> <span
-		class="gatherReplyDetail">{{gatherReplyDetail}}</span> <span
-		class="gatherReplyDate">{{gatherReplyDate}}</span>
-	<button class="edit-btn" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
-	<button class="remove-btn" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
-</div>
-</template>
-
-<div id="result"></div>
-
-<input type="radio" id="5-stars" name="gatherReviewScore" value="5" v-model="ratings"/>
-<form id="insertReview-form">
- 	<div class="star-rating space-x-4 mx-auto"> 
-        <input type="radio" id="5-stars" name="gatherReviewScore" value="5" v-model="ratings"/>
-        <label for="5-stars" class="star pr-4">★</label>
-        <input type="radio" id="4-stars" name="gatherReviewScore" value="4" v-model="ratings"/>
-        <label for="4-stars" class="star">★</label>
-        <input type="radio" id="3-stars" name="gatherReviewScore" value="3" v-model="ratings"/>
-        <label for="3-stars" class="star">★</label>
-        <input type="radio" id="2-stars" name="gatherReviewScore" value="2" v-model="ratings"/>
-        <label for="2-stars" class="star">★</label>
-        
-        <input type="radio" id="1-star" name="gatherReviewScore" value="1" v-model="ratings" />
-        <label for="1-star" class="star">★</label>
-     </div>  
-	내용 : <input type="text" name="gatherReviewDetail">
-	<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
-		 <input	type="submit" value="전송하기">
-</form>
-
-<!-- 평점목록 -->
-<template id="gatherReviewVO-template">
-<div class="item">
-	<span 	class="gatherReviewIdx">{{gatherReviewIdx}}</span> 
-	<span	class="memberNick">{{memberNick}}</span> 
-	<span 	class="gatherIdx">{{gatherIdx}}</span>
-	<span 	class="gatherReviewScore">{{gatherReviewScore}}</span> 
-	<span	class="gatherReviewDetail">{{gatherReviewDetail}}</span>
-	<button class="edit-btn" data-gatherreview-idx="{{gatherReviewIdx}}">e</button>
-	<button class="remove-btn" data-gatherreview-idx="{{gatherReviewIdx}}">엑스</button>
-</div>
-</template>
-
-<div id="resultReivew"></div> 
-
-<h1>차트 예제</h1>
- 
-<canvas id="myChart" width="1%" height="1%"></canvas>
-
-
+<!-- ************************************************ 풋터 영역 ************************************************ -->
+<jsp:include page="/resources/template/footer.jsp" flush="false" />
+</BODY>
+</HTML>
 
 <script>
 $(function(){
@@ -428,7 +425,7 @@ function loadReview(){
 				});
 				
 				//별점 수정
-				tag.find(".edit-btn").click(function(){
+				tag.find(".").click(function(){
 					
 					var gatherReviewIdx = $(this).prevAll("gatherReviewIdx").text();
 					var gatherReviewDetail = $(this).prevAll(".gatherReviewDetail").text();
@@ -507,7 +504,7 @@ function deleteReview(gatherReviewIdxValue){
 <script>
 $(function(){
 	//처음 들어오면 목록 출력
-	loadList();
+	loadList();    
 	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insert-form").submit(function(e){
 		//this == #insert-form
@@ -520,8 +517,8 @@ $(function(){
 			type:"post",
 			data : dataValue,
 			//dataType 없음
-			success:function(resp){
-				console.log("성공", resp);
+			success:function(resp){ 
+				console.log(resp);  
 			
 				//주의 : this 는 form이 아니다(this는 함수를 기준으로 계산)
 				//jQuery는 reset() 명령이 없어서 get(0)으로 javascript 객체로 변경
@@ -589,8 +586,8 @@ function loadList(){
 					
 					form.append("<input type='hidden' name='gatherReplyIdx' value='"+gatherReplyIdx+"'>");
 					form.append("<input type='text' name='gatherReplyDetail' value='"+gatherReplyDetail+"'>");
-					form.append("<button type='submit'>수정</button>");
-			
+					form.append("<button type='submit'>수정</button>");  
+			 
 					form.submit(function(e){
 						e.preventDefault();
 						
@@ -650,6 +647,13 @@ function deleteReply(gatherReplyIdxValue){
 	});
 }
 </script>
+
+
+
+
+
+
+
 
 
 
