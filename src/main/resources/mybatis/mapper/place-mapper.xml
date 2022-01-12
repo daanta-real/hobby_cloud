@@ -29,14 +29,16 @@
 		PLACE_ADDRESS,PLACE_DETAIL_ADDRESS,
 		PLACE_START,PLACE_END,PLACE_MIN,PLACE_MAX,
 		PLACE_EMAIL,PLACE_PHONE,
-		PLACE_SIDO,PLACE_SIGUNGU,PLACE_BNAME)
+		PLACE_SIDO,PLACE_SIGUNGU,PLACE_BNAME,
+		PLACE_LOC_LATITUDE,PLACE_LOC_LONGITUDE)
 		VALUES(
 			#{placeIdx}, #{memberIdx}, #{placeName}, 
 			#{placeDetail}, #{placePostcode}, 
 			#{placeAddress}, #{placeDetailAddress}, 
 			#{placeStart}, #{placeEnd}, #{placeMin}, #{placeMax}, 
 			#{placeEmail}, #{placePhone}, 
-			#{placeSido}, #{placeSigungu}, #{placeBname}
+			#{placeSido}, #{placeSigungu}, #{placeBname},
+			#{placeLocLatitude},#{placeLocLongitude}
 		)
 	</insert>
 	
@@ -63,7 +65,6 @@
 		SET 
 			PLACE_NAME = #{placeName},
 			PLACE_DETAIL = #{placeDetail}, 
-			PLACE_REGISTERED = sysdate, 
 			PLACE_POSTCODE =  #{placePostcode},
 			PLACE_ADDRESS =  #{placeAddress},
 			PLACE_DETAIL_ADDRESS = #{placeDetailAddress},
@@ -75,7 +76,9 @@
 			PLACE_PHONE  = #{placePhone},
 			PLACE_SIDO = #{placeSido},
 			PLACE_SIGUNGU = #{placeSigungu},
-			PLACE_BNAME = #{placeBname}
+			PLACE_BNAME = #{placeBname},
+			PLACE_LOC_LATITUDE = #{placeLocLatitude},
+			PLACE_LOC_LONGITUDE = #{placeLocLongitude}
 			)
 		WHERE
 			PLACE_IDX = #{placeIdx}
@@ -139,10 +142,10 @@ select count(*) as BNO from (
   from place_file group by place_idx) f 
   on  f.place_idx = p.place_idx
   <where> 
- 	<if test="placeName != '' ">
+ 	<if test="placeName != '' and placeName != null">
   	AND instr(place_name,#{placeName}) >0
  	 </if>
-  	<if test="placeSido != null">
+  	<if test="placeSido != null"><!-- 위에 꺼랑 같이 맞춰줘라 -->
    	AND instr(PLACE_SIDO,#{placeSido}) >0
  	</if>
  	<if test="category != null">

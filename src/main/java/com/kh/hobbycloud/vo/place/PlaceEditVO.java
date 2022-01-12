@@ -19,7 +19,6 @@ public class PlaceEditVO {
 	private String placeName;
 	private String placeDetail;
 	private Date placeRegistered;
-	private String placeLocRegion;
 	private String placePostcode;
 	private String placeAddress;
 	private String placeDetailAddress;
@@ -32,6 +31,8 @@ public class PlaceEditVO {
 	private String placeSido;
 	private String placeSigungu;
 	private String placeBname;
+	private String placeLocLatitude;
+	private String placeLocLongitude;
 	
 	//장소사진 테이블
 	private List<MultipartFile> attach;
