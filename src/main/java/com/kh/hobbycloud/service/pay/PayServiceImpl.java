@@ -13,6 +13,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.kh.hobbycloud.repository.pay.PaidDao;
+import com.kh.hobbycloud.repository.point.PointHistoryDao;
 import com.kh.hobbycloud.vo.pay.KakaoPayApproveRequestVO;
 import com.kh.hobbycloud.vo.pay.KakaoPayApproveResponseVO;
 import com.kh.hobbycloud.vo.pay.KakaoPayCancelResponseVO;
@@ -34,6 +36,9 @@ public class PayServiceImpl implements PayService {
 	@Autowired private String SERVER_ROOT;   // 환경변수로 설정한 사용자 루트 주소
 	@Autowired private String SERVER_PORT;   // 환경변수로 설정한 사용자 포트 번호
 	@Autowired private String CONTEXT_NAME; // 환경변수로 설정한 사용자 콘텍스트명
+	// 변수준비: DAO 계열
+	@Autowired PointHistoryDao pointHistoryDao;
+	@Autowired PaidDao paidDao;
 
 	// 자체 메소드 2. 새 헤더 인스턴스를 생성해 리턴하는 메소드
 	private HttpHeaders header() {
@@ -97,6 +102,39 @@ public class PayServiceImpl implements PayService {
 			}}, "approve", KakaoPayApproveResponseVO.class
 		);
 	}
+	/*
+	// 결제가 모두 끝나면, 결제 이력을 DB의 point_history, paid 테이블에 각각 기록하고,
+	// member 테이블의 point 수량을 변경 반영해 주는 메소드
+	@Override
+	public boolean addRecord(PayRecordVO vo) {
+
+		// 1. 결제된 이력을 DTO로 만들어 paid 테이블에 insert시키고
+		// 결제한 만큼 회원의 포인트 소유량 변경 적용
+		PaidDto paidDto = new PaidDto();
+		paidDto.setPaidIdx(vo.getPaidIdx());
+		paidDto.setMemberIdx(vo.getMemberIdx());
+		paidDto.setPaidTid(vo.getTid());
+		paidDto.setPaidIdx(vo.getPaidIdx());
+		paidDto.setPaidName(vo.getName());
+		paidDto.setPaidPrice(vo.getPrice());
+		paidDao.insert(paidDto);
+		log.debug("ㅡㅡㅡ 결제 이력에 결제 관련내용 추가: {}", paidDto);
+
+		// 2. 결제 내역을 포인트상품 변동이력에 저장
+		PointHistoryDto pointHistoryDto = new PointHistoryDto();
+		pointHistoryDto.setMemberIdx(vo.getMemberIdx());
+		pointHistoryDto.setPaidIdx(vo.getPaidIdx());
+		pointHistoryDto.setPointIdx(vo.getPointIdx());
+		pointHistoryDto.setPointHistoryAmount(vo.getAmount());
+		pointHistoryDto.setPointHistoryMemo("포인트 결제: " + vo.getName());
+		log.debug("ㅡㅡㅡ 포인트상품 변동이력에 결제 관련내용 추가: {}", pointHistoryDto);
+		pointHistoryDao.insert(pointHistoryDto);
+
+		paidDao.record(payRecordVO);
+		return true;
+
+	}*/
+
 
 	// 카카오페이측에 결제정보 조회를 요청하여, 저장된 결제 이력을 리턴하는 메소드
 	@Override

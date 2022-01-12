@@ -15,7 +15,7 @@
 	<settings>
 		<!-- 캐시(cache)를 사용할 것인지 여부를 설정 -->
 		<setting name="cacheEnabled" value="true"/>
-		<!-- 필수 설정 : DBMS의 snake_case를 자바의 camel_case로 자동변환해주는 설정 -->
+		<!-- 필수 설정 : DBMS의 snake_case를 자바의 camelCase로 자동변환해주는 설정 -->
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
 	
