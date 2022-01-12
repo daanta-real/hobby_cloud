@@ -179,17 +179,20 @@ window.addEventListener("load", function() {
 								<th scope="col" class="text-center align-middle text-nowrap">사진</th>
 								<th scope="col" class="text-center align-middle text-nowrap">제목</th>
 								<th scope="col" class="text-center align-middle text-nowrap">작성자</th>
+								<th scope="col" class="text-center align-middle text-nowrap">카테고리</th>
 								<th scope="col" class="text-center align-middle text-nowrap">지역</th>
 								<th scope="col" class="text-center align-middle text-nowrap">인원수</th>
 							</tr>
 						</thead>  
 						<tbody>
+						
 							<c:forEach var="GatherVO" items="${list}"> 
 								<tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}'">
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td>
 									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%"></td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
-									<td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td>
+									<td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td> 
+									<td class="text-center align-middle text-nowrap">${GatherVO.lecCategoryName}</td> 
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherLocRegion}</td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherHeadCount}</td>
 									<input type="hidden" class="fgTitle" value="${GatherVO.gatherName}">
