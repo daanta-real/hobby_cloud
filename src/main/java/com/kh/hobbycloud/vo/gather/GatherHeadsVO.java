@@ -8,7 +8,7 @@ public class GatherHeadsVO {
 
 	private int memberIdx, gatherIdx ,gatherStaus;
 	//회원 프로필 번호
-	private int memberProfieIdx;
+	private int memberProfileIdx; 
 	
 	//회원닉네임
 	private String memberNick;
