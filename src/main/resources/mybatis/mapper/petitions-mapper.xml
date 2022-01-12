@@ -73,7 +73,7 @@ where instr(${column},#{keyword})> 0 order by petitions_idx desc
 
 <!-- 조회수 증가 -->
 <update id="views" parameterType="int">
-update petitions set _views=petitions_views+1 where petitions_idx=#{petitionsIdx}
+update petitions set petitions_views=petitions_views+1 where petitions_idx=#{petitionsIdx}
 </update>
 
 <!-- 남의글일경우만 조회수 증가 -->
