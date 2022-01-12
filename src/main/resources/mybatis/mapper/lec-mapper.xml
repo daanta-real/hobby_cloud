@@ -89,7 +89,7 @@
 	</select>
 	
 	<!-- 강좌 목록 및 검색 -->
-	<select id="listSearch" parameterType="map" resultType="LecListVO">
+	<select id="listSearch" parameterType="LecSearchVO" resultType="LecListVO">
 		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
 			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region,
 			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
@@ -98,39 +98,42 @@
 		left outer join member M on T.member_idx = M.member_idx
 		
 		<where>
-			<if test="lecIdx != '' and lecIdx != null">
+			<if test="lecIdx != null and lecIdx != ''">
 			and lec_idx = #{lecIdx}
 			</if>
-			<if test="lecCategoryName != '' and lecCategoryName != null">
+			<if test="lecCategoryName != null and lecCategoryName != ''">
 				and lec_category_name in
-				<foreach item="statOne" collection="category" open="(" close=")" separator="," >
+				<foreach item="statOne" collection="lecCategoryName" open="(" close=")" separator="," >
 				#{statOne}
 				</foreach>
 			</if>
-			<if test="lecName != '' and lecName != null">
+			<if test="lecName != null and lecName != ''">
 			and instr(lec_name, #{lecName}) > 0
 			</if>
 			<if test="memberNick != '' and memberNick != null">
 			and instr(member_nick, #{memberNick}) > 0
 			</if>
 			<if test="lecLocRegion != '' and lecLocRegion != null">
-			and instr(lec_loc_region, #{lecLocRegion}) > 0
+				and lec_loc_region in
+				<foreach item="statOne" collection="lecLocRegion" open="(" close=")" separator="," >
+				#{statOne}
+				</foreach>
 			</if>
 			
 
 			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->
 			
 			<choose>
-				<when test="minPrice != null and maxPrice != null">
+				<when test="minPrice != '' and minPrice != null and maxPrice != '' and maxPrice != null">
 				and lec_price between #{minPrice} and #{maxPrice}
 				</when>
-				<when test="minPrice != null">
+				<when test="minPrice != '' and minPrice != null">
 				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
 				<![CDATA[			
 				and lec_price >= #{minPrice}
 				]]>
 				</when>
-				<when test="maxPrice != null">
+				<when test="maxPrice != '' and maxPrice != null">
 				<![CDATA[			
 				and lec_price <= #{maxPrice}
 				]]>
@@ -138,16 +141,16 @@
 			</choose>
 			
 			<choose>
-				<when test="minCount != null and maxCount != null">
+				<when test="minCount != '' and minCount != null and maxCount != '' and maxCount != null">
 				and lec_head_count between #{minCount} and #{maxCount}
 				</when>
-				<when test="minCount != null">
+				<when test="minCount != '' and minCount != null">
 				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
 				<![CDATA[			
 				and lec_head_count >= #{minCount}
 				]]>
 				</when>
-				<when test="maxCount != null">
+				<when test="maxCount != '' and maxCount != null">
 				<![CDATA[			
 				and lec_head_count <= #{maxCount}
 				]]>
@@ -155,34 +158,34 @@
 			</choose>
 			
 			<choose>
-				<when test="minConCount != null and maxConCount != null">
+				<when test="minConCount != '' and minConCount != null and maxConCount != '' and maxConCount != null">
 				and lec_contains_count between #{minConCount} and #{maxConCount}
 				</when>
-				<when test="minConCount != null">
+				<when test="minConCount != '' and minConCount != null">
 				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
 				<![CDATA[			
 				and lec_contains_count >= #{minConCount}
 				]]>
 				</when>
-				<when test="maxConCount != null">
+				<when test="maxConCount != '' and maxConCount != null">
 				<![CDATA[			
 				and lec_contains_count <= #{maxConCount}
 				]]>
 				</when>
 			</choose>
 			
-			<if test="lecStartStart != null and lecStartFinish != null">
-			and lec_start between 
-				to_date(#{lecStartStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
-				and 
-				to_date(#{lecStartFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
-			</if>
-			<if test="lecEndStart != null and lecEndFinish != null">
-			and expire between 
-				to_date(#{lecEndStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
-				and 
-				to_date(#{lecEndFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS')
-			</if>
+<!-- 			<if test="lecStartStart != null and lecStartFinish != null"> -->
+<!-- 			and lec_start between  -->
+<!-- 				to_date(#{lecStartStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS')  -->
+<!-- 				and  -->
+<!-- 				to_date(#{lecStartFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS') -->
+<!-- 			</if> -->
+<!-- 			<if test="lecEndStart != null and lecEndFinish != null"> -->
+<!-- 			and expire between  -->
+<!-- 				to_date(#{lecEndStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS')  -->
+<!-- 				and  -->
+<!-- 				to_date(#{lecEndFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS') -->
+<!-- 			</if> -->
 		</where>
 		
 <!-- 		<if test="orders != null and orders.size() > 0"> -->
