@@ -50,7 +50,7 @@ select * from  gather g left outer join
  left outer join member m on g.member_idx = m.member_idx
  order by g.gather_idx desc
   )TMP
-) where rn between #{rowStart} and #{rowEnd}
+) where rn between #{rowStart} and #{rowEnd}   
 </select>
 	
 	
@@ -131,7 +131,9 @@ where gather_idx=#{gatherIdx}
 
 
 <!-- 해당 게시물 댓글리스트 -->
-<select id="replyList"  parameterType="int"     resultType="GatherReplyVO">
+<select id="replyList"  parameterType="map"    resultType="GatherReplyVO">
+select * from(
+select rownum  rn , TMP.* from(
 select gr.*,m.member_nick from 
 gather g 
 inner join
@@ -141,6 +143,8 @@ left outer join
  member m
 ON gr.member_idx = m.member_idx
 where gr.gather_idx = #{gatherIdx}
+  )TMP
+) where rn between #{startRow} and #{endRow}
 </select>
 
 <!-- 댓글 입력 -->

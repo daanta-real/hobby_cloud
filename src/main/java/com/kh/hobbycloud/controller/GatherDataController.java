@@ -64,9 +64,17 @@ public class GatherDataController {
 	}
 	//게시판 댓글목록
 	@GetMapping("/replyList")
-	public List<GatherReplyVO> replyList(int gatherIdx) {
-		System.out.println("댓글 "+gatherIdx);
-		return gatherReplyDao.list(gatherIdx);
+	public List<GatherReplyVO> replyList(
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "10") int size,
+			@RequestParam int gatherIdx)	{
+		
+		int endRow = page * size;
+		int startRow = endRow - (size - 1);
+		System.out.println("gatherIdx = " + gatherIdx);
+		System.out.println("댓글 "+endRow);
+		System.out.println("댓글 "+startRow); 
+		return gatherReplyDao.listBy(startRow, endRow, gatherIdx);
 	}
 	
 	//댓글 삭제

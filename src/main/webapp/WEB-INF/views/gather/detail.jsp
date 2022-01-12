@@ -220,8 +220,8 @@
 				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}"
 				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
-				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>
-				
+				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
+				<button class="btn btn-secondary more-btn">더보기!!</button>    
 			</nav>
 		
 		<!-- 댓글 내역 -->
@@ -262,18 +262,18 @@
 	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
 	 </div>  
 	</div>
+	  
 </div>
 
-</template>
-		
+</template>   
+	<button class="more-btn btn btn-secondary">더보기!!</button>  
 </div>
 
 
- 
-
+  
 	
 <div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>평점</div>
-<!-- 소단원 내용 -->
+<!-- 소단원 내용 --> 
 	<div class="row p-sm-2 mx-1 mb-5">
 <form id="insertReview-form">
 <div class="card mb-2 border border-1 border-secondary p-0">
@@ -578,9 +578,23 @@ function deleteReview(gatherReviewIdxValue){
 
 <!-- 댓글 등록구현 -->
 <script>
+var page = 1;
+var size = 10;
+var gatherIdx= "${gatherIdx}";
+
+$(function(){ 
+	$(".more-btn").click(function(){
+		loadList(page,size,gatherIdx);
+		page++;
+	});
+	$(".more-btn").click(); 
+	console.log(4);
+});
+
+
 $(function(){
 	//처음 들어오면 목록 출력
-	loadList();
+	loadList(page,size,gatherIdx);
 	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insert-form").submit(function(e){
 		//this == #insert-form
@@ -602,7 +616,7 @@ $(function(){
 				$("#insert-form")[0].reset();
 				
 				//성공하면 목록 갱신
-				loadList();
+				loadList(page,size,gatherIdx);
 			},
 			error:function(e){
 				console.log("실패", e);
@@ -616,18 +630,24 @@ $(function(){
 
 
 //댓글 목록 리스트
-function loadList(){
+function loadList(pageValue, sizeValue, gatherIdxValue){
 	var gatherIdxValue = $("#gatherIdxValue").data("gather-idx");
 	$.ajax({
 		url:"${pageContext.request.contextPath}/gatherData/replyList",
 		type:"get",
 		data:{
+			page:pageValue,
+			size:sizeValue,
 			gatherIdx:gatherIdxValue
 		},
 		dateType:"json",
 		success:function(resp){
 			console.log("성공",resp);
-			$("#result").empty();//내부영역 청소
+			if(resp.length < sizeValue){
+				$(".more-btn").remove();
+			}
+			
+			
 			for(var i=0; i<resp.length; i++){
 				var template = $("#gatherVO-template").html();
 				
@@ -667,7 +687,7 @@ function loadList(){
 					form.append("<button type='submit'>수정</button>");
 			
 					form.submit(function(e){
-						e.preventDefault();
+					e.preventDefault();
 						
 						
 					var dataValue=$(this).serialize();			
@@ -677,7 +697,7 @@ function loadList(){
 						data:dataValue,
 						success:function(resp){
 							$("#result").empty();
-							loadList();
+							loadList(page,size,gatherIdx);				
 						},
 						error:function(e){}
 					});
@@ -719,7 +739,7 @@ function deleteReply(gatherReplyIdxValue){
 		success:function(resp){
 			console.log("성공", resp);
 			
-			loadList();
+			loadList(page,size,gatherIdx);
 		},
 		error:function(e){}
 	});
