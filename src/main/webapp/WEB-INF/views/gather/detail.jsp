@@ -175,19 +175,19 @@
 						  
 						 
 						<!-- 참가여부를 확인 -->
-						<c:set	var="isJoin" value="false" /> 
-						<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}">
-						${GatherHeadsVO.memberIdx} /${memberIdx}
+						<c:set	var="isJoin" value="false" />  
+						<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}"> 
+						<h1>${memberIdx} / ${GatherHeadsVO.memberIdx}</h1> 
 						<c:set var="isJoin" value="true" />
-						</c:if>
+						</c:if> 
 						</c:forEach> 
 						 </tr>	
 						</tbody>
 					</table>
-				</div>
-			</div> 	
-
-
+				</div>    
+			</div> 	 
+ 				
+				<h1>${isJoin}2</h1> 
 				<!-- 참가하기 버튼 -->
 				<c:set var="isLogin" value="${memberIdx != null}"/>
 				 <c:choose>
@@ -221,7 +221,8 @@
 				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
 				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
-				<button class="btn btn-secondary more-btn">더보기!!</button>    
+				<button class="btn btn-secondary more-btn">더보기!!</button>  
+				<button class="btn btn-secondary moreR-btn">더보기!2</button>   
 			</nav>
 		
 		<!-- 댓글 내역 -->
@@ -424,12 +425,26 @@ $.ajax({
 
 
 
-<!-- 평점 등록 -->
-<script>
+<!-- 평점 등록 -->  
+<script> 
+var pageR = 1;
+var sizeR = 10;
+$(function(){ 
+	$(".moreR-btn").click(function(){
+		loadList(pageR,sizeR,gatherIdx); 
+		console.log(pageR);
+		pageR++;   
+		console.log(pageR);  
+	}); 
+	//더보기 버튼을 강제 1회 클릭(트리거) 
+	$(".moreR-btn").click(); 
+	console.log(pageR);   
+});
+
+
+
 $(function(){
-	//처음 들어오면 목록 출력.
-	loadReview();
-	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
+		//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insertReview-form").submit(function(e){
 		console.log("누름");
 		//this == #insert-form
@@ -447,7 +462,10 @@ $(function(){
 				$("#insertReview-form")[0].reset();
 				
 				//성공하면 목록 갱신
-				loadReview();
+				$("#resultReivew").empty();
+				pageR=1;
+				loadReview(pageR,sizeR,gatherIdx);
+				pageR++;
 			
 			},
 			error:function(e){
@@ -464,20 +482,22 @@ $(function(){
 
 <!-- 평점 조회 -->
 <script>
-function loadReview(){
+function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 	var gatherIdxValue = $("#gatherIdxValue").data("gather-idx");
 	$.ajax({
 		url:"${pageContext.request.contextPath}/gatherData/reviewList",
 		type:"get",
 		data:{
+			pageR:pageRValue,
+			sizeR:sizeRValue,
 			gatherIdx:gatherIdxValue
 		},
 		dateType:"json",
 		success:function(resp){
 			console.log("성공",resp);
-			$("#resultReivew").empty();//내부영역 청소
-			//$("#result").html("");
-			//$("#result").text("");
+			if(resp.length < sizeRValue){
+				$(".moreR-btn").remove(); 
+					}
 			
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
@@ -527,9 +547,10 @@ function loadReview(){
 						success:function(resp){
 							console.log("성공", resp);
 						
-							$("#result").empty();
-							
-							loadReview();
+							$("#resultReivew").empty();
+							pageR=1;
+							loadReview(pageR,sizeR,gatherIdx);
+							pageR++;
 						},
 						error:function(e){}
 					});
@@ -563,8 +584,10 @@ function deleteReview(gatherReviewIdxValue){
 		dataType:"text",
 		success:function(resp){
 			console.log("성공", resp);
-			
-			loadReview();//데이터가 변하면 무조건 갱신
+			$("#resultReivew").empty();
+			pageR=1;
+			loadReview(pageR,sizeR,gatherIdx);
+			pageR++; 
 		},
 		error:function(e){}
 	});
@@ -572,7 +595,7 @@ function deleteReview(gatherReviewIdxValue){
 </script>
 
 
-
+ 
 
 
 
@@ -584,17 +607,19 @@ var gatherIdx= "${gatherIdx}";
 
 $(function(){ 
 	$(".more-btn").click(function(){
-		loadList(page,size,gatherIdx);
-		page++;
-	});
-	$(".more-btn").click(); 
-	console.log(4);
+		loadList(page,size,gatherIdx); 
+		console.log(page);
+		page++; 
+		console.log(page);  
+	}); 
+	//더보기 버튼을 강제 1회 클릭(트리거) 
+	$(".more-btn").click();
+	console.log(page);  
 });
 
 
 $(function(){
 	//처음 들어오면 목록 출력
-	loadList(page,size,gatherIdx);
 	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insert-form").submit(function(e){
 		//this == #insert-form
@@ -614,9 +639,12 @@ $(function(){
 				//jQuery는 reset() 명령이 없어서 get(0)으로 javascript 객체로 변경
 				//$("#insert-form").get(0).reset();
 				$("#insert-form")[0].reset();
-				
+				$("#result").empty();
 				//성공하면 목록 갱신
+				page =1; 
 				loadList(page,size,gatherIdx);
+				console.log("입력 들어옴");
+				page++;
 			},
 			error:function(e){
 				console.log("실패", e);
@@ -642,10 +670,13 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 		},
 		dateType:"json",
 		success:function(resp){
+			console.log(resp.length,sizeValue); 
 			console.log("성공",resp);
-			if(resp.length < sizeValue){
-				$(".more-btn").remove();
-			}
+			if(resp.length < sizeValue){  
+				$(".more-btn").remove(); 
+			}else{
+				$(".more-btn").show();
+			} 
 			
 			
 			for(var i=0; i<resp.length; i++){
@@ -697,7 +728,10 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 						data:dataValue,
 						success:function(resp){
 							$("#result").empty();
-							loadList(page,size,gatherIdx);				
+							page=1;
+							loadList(page,size,gatherIdx);	
+							console.log("편집 들어옴"); 
+							page++;
 						},
 						error:function(e){}
 					});
@@ -738,8 +772,10 @@ function deleteReply(gatherReplyIdxValue){
 		dataType:"text",
 		success:function(resp){
 			console.log("성공", resp);
-			
-			loadList(page,size,gatherIdx);
+			$("#result").empty();
+			page=1;
+			loadList(page,size,gatherIdx);			
+			page++;
 		},
 		error:function(e){}
 	});

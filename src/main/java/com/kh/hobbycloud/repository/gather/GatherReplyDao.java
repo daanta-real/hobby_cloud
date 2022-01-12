@@ -11,7 +11,7 @@ public interface GatherReplyDao {
 	//댓글 조회
 	List<GatherReplyVO> list(int gatherIdx);
 	//댓글 조회
-		List<GatherReplyVO> listBy(int startRow,int endRow,int gatherIdx);
+	List<GatherReplyVO> listBy(int startRow,int endRow,int gatherIdx);
 	//댓글 삭제
 	boolean delete (int gatherReplyIdx);
 	//댓글 수정

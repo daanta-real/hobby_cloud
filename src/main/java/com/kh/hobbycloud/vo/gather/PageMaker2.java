@@ -6,21 +6,18 @@ import org.springframework.web.util.UriComponentsBuilder;
 import lombok.Data;
 
 @Data
-public class PageMaker {
+public class PageMaker2 {
 	private int totalCount;
 	private int startPage;
 	private int endPage;
 	private boolean prev;
 	private boolean next;
 	private int displayPageNum = 10;
-	private Criteria cri;
-	private CriteriaSearch cri2;
 	
-	public void setCri(CriteriaSearch cri2) {
-		this.cri2 = cri2;
-	}
+	private CriteriaSearch cri;
+
 	
-	public void setCri(Criteria cri) {
+	public void setCri(CriteriaSearch cri) {
 		this.cri = cri;
 	}
 	public void setTotalCount(int totalCount) {
@@ -52,12 +49,10 @@ public class PageMaker {
 		return displayPageNum;
 	}
 	
-	public Criteria getCri() {
+	public CriteriaSearch getCri() {
 		return cri;
 	}
-	public CriteriaSearch getCri2() {
-		return cri2;
-	}
+
 	 
 	private void calcData() {
 		endPage = (int) (Math.ceil(cri.getPage() / (double)displayPageNum) * displayPageNum);

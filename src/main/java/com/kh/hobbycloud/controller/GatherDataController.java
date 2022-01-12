@@ -62,7 +62,7 @@ public class GatherDataController {
 		gatherReplyDto.setMemberIdx(memberIdx);
 		gatherReplyDao.insert(gatherReplyDto);
 	}
-	//게시판 댓글목록
+	//게시판 댓글목록(페이지네이션)  
 	@GetMapping("/replyList")
 	public List<GatherReplyVO> replyList(
 			@RequestParam(required = false, defaultValue = "1") int page,
@@ -71,9 +71,6 @@ public class GatherDataController {
 		
 		int endRow = page * size;
 		int startRow = endRow - (size - 1);
-		System.out.println("gatherIdx = " + gatherIdx);
-		System.out.println("댓글 "+endRow);
-		System.out.println("댓글 "+startRow); 
 		return gatherReplyDao.listBy(startRow, endRow, gatherIdx);
 	}
 	
@@ -103,10 +100,15 @@ public class GatherDataController {
 		
 		gatherReviewDao.insert(gatherReviewDto);
 	}
-	//평점목록
+	//평점목록(페이지네이션 포함)
 	@GetMapping("/reviewList")
-	public List<GatherReviewVO> list(int gatherIdx){
-		return gatherReviewDao.list(gatherIdx);
+	public List<GatherReviewVO> list(
+			@RequestParam(required = false, defaultValue = "1") int pageR,
+			@RequestParam(required = false, defaultValue = "10") int sizeR,
+			@RequestParam int gatherIdx){
+		int endRow = pageR * sizeR;
+		int startRow = endRow - (sizeR - 1);
+		return gatherReviewDao.listBy(startRow, endRow, gatherIdx);
 	}
 	//평점삭제
 	@DeleteMapping("/reviewDelete")

@@ -42,9 +42,8 @@ public class GatherReplyDaoImpl implements GatherReplyDao {
 		
 		Map<String, Object>param = new HashMap<>();
 		param.put("startRow", startRow);
-		System.out.println("시작"+startRow);
+		System.out.println("댓글start"+startRow+endRow);
 		param.put("endRow", endRow); 
-		System.out.println("끝"+endRow);
 		param.put("gatherIdx",gatherIdx); 
 		return sqlSession.selectList("gather.replyList",param); 
 	}
