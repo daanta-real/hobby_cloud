@@ -85,8 +85,10 @@ public class PlaceController {
 	@PostMapping("/register")
 	public String register(@ModelAttribute PlaceFileVO placeFileVO,HttpSession session) throws IllegalStateException, IOException {
 		log.debug("ㅡㅡPlaceController - /place/register POST> 장소 DATA 입력");
-		int memberIdx = (int) session.getAttribute("memberIdx");		
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		log.debug("ㅡㅡPlaceController - /place/register Post> 장소등록 처리");		
 		placeFileVO.setMemberIdx(memberIdx);
+		log.debug("ㅡㅡPlaceController - /place/register placeFileVO"+placeFileVO.toString());		
 		placeService.save(placeFileVO);
 		return "redirect:register_success";
 	}
@@ -128,8 +130,8 @@ public class PlaceController {
 		
 		// 데이터 획득: VO 및 DTO
 		PlaceVO placeVO = placeDao.get(placeIdx);
-		log.debug("ㅡㅡㅡ PlaceRegisterVO: {}", placeVO);
-		model.addAttribute("PlaceRegisterVO", placeVO);
+		log.debug("ㅡㅡㅡ PlaceVO: {}", placeVO);
+		model.addAttribute("placeVO", placeVO);
 
 		// 획득된 데이터를 Model에 지정
 		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);

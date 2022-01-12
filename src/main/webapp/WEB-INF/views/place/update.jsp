@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib uri="http://www.springframework.org/tags"  prefix="spring"%>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
 <HTML LANG="ko">
@@ -38,80 +39,184 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 
 <script>
 
-    $(function(){    	
-		$("#btnclick").click(function(){
-	   		let placePhone = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
-	   		$('input[name="placePhone"]').val(placePhone);
-	   		console.log("합해진 핸드폰 번호 placePhone : " +$("#phone1").val() + $("#phone2").val() + $("#phone3").val());
-			alert("실행"+placePhone);
-	   			   		
-	   		let placeEmail = $("#idMail").val() + "@" + $("#inputMail").val();
-	   		$('input[name="placeEmail"]').val(placeEmail);
-	   		console.log("이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val());
-	   		alert("실행"+placeEmail);
-		})
+///////////////////////////////////// 전역변수부 /////////////////////////////////////
+
+//카카오맵 전역변수 선언. 이렇게 안 하면 onload 이후 관련기능을 쓸 수 없기 때문에 전역변수로 미리 불러와 준다.
+let mapContainer, mapOptions, map, geocoder, marker, infowindow;
+
+///////////////////////////////////// 라이브러리부 /////////////////////////////////////
+
+// 문서가 로드되면 실행할 코드 영역
+$(function () {	
+	// 작성 완료 버튼을 누르면 > 이메일과 폰번호 값을 하나로 합쳐줌
+	// 이후에 이벤트 버블링 때문에 폼 객체의 .submit()이 실행된다.
+	$("#btnclick").click(function () {
+		console.log("작성완료 버튼 누름");
+		let placePhone =
+			$("#phone1").val() + $("#phone2").val() + $("#phone3").val();
+			$('input[name="placePhone"]').val(placePhone);
+			console.log(
+				"합해진 핸드폰 번호 placePhone : " +
+					$("#phone1").val() +
+					$("#phone2").val() +
+					$("#phone3").val()
+			);
+
+			let placeEmail = $("#idMail").val() + "@" + $("#inputMail").val();
+			$('input[name="placeEmail"]').val(placeEmail);
+			console.log(
+				"이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val()
+			);
+	});
+
+	// 이메일 영역 전체에 대한 change 리스너
+	$("#emailBox").change(function () {
+		console.log("이메일박스 버튼 누름");
+		if ($("#emailBox").val() == "directly") {
+			$("#inputMail").attr("readonly", false);
+			$("#inputMail").val("");
+			$("#inputMail").focus();
+		} else {
+			$("#inputMail").val($("#emailBox").val());
+			$("#inputMail").attr("readonly", true);
+		}
+	});
+		
+	//이메일 주소 토막내기
+	let email = '${placeVO.placeEmail}';
+	$('input[name="email_id"]').val(email.substr(0,email.indexOf("@")));
+	$('input[name="email_domain"]').val(email.substr(email.indexOf("@")+1,email.length));
 	
-		   $("#emailBox").change(function() {
-	         if ($("#emailBox").val() == "directly") {
-	             $("#inputMail").attr("readonly", false);
-	             $("#inputMail").val("");
-	             $("#inputMail").focus();
-	         }  else {
-	             $('#inputMail').val($('#emailBox').val());
-	             $("#inputMail").attr("readonly", true);
-	         }
-		   });
-    });
-    
-    /* 주소 검색 모듈 
-     *  .find-address-btn을 누르면 자동으로 주소검색창이 나옴
-     *  
-     *  - input[name=placePostcode] 에 우편번호 작성
-     *  - input[name=placeAddress] 에 기본주소 작성
-     *  - input[name=placeDetailAddress] 에 커서 이동
-     */
-    
-		 $(function(){
-			$(".find-address-btn").click(function(){
-		    	findAddress();
-		    });
-		    function findAddress(){
-		        new daum.Postcode({
-		            oncomplete: function(data) {
-		                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-		                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-		                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-		                var addr = ""; // 주소 변수
-		                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-		                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-		                if (data.userSelectedType === "R") { // 사용자가 도로명 주소를 선택했을 경우
-		                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-		                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-		                    if(data.bname !== "" && /[동|로|가]$/g.test(data.bname)){
-		                        addr = data.roadAddress + " (" + data.bname + ")";
-		                    }
-		                    else{
-		                        addr = data.roadAddress;
-		                    }
-		                } 
-		                else { // 사용자가 지번 주소를 선택했을 경우(J)
-		                    addr = data.jibunAddress;
-		                }
-		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-		                document.querySelector("input[name=placePostcode]").value = data.zonecode;
-		                //$("input[name=postcode]").val(data.zonecode);
-		                document.querySelector("input[name=placeAddress]").value = addr;
-		                //$("input[name=address]").val(addr);
-		                
-		                //원래 써있던 값지우기
-		            	document.querySelector("input[name=placeDetailAddress]").value = null;
-		                // 커서를 상세주소 필드로 이동한다.
-		                document.querySelector("input[name=placeDetailAddress]").focus();
-		                //$("input[name=detailAddress]").focus();
-		            }
-		        }).open();
-		    };	
-		 });
+	//핸드폰 번호 토막내기
+	let phone = '${placeVO.placePhone}';
+	$('input[name="phone1"]').val(phone.substr(0,3));
+	$('input[name="phone2"]').val(phone.substr(3,4));
+	$('input[name="phone3"]').val(phone.substr(7,4));
+	
+	// 주소찾기 버튼 누르면 > 주소 찾는 창이 뜸
+	$(".find-address-btn").click(function () {
+		console.log("주소찾기 버튼 누름");
+		findAddress();
+	});
+});
+
+//주소 입력 input 태그 안에 주소 value를 채워주는, 우편번호 찾기 기능
+function findAddress() {
+	new daum.Postcode({
+		oncomplete: function (data) {
+			console.log("주소가 선택되었습니다.");
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+			// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+			// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+			var addr = ""; // 주소 변수
+			//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+			// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+			if (data.userSelectedType === "R") {
+				// 사용자가 도로명 주소를 선택했을 경우
+				// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+				// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+				if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+					addr = data.roadAddress + " (" + data.bname + ")";
+				} else {
+					addr = data.roadAddress;
+				}
+			} else {
+				// 사용자가 지번 주소를 선택했을 경우(J)
+				addr = data.jibunAddress;
+			}
+			// 우편번호와 주소 정보를 해당 필드에 넣는다.
+			document.querySelector("input[name=placePostcode]").value =
+				data.zonecode;
+			//$("input[name=postcode]").val(data.zonecode);
+			document.querySelector("input[name=placeAddress]").value = addr;
+			//$("input[name=address]").val(addr);
+
+			//시도
+			document.querySelector("input[name=placeSido]").value = data.sido;
+			//시군구 (세종시는 sigungu에 null이 들어가서 따로 처리)
+			if (
+				document.querySelector("input[name=placeSido]").value ==
+				"세종특별자치시"
+			) {
+				document.querySelector("input[name=placeSigungu]").value =
+					"세종시";
+			} else {
+				document.querySelector("input[name=placeSigungu]").value =
+					data.sigungu;
+			}
+			//읍면동
+			if (data.bname1 == "") {
+				document.querySelector("input[name=placeBname]").value =
+					data.bname;
+			} else {
+				document.querySelector("input[name=placeBname]").value =
+					data.bname1;
+			}
+
+			//원래 써있던 값지우기
+			document.querySelector("input[name=placeDetailAddress]").value =
+				null;
+			// 커서를 상세주소 필드로 이동한다.
+			document.querySelector("input[name=placeDetailAddress]").focus();
+			//$("input[name=detailAddress]").focus();
+			
+			// 지도 렌더링
+			renderMap();
+			
+		},
+	}).open();
+}
+
+//주소 input창의 내용이 변경되면, 지도 영역에 지도를 표시해주고, 위도/경도/주소 input창에 값을 채워준다.
+function renderMap() {
+	console.log("지도 input이 변경되었다. 지도 영역을 렌더링하겠습니다");
+	//지도 생성 준비 코드
+	mapContainer = document.getElementById("map"); // 지도를 표시할 div
+	mapOption = {
+		center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+		level: 3, // 지도의 확대 레벨
+	};
+	// 주소-좌표 변환 객체를 생성합니다
+	geocoder = new kakao.maps.services.Geocoder();
+	// 주소로 좌표를 검색합니다
+	console.log("geocoder start:", geocoder);
+	let searchKeyword = $("#placeAddress").val();
+	console.log(searchKeyword);
+	geocoder.addressSearch(searchKeyword, function (result, status) {
+		// 정상적으로 검색이 완료됐으면
+		if (status === kakao.maps.services.Status.OK) {
+			var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			var message =
+				"latlng: new kakao.maps.LatLng(" + result[0].y + ", ";
+			message += result[0].x + ")";
+
+			var resultDiv = document.getElementById("clickLatlng");
+			resultDiv.innerHTML = message;
+
+			$("input[name=placeLocLongitude]").val(result[0].y);
+			$("input[name=placeLocLatitude]").val(result[0].x);
+			console.log("result[0].y" + result[0].y);
+			console.log("result[0].x" + result[0].x);
+
+			// 지도를 생성합니다
+			map = new kakao.maps.Map(mapContainer, mapOption);
+			// 결과값으로 받은 위치를 마커로 표시합니다
+			marker = new kakao.maps.Marker({
+				map: map,
+				position: coords,
+			});
+			// 인포윈도우로 장소에 대한 설명을 표시합니다
+			infowindow = new kakao.maps.InfoWindow({
+				content:
+					'<div style="width:150px;text-align:center;padding:6px 0;">장소</div>',
+			});
+			infowindow.open(map, marker);
+			// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+			map.setCenter(coords);
+		}
+	});
+}
+
 </script>
 
 </HEAD>
@@ -160,10 +265,17 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 	<div class="row mb-4">
 		<label>카테고리</label>
 		<select name="lecCategoryName" required class="form-input">
-			<option value="">선택하세요</option>
+				<option value="" class="">선택하세요</option>
+				<option value="운동">운동</option>
+				<option value="요리">요리</option>
+				<option value="문화">문화</option>
+				<option value="예술">예술</option>
+				<option value="IT">IT</option>
+				<option value="directly">직접입력</option>
+<!--		<option value="">선택하세요</option>
 			<c:forEach var="val" items="${lecCategoryList}">
 				<option value="${val}" ${placeVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
-			</c:forEach>
+			</c:forEach>-->
 		</select>
 	</div>
 	<div class="row mb-4">
@@ -193,8 +305,8 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 	<div class="row mb-4">
 		<label class="mail_name">이메일</label>
 	 	<div class="mail_input_box"> 
-			<input type="text" id="idMail" name="email_id" class="rowChk" required> @
-			<input type="text" id="inputMail" name="email_domain" required readonly>
+			<input type="text" id="idMail" name="email_id"> @
+			<input type="text" id="inputMail" name="email_domain">
 			<select id="emailBox" name="emailBox" required>
 				<option value="" class="pickMail">이메일 선택</option>
 				<option value="directly">직접입력</option>
@@ -218,15 +330,17 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 	</div>
 	<div class="row mb-4">
 		<label>강의장 주소</label>
-		 	<input type="text" name="placePostcode" placeholder="우편번호" readonly id="placePostcode">
+		 	<input type="text" name="placePostcode" id="placePostcode" value="${placeVO.placePostcode}">
 			 	<button type="button" id="kakao_Address" class="find-address-btn" value="주소찾기">
 			 	주소 찾기
 			 	</button>
 		<label>강의장 상세주소</label>
-			<input type="text" id="placeAddress" name="placeAddress" placeholder="상세 주소" required readonly>
+			<input type="text" id="placeAddress" name="placeAddress" value="${placeVO.placeAddress}">
 		 <label>강의장 상세주소</label>
-			<input type="text" id="placeDetailAddress" name="placeDetailAddress" placeholder="상세 주소">
+			<input type="text" id="placeDetailAddress" name="placeDetailAddress" value="${placeVO.placeDetailAddress}">
 			<input type="hidden" name="address" >
+			<div id="map" style="width:100%;height:350px;"></div>
+			<div id="clickLatlng"></div>
 	</div>
  	<div class="row mb-4">
  		<label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>

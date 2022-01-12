@@ -41,6 +41,7 @@ public class PlaceServiceImpl implements PlaceService{
 		// 장소 DTO 설정
 		PlaceDto placeDto = new PlaceDto();
 		int placeIdx = placeDao.getSequence();
+		log.debug("ㅡㅡㅡㅡㅡㅡㅡㅡㅡsequence:"+placeIdx);
 		placeDto.setPlaceIdx(placeIdx);
 		placeDto.setMemberIdx(placeFileVO.getMemberIdx());
 		placeDto.setPlaceName(placeFileVO.getPlaceName());
@@ -57,14 +58,18 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setPlaceSido(placeFileVO.getPlaceSido());
 		placeDto.setPlaceSigungu(placeFileVO.getPlaceSigungu());
 		placeDto.setPlaceBname(placeFileVO.getPlaceBname());
-		
+		placeDto.setPlaceLocLatitude(placeFileVO.getPlaceLocLatitude());
+		placeDto.setPlaceLocLongitude(placeFileVO.getPlaceLocLongitude());
+		log.debug("장소 등록ㅡㅡㅡㅡㅡㅡㅡㅡㅡplaceDto :"+placeDto.toString());
 		// place DTO를 테이블에 삽입
 		placeDao.insert(placeDto);
+		log.debug("장소 등록ㅡㅡㅡㅡㅡㅡㅡㅡㅡplacedao.insert실행 ");
 
 		// 장소 카테고리 DTO 설정
 		PlaceTargetDto placeTargetDto = new PlaceTargetDto();
 		placeTargetDto.setPlaceIdx(placeIdx);
 		placeTargetDto.setLecCategoryName(placeFileVO.getLecCategoryName());
+		log.debug("장소 등록 카테고리ㅡㅡㅡㅡㅡㅡㅡㅡㅡplaceTargetDto "+placeTargetDto.toString());
 		
 		// 장소 카테고리 DTO를 테이블에 삽입
 		placeCategoryDao.insert(placeTargetDto);
@@ -72,12 +77,12 @@ public class PlaceServiceImpl implements PlaceService{
 		// 2. 장소 사진 저장
 		// 실제 파일 업로드 시도 → 성공 시 파일정보를 DB에 저장
 		List<MultipartFile> attach = placeFileVO.getAttach();
-			for (MultipartFile file : attach) {
-				
+		for (MultipartFile file : attach) {
+			
 			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
-				if (file.isEmpty())
-				continue;
-
+			if (file.isEmpty())
+			continue;
+	
 			// 파일 정보에 대한 DTO 생성
 			PlaceFileDto placeFileDto = new PlaceFileDto();
 			placeFileDto.setPlaceIdx(placeIdx);
@@ -86,8 +91,8 @@ public class PlaceServiceImpl implements PlaceService{
 			placeFileDto.setPlaceFileSize(file.getSize());
 			// 파일 업로드 후, 파일정보를 DB에 저장
 			placeFileDao.save(placeFileDto, file);
-			
-			}
+		
+		}
 		// 3. 장소Idx를 회신
 		return placeIdx;
 }
@@ -103,7 +108,6 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setMemberIdx(placeEditVO.getMemberIdx());
 		placeDto.setPlaceName(placeEditVO.getPlaceName());
 		placeDto.setPlaceDetail(placeEditVO.getPlaceDetail());
-		placeDto.setPlaceRegistered(placeEditVO.getPlaceRegistered());
 		placeDto.setPlacePostcode(placeEditVO.getPlacePostcode());
 		placeDto.setPlaceAddress(placeEditVO.getPlaceAddress());
 		placeDto.setPlaceDetailAddress(placeEditVO.getPlaceDetailAddress());
@@ -116,6 +120,8 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDto.setPlaceSido(placeEditVO.getPlaceSido());
 		placeDto.setPlaceSigungu(placeEditVO.getPlaceSigungu());
 		placeDto.setPlaceBname(placeEditVO.getPlaceBname());
+		placeDto.setPlaceLocLatitude(placeEditVO.getPlaceLocLatitude());
+		placeDto.setPlaceLocLongitude(placeEditVO.getPlaceLocLongitude());
 		
 		log.debug("======================== PlaceService.update() 실시. DTO = {}", placeDto);
 		// place DTO를 테이블에 삽입
