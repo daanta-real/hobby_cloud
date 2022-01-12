@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,6 +36,7 @@ import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecPageMaker;
+import com.kh.hobbycloud.vo.lec.LecSearchVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,9 +79,10 @@ public class LecController {
 
 	//목록(검색 가능)
 	@RequestMapping("/list")
-	public String search(@RequestParam Map<String ,Object> param , Model model) {
-		model.addAttribute("param", param);
-		List<LecListVO> listSearch = lecDao.listSearch(param);
+	public String search(@ModelAttribute LecSearchVO vo, Model model) {
+		log.debug("==================렉서치VO={}", vo);
+		List<LecListVO> listSearch = lecDao.listSearch(vo);
+		log.debug("===============listSearch{}", listSearch);
 		model.addAttribute("listSearch", listSearch);
 		return "lec/list";
 	}
