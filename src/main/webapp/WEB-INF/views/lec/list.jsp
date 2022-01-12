@@ -100,8 +100,9 @@
 						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
 							<div class="btn-group w-100">
 								<c:forEach var="lecCategory" items="${lecCategoryList}">
-									<input name="lecCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="category" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
-									<label class="btn btn-outline-primary" for="category">${lecCategory}</label>
+									<input name="lecCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="${lecCategory}" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
+									${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get()}
+									<label class="btn btn-outline-primary" for="${lecCategory}">${lecCategory}</label>
 								</c:forEach>
 							</div>
 					</div>
