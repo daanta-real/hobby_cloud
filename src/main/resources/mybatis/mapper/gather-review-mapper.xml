@@ -34,6 +34,21 @@ member m ON g.member_idx = m.member_idx
  member_profile mp ON m.member_idx =mp.member_idx where g.gather_idx=#{gatherIdx}
 </select>
 
+<select id="listBy" parameterType="map" resultType="GatherReviewVO">
+select * from(
+select rownum  rn , TMP.* from(
+select gr.*, m.member_nick, mp.member_profile_idx from gather g 
+ inner  join
+ gather_review  gr ON g.gather_idx = gr.gather_idx
+ left outer join
+member m ON g.member_idx = m.member_idx
+ left outer join 
+ member_profile mp ON m.member_idx =mp.member_idx where g.gather_idx=#{gatherIdx}
+  )TMP
+) where rn between #{startRow} and #{endRow}
+</select>
+
+
 <!-- 평점 삭제 -->
 <delete id="delete" parameterType="int">
  delete from gather_review where gather_review_idx=#{gatherReviewIdx}
