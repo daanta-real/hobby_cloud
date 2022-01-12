@@ -80,5 +80,28 @@ update petitions set _views=petitions_views+1 where petitions_idx=#{petitionsIdx
 <update id="read" parameterType="PetitionsDto">
 update petitions set petitions_views = petitions_views+1
 where petitions_idx =#{petitionsIdx} and member_idx != #{memberIdx}
-</update>	
+</update>
+
+<!-- 페이지네이션 -->
+<select id="listPage" resultType="PetitionsVO" parameterType="Criteria">
+select * from(
+select rownum  rn , TMP.* from(
+select * from  petitions p left outer join
+ (select distinct petitions_idx, min(petitions_file_idx) as petitions_file_idx
+  from petitions_file group by petitions_idx) f  
+  on  f.petitions_idx = p.petitions_idx  
+ left outer join member m on p.member_idx = m.member_idx
+ order by p.petitions_idx desc
+  )TMP
+) where rn between #{rowStart} and #{rowEnd}
+</select>
+
+<!-- 게시글 총 개수 구하기 -->
+<select id="listCount" resultType="int">
+select count(*) as BNO from (
+select * from petitions p left outer join
+ (select distinct petitions_idx, min(petitions_file_idx) as petitions_file_idx
+  from petitions_file group by petitions_idx) f  
+  on  f.petitions_idx = p.petitions_idx)
+  </select>	
 </mapper>

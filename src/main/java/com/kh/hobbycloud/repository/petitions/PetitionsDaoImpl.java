@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.petitions.PetitionsDto;
+import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.petitions.PetitionsVO;
 
 @Repository
@@ -75,6 +76,24 @@ public class PetitionsDaoImpl implements PetitionsDao {
 	public void read(PetitionsDto petitionsDto) {
 		sqlSession.update("petitions.read",petitionsDto);
 
+	}
+
+	@Override
+	public List<PetitionsVO> listPage(int startRow, int endRow) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("startRow", startRow);
+		param.put("endRow", endRow);
+		return sqlSession.selectList("petitions.listPage",param);
+	}
+
+	@Override
+	public List<PetitionsVO> list(Criteria cri) {
+		return sqlSession.selectList("petitions.listPage",cri);
+	}
+
+	@Override
+	public int listCount() {
+		return sqlSession.selectOne("petitions.listCount");
 	}
 
 }

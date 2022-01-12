@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 import com.kh.hobbycloud.entity.petitions.PetitionsDto;
 import com.kh.hobbycloud.entity.petitions.PetitionsFileDto;
 import com.kh.hobbycloud.repository.petitions.PetitionsDao;
 import com.kh.hobbycloud.repository.petitions.PetitionsFileDao;
+import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.petitions.PetitionsVO;
 
 @Service
@@ -24,6 +24,7 @@ public class PetitionsServiceImpl implements PetitionsService{
 
 	@Override
 	public void save(PetitionsVO petitionsVO) throws IllegalStateException, IOException {
+		
 		PetitionsDto petitionsDto = new PetitionsDto();
 
 		petitionsDto.setPetitionsIdx(petitionsVO.getPetitionsIdx());
@@ -57,4 +58,14 @@ public class PetitionsServiceImpl implements PetitionsService{
 	
 
 }
+
+	@Override
+	public List<PetitionsVO> list(Criteria cri) {
+		return petitionsDao.list(cri);
+	}
+
+	@Override
+	public int listCount() {
+		return petitionsDao.listCount();
+	}
 }
