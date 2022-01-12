@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.notice.NoticeDto;
+import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.notice.NoticeVO;
 
 @Repository
@@ -73,6 +74,26 @@ public class NoticeDaoImpl implements NoticeDao {
 	public void read(NoticeDto noticeDto) {
 		sqlSession.update("notice.read",noticeDto);
 		
+	}
+
+	@Override
+	public List<NoticeVO> listPage(int startRow, int endRow) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("startRow", startRow);
+		param.put("endRow", endRow);
+		return sqlSession.selectList("notice.listPage",param);
+	}
+
+	@Override
+	public List<NoticeVO> list(Criteria cri) {
+		
+		return sqlSession.selectList("notice.listPage",cri);
+	}
+
+	@Override
+	public int listCount() {
+		
+		return sqlSession.selectOne("notice.listCount");
 	}
 
 	

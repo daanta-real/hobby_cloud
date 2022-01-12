@@ -519,8 +519,13 @@ window.addEventListener("load", function() {
       </div>
       <div class="form-group col-12">
 						<label for="searchForm_memberNick" class="form-label mb-0">핸드폰 번호</label>
-						<input name="memberNick" id="searchForm_memberNick" type="text" class="form-control" placeholder="- 포함하여 입력하시오" value="${param.memberNick}">
+						
 						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
+						<input type="text" id="phone1" name="phone1" maxlength=3 required placeholder="000" class="phone form-control""> -
+			<input type="text" id="phone2" name="phone2" maxlength=4  required placeholder="0000" class="phone form-control""> -
+			<input type="text" id="phone3" name="phone3" maxlength=4  required placeholder="0000" class="phone form-control"">	
+			<input type="hidden" name="memberPhone" id="phoneNum">
+			<div id="phComm"></div>
 					</div>
 		<div class="region_wrap">
 		<div class="region_name"></div>

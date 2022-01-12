@@ -2,9 +2,7 @@ package com.kh.hobbycloud.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -28,6 +26,8 @@ import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.repository.notice.NoticeFileDao;
 import com.kh.hobbycloud.service.notice.NoticeService;
+import com.kh.hobbycloud.vo.gather.Criteria;
+import com.kh.hobbycloud.vo.gather.PageMaker;
 import com.kh.hobbycloud.vo.notice.NoticeVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +48,15 @@ public class NoticeController {
 	
 	//공지게시판 목록조회
 	@GetMapping("/list")
-    public String list(Model model) {
+    public String list(Model model,Criteria cri) {
     	
-    	model.addAttribute("list",noticeDao.list());
+    	model.addAttribute("list",noticeService.list(cri));
+    	
+    	PageMaker pageMaker = new PageMaker();
+    	pageMaker.setCri(cri);
+    	pageMaker.setTotalCount(noticeService.listCount());
+    	model.addAttribute("pageMaker",pageMaker);
+    	
     	return "notice/list";
     }
 	//검색
