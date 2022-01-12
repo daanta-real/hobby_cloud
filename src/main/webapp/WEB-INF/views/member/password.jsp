@@ -116,8 +116,8 @@ $(function () {
 					</div>
 					<div id="pwComm"></div>
 					<div class="form-group mb-4 col-12">
-						<label for="pw" class="form-label mb-0">비밀번호 확인</label>
-						<input id="pw" name="changePw2" type="password" class="form-control" id="pwch" placeholder="비밀번호를 한번 더 입력하세요" value="">
+						<label for="pwch" class="form-label mb-0">비밀번호 확인</label>
+						<input id="pwch" name="changePw2" type="password" class="form-control" id="pwch" placeholder="비밀번호를 한번 더 입력하세요" value="">
 						<font id="pwComm2" class="form-text fs-6"></font>
 					</div>
 					<div id="pwComm2"></div>					
