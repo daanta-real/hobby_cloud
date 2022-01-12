@@ -12,6 +12,7 @@ import com.kh.hobbycloud.entity.notice.NoticeDto;
 import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.repository.notice.NoticeFileDao;
+import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.notice.NoticeVO;
 
 @Service
@@ -58,6 +59,18 @@ public class NoticeServiceImpl implements NoticeService {
 
 		// 3. 모임글 번호를 회신
 
+	}
+
+	@Override
+	public int listCount() {
+		
+		return noticeDao.listCount();
+	}
+
+	@Override
+	public List<NoticeVO> list(Criteria cri) {
+		
+		return noticeDao.list(cri);
 	}
 
 	
