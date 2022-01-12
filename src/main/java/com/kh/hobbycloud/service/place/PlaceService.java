@@ -22,4 +22,5 @@ public interface PlaceService {
 	//장소 총 갯수
 	int listCount();
 
+
 }
