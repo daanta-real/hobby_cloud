@@ -67,7 +67,8 @@ public class LecController {
 	@GetMapping("/list")
 	public String list(Model model,LecCriteria cri) {
 		model.addAttribute("list", lecService.list(cri));
-
+		log.debug("렉카테고리 목록 나오는지ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ = {}",lecCategoryDao.select());
+		model.addAttribute("lecCategoryList", lecCategoryDao.select());	
 		LecPageMaker pageMaker = new LecPageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(lecService.listCount());
