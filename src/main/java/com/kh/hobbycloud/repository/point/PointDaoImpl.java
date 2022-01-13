@@ -35,6 +35,8 @@ public class PointDaoImpl implements PointDao {
 	// 검색조건을 넣어 목록 획득
 	// 아무 검색조건을 넣지 않으면, 그냥 전체 목록을 갖고 옴.
 	@Override
+	public List<PointDto> select() { return select(new PointSearchVO()); }
+	@Override
 	public List<PointDto> select(PointSearchVO vo) {
 		return sqlSession.selectList("point.select", vo);
 	}

@@ -19,7 +19,7 @@
 	</select>
 	
 	<!-- 결제이력 등록.
-	여기에 없는 컬럼은 아래와 같다.
+	이 구문 내부에서 값을 정해주지 않는 컬럼은 아래와 같다.
 	paid_registered = 기본 SYSDATE
 	paid_status = 기본 1(성공)
 	-->

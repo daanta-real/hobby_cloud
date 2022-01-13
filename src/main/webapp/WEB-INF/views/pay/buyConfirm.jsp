@@ -46,18 +46,20 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form method="post" action="${root}/pay/ready" class="row">
-					<div class="form-group mb-4 col-md-6 col-lg-4">
-						<label for="newPayForm_item_name" class="form-label mb-0">품목명</label>
-						<input name="item_name" id="newPayForm_item_name" type="text" value="${item_name}" readonly="readonly">
-					</div>
-					<div class="form-group mb-4 col-md-6 col-lg-4">
-						<label for="newPayForm_total_amount" class="form-label mb-0">결제금액</label>
-						<input name="total_amount" id="newPayForm_total_amount" type="number" value="${total_amount}" readonly="readonly">
-					</div>
-					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">결제 실행</button>
-					</div>
+				<div class="form-group my-5 col-12">
+					<h3 class="text-info">포인트상품명</h3>
+					<h5>${pointName}</h5>
+				</div>
+				<div class="form-group my-5 col-12">
+					<h3 class="text-info">포인트상품 가격</h3>
+					<h5>&#8361;&nbsp;<fmt:formatNumber value="${pointPrice}" pattern="#,###" /></h5>
+				</div>
+				<div class="form-group my-5 col-12">
+					<h3 class="text-info">포인트상품 포인트 충전량</h3>
+					<h5><fmt:formatNumber value="${pointAmount}" pattern="#,###" /></h5>
+				</div>
+				<form class="row d-flex justify-content-center mt-3" action="ready" method="get">
+					<button class="btn btn-danger col-sm-12 col-md-9 col-xl-8">결제 실행</button>
 				</form>
 			</div>
 		</div>
