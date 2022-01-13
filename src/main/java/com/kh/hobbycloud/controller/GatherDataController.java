@@ -24,6 +24,7 @@ import com.kh.hobbycloud.repository.gather.GatherReplyDao;
 import com.kh.hobbycloud.repository.gather.GatherReviewDao;
 import com.kh.hobbycloud.service.gather.GatherService;
 import com.kh.hobbycloud.vo.gather.GatherChartVO;
+import com.kh.hobbycloud.vo.gather.GatherEditVO;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
 import com.kh.hobbycloud.vo.gather.GatherReplyVO;
 import com.kh.hobbycloud.vo.gather.GatherReviewVO;
@@ -153,5 +154,20 @@ public class GatherDataController {
 		System.out.println(gatherIdx);
 		log.debug("-------aaa------gatherIdx={}",gatherIdx); 
 		return  SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/gather/detail/" + gatherIdx;
+	}
+	
+	@ResponseBody
+	@PostMapping("/update")
+	public String update(@ModelAttribute GatherEditVO gatherEditVO) {
+		try {
+			Integer idx = gatherEditVO.getGatherIdx();
+			log.debug("==================== /lec/edit/{} (강좌 파일 수정 POST) 진입", idx);
+			log.debug("==================== 수정내용: {}", gatherEditVO);
+			gatherService.edit(gatherEditVO);
+			log.debug("==================== 수정이 끝났습니다. 상세보기로 돌아갑니다.", gatherEditVO);
+			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/lec/detail/" + idx;
+		} catch(Exception e) {
+			return "failed"; 
+		}
 	}
 }

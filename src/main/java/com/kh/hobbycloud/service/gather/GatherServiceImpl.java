@@ -81,9 +81,9 @@ public class GatherServiceImpl implements GatherService {
 		return gatherIdx;
 	}
 
-	public void update(GatherEditVO gatherEditVO) throws IllegalStateException, IOException {
+	public void edit(GatherEditVO gatherEditVO) throws IllegalStateException, IOException {
 		// 1. 모임글 수정
-
+ 
 		// 모임글 DTO 설정
 		GatherDto gatherDto = new GatherDto();
 
@@ -140,9 +140,9 @@ public class GatherServiceImpl implements GatherService {
 				} else {
 					// 파일이 비어있지 않는다면, 이 파일을 업로드하고 DB에 등록한다.
 					log.debug("  ㄴ 파일이 존재합니다. 업로드하고 DB에 등록하겠습니다.");
- 
+  
 					// 파일 정보에 대한 DTO 생성
-					GatherFileDto gatherFileDto = new GatherFileDto();
+			 		GatherFileDto gatherFileDto = new GatherFileDto();
 					gatherFileDto.setGatherIdx(gatherEditVO.getGatherIdx());
 					gatherFileDto.setGatherFileUserName(file.getOriginalFilename());
 					gatherFileDto.setGatherFileType(file.getContentType());
@@ -174,19 +174,12 @@ public class GatherServiceImpl implements GatherService {
 		System.out.println("서비스"+cri2);  
 		return gatherDao.listBy(cri2);
 	}
-
+ 
 	@Override
 	public int listCountBy(GatherSearchVO gatherSearchVO) {
 		int number = gatherDao.listCountBy(gatherSearchVO);
 		System.out.println("서비스 숫자"+number);
 		return gatherDao.listCountBy(gatherSearchVO);
 	}
-
-	@Override
-	public void update(GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }
