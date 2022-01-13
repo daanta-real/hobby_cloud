@@ -21,6 +21,7 @@ import com.kh.hobbycloud.vo.lec.LecRegisterVO;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 @Service
 public class LecSerivceImpl implements LecService{

@@ -11,6 +11,8 @@ public interface GatherReviewDao {
 	void insert(GatherReviewDto gatherReviewDto);
 	//평점조회
 	List<GatherReviewVO> list(int gatherIdx);
+	//평점조회
+	List<GatherReviewVO> listBy(int startRow,int endRow,int gatherIdx);
 	//평점삭제
 	boolean delete(int gatherReviewIdx);
 	//평점수정

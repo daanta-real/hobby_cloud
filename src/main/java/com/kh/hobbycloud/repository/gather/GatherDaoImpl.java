@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.gather.GatherDto;
 import com.kh.hobbycloud.vo.gather.Criteria;
+import com.kh.hobbycloud.vo.gather.CriteriaSearch;
 import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
 
@@ -62,13 +63,6 @@ public class GatherDaoImpl implements GatherDao {
 	}
 
 	//페이지네이션을 이용한 목록조회
-	@Override
-	public List<GatherVO> listPage(int startRow, int endRow) {
-		Map<String, Object> param = new HashMap<>();
-		param.put("startRow", startRow);
-		param.put("endRow", endRow);
-		return sqlSession.selectList("gather.listPage",param);
-	}
 
 	@Override
 	public List<GatherVO> list(Criteria cri) {
@@ -78,6 +72,19 @@ public class GatherDaoImpl implements GatherDao {
 	@Override
 	public int listCount() {
 		return sqlSession.selectOne("gather.listCount");
+	}
+
+	@Override
+	public List<GatherVO> listBy(CriteriaSearch cri2) {
+		System.out.println("다오"+cri2); 
+		return sqlSession.selectList("gather.listSearchBy",cri2);
+	}
+ 
+	@Override
+	public int listCountBy(GatherSearchVO gatherSearchVO) {
+		int number =sqlSession.selectOne("gather.listCountBy",gatherSearchVO);
+		System.out.println("다오 숫자"+number);
+		return sqlSession.selectOne("gather.listCountBy",gatherSearchVO);
 	}
 
 

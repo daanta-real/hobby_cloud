@@ -12,7 +12,9 @@ import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.vo.gather.Criteria;
+import com.kh.hobbycloud.vo.gather.CriteriaSearch;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
+import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
 
 @Service
@@ -132,6 +134,19 @@ public class GatherServiceImpl implements GatherService {
 	@Override
 	public int listCount() {
 		return gatherDao.listCount();
+	}
+
+	@Override
+	public List<GatherVO> listBy(CriteriaSearch cri2) {
+		System.out.println("서비스"+cri2);  
+		return gatherDao.listBy(cri2);
+	}
+
+	@Override
+	public int listCountBy(GatherSearchVO gatherSearchVO) {
+		int number = gatherDao.listCountBy(gatherSearchVO);
+		System.out.println("서비스 숫자"+number);
+		return gatherDao.listCountBy(gatherSearchVO);
 	}
 
 
