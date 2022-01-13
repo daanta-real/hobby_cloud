@@ -147,7 +147,7 @@
 				</c:forEach>
 
 	
-	 
+	   
 	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div> 
 	<!-- 소모임 테이블 영역  -->
 	<div class="row p-sm-2 mx-1 mb-5">
@@ -175,19 +175,19 @@
 						  
 						 
 						<!-- 참가여부를 확인 -->
-						<c:set	var="isJoin" value="false" /> 
-						<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}">
-						${GatherHeadsVO.memberIdx} /${memberIdx}
+						<c:set	var="isJoin" value="false" />  
+						<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}"> 
+						<h1>${memberIdx} / ${GatherHeadsVO.memberIdx}</h1> 
 						<c:set var="isJoin" value="true" />
-						</c:if>
+						</c:if> 
 						</c:forEach> 
 						 </tr>	
 						</tbody>
 					</table>
-				</div>
-			</div> 	
-
-
+				</div>    
+			</div> 	 
+ 				
+				<h1>${isJoin}2</h1> 
 				<!-- 참가하기 버튼 -->
 				<c:set var="isLogin" value="${memberIdx != null}"/>
 				 <c:choose>
@@ -220,8 +220,9 @@
 				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}"
 				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
-				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>
-				
+				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
+				<button class="btn btn-secondary more-btn">더보기!!</button>  
+				<button class="btn btn-secondary moreR-btn">더보기!2</button>   
 			</nav>
 		
 		<!-- 댓글 내역 -->
@@ -234,10 +235,16 @@
 						<span>댓글을 입력해주세요</span>
 					</div> 
 				<div class="card-body position-relative p-1 px-2">
-				  <input type="text" class="card-text p-1 px-3 gatherReplyDetail" name="gatherReplyDetail">
+				  <input type="text" class="card-text p-1 px-3 gatherReplyDetail" name="gatherReplyDetail" placeholder="로그인을 해주세요">
 				 <input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
 				<input type="hidden" name="memberIdx" value="${memberIdx}"> 
-				  <button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+				
+				<!-- 등록버튼 -->
+				 <c:choose>
+           			<c:when test="${isLogin}">
+				  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+				  	</c:when> 
+				 </c:choose>
 				</div>	  
 				<div class="floatRightTop position-absolute top-0 end-0 p-1">  
 			</div>	
@@ -258,22 +265,25 @@
 	<div class="card-text p-1 px-3 gatherReplyDetail">{{gatherReplyDetail}}</div>
 
 	<div class="floatRightTop position-absolute top-0 end-0 p-1">
+	
+<%-- 	<c:set var="writer" value="${memberNick != '{memberNick}'"/>  --%>
+<%-- 	<h1>헬로${writer}</h1>    --%>
 	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
 	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
 	 </div>  
 	</div>
+	  
 </div>
 
-</template>
-		
+</template>   
+	<button class="more-btn btn btn-secondary">더보기!!</button>  
 </div>
 
 
- 
-
+  
 	
 <div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>평점</div>
-<!-- 소단원 내용 -->
+<!-- 소단원 내용 --> 
 	<div class="row p-sm-2 mx-1 mb-5">
 <form id="insertReview-form">
 <div class="card mb-2 border border-1 border-secondary p-0">
@@ -295,9 +305,13 @@
         <input type="radio" id="1-star" name="gatherReviewScore" value="1" v-model="ratings" />
         <label for="1-star" class="star">★</label>
      </div>  
-	 <input type="text" name="gatherReviewDetail">
+	 <input type="text" name="gatherReviewDetail" placeholder="로그인을 해주세요"> 
 	<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
-	  <button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+	<c:choose>
+      <c:when test="${isLogin}">
+	  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+	  </c:when>
+	 </c:choose>
 	  </div>
 	 </div>
 </form>
@@ -307,18 +321,18 @@
 <div class="card mb-2 border border-1 border-secondary p-0 item">
 	<div class="card-header d-flex align-items-center p-1 px-2">
 	<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
-	<span class="memberNick">{{memberNick}}</span> 
-	<span class="gatherReviewScore">   점수:{{gatherReviewScore}}</span> 
-	<span class="memberReplyRegistered ms-auto gatherReplyDate">{{gatherReplyDate}}</span>
-	</div>   
-	<div class="card-body position-relative p-1 px-2">
+	<span class="memberNick">닉네임 :{{memberNick}}</span> 
+	<span class="gatherReviewScore">| 점수:{{gatherReviewScore}}</span> 
+	<span class="memberReplyRegistered ms-auto gatherReviewRegistered">{{gatherReviewRegistered}}</span>
+	</div>       
+	<div class="card-body position-relative p-1 px-2">   
 	<div class="card-text p-1 px-3 gatherReviewDetail">{{gatherReviewDetail}}</div>
-
+  
 	<div class="floatRightTop position-absolute top-0 end-0 p-1">
 	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreview-idx="{{gatherReviewIdx}}">수정</button>
 	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreview-idx="{{gatherReviewIdx}}">삭제</button>
 	 </div>  
-	</div>
+	</div>  
 </div>
 
 </template>
@@ -424,12 +438,26 @@ $.ajax({
 
 
 
-<!-- 평점 등록 -->
-<script>
+<!-- 평점 등록 -->  
+<script> 
+var pageR = 1;
+var sizeR = 10;
+$(function(){ 
+	$(".moreR-btn").click(function(){
+		loadReview(pageR,sizeR,gatherIdx); 
+		console.log(pageR);
+		pageR++;   
+		console.log(pageR);  
+	});  
+	//더보기 버튼을 강제 1회 클릭(트리거) 
+	$(".moreR-btn").click(); 
+	console.log(pageR);   
+});
+
+
+
 $(function(){
-	//처음 들어오면 목록 출력.
-	loadReview();
-	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
+		//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insertReview-form").submit(function(e){
 		console.log("누름");
 		//this == #insert-form
@@ -447,7 +475,10 @@ $(function(){
 				$("#insertReview-form")[0].reset();
 				
 				//성공하면 목록 갱신
-				loadReview();
+				$("#resultReivew").empty();
+				pageR=1;
+				loadReview(pageR,sizeR,gatherIdx);
+				pageR++;
 			
 			},
 			error:function(e){
@@ -461,33 +492,55 @@ $(function(){
 
 
 
-
-<!-- 평점 조회 -->
 <script>
-function loadReview(){
+function dateFormat(date) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+
+    return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute; 
+}
+</script>
+
+<!-- 평점 조회 --> 
+<script>
+function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 	var gatherIdxValue = $("#gatherIdxValue").data("gather-idx");
 	$.ajax({
 		url:"${pageContext.request.contextPath}/gatherData/reviewList",
 		type:"get",
 		data:{
+			pageR:pageRValue,
+			sizeR:sizeRValue,
 			gatherIdx:gatherIdxValue
 		},
 		dateType:"json",
 		success:function(resp){
 			console.log("성공",resp);
-			$("#resultReivew").empty();//내부영역 청소
-			//$("#result").html("");
-			//$("#result").text("");
+			if(resp.length < sizeRValue){
+				$(".moreR-btn").remove(); 
+					}
 			
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
-				
+				 
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
-				template = template.replace("{{memberNick}}", resp[i].memberNick);
+				template = template.replace("{{memberNick}}", resp[i].memberNick);  
+				template = template.replace("{{memberNick}}", resp[i].memberNick);  
 				template = template.replace("{{gatherReviewScore}}", resp[i].gatherReviewScore);
-				template = template.replace("{{gatherIdx}}", resp[i].gatherIdx);
+				
+				var time = resp[i].gatherReviewRegistered;
+				var date =new Date(time);
+				template = template.replace("{{gatherReviewRegistered}}",dateFormat(date)); 
 				template = template.replace("{{gatherReviewDetail}}", resp[i].gatherReviewDetail);
 		
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
@@ -495,7 +548,7 @@ function loadReview(){
 				console.log(tag.find(".remove-btn"));
 				
 				//별점 삭제
-				tag.find(".remove-btn").click(function(){
+				tag.find(".remove-btn").click(function(){ 
 					console.log("누름");
 					deleteReview($(this).data("gatherreview-idx"));
 				});
@@ -527,9 +580,10 @@ function loadReview(){
 						success:function(resp){
 							console.log("성공", resp);
 						
-							$("#result").empty();
-							
-							loadReview();
+							$("#resultReivew").empty();
+							pageR=1;
+							loadReview(pageR,sizeR,gatherIdx);
+							pageR++;
 						},
 						error:function(e){}
 					});
@@ -563,8 +617,10 @@ function deleteReview(gatherReviewIdxValue){
 		dataType:"text",
 		success:function(resp){
 			console.log("성공", resp);
-			
-			loadReview();//데이터가 변하면 무조건 갱신
+			$("#resultReivew").empty();
+			pageR=1;
+			loadReview(pageR,sizeR,gatherIdx);
+			pageR++; 
 		},
 		error:function(e){}
 	});
@@ -572,15 +628,31 @@ function deleteReview(gatherReviewIdxValue){
 </script>
 
 
-
+ 
 
 
 
 <!-- 댓글 등록구현 -->
 <script>
+var page = 1;
+var size = 10;
+var gatherIdx= "${gatherIdx}";
+
+$(function(){ 
+	$(".more-btn").click(function(){
+		loadList(page,size,gatherIdx); 
+		console.log(page);
+		page++; 
+		console.log(page);  
+	}); 
+	//더보기 버튼을 강제 1회 클릭(트리거) 
+	$(".more-btn").click();
+	console.log(page);  
+});
+
+
 $(function(){
 	//처음 들어오면 목록 출력
-	loadList();
 	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insert-form").submit(function(e){
 		//this == #insert-form
@@ -600,9 +672,12 @@ $(function(){
 				//jQuery는 reset() 명령이 없어서 get(0)으로 javascript 객체로 변경
 				//$("#insert-form").get(0).reset();
 				$("#insert-form")[0].reset();
-				
+				$("#result").empty();
 				//성공하면 목록 갱신
-				loadList();
+				page =1; 
+				loadList(page,size,gatherIdx);
+				console.log("입력 들어옴");
+				page++;
 			},
 			error:function(e){
 				console.log("실패", e);
@@ -616,18 +691,27 @@ $(function(){
 
 
 //댓글 목록 리스트
-function loadList(){
+function loadList(pageValue, sizeValue, gatherIdxValue){
 	var gatherIdxValue = $("#gatherIdxValue").data("gather-idx");
 	$.ajax({
 		url:"${pageContext.request.contextPath}/gatherData/replyList",
 		type:"get",
 		data:{
+			page:pageValue,
+			size:sizeValue,
 			gatherIdx:gatherIdxValue
 		},
 		dateType:"json",
 		success:function(resp){
+			console.log(resp.length,sizeValue); 
 			console.log("성공",resp);
-			$("#result").empty();//내부영역 청소
+			if(resp.length < sizeValue){  
+				$(".more-btn").remove(); 
+			}else{
+				$(".more-btn").show();
+			} 
+			
+			
 			for(var i=0; i<resp.length; i++){
 				var template = $("#gatherVO-template").html();
 				
@@ -636,7 +720,10 @@ function loadList(){
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
 				template = template.replace("{{memberNick}}",resp[i].memberNick);
 				template = template.replace("{{gatherReplyDetail}}",resp[i].gatherReplyDetail);
-				template = template.replace("{{gatherReplyDate}}",resp[i].gatherReplyDate);
+				
+				var time = resp[i].gatherReplyDate;
+				var date =new Date(time);
+				template = template.replace("{{gatherReplyDate}}",dateFormat(date)); 
 				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 				
@@ -667,7 +754,7 @@ function loadList(){
 					form.append("<button type='submit'>수정</button>");
 			
 					form.submit(function(e){
-						e.preventDefault();
+					e.preventDefault();
 						
 						
 					var dataValue=$(this).serialize();			
@@ -677,7 +764,10 @@ function loadList(){
 						data:dataValue,
 						success:function(resp){
 							$("#result").empty();
-							loadList();
+							page=1;
+							loadList(page,size,gatherIdx);	
+							console.log("편집 들어옴"); 
+							page++;
 						},
 						error:function(e){}
 					});
@@ -718,8 +808,10 @@ function deleteReply(gatherReplyIdxValue){
 		dataType:"text",
 		success:function(resp){
 			console.log("성공", resp);
-			
-			loadList();
+			$("#result").empty();
+			page=1;
+			loadList(page,size,gatherIdx);			
+			page++;
 		},
 		error:function(e){}
 	});

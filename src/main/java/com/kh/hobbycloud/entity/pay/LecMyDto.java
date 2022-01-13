@@ -1,4 +1,4 @@
-package com.kh.hobbycloud.entity.lec;
+package com.kh.hobbycloud.entity.pay;
 
 import java.sql.Date;
 

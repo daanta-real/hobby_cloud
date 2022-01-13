@@ -28,12 +28,13 @@ import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
 import com.kh.hobbycloud.service.gather.GatherService;
 import com.kh.hobbycloud.vo.gather.Criteria;
+import com.kh.hobbycloud.vo.gather.CriteriaSearch;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
 import com.kh.hobbycloud.vo.gather.GatherHeadsVO;
 import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
 import com.kh.hobbycloud.vo.gather.PageMaker;
-
+import com.kh.hobbycloud.vo.gather.PageMaker2;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,40 +53,50 @@ public class GatherController {
 	@Autowired
 	private GatherHeadsDao gatherHeadsDao;
 
-//	// 일반 목록 페이지
-//	@GetMapping("/list")
-//	public String list(Model model) {
-//		List<GatherVO> list = gatherDao.list();
-//		model.addAttribute("list", list);
-//		System.out.println(list);
-//		return "gather/list";
-//	}
 
 	@GetMapping("/list")
 	public String list(Model model,Criteria cri) {
 		
-		
+		 
 		model.addAttribute("list", gatherService.list(cri));
-		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(gatherService.listCount());
+		int number = gatherService.listCount();
+		pageMaker.setTotalCount(number);  
 		model.addAttribute("pageMaker",pageMaker);
 		
 		System.out.println(gatherService.list(cri));
 		return "gather/list";
 	}
-	// 검색결과 목록 페이지
-	@PostMapping("/list")
-	public String search(@ModelAttribute GatherSearchVO gatherSearchVO, Model model) {
-//		log.debug("param.toString()   " + gatherSearchDto.toString());
-		log.debug("category={}", gatherSearchVO);
-		List<GatherVO> list = gatherDao.listSearch(gatherSearchVO);
-		
 
-		model.addAttribute("list",list);
+	// 검색결과 목록 페이지 
+	@PostMapping("/list")
+	public String search(@ModelAttribute CriteriaSearch cri2, Model model) {
+
+		GatherSearchVO gatherSearchVO = new GatherSearchVO();		
+		gatherSearchVO.setCategory(cri2.getCategory());	
+		gatherSearchVO.setGatherLocRegion(cri2.getGatherLocRegion());	
+		gatherSearchVO.setGatherName(cri2.getGatherName());	
+		
+		model.addAttribute("list",gatherService.listBy(cri2));
+		int count = gatherService.listCountBy(gatherSearchVO); 	
+		PageMaker2 pageMaker2 = new PageMaker2();	
+		pageMaker2.setCri(cri2);		
+		pageMaker2.setTotalCount(count);	
+		model.addAttribute("pageMaker",pageMaker2);
+	
+		
 		return "gather/list";
 	}
+	// 검색결과 목록 페이지
+//	@PostMapping("/list")
+//	public String search(@ModelAttribute GatherSearchVO gatherSearchVO, Model model) {
+// 
+//		List<GatherVO> list = gatherDao.listSearch(gatherSearchVO);
+//		System.out.println("확인"+gatherSearchVO);
+//		model.addAttribute("list",list); 
+//		return "gather/list";
+//	}
 
 	// 모임글 등록 폼 페이지
 	@GetMapping("/insert")
@@ -93,15 +104,15 @@ public class GatherController {
 		return "gather/insert";
 	}
 
-	// 모임글 등록 실시
-	@PostMapping("/insert")
-	public String insert(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
-		System.out.println("ㅡㅡ 모임글 등록 실시. 모임 정보: " + gatherFileVO);
-		int memberIdx = (int) session.getAttribute("memberIdx");
-		gatherFileVO.setMemberIdx(memberIdx);
-		int gatherIdx = gatherService.save(gatherFileVO);
-		return "redirect:detail/" + gatherIdx;	
-	}																
+//	// 모임글 등록 실시
+//	@PostMapping("/insert")
+//	public String insert(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
+//		System.out.println("ㅡㅡ 모임글 등록 실시. 모임 정보: " + gatherFileVO);
+//		int memberIdx = (int) session.getAttribute("memberIdx");
+//		gatherFileVO.setMemberIdx(memberIdx);
+//		int gatherIdx = gatherService.save(gatherFileVO);
+//		return "redirect:detail/" + gatherIdx;	
+//	}																
 
 	// 상세 보기 페이지
 	@RequestMapping("/detail/{gatherIdx}")
