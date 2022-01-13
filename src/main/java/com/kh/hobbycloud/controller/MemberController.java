@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.hobbycloud.entity.member.MemberCategoryDto;
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberCategoryDao;
@@ -195,8 +196,11 @@ public class MemberController {
 		//데이터 Model에 저장
 		MemberDto memberDto = memberDao.get(memberId);
 		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
+		MemberCategoryDto memberCategoryDto = memberCategoryDao.get(memberIdx);
+		log.debug("ㅡㅡMemberController - /member마이페이지 memberCategoryDto"+memberCategoryDto);
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberProfileDto", memberProfileDto);
+		model.addAttribute("memberCategoryDto", memberCategoryDto);
 		//페이지 리다이렉트
 		return "member/mypage";
 	}

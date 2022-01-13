@@ -1,26 +1,18 @@
 package com.kh.hobbycloud.repository.member;
 
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
-import com.kh.hobbycloud.vo.lec.LecCategoryUpdateVO;
+import com.kh.hobbycloud.entity.member.MemberCategoryDto;
 
 @Repository
 public interface MemberCategoryDao {
-	
-//	void save(MemberCategoryDto memberCategoryDto);
-//
-//	MemberCategoryDto getByMemberIdx(int memberIdx);
-//
-//	void delete(int memberIdx);
-	
-	public void insert(String str);
+		
+	public void insert(MemberCategoryDto memberCategoryDto);
 
-	public List<String> select();
+	MemberCategoryDto get(Integer memberIdx);
 
-	public int update(LecCategoryUpdateVO vo);
+	public boolean update(MemberCategoryDto memberCategoryDto);
 
-	public void delete(String str);
+	public void delete(Integer memberIdx);
 
 }

@@ -15,6 +15,7 @@ public interface MemberDao {
 
 	// 단일조회(memberId)
 	MemberDto get(String memberId);
+	
 	//단일조회(memberIdx)
 	MemberDto get(Integer memberIdx);
 	

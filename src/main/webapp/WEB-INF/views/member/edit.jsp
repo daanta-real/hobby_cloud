@@ -189,6 +189,19 @@ function deleteFile(memberProfileIdxValue){
 						<div id="regioncheck" class="fs-6"></div>
 					</div>
 					<div class="form-group mb-4 col-12">
+						<label for="joinForm_lecCategory" class="form-label mb-0">관심분야</label>		
+						<select name="lecCategoryName" required class="form-input p-1 border-radius-all-25 form-control">
+							<option value="" class="">선택하세요</option>
+							<option value="운동">운동</option>
+							<option value="요리">요리</option>
+							<option value="문화">문화</option>
+							<option value="예술">예술</option>
+							<option value="IT">IT</option>
+							<option value="directly">직접입력</option>														
+						</select>
+						</div>
+					</div>
+					<div class="form-group mb-4 col-12">
 						<label class="form-label mb-0">프로필 이미지</label>
 						<input id="profileImageInput" name="attach" type="file" class="form-control" accept="image/*" >
 						<div class="squareImgContainer position-relative d-flex justify-content-center align-items-center overflow-hidden w-50">
@@ -201,14 +214,6 @@ function deleteFile(memberProfileIdxValue){
 									<button class="remove-btn" data-gatherfileidx="${memberProfileDto.memberProfileIdx}">삭제</button>
 								</c:otherwise>
 							</c:choose>
-						</div>
-					</div>
-					<div class="form-group mb-4 col-lg-6">
-						<label class="form-label mb-0">관심 분야</label>
-						<div>
-							<input type="checkbox" name="lecCategoryName"  value="sports">스포츠
-							<input type="checkbox" name="lecCategoryName"  value="music">음악
-							<input type="checkbox" name="lecCategoryName"  value="painting">그림
 						</div>
 					</div>
 					<div class="row d-flex justify-content-center mt-3">

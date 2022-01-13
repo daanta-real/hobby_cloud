@@ -95,6 +95,12 @@ window.addEventListener("load", function() {
              </div>
               <div class="form-group col-12">
             <fieldset disabled="">
+             <label class="form-label" for="disabledInput">관심분야</label>
+             <input class="form-control" id="disabledInput"  value="${memberCategoryDto.lecCategoryName}" type="text" placeholder="" disabled="">
+             </fieldset>
+             </div>
+              <div class="form-group col-12">
+            <fieldset disabled="">
              <label class="form-label" for="disabledInput">가입일시</label>
              <input class="form-control" id="disabledInput"  value="${memberDto.memberRegistered}" type="text" placeholder="" disabled="">
              </fieldset>

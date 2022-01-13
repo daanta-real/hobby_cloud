@@ -72,9 +72,8 @@ public class LecSerivceImpl implements LecService{
 			lecFileDto.setLecFileSize(file.getSize());
 			// 파일 업로드 후, 파일정보를 DB에 저장
 			lecFileDao.save(lecFileDto, file);
-
 		}
-
+		
 		return lecIdx;
 	}
 
