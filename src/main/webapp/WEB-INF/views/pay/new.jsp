@@ -36,7 +36,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			결제 신규 (테스트용)
+			포인트 결제
 			</span>
 		</div>
 	</HEADER>
@@ -46,19 +46,22 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form name="newPayForm" method="post" action="${root}/pay/confirm" class="row">
-					<div class="form-group mb-4 col-md-6 col-lg-4">
-						<label for="newPayForm_item_name" class="form-label mb-0">품목명</label>
-						<input name="item_name" id="newPayForm_item_name" type="text" class="form-control" placeholder="아이템명을 입력하세요">
-					</div>
-					<div class="form-group mb-4 col-md-6 col-lg-4">
-						<label for="newPayForm_total_amount" class="form-label mb-0">결제금액</label>
-						<input name="total_amount" id="newPayForm_total_amount" type="number" class="form-control" placeholder="금액을 입력하세요">
-					</div>
-					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">결제하기</button>
-					</div>
-				</form>
+				<div class="row d-flex flex-col">
+					<c:forEach var="list" items="${pointList}">
+						<form action="${root}/pay/buyConfirm" class="col-12">
+							<input type="hidden" name="pointIdx" value="${list.pointIdx}" />
+							<button class="card bg-success mb-3 text-white w-100 p-0">
+								<div class="card-header w-100">${list.getPointName()}</div>
+								<div class="card-body d-flex flex-column align-items-center w-100">
+									<h1 class="card-warning text-warning">
+										<fmt:formatNumber value="${list.getPointAmount()}" pattern="#,###"/> 포인트 충전
+									</h1>
+									<h2 class="card-title">&#8361;&nbsp;<fmt:formatNumber value="${list.getPointPrice()}" pattern="#,###"/></h2>
+								</div>
+							</button>
+						</form>
+					</c:forEach>
+				</div>
 			</div>
 		</div>
 	</SECTION>

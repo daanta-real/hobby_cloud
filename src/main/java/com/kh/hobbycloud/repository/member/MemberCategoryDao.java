@@ -9,10 +9,12 @@ public interface MemberCategoryDao {
 		
 	public void insert(MemberCategoryDto memberCategoryDto);
 
-	MemberCategoryDto get(Integer memberIdx);
+	MemberCategoryDto get(Integer memberIdx); 
 
 	public boolean update(MemberCategoryDto memberCategoryDto);
 
 	public void delete(Integer memberIdx);
+
+//	List<String> select();
 
 }

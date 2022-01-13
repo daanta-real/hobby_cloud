@@ -24,10 +24,15 @@ public interface PayService {
 	// 성공한 결제정보를 받아와 리턴하는 메소드
 	public KakaoPayApproveResponseVO approve(KakaoPayApproveRequestVO requestVO) throws RestClientException, URISyntaxException;
 
+	// 결제가 모두 끝나면, 결제 이력을 DB의 point_history, paid 테이블에 각각 기록하고,
+	// member 테이블의 point 수량을 변경 반영해 주는 메소드
+	// boolean addRecord(PayRecordVO vo);
+
 	// 카카오페이측에 결제정보 조회를 요청하여, 저장된 결제 이력을 리턴하는 메소드
 	public KakaoPayVO detail(String tid) throws RestClientException, URISyntaxException;
 
 	// 카카오페이측에 결제 취소를 요청한 뒤, 그 결과를 리턴하는 메소드
 	public KakaoPayCancelResponseVO cancel(String tid, int amount) throws RestClientException, URISyntaxException;
+
 
 }

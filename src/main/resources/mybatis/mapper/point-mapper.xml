@@ -33,7 +33,7 @@
 			<if test="pointAmountMin != null">AND point_amount <![CDATA[>=]]> #{pointAmountMin}</if>
 			<if test="pointAmountMax != null">AND point_amount <![CDATA[<=]]> #{pointAmountMax}</if>
 		</where>
-		ORDER BY point_idx DESC
+		ORDER BY point_price ASC
 	</select>
 	
 	<!-- 포인트상품 등록 -->

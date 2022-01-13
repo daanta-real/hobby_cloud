@@ -62,6 +62,25 @@ public class MemberServiceImpl implements MemberService{
 		memberDao.join(memberDto);
 		log.debug("회원 등록ㅡㅡㅡㅡㅡㅡㅡㅡmemberDao.join실행 ");
 		
+//		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
+//		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
+//		List<String> lecCategoryName = memberJoinVO.getLecCategoryName();
+//		System.out.println("그냥 밖에"+ lecCategoryName.toString());
+//		//관심분야 선택했는지 확인. 선택 안했으면 저장 생략
+//		if (lecCategoryName.size() > 0) {
+//			//회원관심분야에 대한 DTO 생성
+//			MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
+//
+//			memberCategoryDto.setMemberIdx(sequence);
+//			log.debug("DTO DATA B4 = {}", memberCategoryDto);
+//			log.debug("catName = {}", lecCategoryName);
+//			log.debug("GETTER 확인 = {}", memberCategoryDto.getLecCategoryName());
+//			memberCategoryDto.setLecCategoryName(lecCategoryName);
+//			//관심분야 DB에 저장
+//			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
+//			memberCategoryDao.save(memberCategoryDto);			
+//		}
+		
 		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
 		// memberJoinVO 안에 String lecCategoryName이 들어있다.
 		MemberCategoryDto memberCategoryDto = new MemberCategoryDto();

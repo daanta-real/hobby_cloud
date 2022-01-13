@@ -3,7 +3,7 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="point_history">
+<mapper namespace="pointHistory">
 	
 	<!-- 신규 시퀀스 번호 획득 -->
 	<select id="getSequence" resultType="integer">
@@ -59,23 +59,23 @@
 		ORDER BY h.point_history_idx DESC
 	</select>
 	
-	<!-- 포인트상품 등록 -->
+	<!-- 포인트변동이력 등록 -->
 	<insert id="insert" parameterType="PointHistoryDto">
 		INSERT INTO point_history(
-			point_history_idx, paid_idx, point_idx, point_history_amount, point_history_memo
+			point_history_idx, member_idx, paid_idx, point_idx, point_history_amount, point_history_memo
 		)
 		VALUES (
-			point_history_seq.NEXTVAL, #{paidIdx}, #{pointIdx}, #{pointHistoryAmount}, #{pointHistoryMemo}
+			point_history_seq.NEXTVAL, #{memberIdx}, #{paidIdx}, #{pointIdx}, #{pointHistoryAmount}, #{pointHistoryMemo}
 		)
 	</insert>
 	
-	<!-- 포인트상품 삭제 -->
+	<!-- 포인트변동이력 삭제 -->
 	<delete id="delete" parameterType="integer">
 		DELETE FROM point_history
 		WHERE point_history_idx = #{val}
 	</delete>
 
-	<!-- 포인트상품 내용 수정 -->
+	<!-- 포인트변동이력 내용 수정 -->
 	<update id="update" parameterType="PointHistoryDto">
 		UPDATE point_history
 		SET

@@ -34,10 +34,10 @@ public class MemberDaoImpl implements MemberDao{
 
 	// 단일조회 - IDX 기준
 	@Override
-	public MemberDto get(Integer memberIdx) {
+	public MemberDto getByIdx(Integer memberIdx) {
 		return sqlSession.selectOne("member.getbyIdx", memberIdx);
 	}
-	
+
 	@Override
 	public MemberJoinVO getVO(Integer memberIdx) {
 		return sqlSession.selectOne("member.getbyIdx", memberIdx);
@@ -105,12 +105,19 @@ public class MemberDaoImpl implements MemberDao{
 		}
 	}
 	// 개인정보 변경 (이메일)
-	public int changeEmail(MemberDto memberDto) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
+	@Override
+	public int changeEmail(String memberEmail, Integer memberIdx) {
 		System.out.println("changeEmail() 실행");
-		return sqlSession.update("member.changeEmail", memberDto);
+		MemberDto memberDto = sqlSession.selectOne("member.getbyIdx", memberIdx);
+		System.out.println("changeEmail() member.getbyIdx  :  "+ memberIdx);
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberIdx", memberIdx);
+		map.put("memberEmail", memberEmail);
+		System.out.println("changeEmail() memberEmail  :  "+ memberEmail);
+		return sqlSession.update("member.changeEmail", map);
 	}
 
+	
 
 	// 회원 탈퇴
 	@Override
@@ -188,7 +195,7 @@ public class MemberDaoImpl implements MemberDao{
 		int result=sqlSession.update("member.tempPw",param);
 		return result>0;
 	}
-	
+
 	@Override
 	public List<MemberListVO> list(MemberCriteria cri) {
 		return sqlSession.selectList("member.list");
@@ -198,7 +205,7 @@ public class MemberDaoImpl implements MemberDao{
 	public int listCount() {
 		return sqlSession.selectOne("member.listCount");
 	}
-	
+
 	//페이지네이션을 이용한 목록조회
 	@Override
 	public List<MemberListVO> listPage(int startRow, int endRow) {
@@ -212,9 +219,22 @@ public class MemberDaoImpl implements MemberDao{
 	public List<MemberListVO> listSearch(MemberSearchVO memberSearchVO) {
 		return sqlSession.selectList("member.listSearch", memberSearchVO);
 	}
-	
 
 
+
+	// *포인트 관련*
+	// 특정 회원의 포인트 증감 처리
+	@Override
+	public boolean pointModify(MemberDto memberDto) {
+		int result = sqlSession.update("member.pointModify", memberDto);
+		return result > 0;
+	}
+	// 특정 회원의 포인트를 특정 값으로 강제변경
+	@Override
+	public boolean pointForceToValue(MemberDto memberDto) {
+		int result = sqlSession.update("member.pointForceToValue", memberDto);
+		return result > 0;
+	}
 
 }
 

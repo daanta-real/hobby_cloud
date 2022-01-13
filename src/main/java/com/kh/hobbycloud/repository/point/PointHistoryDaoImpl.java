@@ -10,6 +10,9 @@ import com.kh.hobbycloud.entity.point.PointHistoryDto;
 import com.kh.hobbycloud.vo.point.PointHistorySearchVO;
 import com.kh.hobbycloud.vo.point.PointHistoryVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class PointHistoryDaoImpl implements PointHistoryDao {
 
@@ -43,6 +46,7 @@ public class PointHistoryDaoImpl implements PointHistoryDao {
 	// 신규
 	@Override
 	public boolean insert(PointHistoryDto dto) {
+		log.debug("pointHistoryDao 실행: {}", dto);
 		Integer result = sqlSession.insert("pointHistory.insert", dto);
 		return result > 0;
 	}

@@ -19,11 +19,18 @@ public class MemberCategoryDaoImpl implements MemberCategoryDao{
 		sqlSession.insert("memberCategory.insert", memberCategoryDto);
 	}
 
-	//단일 조회
+//	단일 조회
 	@Override
 	public MemberCategoryDto get(Integer memberIdx) {
 		return sqlSession.selectOne("memberCategory.select", memberIdx);
 	}
+	
+//	//목록 조회
+//	@Override
+//	public List<String> select() {
+//		List<String> list = sqlSession.selectList("memberCategory.select");
+//		return list;
+//	}
 
 	// 수정
 	@Override

@@ -4,33 +4,20 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberCategory">
-
-	<!-- 등록 -->
+ 
+ 	<!-- 등록 -->
 	<insert id="insert" parameterType="com.kh.hobbycloud.entity.member.MemberCategoryDto">		
 		insert into member_category(
 			member_idx, lec_category_name
 		)
 		values  (
             #{memberIdx}, #{lecCategoryName}
-        )
-	</insert>
-	
-	<!-- 조회--> 
-<!--	<select id="getByIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.member.MemberCategoryDto">
+       )
+       </insert>
+       
+     <!--	조회 -->
+	<select id="select" parameterType="int" resultType="com.kh.hobbycloud.entity.member.MemberCategoryDto">
 		select * from member_category where member_idx = #{memberIdx}
-	</select>--> 
-	
-	<!-- 삭제 -->
-<!--	<delete id="delete" parameterType="int">
-		delete member_idx where member_idx = #{memberIdx}
-	</delete>
-	
---> 
-	
-	<!-- 취미구분 목록획득 -->
-	<select id="select" parameterType="int" resultType="MemberCategoryDto">
-		SELECT * FROM member_category
-		WHERE member_idx = #{memberIdx}
 	</select>
 	
 	<!-- 취미구분 수정 -->
@@ -41,11 +28,46 @@
 			lec_category_name = #{lecCategoryName}
 		WHERE
 			member_idx = #{memberIdx}
-	</update>
+	</update> 
 	
-	<!--  취미구분 삭제 -->
+	 	<!--  취미구분 삭제 -->
 	<delete id="delete" parameterType="string">
 		DELETE FROM member_category WHERE member_idx = #{memberIdx}
-	</delete>
+	</delete> 
+	
+<!--      등록   
+	<insert id="save" parameterType="com.kh.hobbycloud.entity.member.MemberCategoryDto">		
+		INSERT ALL
+		<foreach collection="lecCategoryName" item="oneCategoryName">
+			INTO member_category (member_idx, lec_category_name)
+			VALUES (#{memberCategoryDto.memberIdx}, #{oneCategoryName})
+        </foreach>
+	</insert>
+	
+	조회 
+	<select id="getByIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.member.MemberCategoryDto">
+		select * from member_category where member_idx = #{memberIdx}
+	</select> 
+
+	취미구분 등록
+	<insert id="insert" parameterType="string">
+		INSERT INTO
+			lec_category (lec_category_name)
+		VALUES
+			(#{value})
+	</insert>
+
+	
+	취미구분 목록획득
+	<select id="select" parameterType="int" resultType="MemberCategoryDto">
+		SELECT * FROM member_category
+		WHERE member_idx = #{memberIdx}
+	</select>
+
+	
+		 삭제
+	<delete id="delete" parameterType="int">
+		delete member_idx where member_idx = #{memberIdx}
+	</delete>	-->       
 	
 </mapper>

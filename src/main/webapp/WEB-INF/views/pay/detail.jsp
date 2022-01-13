@@ -53,7 +53,7 @@ window.addEventListener("load", function() {
 			<ul class="">
 				<li>주문번호: No. ${paidVO.paidIdx} (카카오페이 ${paidVO.paidTid})</li>
 				<li>주문 회원: No. ${paidVO.memberIdx} ${paidVO.memberNick} (ID ${paidVO.memberId})님</li>
-				<li>결제 금액: &#8361; ${paidPrice}</li>
+				<li>결제 금액: &#8361; <fmt:formatNumber value="${paidPrice}" pattern="#,###"/></li>
 				<li>결제 일시: ${paidVO.paidRegisteredStr}</li>
 				<li>결제 상태:
 					<span class="text-${paidStatus ? success : danger}">

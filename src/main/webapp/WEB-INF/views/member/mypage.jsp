@@ -53,20 +53,21 @@ window.addEventListener("load", function() {
 		<!-- 소단원 제목 -->
 		
 		<!-- 소단원 내용 -->
+		
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-			<div class="form-group col-12">
+			<div class="form-group col-12 text-center">
 			<!-- 회원 프로필 이미지 -->
 				<c:choose>
 					<c:when test="${memberProfileDto == null}">
 						<img src="https://via.placeholder.com/300x300?text=User">
 					</c:when>
 					<c:otherwise>
-						<img id="topProfileImage" src="profile/${memberProfileDto.memberIdx}" width="100%">										
+						<img id="" src="profile/${memberProfileDto.memberIdx}" width="30%" height="30%">										
 					</c:otherwise>
 				</c:choose>
 			</div>
-			<div class="form-group col-12">
+			<div class="form-group col-12 text-center">
 			<h2>${memberDto.memberId}</h2>
 			</div>
 			<div class="form-group col-12">
