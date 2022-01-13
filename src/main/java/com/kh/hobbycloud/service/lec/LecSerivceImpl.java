@@ -42,7 +42,7 @@ public class LecSerivceImpl implements LecService{
 		int lecIdx = lecDao.getSequence();
 		LecDto lecDto = new LecDto();
 		lecDto.setLecIdx(lecIdx);
-		lecDto.setTutorIdx(1);
+//		lecDto.setTutorIdx(1);//
 		lecDto.setLecCategoryName(lecRegisterVO.getLecCategoryName());
 		lecDto.setPlaceIdx(lecRegisterVO.getPlaceIdx());//보류
 		lecDto.setLecName(lecRegisterVO.getLecName());
