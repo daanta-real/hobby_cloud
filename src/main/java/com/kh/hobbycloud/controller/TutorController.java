@@ -29,7 +29,7 @@ public class TutorController {
 	
 	@GetMapping("/insert")
 	public String insert(@RequestParam int memberIdx, Model model) {
-		MemberDto memberDto = memberDao.get(memberIdx);
+		MemberDto memberDto = memberDao.getByIdx(memberIdx);
 		model.addAttribute("memberDto", memberDto);
 		return "tutor/insert";
 	}
