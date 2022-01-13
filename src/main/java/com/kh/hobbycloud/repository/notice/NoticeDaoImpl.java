@@ -32,6 +32,7 @@ public class NoticeDaoImpl implements NoticeDao {
 	@Override
 	public void insert(NoticeDto noticeDto) {
 		sqlSession.insert("notice.insert", noticeDto);
+		
 
 	}
 
