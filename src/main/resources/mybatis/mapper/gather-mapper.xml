@@ -52,7 +52,59 @@ select * from  gather g left outer join
   )TMP
 ) where rn between #{rowStart} and #{rowEnd}
 </select>
+ 
+<!-- 검색페이지 페이지네이션 적용 -->
+<select id ="listSearchBy" resultType="GatherVO" parameterType="CriteriaSearch"> 
+select * from(
+select rownum  rn , TMP.* from(
+  select * from  gather g left outer join
+ (select distinct gather_idx, min(gather_file_idx) as gather_file_idx
+  from gather_file group by gather_idx) f  
+  on  f.gather_idx = g.gather_idx  
+ left outer join member m on g.member_idx = m.member_idx 
+  <where> 
+ <if test="gatherName != '' ">
+  AND instr(gather_name,#{gatherName}) >0
+  </if>
+  	<if test="gatherLocRegion != null">
+   	AND instr(gather_loc_region,#{gatherLocRegion}) >0
+ 	</if>
+ 	<if test="category != null">
+ 	AND lec_category_name in
+	<foreach item="statOne" collection="category" open="(" close=")" separator="," >
+	#{statOne}
+	</foreach>
+</if> 
+  </where>
+  order by g.gather_idx desc
+    )TMP
+) where rn between #{rowStart} and #{rowEnd}
+</select>	
 	
+<!-- 검색페이지 총 개수 세기 -->
+<select id="listCountBy" resultType="int" parameterType="GatherSearchVO" >
+select count(*) as BNO from (
+ select * from  gather g left outer join
+ (select distinct gather_idx, min(gather_file_idx) as gather_file_idx
+  from gather_file group by gather_idx) f  
+  on  f.gather_idx = g.gather_idx 
+  <where> 
+ <if test="gatherName != '' ">
+  AND instr(gather_name,#{gatherName}) >0
+  </if>
+  	<if test="gatherLocRegion != null">
+   	AND instr(gather_loc_region,#{gatherLocRegion}) >0
+ 	</if>
+ 	<if test="category != null">
+ 	AND lec_category_name in
+	<foreach item="statOne" collection="category" open="(" close=")" separator="," >
+	#{statOne}
+	</foreach>
+</if> 
+  </where>
+  order by g.gather_idx desc
+  )
+</select>	
 	
 <!-- 게시판  목록 검색 -->
 <!-- 장소 + 제목    유사 검색이 둘다 가능하다.-->	
@@ -131,7 +183,9 @@ where gather_idx=#{gatherIdx}
 
 
 <!-- 해당 게시물 댓글리스트 -->
-<select id="replyList"  parameterType="int"     resultType="GatherReplyVO">
+<select id="replyList"  parameterType="map"     resultType="GatherReplyVO">
+select * from(
+select rownum  rn , TMP.* from(
 select gr.*,m.member_nick from 
 gather g 
 inner join
@@ -141,6 +195,8 @@ left outer join
  member m
 ON gr.member_idx = m.member_idx
 where gr.gather_idx = #{gatherIdx}
+  )TMP
+) where rn between #{startRow} and #{endRow}
 </select>
 
 <!-- 댓글 입력 -->

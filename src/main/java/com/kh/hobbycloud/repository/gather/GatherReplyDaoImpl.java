@@ -1,6 +1,8 @@
 package com.kh.hobbycloud.repository.gather;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,16 @@ public class GatherReplyDaoImpl implements GatherReplyDao {
 	public void edit(GatherReplyDto gatherReplyDto) {
 		//댓글 수정 void도 가능
 		 sqlSession.update("gather.replyEdit",gatherReplyDto);
+	}
+	@Override
+	public List<GatherReplyVO> listBy(int startRow, int endRow, int gatherIdx) {
+		
+		Map<String, Object>param = new HashMap<>();
+		param.put("startRow", startRow);
+		System.out.println("댓글start"+startRow+endRow);
+		param.put("endRow", endRow); 
+		param.put("gatherIdx",gatherIdx); 
+		return sqlSession.selectList("gather.replyList",param); 
 	}
 
 }
