@@ -43,7 +43,10 @@ public class PlaceServiceImpl implements PlaceService{
 		int placeIdx = placeDao.getSequence();
 		log.debug("ㅡㅡㅡㅡㅡㅡㅡㅡㅡsequence:"+placeIdx);
 		placeDto.setPlaceIdx(placeIdx);
+		
+		log.debug("ㅡㅡㅡㅡㅡㅡㅡㅡㅡmemberIdx:"+placeFileVO.getMemberIdx());
 		placeDto.setMemberIdx(placeFileVO.getMemberIdx());
+		
 		placeDto.setPlaceName(placeFileVO.getPlaceName());
 		placeDto.setPlaceDetail(placeFileVO.getPlaceDetail());
 		placeDto.setPlacePostcode(placeFileVO.getPlacePostcode());
@@ -76,9 +79,12 @@ public class PlaceServiceImpl implements PlaceService{
 		
 		// 2. 장소 사진 저장
 		// 실제 파일 업로드 시도 → 성공 시 파일정보를 DB에 저장
+		log.debug("=============================장소 파일 저장 실행");
 		List<MultipartFile> attach = placeFileVO.getAttach();
+		log.debug("=============================attach 정의: {}", attach);
+		int count = 1;
 		for (MultipartFile file : attach) {
-			
+		log.debug("=============================장소 파일 저장 {}번", count++);
 			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
 			if (file.isEmpty())
 			continue;
@@ -94,6 +100,7 @@ public class PlaceServiceImpl implements PlaceService{
 		
 		}
 		// 3. 장소Idx를 회신
+		log.debug("=============================장소 파일 저장 완전 종료");
 		return placeIdx;
 }
 	
@@ -101,9 +108,9 @@ public class PlaceServiceImpl implements PlaceService{
 	@Override
 	public void update(PlaceEditVO placeEditVO) throws IllegalStateException, IOException {
 		log.debug("======================== PlaceService.edit(placeEditVO)가 실행되었습니다.");
+		log.debug("======================== 1. 변경된 강의장을 저장합니다.");
 		// 장소 DTO 설정
 		PlaceDto placeDto = new PlaceDto();
-		
 		placeDto.setPlaceIdx(placeEditVO.getPlaceIdx());
 		placeDto.setMemberIdx(placeEditVO.getMemberIdx());
 		placeDto.setPlaceName(placeEditVO.getPlaceName());
@@ -132,11 +139,11 @@ public class PlaceServiceImpl implements PlaceService{
 		PlaceTargetDto placeTargetDto = new PlaceTargetDto();
 		placeTargetDto.setPlaceIdx(placeEditVO.getPlaceIdx());
 		placeTargetDto.setLecCategoryName(placeEditVO.getLecCategoryName());
-		log.debug("======================== PlaceService.update() 실시. placeTargetDto = {}", placeTargetDto);
+		log.debug("======================== placeCategory==> placeTargetDto = {}", placeTargetDto);
 		
 		// 장소 카테고리 DTO를 테이블에 삽입
 		boolean isSucceedCt = placeCategoryDao.update(placeTargetDto);
-		log.debug("======================== PlaceService.update() 실시 완료. 결과 = {}", isSucceedCt);
+		log.debug("======================== placeCategoryDao.update() 실시 완료. 결과 = {}", isSucceedCt);
 		
 		// (선택) 파일삭제 idx 목록에 해당되는 첨부파일들을 place_file 테이블에서 삭제한다.
 		List<String> fileRemoveList = placeEditVO.getFileDelTargetList();
@@ -146,12 +153,12 @@ public class PlaceServiceImpl implements PlaceService{
 			placeFileDao.deleteList(placeEditVO.getPlaceIdx(), fileRemoveList);
 		}
 		
+		log.debug("======================== 2. 추가된 첨부파일을 저장합니다.");
 		// (선택) 장소 파일을 파일 테이블과 실제 하드디스크에 저장
 				List<MultipartFile> attach = placeEditVO.getAttach();
 		// 만약에 attach가 아예 안 넘어왔다면, 이 강좌와 관련된 모든 파일을 지운다
 				if(attach==null) {
 					log.debug("파일 정보를 담고 있는 List<MultipartFile> attach이 비었습니다. attach 정보 = {}", attach);
-					placeFileDao.delete(placeEditVO.getPlaceIdx());
 				}
 				// 만약에 impl로 넘어온 attach가 존재한다면, 모든 파일을 업로드 처리한다.
 				else {

@@ -62,24 +62,57 @@
 	<!-- 수정 -->
 	<update id="update" parameterType="com.kh.hobbycloud.entity.place.PlaceDto">
 			UPDATE PLACE 
-		SET 
-			PLACE_NAME = #{placeName},
-			PLACE_DETAIL = #{placeDetail}, 
-			PLACE_POSTCODE =  #{placePostcode},
-			PLACE_ADDRESS =  #{placeAddress},
-			PLACE_DETAIL_ADDRESS = #{placeDetailAddress},
-			PLACE_START = #{placeStart},
-			PLACE_END = #{placeEnd},
-			PLACE_MIN = #{placeMin},
-			PLACE_MAX = #{placeMax},
-			PLACE_EMAIL = #{placeEmail},
-			PLACE_PHONE  = #{placePhone},
-			PLACE_SIDO = #{placeSido},
-			PLACE_SIGUNGU = #{placeSigungu},
-			PLACE_BNAME = #{placeBname},
-			PLACE_LOC_LATITUDE = #{placeLocLatitude},
-			PLACE_LOC_LONGITUDE = #{placeLocLongitude}
-			)
+		<!-- set을 이용하여 수정항목을 동적으로 배치(단 마지막 콤마는 반드시 작성) -->
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="placeName != null">
+				PLACE_NAME = #{placeName},
+			</if>
+			<if test="placePostcode != null">
+				PLACE_DETAIL = #{placeDetail}, 
+			</if>
+			<if test="memberPhone != null">
+				PLACE_POSTCODE =  #{placePostcode},
+			</if>
+			<if test="placeAddress != null">
+				PLACE_ADDRESS =  #{placeAddress},
+			</if>
+			<if test="placeDetailAddress != null">
+				PLACE_DETAIL_ADDRESS = #{placeDetailAddress},
+			</if>
+			<if test="placeStart != null">
+				PLACE_START = #{placeStart},
+			</if>
+			<if test="placeEnd != null">
+				PLACE_END = #{placeEnd},
+			</if>
+			<if test="placeMax != null">
+				PLACE_MIN = #{placeMin},
+			</if>
+			<if test="placeMax != null">
+				PLACE_MAX = #{placeMax},
+			</if>
+			<if test="placePhone != null">
+				PLACE_EMAIL = #{placeEmail},
+			</if>
+			<if test="placeSido != null">
+				PLACE_PHONE  = #{placePhone},
+			</if>
+			<if test="placeSigungu != null">
+				PLACE_SIDO = #{placeSido},
+			</if>
+			<if test="placeEnd != null">
+				PLACE_SIGUNGU = #{placeSigungu},
+			</if>
+			<if test="placeMax != null">
+				PLACE_BNAME = #{placeBname},
+			</if>
+			<if test="placeMax != null">
+				PLACE_LOC_LATITUDE = #{placeLocLatitude},
+			</if>
+			<if test="placePhone != null">
+				PLACE_LOC_LONGITUDE = #{placeLocLongitude},
+			</if>
+		</trim>
 		WHERE
 			PLACE_IDX = #{placeIdx}
 	</update>
