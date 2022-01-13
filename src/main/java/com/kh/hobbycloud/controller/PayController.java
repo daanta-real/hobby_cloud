@@ -236,8 +236,14 @@ public class PayController {
 		truncateAllSessions(session);
 
 		// 성공 확인 페이지로 이동
-		return "pay/success_result";
+		return "redirect:success_result";
 
+	}
+
+	@GetMapping("/success_result")
+	public String success() {
+		// 성공 확인 페이지로 이동
+		return "pay/success_result";
 	}
 
 	// 카카오페이 실패 페이지

@@ -75,8 +75,7 @@
 					<form id="topLoginBox" class="d-flex mt-2 mt-md-0" action="${pageContext.request.contextPath}/member/login" method="post">
 						<input class="form-control form-control-sm mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0" type="text" size=5
 							id="topLoginBoxMemberId" name="memberId" required class="form-input" placeholder="ID" />
-						<input
-							class="form-control form-control-sm mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0" type="password" size=5
+						<input class="form-control form-control-sm mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0" type="password" size=5
 							id="topLoginBoxMemberPw" name="memberPw" required class="form-input" placeholder="Password" />
 						<button class="btn btn-sm btn-secondary mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0"
 							id="topLoginBtn"><span id="topLoginBtnSpan">Login</span><div class="spinner mx-1"></div></button>
