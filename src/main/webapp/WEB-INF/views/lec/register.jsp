@@ -470,7 +470,7 @@ function setLoc(el) {
 						</div>
 					</div>
 					<div class="row mb-4">
-						<input type="button" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
+						<input type="submit" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
 					</div>
 				</form>
 			</div>

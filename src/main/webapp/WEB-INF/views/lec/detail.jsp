@@ -484,7 +484,7 @@ function deleteReview(lecReviewIdxValue){
 		</div>
 		
 		<nav class="row pt-4 d-flex flex-justify-between">
-			<a href="insert">글쓰기</a>
+			<a href="${pageContext.request.contextPath}/lec/register">글쓰기</a>
 		</nav>
 		<nav class="row pt-4 d-flex flex-justify-between">
 			<a href="${pageContext.request.contextPath}/lec/list">목록보기</a>
