@@ -102,7 +102,7 @@ public class PayController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ pointIdx를 세션에 저장했습니다. 저장된 세션 정보: {}",
 			session.getAttribute("pointIdx"));
 		printAllSessionStatus(session);
-		return "pay/buyConfirm";
+		return "pay/confirm_pay";
 	}
 
 
@@ -236,14 +236,14 @@ public class PayController {
 		truncateAllSessions(session);
 
 		// 성공 확인 페이지로 이동
-		return "redirect:success_result";
+		return "redirect:success_pay";
 
 	}
 
-	@GetMapping("/success_result")
+	@GetMapping("/success_pay")
 	public String success() {
 		// 성공 확인 페이지로 이동
-		return "pay/success_result";
+		return "pay/success_pay";
 	}
 
 	// 카카오페이 실패 페이지
@@ -322,7 +322,7 @@ public class PayController {
 		model.addAttribute("cancelResponseVO", responseVO);
 
 		// 결제 취소 컨트롤러로
-		return "/pay/cancel_result";
+		return "/pay/success_cancel";
 
 	}
 
