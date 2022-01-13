@@ -2,7 +2,9 @@ package com.kh.hobbycloud.repository.gather;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -88,6 +90,15 @@ public class GatherFileDaoImpl implements GatherFileDao {
 		int count =sqlSession.delete("gatherFile.deleteAjax",gatherFileIdx);
 		
 		return count >0;
+	}
+
+	@Override
+	public boolean deleteList(int gatherIdx, List<String> list) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("gatherIdx", gatherIdx);
+		map.put("list", list);
+		int count = sqlSession.delete("gatherFile.deleteList", map);
+		return count > 0;
 	}
 
 }

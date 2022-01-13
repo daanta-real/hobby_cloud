@@ -116,6 +116,21 @@ select count(*) as BNO from (
 	) where rn between #{rowStart} and #{rowEnd}
 	</select>
 	
+<!-- 목록페이지 목록 페이지 네이션 적용 -->	
+<select id="listBy" resultType="PlaceRegisterVO" parameterType="map">
+	select * from(
+	select rownum  rn , TMP.* from(
+	select * from  place p left outer join
+	 (select distinct place_idx, min(place_file_idx) as place_file_idx
+	  from place_file group by place_idx) f  
+	  on  f.place_idx = p.place_idx  
+	 left outer join member m on p.member_idx = m.member_idx
+	 order by p.place_idx desc
+	  )TMP
+	) where rn between #{startRow} and #{endRow} 
+	</select>	
+	
+	
 <!-- 장소 상세 -->
 <select id="get" parameterType="int" resultType="PlaceVO">
 	select p.*, 

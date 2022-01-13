@@ -26,10 +26,10 @@ import com.kh.hobbycloud.entity.gather.GatherHeadsDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
+import com.kh.hobbycloud.repository.lec.LecCategoryDao;
 import com.kh.hobbycloud.service.gather.GatherService;
 import com.kh.hobbycloud.vo.gather.Criteria;
 import com.kh.hobbycloud.vo.gather.CriteriaSearch;
-import com.kh.hobbycloud.vo.gather.GatherFileVO;
 import com.kh.hobbycloud.vo.gather.GatherHeadsVO;
 import com.kh.hobbycloud.vo.gather.GatherSearchVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
@@ -52,12 +52,13 @@ public class GatherController {
 	private GatherFileDao gatherFileDao;
 	@Autowired
 	private GatherHeadsDao gatherHeadsDao;
+	@Autowired
+	private LecCategoryDao lecCategoryDao;
 
 
 	@GetMapping("/list")
 	public String list(Model model,Criteria cri) {
-		
-		 
+		model.addAttribute("lecCategoryList", lecCategoryDao.select());
 		model.addAttribute("list", gatherService.list(cri));
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
@@ -72,6 +73,7 @@ public class GatherController {
 	// 검색결과 목록 페이지 
 	@PostMapping("/list")
 	public String search(@ModelAttribute CriteriaSearch cri2, Model model) {
+		model.addAttribute("lecCategoryList", lecCategoryDao.select());
 
 		GatherSearchVO gatherSearchVO = new GatherSearchVO();		
 		gatherSearchVO.setCategory(cri2.getCategory());	
@@ -182,19 +184,19 @@ public class GatherController {
 		return "gather/update";
 	}
 
-	// 글 수정 실시
-	@PostMapping("/update/{gatherIdx}")
-	public String update2(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
-
-		// 수정
-		int memberIdx = (int)session.getAttribute("memberIdx");
-		gatherFileVO.setMemberIdx(memberIdx);
-		gatherService.update(gatherFileVO);	
-		System.out.println("수정"+gatherFileVO);
-		int gatherIdx = gatherFileVO.getGatherIdx();
-		return "redirect:/gather/detail/" + gatherIdx;
-		
-	}
+//	// 글 수정 실시
+//	@PostMapping("/update/{gatherIdx}")
+//	public String update2(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
+//
+//		// 수정
+//		int memberIdx = (int)session.getAttribute("memberIdx");
+//		gatherFileVO.setMemberIdx(memberIdx);
+//		gatherService.update(gatherFileVO);	
+//		System.out.println("수정"+gatherFileVO);
+//		int gatherIdx = gatherFileVO.getGatherIdx();
+//		return "redirect:/gather/detail/" + gatherIdx;
+//		
+//	} 
 
 	@GetMapping("/sockjs")
 	public String sockjs() {

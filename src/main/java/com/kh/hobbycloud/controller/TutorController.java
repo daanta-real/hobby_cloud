@@ -27,6 +27,7 @@ public class TutorController {
 	//관리자가 승인한다??
 	//아니면 session 필요없이 그냥 tutorDto 받아서 관리자가 직접넣기..?
 	
+
 	@GetMapping("/insert")
 	public String insert(@RequestParam int memberIdx, Model model) {
 		MemberDto memberDto = memberDao.getByIdx(memberIdx);
@@ -34,6 +35,7 @@ public class TutorController {
 		return "tutor/insert";
 	}
 	
+
 	@PostMapping("/insert")
 	public String insert(@RequestParam int memberIdx) {
 		//회원 등급 강사로 변경과 동시에
