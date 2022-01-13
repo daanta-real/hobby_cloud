@@ -205,18 +205,17 @@ function setLoc(el) {
 					let startTime = new Date($("#start").val());
 			        let endTime    = new Date($("#end").val());
 			        let today = new Date();
-			       		 if(endTime<startTime&&startTime<today)
-						{   e.preventDefault();	
-							 alert("시간 설정을 확인해주세요");
-   						} if( $("input[name=gatherDetail]").val()==""||
-  			 				  $("input[name=gatherName]").val()==""||
+			       		 if(endTime<startTime||startTime<today)
+						{   e.preventDefault();	 
+		 					alert("시간 설정을 확인해주세요");  
+   						} else if( $("input[name=gatherDetail]").val()==""||
+  			 			 	  $("input[name=gatherName]").val()==""||
   			 				  $("input[name=gatherHeadCount]").val()==""||
    			 				  $("input[name=gatherLocRegion]").val()=="")
 							{ 
    								e.preventDefault();	
-   								 alert("빈칸을 입력해주세요 ");
-				 				alert("시간 설정을 확인해주세요");
-				 			}else{
+   								 alert("빈칸을 입력해주세요 "); 		
+				 			}else{ 
 							 $("#insert-form").submit();}    
 					});
 		        });

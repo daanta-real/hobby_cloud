@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.entity.gather.GatherHeadsDto;
+import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
@@ -180,6 +181,10 @@ public class GatherController {
 		List<GatherFileDto> list = gatherFileDao.getIdx(gatherIdx);
 		model.addAttribute("GatherVO", gatherVO);
 		model.addAttribute("list", list);
+		
+		List<GatherFileDto> fileList = gatherFileDao.getIdx(gatherIdx);
+		log.debug("==================== List<LecFileDto> fileList = {}", fileList);
+		model.addAttribute("fileList", fileList); 
 
 		return "gather/update";
 	}
