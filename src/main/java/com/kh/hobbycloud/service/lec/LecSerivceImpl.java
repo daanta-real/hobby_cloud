@@ -43,7 +43,7 @@ public class LecSerivceImpl implements LecService{
 		int lecIdx = lecDao.getSequence();
 		LecDto lecDto = new LecDto();
 		lecDto.setLecIdx(lecIdx);
-		lecDto.setTutorIdx(1);
+//		lecDto.setTutorIdx(1);//
 		lecDto.setLecCategoryName(lecRegisterVO.getLecCategoryName());
 		lecDto.setPlaceIdx(lecRegisterVO.getPlaceIdx());//보류
 		lecDto.setLecName(lecRegisterVO.getLecName());
@@ -73,9 +73,8 @@ public class LecSerivceImpl implements LecService{
 			lecFileDto.setLecFileSize(file.getSize());
 			// 파일 업로드 후, 파일정보를 DB에 저장
 			lecFileDao.save(lecFileDto, file);
-
 		}
-
+		
 		return lecIdx;
 	}
 

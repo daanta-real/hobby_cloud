@@ -1,7 +1,6 @@
 package com.kh.hobbycloud.vo.member;
 
 import java.sql.Date;
-import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +28,6 @@ public class MemberJoinVO {
 	private MultipartFile attach;		
 	
 	//MemberCategory 테이블
-	private List<String> lecCategoryName;
+	private String lecCategoryName;
 
 }

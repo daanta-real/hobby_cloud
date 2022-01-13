@@ -100,8 +100,9 @@
 						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
 							<div class="btn-group w-100">
 								<c:forEach var="lecCategory" items="${lecCategoryList}">
-									<input name="lecCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="category" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
-									<label class="btn btn-outline-primary" for="category">${lecCategory}</label>
+									<input name="lecCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="${lecCategory}" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
+									${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get()}
+									<label class="btn btn-outline-primary" for="${lecCategory}">${lecCategory}</label>
 								</c:forEach>
 							</div>
 					</div>
@@ -168,7 +169,7 @@
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 결과</div>
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>강좌 목록</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="scrollXEnabler">
@@ -200,12 +201,12 @@
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecContainsCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecHeadCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecLocRegion}</td>
+									<c:if test="${memberGrade == admin}">
 									<td class="text-center align-middle text-nowrap">
-										<c:if test="${memberGrade == admin}">
 											<a href="edit/${lecListVO.lecIdx}">수정</a>
 											<a href="delete/${lecListVO.lecIdx}">삭제</a>
-										</c:if>
 									</td>
+									</c:if>
 								</tr>
 							</c:forEach>
 							<c:forEach var="lecListVO" items="${listSearch}">
