@@ -65,7 +65,20 @@
 			point_history_idx, member_idx, paid_idx, point_idx, point_history_amount, point_history_memo
 		)
 		VALUES (
-			point_history_seq.NEXTVAL, #{memberIdx}, #{paidIdx}, #{pointIdx}, #{pointHistoryAmount}, #{pointHistoryMemo}
+			<choose>
+				<when test="pointHistoryIdx != null">#{pointHistoryIdx},</when>
+				<otherwise>point_history_seq.NEXTVAL,</otherwise>
+			</choose>
+			#{memberIdx},
+			<choose>
+				<when test="paidIdx != null">#{paidIdx},</when>
+				<otherwise>NULL,</otherwise>
+			</choose>
+			<choose>
+				<when test="pointIdx != null">#{pointIdx},</when>
+				<otherwise>NULL,</otherwise>
+			</choose>
+			#{pointHistoryAmount}, #{pointHistoryMemo}
 		)
 	</insert>
 	
