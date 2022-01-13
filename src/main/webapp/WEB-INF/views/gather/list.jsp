@@ -20,7 +20,7 @@
 		var positions = [
 		];
 		var markers = [];
-		
+		 
 		for (var i = 0; i < $(".fgTitle").length; i++) {
 			let title = $(".fgTitle").eq(i).val();
 			let latti = Number($(".fgLongitude").eq(i).val());
