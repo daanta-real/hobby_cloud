@@ -91,22 +91,21 @@
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script>	
-$(function(	){
-const buttonArr = document.getElementsByTagName('button');
-console.log("헬로");
-console.log(buttonArr);
-for(let i = 0; i < buttonArr.length; i++){
-  buttonArr[i].addEventListener('click',function(e){
-	console.log(buttonArr[i]);
-    e.preventDefault();
-    document.querySelector('.box' + (i + 1)).scrollIntoView(true);
-  	console.log(i+1); 
-  	console.log( document.querySelector('.box' + (i + 1))); 
-  });
-}
-});
-</script>
+<!-- <script>	 -->
+// $(function(	){
+// const buttonArr = document.getElementsByTagName('button');
+
+// for(let i = 0; i < buttonArr.length; i++){
+//   buttonArr[i].addEventListener('click',function(e){
+	
+//     e.preventDefault();
+//     document.querySelector('.box' + (i + 1)).scrollIntoView(true);
+//   	console.log(i+1); 
+//   	console.log( document.querySelector('.box' + (i + 1))); 
+//   });
+// } 
+// });
+<!-- </script> -->
 
 <c:set var = "start" value = " ${GatherVO.gatherStart}"/>
 <c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
@@ -125,9 +124,6 @@ for(let i = 0; i < buttonArr.length; i++){
 	<!-- 페이지 내용 시작 -->
 	
 
-		 
-
-		  
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
 		<HEADER class='w-100 mb-1 p-2 px-md-3'>  
@@ -246,8 +242,8 @@ for(let i = 0; i < buttonArr.length; i++){
 				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
 				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
-				<button class="btn btn-secondary more-btn">더보기!!</button>  
-				<button class="btn btn-secondary moreR-btn">더보기!2</button>   
+				 
+				  
 			</nav>
 		
 		<!-- 댓글 내역 -->
@@ -277,7 +273,7 @@ for(let i = 0; i < buttonArr.length; i++){
 </form>
 <div id="result"></div> 
 
-<div class="box3">박스3입니다.</div>   
+
 <!-- 게시판 댓글 목록 --> 
 <template id="gatherVO-template">
 <div class="card mb-2 border border-1 border-secondary p-0 item">
@@ -301,9 +297,9 @@ for(let i = 0; i < buttonArr.length; i++){
 </div>
 
 </template>   
-	<button class="more-btn btn btn-secondary">더보기!!</button>  
+	
 </div>
-
+<button class="btn btn-secondary more-btn">더보기</button>  
 
   
 	
@@ -363,8 +359,7 @@ for(let i = 0; i < buttonArr.length; i++){
 </template>
 		
 </div>
-
-
+<button class="btn btn-secondary moreR-btn">더보기</button> 
 
  
  
@@ -730,9 +725,9 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 			console.log(resp.length,sizeValue); 
 			console.log("성공",resp);
 			if(resp.length < sizeValue){  
-				$(".more-btn").remove(); 
+				$(".more-btn").hide(); 
 			}else{
-				$(".more-btn").show();
+				$(".more-btn").show(); 
 			} 
 			
 			
