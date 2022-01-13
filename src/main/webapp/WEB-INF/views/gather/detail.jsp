@@ -147,7 +147,7 @@
 				</c:forEach>
 
 	
-	 
+	   
 	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div> 
 	<!-- 소모임 테이블 영역  -->
 	<div class="row p-sm-2 mx-1 mb-5">
@@ -235,10 +235,16 @@
 						<span>댓글을 입력해주세요</span>
 					</div> 
 				<div class="card-body position-relative p-1 px-2">
-				  <input type="text" class="card-text p-1 px-3 gatherReplyDetail" name="gatherReplyDetail">
+				  <input type="text" class="card-text p-1 px-3 gatherReplyDetail" name="gatherReplyDetail" placeholder="로그인을 해주세요">
 				 <input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
 				<input type="hidden" name="memberIdx" value="${memberIdx}"> 
-				  <button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+				
+				<!-- 등록버튼 -->
+				 <c:choose>
+           			<c:when test="${isLogin}">
+				  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+				  	</c:when> 
+				 </c:choose>
 				</div>	  
 				<div class="floatRightTop position-absolute top-0 end-0 p-1">  
 			</div>	
@@ -259,6 +265,9 @@
 	<div class="card-text p-1 px-3 gatherReplyDetail">{{gatherReplyDetail}}</div>
 
 	<div class="floatRightTop position-absolute top-0 end-0 p-1">
+	
+<%-- 	<c:set var="writer" value="${memberNick != '{memberNick}'"/>  --%>
+<%-- 	<h1>헬로${writer}</h1>    --%>
 	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
 	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
 	 </div>  
@@ -296,9 +305,13 @@
         <input type="radio" id="1-star" name="gatherReviewScore" value="1" v-model="ratings" />
         <label for="1-star" class="star">★</label>
      </div>  
-	 <input type="text" name="gatherReviewDetail">
+	 <input type="text" name="gatherReviewDetail" placeholder="로그인을 해주세요"> 
 	<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
-	  <button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+	<c:choose>
+      <c:when test="${isLogin}">
+	  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+	  </c:when>
+	 </c:choose>
 	  </div>
 	 </div>
 </form>
@@ -308,18 +321,18 @@
 <div class="card mb-2 border border-1 border-secondary p-0 item">
 	<div class="card-header d-flex align-items-center p-1 px-2">
 	<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
-	<span class="memberNick">{{memberNick}}</span> 
-	<span class="gatherReviewScore">   점수:{{gatherReviewScore}}</span> 
-	<span class="memberReplyRegistered ms-auto gatherReplyDate">{{gatherReplyDate}}</span>
-	</div>   
-	<div class="card-body position-relative p-1 px-2">
+	<span class="memberNick">닉네임 :{{memberNick}}</span> 
+	<span class="gatherReviewScore">| 점수:{{gatherReviewScore}}</span> 
+	<span class="memberReplyRegistered ms-auto gatherReviewRegistered">{{gatherReviewRegistered}}</span>
+	</div>       
+	<div class="card-body position-relative p-1 px-2">   
 	<div class="card-text p-1 px-3 gatherReviewDetail">{{gatherReviewDetail}}</div>
-
+  
 	<div class="floatRightTop position-absolute top-0 end-0 p-1">
 	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreview-idx="{{gatherReviewIdx}}">수정</button>
 	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreview-idx="{{gatherReviewIdx}}">삭제</button>
 	 </div>  
-	</div>
+	</div>  
 </div>
 
 </template>
@@ -431,11 +444,11 @@ var pageR = 1;
 var sizeR = 10;
 $(function(){ 
 	$(".moreR-btn").click(function(){
-		loadList(pageR,sizeR,gatherIdx); 
+		loadReview(pageR,sizeR,gatherIdx); 
 		console.log(pageR);
 		pageR++;   
 		console.log(pageR);  
-	}); 
+	});  
 	//더보기 버튼을 강제 1회 클릭(트리거) 
 	$(".moreR-btn").click(); 
 	console.log(pageR);   
@@ -501,13 +514,14 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 			
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
-				
+				 
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
-				template = template.replace("{{memberNick}}", resp[i].memberNick);
+				template = template.replace("{{memberNick}}", resp[i].memberNick);  
+				template = template.replace("{{memberNick}}", resp[i].memberNick);  
 				template = template.replace("{{gatherReviewScore}}", resp[i].gatherReviewScore);
-				template = template.replace("{{gatherIdx}}", resp[i].gatherIdx);
+				template = template.replace("{{gatherReviewRegistered}}",resp[i].gatherReviewRegistered);
 				template = template.replace("{{gatherReviewDetail}}", resp[i].gatherReviewDetail);
 		
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
@@ -515,7 +529,7 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 				console.log(tag.find(".remove-btn"));
 				
 				//별점 삭제
-				tag.find(".remove-btn").click(function(){
+				tag.find(".remove-btn").click(function(){ 
 					console.log("누름");
 					deleteReview($(this).data("gatherreview-idx"));
 				});
