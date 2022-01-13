@@ -20,4 +20,6 @@ public class LecListVO {
 	private Date lecEnd;//강좌 종료
 	private String lecLocRegion;//강좌 지역
 	private int lecLike;//좋아요 수
+	//lec_file 테이블 관련
+	private int lecFileIdx;
 }
