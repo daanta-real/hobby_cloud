@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
+import com.kh.hobbycloud.vo.lec.LecCriteriaSearch;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecSearchVO;
@@ -73,5 +74,19 @@ public class LecDaoImpl implements LecDao{
 	public boolean update(LecDto lecDto) {
 		int count = sqlSession.update("lec.update", lecDto);
 		return count > 0;
+	}
+	
+	
+	@Override
+	public List<LecListVO> listBy(LecCriteriaSearch cri) {
+		System.out.println("Lec 디에이오에서 cri : " + cri);
+		return sqlSession.selectList("lec.listSearchBy", cri);
+	}
+	
+	@Override
+	public int listCountBy(LecSearchVO lecSearchVO) {
+		int number = sqlSession.selectOne("lec.listCountBy", lecSearchVO);
+		System.out.println("Lec 디에이오에서 검색 카운트 수 : " + number);
+		return sqlSession.selectOne("lec.listCountBy", lecSearchVO);
 	}
 }

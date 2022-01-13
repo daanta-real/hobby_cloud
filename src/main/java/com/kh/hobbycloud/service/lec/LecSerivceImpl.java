@@ -14,10 +14,12 @@ import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.repository.lec.LecLikeDao;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
+import com.kh.hobbycloud.vo.lec.LecCriteriaSearch;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
+import com.kh.hobbycloud.vo.lec.LecSearchVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -196,4 +198,19 @@ public class LecSerivceImpl implements LecService{
 	public int listCount() {
 		return lecDao.listCount();
 	}
+	
+	@Override
+	public List<LecListVO> listBy(LecCriteriaSearch cri) {
+		System.out.println("검색 리스트 cri : " + cri);
+		return lecDao.listBy(cri);
+	}
+	
+	@Override
+	public int listCountBy(LecSearchVO lecSearchVO) {
+		int number = lecDao.listCountBy(lecSearchVO);
+		System.out.println("Lec서비스 검색카운트" + number);
+		return lecDao.listCountBy(lecSearchVO);
+	}
+	
+	
 }
