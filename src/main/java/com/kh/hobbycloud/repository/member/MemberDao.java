@@ -17,7 +17,7 @@ public interface MemberDao {
 	MemberDto get(String memberId);
 	//단일조회(memberIdx)
 	MemberDto get(Integer memberIdx);
-	
+
 	//memberJoinVO  단일 조회
 	MemberJoinVO getVO(Integer memberIdx);
 
@@ -29,9 +29,9 @@ public interface MemberDao {
 
 	// 개인정보 변경
 	boolean changeInformation(MemberDto memberDto);
-	
+
 	// 개인정보 변경(이메일)
-	int changeEmail(MemberDto memberDto);	
+	int changeEmail(MemberDto memberDto);
 
 	// 회원 탈퇴
 	boolean quit(Integer memberIdx, String memberPw);
@@ -41,7 +41,7 @@ public interface MemberDao {
 	void changeGradeTutor(int memberIdx);
 	//강사를 일반회원으로
 	void changeGradeNormal(int memberIdx);
-	
+
 
 	// 아이디 중복 검사
 	MemberDto checkId(String memberId) throws Exception;
@@ -49,12 +49,12 @@ public interface MemberDao {
 	// 닉네임 중복 검사
 	MemberDto checkNick(String memberNick) throws Exception;
 
-	//아이디찾기(이메일) 
+	//아이디찾기(이메일)
 	MemberDto idFindMail(String memberNick, String memberEmail);
 
-	//비밀번호 찾기(이메일) 
+	//비밀번호 찾기(이메일)
 	MemberDto pwFindMail(String memberId, String memberNick, String memberEmail);
-	
+
 	//임시 비밀번호 변경
 	boolean tempPw(MemberDto memberDto, String ChangePw);
 
@@ -66,4 +66,11 @@ public interface MemberDao {
 	List<MemberListVO> listSearch(MemberSearchVO memberSearchVO);
 	//Place 페이지
 	List<MemberListVO> listPage(int startRow, int endRow);
+
+	// *포인트 관련*
+	// 특정 회원의 포인트 증감 처리
+	boolean pointModify(MemberDto memberDto);
+	// 특정 회원의 포인트를 특정 값으로 강제변경
+	boolean pointForceToValue(MemberDto memberDto);
+
 }

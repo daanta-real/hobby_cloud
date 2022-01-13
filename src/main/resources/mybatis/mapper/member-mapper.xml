@@ -229,5 +229,24 @@
 		  order by m.member_idx desc
 		</select>
 
+	<!-- 특정 회원의 포인트 증감 처리 -->
+	<update id="pointModify" parameterType="memberDto">
+		UPDATE
+			member
+		SET
+			member_point = member_point + #{memberPoint}
+		WHERE
+			member_idx = #{memberIdx}
+	</update>
+
+	<!-- 특정 회원의 포인트를 특정 값으로 강제변경 -->
+	<update id="pointForceToValue" parameterType="memberDto">
+		UPDATE
+			member
+		SET
+			member_point = #{memberPoint}
+		WHERE
+			member_idx = #{memberIdx}
+	</update>
 
 </mapper>

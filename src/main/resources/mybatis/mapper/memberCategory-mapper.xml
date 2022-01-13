@@ -7,30 +7,23 @@
 
 	<!-- 등록 -->
 	<insert id="save" parameterType="com.kh.hobbycloud.entity.member.MemberCategoryDto">		
-		insert into member_category(
-			member_idx, lec_category_name
-		)
-		values
-		<foreach collection="lecCategoryName" item="val" separator=",">
-        (
-            #{memberCategoryDto.memberIdx}, #{val}
-        )
+		INSERT ALL
+		<foreach collection="lecCategoryName" item="oneCategoryName">
+			INTO member_category (member_idx, lec_category_name)
+			VALUES (#{memberCategoryDto.memberIdx}, #{oneCategoryName})
         </foreach>
 	</insert>
 	
 	<!-- 조회--> 
-<!--	<select id="getByIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.member.MemberCategoryDto">
+	<select id="getByIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.member.MemberCategoryDto">
 		select * from member_category where member_idx = #{memberIdx}
-	</select>--> 
-	
+	</select> 
 	<!-- 삭제 -->
 <!--	<delete id="delete" parameterType="int">
 		delete member_idx where member_idx = #{memberIdx}
-	</delete>
+	</delete>--> 
 	
---> 
-	
-		<!-- 취미구분 등록 -->
+	<!-- 취미구분 등록 -->
 	<insert id="insert" parameterType="string">
 		INSERT INTO
 			lec_category (lec_category_name)
