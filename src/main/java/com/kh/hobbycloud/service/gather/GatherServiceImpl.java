@@ -34,6 +34,7 @@ public class GatherServiceImpl implements GatherService {
 	public int save(GatherFileVO gatherFileVO) throws IllegalStateException, IOException {
 
 		// 1. 모임글 등록
+		log.debug("=============================gatherService.save 실행");
 
 		// 모임글 DTO 설정
 		GatherDto gatherDto = new GatherDto();
@@ -55,12 +56,18 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherStaus(gatherFileVO.getGatherMax());
 
 		// Gather DTO를 테이블에 삽입
+		log.debug("=============================gatherService.save - gatherDao.insert() 불러오기 실행. DTO = {}", gatherDto);
 		gatherDao.insert(gatherDto);
+		log.debug("=============================gatherService.save - gatherDao.insert() 불러오기 실행 완료.");
 
 		// 2. 모임글 파일 저장
 		// 실제 파일 업로드 시도 → 성공 시 파일정보를 DB에 저장
+		log.debug("=============================모임글 파일 저장 실행");
 		List<MultipartFile> attach = gatherFileVO.getAttach();
+		log.debug("=============================attach 정의: {}", attach);
+		int count = 1;
 		for (MultipartFile file : attach) {
+			log.debug("=============================모임글 파일 저장 {}번", count++);
 
 			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
 			if (file.isEmpty())
@@ -78,6 +85,7 @@ public class GatherServiceImpl implements GatherService {
 		}
 
 		// 3. 모임글 번호를 회신
+		log.debug("=============================모임글 파일 저장 완젼히 끝");
 		return gatherIdx;
 	}
 
@@ -171,7 +179,7 @@ public class GatherServiceImpl implements GatherService {
 
 	@Override
 	public List<GatherVO> listBy(CriteriaSearch cri2) {
-		System.out.println("서비스"+cri2);  
+		System.out.println("서비스"+cri2);
 		return gatherDao.listBy(cri2);
 	}
  

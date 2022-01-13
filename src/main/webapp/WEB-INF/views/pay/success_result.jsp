@@ -45,13 +45,13 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 내용 -->
-		<div class="d-flex flex-row justify-content-center align-items-center p-sm-2 mx-1 mb-5 container">
-			<div class="m-5 fs-4 row">결제에 성공하였습니다.</div>
-			<div class="m-5 row">
-				<a class="btn btn-primary m-5 col-auto" href="${root}/lec">강좌 선택하러 가기</a>
-				<a class="btn btn-primary m-5 col-auto" href="${root}/">메인 화면으로 돌아가기</a>
-				<a class="btn btn-primary m-5 col-auto" href="${root}/my/pay">결제 이력 화면으로 돌아가기</a>
-				<a class="btn btn-primary m-5 col-auto" href="${root}/my/">마이페이지로 돌아가기</a>
+		<div class="p-sm-2 mx-1 mb-5">
+			<div class="m-5 fs-4 text-center">결제에 성공하였습니다.</div>
+			<div class="m-5 fs-4 d-flex flex-column align-items-center justify-content-center">
+				<form method="get" class="m-2" action="${root}/lec/list"><button class="btn btn-sm btn-primary fs-4 p-2 px-4">강좌 선택하러 가기</button></form>
+				<form method="get" class="m-2" action="${root}/">        <button class="btn btn-sm btn-primary fs-4 p-2 px-4">메인 화면으로 돌아가기</button></form>
+				<form method="get" class="m-2" action="${root}/my/pay">  <button class="btn btn-sm btn-primary fs-4 p-2 px-4">결제 이력 화면으로 돌아가기</button></form>
+				<form method="get" class="m-2" action="${root}/my/">     <button class="btn btn-sm btn-primary fs-4 p-2 px-4">마이페이지로 돌아가기</button></form>
 			</div>
 		</div>
 	</SECTION>
