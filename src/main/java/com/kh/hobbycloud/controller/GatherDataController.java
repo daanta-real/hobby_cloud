@@ -161,12 +161,12 @@ public class GatherDataController {
 	@PostMapping("/update")
 	public String update(@ModelAttribute GatherEditVO gatherEditVO) {
 		try {
-			Integer idx = gatherEditVO.getGatherIdx();
-			log.debug("==================== /lec/edit/{} (강좌 파일 수정 POST) 진입", idx);
+			Integer gatherIdx = gatherEditVO.getGatherIdx();
+			log.debug("==================== /lec/edit/{} (강좌 파일 수정 POST) 진입", gatherIdx);
 			log.debug("==================== 수정내용: {}", gatherEditVO);
 			gatherService.edit(gatherEditVO);
 			log.debug("==================== 수정이 끝났습니다. 상세보기로 돌아갑니다.", gatherEditVO);
-			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/lec/detail/" + idx;
+			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/gather/detail/" + gatherIdx;
 		} catch(Exception e) {
 			return "failed"; 
 		}

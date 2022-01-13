@@ -196,35 +196,28 @@ function setLoc(el) {
 					$("#end").val(end);
 					
 				}
-				$(function(){
-					$("#insert-btn").click(function(e){
+				$(function(){ 
+					$("#fileUploadForm_submitBtn").click(function(e){
 					//시간설정 잘못 된 것
+					 
+					 e.preventDefault();
 					makeTime(); 
 					let startTime = new Date($("#start").val());
 			        let endTime    = new Date($("#end").val());
 			        let today = new Date();
-			             //빈칸일 경우
-// 					"input[name=]").val()==""||
-// 					$("input[name=]").val()==""||
-// 					$("input[name=]").val()==""||
-// 					$("input[name=]").val()==""||
-// 					$("input[name=]").val()==""
-						if(endTime>startTime&&startTime>today)
-						{  
-							
-							e.preventDefault();
-							makeTime();
-							  $("#insert-form").submit();
-   						} else{
-		                e.preventDefault();		
-		                alert("시간 설정을 확인해주세요");
-		                console.log(endTime);      
-						console.log(startTime);
-						console.log(today);
-						console.log(endTime >startTime);
-						console.log(startTime>today);
-						console.log(endTime>startTime>today);  
-   						}	    
+			       		 if(endTime<startTime&&startTime<today)
+						{   e.preventDefault();	
+							 alert("시간 설정을 확인해주세요");
+   						} if( $("input[name=gatherDetail]").val()==""||
+  			 				  $("input[name=gatherName]").val()==""||
+  			 				  $("input[name=gatherHeadCount]").val()==""||
+   			 				  $("input[name=gatherLocRegion]").val()=="")
+							{ 
+   								e.preventDefault();	
+   								 alert("빈칸을 입력해주세요 ");
+				 				alert("시간 설정을 확인해주세요");
+				 			}else{
+							 $("#insert-form").submit();}    
 					});
 		        });
 				</script>

@@ -197,7 +197,7 @@ function setLoc(el) {
 					
 				}
 				$(function(){
-					$("#insert-btn").click(function(e){
+					$(".form-btn").click(function(e){
 					//시간설정 잘못 된 것
 					makeTime(); 
 					let startTime = new Date($("#start").val());
@@ -207,11 +207,10 @@ function setLoc(el) {
 // 					"input[name=]").val()==""||
 // 					$("input[name=]").val()==""||
 // 					$("input[name=]").val()==""||
-// 					$("input[name=]").val()==""||
+// 					$("input[name=]").val()==""|| 
 // 					$("input[name=]").val()==""
 						if(endTime>startTime&&startTime>today)
-						{  
-							
+						{ 
 							e.preventDefault();
 							makeTime();
 							  $("#insert-form").submit();
@@ -220,7 +219,7 @@ function setLoc(el) {
 		                alert("시간 설정을 확인해주세요");
 		                console.log(endTime);      
 						console.log(startTime);
-						console.log(today);
+						console.log(today); 
 						console.log(endTime >startTime);
 						console.log(startTime>today);
 						console.log(endTime>startTime>today);  
@@ -298,8 +297,8 @@ function setLoc(el) {
 --%>
 <SCRIPT TYPE="text/javascript">
 const fileImageStorePath = "${root}/gather/gatherFile/";
-const fileSubmitAjaxPage = "${root}/gatherDate/update/";
-</SCRIPT>
+const fileSubmitAjaxPage = "${root}/gatherData/update/";
+</SCRIPT> 
 <SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fileUpload.css" />
 <BODY>
@@ -390,8 +389,9 @@ const fileSubmitAjaxPage = "${root}/gatherDate/update/";
     </div>
 	
 	
-
+	
   	<div class="mb-3 justify-content-center">
+    <input type="hidden" name="memberIdx" value="${GatherVO.memberIdx}">
     <label for="" class="form-label">시작시간</label>
     <input type="date"   id="startDate">
     <input type="time"  id="startTime"> 
