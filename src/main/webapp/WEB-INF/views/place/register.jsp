@@ -25,7 +25,7 @@
 --%>
 <SCRIPT TYPE="text/javascript">
 const fileImageStorePath = "${root}/place/placeFile/";
-const fileSubmitAjaxPage = "${root}/placeData/update/";
+const fileSubmitAjaxPage = "${root}/placeData/save/";
 </SCRIPT>
 <!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
 <SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
@@ -45,7 +45,15 @@ const fileSubmitAjaxPage = "${root}/placeData/update/";
 let mapContainer, mapOptions, map, geocoder, marker, infowindow;
 
 ///////////////////////////////////// 라이브러리부 /////////////////////////////////////
-
+	
+	/* 주소 검색 모듈
+	 *  .find-address-btn을 누르면 자동으로 주소검색창이 나옴
+	 *
+	 *  - input[name=placePostcode] 에 우편번호 작성
+	 *  - input[name=placeAddress] 에 기본주소 작성
+	 *  - input[name=placeDetailAddress] 에 커서 이동
+	 */
+	 
 // 주소 입력 input 태그 안에 주소 value를 채워주는, 우편번호 찾기 기능
 function findAddress() {
 	new daum.Postcode({
@@ -135,15 +143,20 @@ function renderMap() {
 			var message =
 				"latlng: new kakao.maps.LatLng(" + result[0].y + ", ";
 			message += result[0].x + ")";
+			var LocLongitude = result[0].y;
+			var LocLatitude = result[0].x;			
 
 			var resultDiv = document.getElementById("clickLatlng");
 			resultDiv.innerHTML = message;
-
-			$("input[name=placeLocLongitude]").val(result[0].y);
-			$("input[name=placeLocLatitude]").val(result[0].x);
-			console.log("result[0].y" + result[0].y);
-			console.log("result[0].x" + result[0].x);
-
+			
+			$("input[name=placeLocLongitude]").val(LocLongitude);
+			$("input[name=placeLocLatitude]").val(LocLatitude);
+			
+			console.log("result[0].y : " + result[0].y);
+			console.log("result[0].x : " + result[0].x);
+			console.log("LocLongitude : " + LocLongitude);
+			console.log("LocLatitude : " + LocLatitude);
+			
 			// 지도를 생성합니다
 			map = new kakao.maps.Map(mapContainer, mapOption);
 			// 결과값으로 받은 위치를 마커로 표시합니다
@@ -200,14 +213,6 @@ $(function () {
 		}
 	});
 
-	/* 주소 검색 모듈
-	 *  .find-address-btn을 누르면 자동으로 주소검색창이 나옴
-	 *
-	 *  - input[name=placePostcode] 에 우편번호 작성
-	 *  - input[name=placeAddress] 에 기본주소 작성
-	 *  - input[name=placeDetailAddress] 에 커서 이동
-	 */
-
 	// 주소찾기 버튼 누르면 > 주소 찾는 창이 뜸
 	$(".find-address-btn").click(function () {
 		console.log("주소찾기 버튼 누름");
@@ -251,7 +256,7 @@ $(function () {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form name="placeForm" method="get" class="row container d-flex justify-content-center fileUploadForm">
+				<form name="placeForm" method="post" class="row container d-flex justify-content-center fileUploadForm">
 				<div class="form-group row mb-4">
 		<label>장소 이름</label>
 		<input type="text" name="placeName" required class="form-input">
@@ -263,10 +268,17 @@ $(function () {
 	<div class="row mb-4">
 						<label>카테고리</label>
 						<select name="lecCategoryName" required class="form-input p-1 border-radius-all-25">
-							<option value="">선택하세요</option>
+							<option value="" class="">선택하세요</option>
+							<option value="운동">운동</option>
+							<option value="요리">요리</option>
+							<option value="문화">문화</option>
+							<option value="예술">예술</option>
+							<option value="IT">IT</option>
+							<option value="directly">직접입력</option>														
+<%-- 							<option value="">선택하세요</option>
 							<c:forEach var="val" items="${lecCategoryList}">
 								<option value="${val}">${val}</option>
-							</c:forEach>
+							</c:forEach> --%>
 						</select>
 	</div>
 	<div class="row mb-4">
@@ -282,6 +294,8 @@ $(function () {
 			<input type="hidden" name="address" >
 			<div id="map" style="width:100%;height:350px;"></div>
 			<div id="clickLatlng"></div>
+			<input type="text" id="clickLocLatitude" name="placeLocLatitude"></div>
+			<input type="text" id="clickLocLongitude" name="placeLocLongitude"></div>
 	</div>
 	<div class="row mb-4">
 		<label class="form-block">대여 가능 시작일</label>
@@ -355,7 +369,7 @@ $(function () {
 						</div>
 					</div>
 					<div class="row mb-4">
-						<input type="button" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
+						<input type="submit" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
 					</div>
 				</form>
 			</div>

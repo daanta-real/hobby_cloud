@@ -96,9 +96,7 @@
 <c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
 <c:set var = "end" value = " ${GatherVO.gatherEnd}"/>
 <c:set var = "endTime" value = "${fn:substring(end, 0, 17)}" />
-<c:set var="isLogin" value="${memberIdx != null}" />
-<c:set	var="isJoin" value="false" /> 
-<c:set var="isFull" value="false" />
+
 
 <jsp:include page="/resources/template/body.jsp" flush="false" /> 
 <SECTION class="container-fluid"><DIV class="row d-flex flex-col justify-content-center pt-3 pt-sm-3 pt-md-5 pb-md-3">
@@ -117,21 +115,21 @@
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
 			소모임
 			</span>
-		</div>
-	</HEADER>
+		</div> 
+	</HEADER> 
 		<!-- 소단원 내용 --> 
-		<h2 id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번게시글</h2> 
+		<h2 class="d-none" id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번게시글</h2> 
 		<input type="hidden" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
         <input type="hidden" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
 		<div id="map" style="width:50%;height:350px;"></div>
-		<h1>참여자 수 :${status.count} / ${GatherVO.gatherHeadCount}</h1> 
+		<h1>참여자 수 :${fn:length(list2)} / ${GatherVO.gatherHeadCount}</h1> 
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="row row justify-content-end">
 				등록일 :
-				|
+				| 
 				작성자 : ${GatherVO.memberNick}
 				|
 				소모임시간 : ${startTime} ~ ${endTime} 
@@ -147,29 +145,11 @@
 				<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
 						width="15%" class="image image-round image-border"> 
 				</c:forEach>
-			
 
-					<!-- 참가자 인원을 확인 -->
-					<div class="row">
-					<c:if test="${status.count == GatherVO.gatherHeadCount}">  
-					<c:set var="isFull" value="true" />
-					</c:if>
-				
-				</div>
-					<!-- 참가여부를 확인 -->
-					<c:if test="${GatherHeadsVO.memberIdx  eq memberIdx}">
-						<!-- 만약에 일치한다  -->
-						<c:set var="isJoin" value="true" />
-					</c:if>
-					
-					<!-- 참가자 리스트 반복문 -->
-				
-				
-					
-					
-					
-
+	
+	 
 	<div id="map" style="width: 100%; height: 50px; border-radius: 50px;"></div> 
+	<!-- 소모임 테이블 영역  -->
 	<div class="row p-sm-2 mx-1 mb-5">
 			<div class="scrollXEnabler">
 				<div class="card p-0 minWidthMaxContent">
@@ -181,44 +161,55 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach var="GatherHeadsVO" items="${list2}"
-					varStatus="status">
-								<tr class="cursor-pointer">
-									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.gatherIdx}</td>
-									<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td>
-									</c:forEach>
-								</tr>	
+				  
+						<c:forEach var="GatherHeadsVO" items="${list2}" varStatus="status">
+						
+						 <tr class="cursor-pointer">     
+							<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberProfileIdx}</td>  
+							<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td> 
+						<c:set var="isFull" value="false" />
+						<!-- 참가자가 가득찻는지 확인-->
+						<c:if test="${status.count == GatherVO.gatherHeadCount}">  
+						<c:set var="isFull" value="true" />
+						</c:if>
+						  
+						 
+						<!-- 참가여부를 확인 -->
+						<c:set	var="isJoin" value="false" /> 
+						<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}">
+						${GatherHeadsVO.memberIdx} /${memberIdx}
+						<c:set var="isJoin" value="true" />
+						</c:if>
+						</c:forEach> 
+						 </tr>	
 						</tbody>
 					</table>
 				</div>
 			</div> 	
-				
-				<c:choose>
-					<c:when test="${isFull}">
-					</c:when>
-				</c:choose> <!-- 게시판 사진 반복문 --> 
-	
 
-		
-		<!-- 소모임 참가 /취소 버튼 -->
-		
-	
-				<!-- 참가하기 버튼 --> <c:choose>
-				
+
+				<!-- 참가하기 버튼 -->
+				<c:set var="isLogin" value="${memberIdx != null}"/>
+				 <c:choose>
 					<c:when test="${isJoin}">
 						<a class="btn btn-warning"
 							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
 					</c:when>
 					<c:when test="${isFull}">
-						<a class="btn btn-secondary"
-							href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">완료</a>
+						<a class="btn btn-secondary fullBtn">완료</a>
 					</c:when>
 					<c:when test="${isLogin}"> 
 						<a class="btn btn-primary"
 							href="${pageContext.request.contextPath}/gather/join?gatherIdx=${GatherVO.gatherIdx}">참가하기</a>
 					</c:when>
 				</c:choose>
-			
+			<script>
+			$(function(){
+				$(".fullBtn").click(function(){
+					alert("모집이 마감되었습니다.")
+				});
+			})
+			</script>
 		
 		
 			<!-- 각종 버튼들 -->
@@ -278,7 +269,7 @@
 </div>
 
 
-
+ 
 
 	
 <div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>평점</div>
@@ -311,12 +302,12 @@
 	 </div>
 </form>
 <div id="resultReivew"></div>  
-<!-- 평점목록 -->
+<!-- 평점목록 --> 
 <template id="gatherReviewVO-template">
 <div class="card mb-2 border border-1 border-secondary p-0 item">
 	<div class="card-header d-flex align-items-center p-1 px-2">
 	<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
-	<span class="memberNick">{{memberNick}}</span>
+	<span class="memberNick">{{memberNick}}</span> 
 	<span class="gatherReviewScore">   점수:{{gatherReviewScore}}</span> 
 	<span class="memberReplyRegistered ms-auto gatherReplyDate">{{gatherReplyDate}}</span>
 	</div>   

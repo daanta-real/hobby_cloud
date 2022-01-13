@@ -80,4 +80,28 @@ update notice set notice_views=notice_views+1 where notice_idx=#{noticeIdx}
 update notice set notice_views = notice_views+1
 where notice_idx =#{noticeIdx} and member_idx != #{memberIdx}
 </update>	
+
+
+<!-- 페이지네이션 -->
+<select id="listPage" resultType="NoticeVO" parameterType="Criteria">
+select * from(
+select rownum  rn , TMP.* from(
+select * from  notice n left outer join
+ (select distinct notice_idx, min(notice_file_idx) as notice_file_idx
+  from notice_file group by notice_idx) f  
+  on  f.notice_idx = n.notice_idx  
+ left outer join member m on n.member_idx = m.member_idx
+ order by n.notice_idx desc
+  )TMP
+) where rn between #{rowStart} and #{rowEnd}
+</select>
+
+<!-- 게시글 총 개수 구하기 -->
+<select id="listCount" resultType="int">
+select count(*) as BNO from (
+select * from notice n left outer join
+ (select distinct notice_idx, min(notice_file_idx) as notice_file_idx
+  from notice_file group by notice_idx) f  
+  on  f.notice_idx = n.notice_idx)
+  </select>
 </mapper>

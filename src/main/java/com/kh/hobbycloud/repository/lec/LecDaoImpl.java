@@ -12,6 +12,7 @@ import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
+import com.kh.hobbycloud.vo.lec.LecSearchVO;
 
 @Repository
 public class LecDaoImpl implements LecDao{
@@ -30,8 +31,8 @@ public class LecDaoImpl implements LecDao{
 	}
 
 	@Override
-	public List<LecListVO> listSearch(Map<String, Object> param) {
-		return sqlSession.selectList("lec.listSearch", param);
+	public List<LecListVO> listSearch(LecSearchVO vo) {
+		return sqlSession.selectList("lec.listSearch", vo);
 	}
 
 	@Override

@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 import com.kh.hobbycloud.entity.petitions.PetitionsDto;
 import com.kh.hobbycloud.entity.petitions.PetitionsFileDto;
 import com.kh.hobbycloud.repository.petitions.PetitionsDao;
 import com.kh.hobbycloud.repository.petitions.PetitionsFileDao;
 import com.kh.hobbycloud.service.petitions.PetitionsService;
-import com.kh.hobbycloud.vo.notice.NoticeVO;
+import com.kh.hobbycloud.vo.gather.Criteria;
+import com.kh.hobbycloud.vo.gather.PageMaker;
 import com.kh.hobbycloud.vo.petitions.PetitionsVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -51,9 +51,24 @@ public class PetitionsController {
 	
 	//청원게시판 목록조회
 	@GetMapping("/list")
-    public String list(Model model) {
+    public String list(Model model,Criteria cri) {
+    	log.debug("ㅡㅡㅡ 청원게시판 목록조회 시작");
     	
-    	model.addAttribute("list",petitionsDao.list());
+    	List<PetitionsVO> petitionsVO = petitionsService.list(cri);
+    	log.debug("게시판 목록을 갖고 옴. petitionsVO = {}", petitionsVO);
+    	model.addAttribute("list", petitionsVO);
+    	
+    	PageMaker pageMaker = new PageMaker();
+    	
+    	pageMaker.setCri(cri);
+    	int count = petitionsService.listCount();
+    	log.debug("청원게시판 수: {}", count);
+    	
+    	pageMaker.setTotalCount(count);
+    	log.debug("pageMaker 정보: {}", pageMaker);
+    	model.addAttribute("pageMaker", pageMaker);
+    	
+    	log.debug("청워네시판으로 이동");
     	return "petitions/list";
     }
 	//검색

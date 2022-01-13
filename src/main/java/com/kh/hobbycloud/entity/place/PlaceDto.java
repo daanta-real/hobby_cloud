@@ -23,6 +23,8 @@ public class PlaceDto {
 	private String placeSido;
 	private String placeSigungu;
 	private String placeBname;
+	private String placeLocLatitude;
+	private String placeLocLongitude;
 }
 
 

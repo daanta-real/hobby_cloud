@@ -7,11 +7,12 @@ import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
+import com.kh.hobbycloud.vo.lec.LecSearchVO;
 
 public interface LecDao {
 	void register(LecDto lecDto);//강좌 등록
 	List<LecListVO> list();
-	List<LecListVO> listSearch(Map<String,Object> param);//목록 및 검색
+	List<LecListVO> listSearch(LecSearchVO vo);//목록 및 검색
 	LecDetailVO get(int lecIdx);//단일 조회
 	void delete(int lecIdx);//삭제
 	int getSequence();//시퀀스 생성
