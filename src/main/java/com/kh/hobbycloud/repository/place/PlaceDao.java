@@ -27,5 +27,7 @@ public interface PlaceDao {
 	List<PlaceListVO> listSearch(PlaceSearchVO placeSearchVO);
 	//Place 페이지
 	List<PlaceListVO> listPage(int startRow, int endRow);
+	//Place Ajax 페이지네이션
+	List<PlaceListVO> listBy(int startRow, int endRow);
 }
 
