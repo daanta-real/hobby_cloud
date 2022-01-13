@@ -1,5 +1,6 @@
 package com.kh.hobbycloud.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +21,9 @@ import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
 import com.kh.hobbycloud.repository.gather.GatherReplyDao;
 import com.kh.hobbycloud.repository.gather.GatherReviewDao;
+import com.kh.hobbycloud.service.gather.GatherService;
 import com.kh.hobbycloud.vo.gather.GatherChartVO;
+import com.kh.hobbycloud.vo.gather.GatherFileVO;
 import com.kh.hobbycloud.vo.gather.GatherReplyVO;
 import com.kh.hobbycloud.vo.gather.GatherReviewVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
@@ -40,7 +43,12 @@ public class GatherDataController {
 	private GatherFileDao gatherFileDao;
 	@Autowired
 	private GatherHeadsDao gatherHeadsDao;
-	
+	@Autowired
+	private GatherService gatherService;
+	// 변수준비: 서버 주소 관련
+	@Autowired private String SERVER_ROOT;   // 환경변수로 설정한 사용자 루트 주소
+	@Autowired private String SERVER_PORT;   // 환경변수로 설정한 사용자 포트 번호
+	@Autowired private String CONTEXT_NAME; // 환경변수로 설정한 사용자 콘텍스트명
 	
 	//ajax연습용
 	@GetMapping("/hello")
@@ -130,5 +138,11 @@ public class GatherDataController {
 		System.out.println("왓ㅅ음");
 		return gatherHeadsDao.countByGender(gatherIdx);
 	}
-	
+	@PostMapping("/insert")
+	public String insert(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		gatherFileVO.setMemberIdx(memberIdx); 
+		int gatherIdx = gatherService.save(gatherFileVO);	
+		return  SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/gather/detail/" + gatherIdx;
+	}
 }

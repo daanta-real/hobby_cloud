@@ -492,8 +492,24 @@ $(function(){
 
 
 
+<script>
+function dateFormat(date) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
 
-<!-- 평점 조회 -->
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+
+    return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute; 
+}
+</script>
+
+<!-- 평점 조회 --> 
 <script>
 function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 	var gatherIdxValue = $("#gatherIdxValue").data("gather-idx");
@@ -521,7 +537,10 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 				template = template.replace("{{memberNick}}", resp[i].memberNick);  
 				template = template.replace("{{memberNick}}", resp[i].memberNick);  
 				template = template.replace("{{gatherReviewScore}}", resp[i].gatherReviewScore);
-				template = template.replace("{{gatherReviewRegistered}}",resp[i].gatherReviewRegistered);
+				
+				var time = resp[i].gatherReviewRegistered;
+				var date =new Date(time);
+				template = template.replace("{{gatherReviewRegistered}}",dateFormat(date)); 
 				template = template.replace("{{gatherReviewDetail}}", resp[i].gatherReviewDetail);
 		
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
@@ -701,7 +720,10 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
 				template = template.replace("{{memberNick}}",resp[i].memberNick);
 				template = template.replace("{{gatherReplyDetail}}",resp[i].gatherReplyDetail);
-				template = template.replace("{{gatherReplyDate}}",resp[i].gatherReplyDate);
+				
+				var time = resp[i].gatherReplyDate;
+				var date =new Date(time);
+				template = template.replace("{{gatherReplyDate}}",dateFormat(date)); 
 				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 				
