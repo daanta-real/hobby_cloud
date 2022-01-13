@@ -352,7 +352,7 @@
 
 					idckCheck = true;
 					$("#btnclick").prop("disabled", true);
-				}
+				} 
 				checkAll();
 			},
 		});
