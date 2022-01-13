@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.hobbycloud.entity.member.MemberCategoryDto;
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberCategoryDao;
@@ -195,10 +196,15 @@ public class MemberController {
 		//데이터 Model에 저장
 		MemberDto memberDto = memberDao.get(memberId);
 		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
+		MemberCategoryDto memberCategoryDto = memberCategoryDao.get(memberIdx);
+//		List<String> memberCategoryList = memberCategoryDao.select();
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberProfileDto", memberProfileDto);
+		model.addAttribute("memberCategoryDto", memberCategoryDto);
+//		model.addAttribute("list", memberCategoryList);
 		//페이지 리다이렉트
 		return "member/mypage";
+		
 	}
 
 
@@ -242,8 +248,10 @@ public class MemberController {
 		int memberIdx = (int) session.getAttribute("memberIdx");
 		MemberDto memberDto = memberDao.get(memberId);
 		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
+		MemberCategoryDto memberCategoryDto = memberCategoryDao.get(memberIdx);
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("memberProfileDto", memberProfileDto);
+		model.addAttribute("memberCategoryDto", memberCategoryDto);
 		return "member/edit";
 	}
 
@@ -385,7 +393,6 @@ public class MemberController {
 			return "fail";
 		}
 	}
-	//
 
 	// 비밀번호 찾기 폼 페이지
 	@GetMapping("/pwFindMail")
@@ -394,7 +401,7 @@ public class MemberController {
 		return "member/pwFindMail";
 	}
 
-	// 비밀번호 재설정(이메일)
+	// 임시 비밀번호 재설정(이메일)
 	@PostMapping("/pwFindMail")
 	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
@@ -421,6 +428,24 @@ public class MemberController {
 	public String updateMail() {
 		log.debug("ㅡㅡMemberController - /member/updateMail GET> 이메일 변경");
 		return "member/updateMail";
+	}
+	
+	// 이메일 변경
+	@PostMapping("/updateMail")
+	@ResponseBody
+	public String updateMail(@RequestParam String memberEmail,HttpSession session) {
+		Integer memberIdx = (Integer)session.getAttribute("memberIdx");
+		System.out.println("updateMail : "+memberIdx);
+		System.out.println("updateMail memberEmail : " + memberEmail);
+		int changeEmail = memberDao.changeEmail(memberEmail, memberIdx);
+		System.out.println("memberIdx : " + memberIdx);
+		System.out.println("memberEmail : " + memberEmail);
+
+		if(changeEmail ==0) {
+			return "fail";
+		} else {
+			return "success";
+		}
 	}
 	
 	// 내 장소 목록 페이지

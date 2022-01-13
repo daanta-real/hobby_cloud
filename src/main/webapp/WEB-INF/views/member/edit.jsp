@@ -9,7 +9,7 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
+<TITLE>HobbyCloud - 회원 정보 수정</TITLE>
 <style type="text/css">
 .squareImgContainer { padding-top: 50%; border: 1px solid lime; }
 .squareImgContainer img { transform:translate(-50%, -50%); object-fit:contain; }
@@ -89,6 +89,10 @@ window.addEventListener("load", function() {
 		$('input[name="phone"]').val(phone);
 	})
 	
+	let lecCategoryName = '${memberCategoryDto.lecCategoryName}';
+	$("select[name=lecCategoryName]").val(lecCategoryName);
+	$("select[name=lecCategoryName]" option:selected).text(lecCategoryName); 
+	
 });
 
 
@@ -148,9 +152,8 @@ function deleteFile(memberProfileIdxValue){
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form method="post" enctype="multipart/form-data" id="join_form" class="row">
+				<form method="post" enctype="multipart/form-data" id="join_form" class="row row container d-flex justify-content-center">
 					<input type="hidden" name="memberPw" id="pw" class="mail_input" value="${memberDto.memberId}">
 					<div class="form-group mb-4 col-12">
 						<label class="id_name form-label mb-0">아이디</label>
@@ -189,6 +192,18 @@ function deleteFile(memberProfileIdxValue){
 						<div id="regioncheck" class="fs-6"></div>
 					</div>
 					<div class="form-group mb-4 col-12">
+						<label for="joinForm_lecCategory" class="form-label mb-0">관심분야</label>		
+						<select name="lecCategoryName" required class="lecCategoryName form-input p-1 border-radius-all-25 form-control" value="${memberCategoryDto.lecCategoryName}">
+							<option value="" class="">선택하세요</option>
+							<option value="운동">운동</option>
+							<option value="요리">요리</option>
+							<option value="문화">문화</option>
+							<option value="예술">예술</option>
+							<option value="IT">IT</option>
+							<option value="directly">직접입력</option>														
+						</select>
+					</div>
+					<div class="form-group mb-4 col-12">
 						<label class="form-label mb-0">프로필 이미지</label>
 						<input id="profileImageInput" name="attach" type="file" class="form-control" accept="image/*" >
 						<div class="squareImgContainer position-relative d-flex justify-content-center align-items-center overflow-hidden w-50">
@@ -203,20 +218,11 @@ function deleteFile(memberProfileIdxValue){
 							</c:choose>
 						</div>
 					</div>
-					<div class="form-group mb-4 col-lg-6">
-						<label class="form-label mb-0">관심 분야</label>
-						<div>
-							<input type="checkbox" name="lecCategoryName"  value="sports">스포츠
-							<input type="checkbox" name="lecCategoryName"  value="music">음악
-							<input type="checkbox" name="lecCategoryName"  value="painting">그림
-						</div>
-					</div>
 					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" id="btnclick" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">수정하기</button>
+						<button type="submit" id="btnclick" class="btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control">수정하기</button>
 					</div>
 				</form>
 			</div>
-		</div>
 	</SECTION>
 <!-- 페이지 내용 끝. -->
 	

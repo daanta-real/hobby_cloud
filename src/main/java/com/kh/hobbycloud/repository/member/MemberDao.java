@@ -15,8 +15,9 @@ public interface MemberDao {
 
 	// 단일조회(memberId)
 	MemberDto get(String memberId);
+	
 	//단일조회(memberIdx)
-	MemberDto get(Integer memberIdx);
+	MemberDto getByIdx(Integer memberIdx);
 
 	//memberJoinVO  단일 조회
 	MemberJoinVO getVO(Integer memberIdx);
@@ -31,7 +32,7 @@ public interface MemberDao {
 	boolean changeInformation(MemberDto memberDto);
 
 	// 개인정보 변경(이메일)
-	int changeEmail(MemberDto memberDto);
+	int changeEmail(String memberEmail, Integer memberIdx);
 
 	// 회원 탈퇴
 	boolean quit(Integer memberIdx, String memberPw);
