@@ -182,19 +182,19 @@ public class GatherController {
 		return "gather/update";
 	}
 
-	// 글 수정 실시
-	@PostMapping("/update/{gatherIdx}")
-	public String update2(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
-
-		// 수정
-		int memberIdx = (int)session.getAttribute("memberIdx");
-		gatherFileVO.setMemberIdx(memberIdx);
-		gatherService.update(gatherFileVO);	
-		System.out.println("수정"+gatherFileVO);
-		int gatherIdx = gatherFileVO.getGatherIdx();
-		return "redirect:/gather/detail/" + gatherIdx;
-		
-	}
+//	// 글 수정 실시
+//	@PostMapping("/update/{gatherIdx}")
+//	public String update2(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
+//
+//		// 수정
+//		int memberIdx = (int)session.getAttribute("memberIdx");
+//		gatherFileVO.setMemberIdx(memberIdx);
+//		gatherService.update(gatherFileVO);	
+//		System.out.println("수정"+gatherFileVO);
+//		int gatherIdx = gatherFileVO.getGatherIdx();
+//		return "redirect:/gather/detail/" + gatherIdx;
+//		
+//	} 
 
 	@GetMapping("/sockjs")
 	public String sockjs() {

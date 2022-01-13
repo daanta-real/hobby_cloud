@@ -86,11 +86,4 @@ public class GatherDaoImpl implements GatherDao {
 		System.out.println("다오 숫자"+number);
 		return sqlSession.selectOne("gather.listCountBy",gatherSearchVO);
 	}
-
-
-
-
-
-
-
 }
