@@ -265,9 +265,17 @@ window.addEventListener("load", function() {
 						<tbody>
 						
 							<c:forEach var="GatherVO" items="${list}"> 
+							 
 								<tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}'">
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td>
-									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%"></td>
+									<c:choose>
+									<c:when test="${GatherVO.gatherFileIdx == 0 }"> 
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="5%"></td>
+									</c:when> 
+									<c:otherwise>  
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/resources/img/noImage.png" width="5%"></td> 
+									</c:otherwise> 
+									</c:choose>
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td> 
 									<td class="text-center align-middle text-nowrap">${GatherVO.lecCategoryName}</td> 
