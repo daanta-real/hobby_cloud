@@ -81,6 +81,7 @@ public class LecController {
 	//목록(검색 가능)
 	@RequestMapping("/list")
 	public String search(@ModelAttribute LecSearchVO vo, Model model) {
+		model.addAttribute("lecCategoryList", lecCategoryDao.select());
 		log.debug("==================렉서치VO={}", vo);
 		List<LecListVO> listSearch = lecDao.listSearch(vo);
 		log.debug("===============listSearch{}", listSearch);

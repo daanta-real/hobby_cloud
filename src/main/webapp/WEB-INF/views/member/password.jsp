@@ -97,9 +97,8 @@ $(function () {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form method="post" enctype="multipart/form-data" id="join_form" class="row">
+				<form method="post" enctype="multipart/form-data" id="join_form" class="row row container d-flex justify-content-center">
 					<div class="form-group mb-4 col-12">
 						<label for="pw" class="form-label mb-0 form-input">현재 비밀번호</label>
 						<input name="memberPw" type="password" class="form-control" placeholder="" value="">
@@ -114,15 +113,15 @@ $(function () {
 						<input id="pw" name="changePw" type="password" class="form-control"  id="pw" placeholder="특수문자, 영문, 숫자, 6자 이상 20자 이내로 입력하세요" value="">
 						<font id="pwComm" class="form-text fs-6"></font>
 					</div>
-					<div id="pwComm"></div>
+						<div id="pwComm"></div>
 					<div class="form-group mb-4 col-12">
 						<label for="pwch" class="form-label mb-0">비밀번호 확인</label>
 						<input id="pwch" name="changePw2" type="password" class="form-control" id="pwch" placeholder="비밀번호를 한번 더 입력하세요" value="">
 						<font id="pwComm2" class="form-text fs-6"></font>
 					</div>
-					<div id="pwComm2"></div>					
-					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">변경</button>
+						<div id="pwComm2"></div>					
+					<div class="row mb-4 justify-content-center">
+						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control">변경</button>
 					</div>					
 				</form>
 			</div>
