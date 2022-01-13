@@ -91,6 +91,21 @@
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<!-- <script>	 -->
+// $(function(	){
+// const buttonArr = document.getElementsByTagName('button');
+
+// for(let i = 0; i < buttonArr.length; i++){
+//   buttonArr[i].addEventListener('click',function(e){
+	
+//     e.preventDefault();
+//     document.querySelector('.box' + (i + 1)).scrollIntoView(true);
+//   	console.log(i+1); 
+//   	console.log( document.querySelector('.box' + (i + 1))); 
+//   });
+// } 
+// });
+<!-- </script> -->
 
 <c:set var = "start" value = " ${GatherVO.gatherStart}"/>
 <c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
@@ -107,6 +122,8 @@
 	<!-- 제목 영역 시작 -->
 	<!-- 제목 영역 끝 -->
 	<!-- 페이지 내용 시작 -->
+	
+
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
 		<HEADER class='w-100 mb-1 p-2 px-md-3'>  
@@ -121,15 +138,19 @@
 		<h2 class="d-none" id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번게시글</h2> 
 		<input type="hidden" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
         <input type="hidden" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
-		<div id="map" style="width:50%;height:350px;"></div>
+		<div id="map" style="width:90%;height:400px;"></div>   
+			<button id="box1" type="button">댓글</button>
+		 <button id="box2" type="button">별점</button>
+		  <button id="box3" type="button">차트 </button>  
 		<h1>참여자 수 :${fn:length(list2)} / ${GatherVO.gatherHeadCount}</h1> 
+ 
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="row row justify-content-end">
 				등록일 :
-				| 
+				|  
 				작성자 : ${GatherVO.memberNick}
 				|
 				소모임시간 : ${startTime} ~ ${endTime} 
@@ -221,12 +242,12 @@
 				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
 				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
-				<button class="btn btn-secondary more-btn">더보기!!</button>  
-				<button class="btn btn-secondary moreR-btn">더보기!2</button>   
+				 
+				  
 			</nav>
 		
 		<!-- 댓글 내역 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>댓글</div>
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold box4'>댓글</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 		<form id="insert-form">
@@ -276,13 +297,13 @@
 </div>
 
 </template>   
-	<button class="more-btn btn btn-secondary">더보기!!</button>  
+	
 </div>
-
+<button class="btn btn-secondary more-btn">더보기</button>  
 
   
 	
-<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>평점</div>
+<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold box5'>평점</div> 
 <!-- 소단원 내용 --> 
 	<div class="row p-sm-2 mx-1 mb-5">
 <form id="insertReview-form">
@@ -338,15 +359,13 @@
 </template>
 		
 </div>
-
-
+<button class="btn btn-secondary moreR-btn">더보기</button> 
 
  
-
-
-<h1>차트 예제</h1>
  
-<canvas id="myChart" width="1%" height="1%"></canvas>
+
+<h1 class="box6">남녀 참가자 수</h1>  
+<canvas id="myChart" width="15px" height="30px"></canvas> 
 		
 
 </div>
@@ -706,9 +725,9 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 			console.log(resp.length,sizeValue); 
 			console.log("성공",resp);
 			if(resp.length < sizeValue){  
-				$(".more-btn").remove(); 
+				$(".more-btn").hide(); 
 			}else{
-				$(".more-btn").show();
+				$(".more-btn").show(); 
 			} 
 			
 			

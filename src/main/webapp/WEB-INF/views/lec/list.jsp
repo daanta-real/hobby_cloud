@@ -172,7 +172,7 @@
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 결과</div>
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>강좌 목록</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="scrollXEnabler">
@@ -182,6 +182,7 @@
 							<tr class="table-danger">
 								<th scope="col" class="text-center align-middle text-nowrap">강좌 번호</th>
 								<th scope="col" class="text-center align-middle text-nowrap">카테고리</th>
+								<th scope="col" class="text-center align-middle text-nowrap">사진</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강좌 이름</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강사</th>
 								<th scope="col" class="text-center align-middle text-nowrap">수강료</th>
@@ -198,18 +199,19 @@
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/file/${lecListVO.lecFileIdx}" width="20%"></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecName}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${lecListVO.lecPrice}" pattern="#,###" /></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecContainsCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecHeadCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecLocRegion}</td>
+									<c:if test="${memberGrade == admin}">
 									<td class="text-center align-middle text-nowrap">
-										<c:if test="${memberGrade == admin}">
 											<a href="edit/${lecListVO.lecIdx}">수정</a>
 											<a href="delete/${lecListVO.lecIdx}">삭제</a>
-										</c:if>
 									</td>
+									</c:if>
 								</tr>
 							</c:forEach>
 							<c:forEach var="lecListVO" items="${listSearch}">
@@ -236,10 +238,24 @@
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
 				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/list';">전체 목록</a></button>
+				<ul class="col-auto pagination pagination-sm m-0">
+				    <c:if test="${pageMaker.prev}">
+				    	<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
+				    	> ◁ </a></li>
+				    </c:if> 
+				
+				    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+				    	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+				    </c:forEach>
+				
+				    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+				    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+				    </c:if> 
+				</ul>
 				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/register';">신규 강좌 추가</a></button>
 			</nav>
 		</div>
-
+		
 
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
@@ -251,25 +267,7 @@
 </DIV></SECTION>
 <!-- 본문 대구역 끝 -->
 
-<nav class="row pt-4">
-  <ul class="pagination justify-content-center">
-    <c:if test="${pageMaker.prev}">
-    	<li class="page-item "><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}">&laquo;</a></li>
-    </c:if> 
 
-    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-<!--     
-만약에 현재페이지면 *미완성*
-<li class="page-item active"><a class="page-link" href="#">1</a></li>
- -->
-    	<li class="page-item"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
-    </c:forEach>
-
-    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
-    </c:if> 
-  </ul>
-</nav>
 
 <!-- ************************************************ 풋터 영역 ************************************************ -->
 <jsp:include page="/resources/template/footer.jsp" flush="false" />

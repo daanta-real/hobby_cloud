@@ -7,6 +7,12 @@
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
 <script>
+function getGender(event) {
+  document.getElementById('result').innerText = 
+    event.target.value;
+}
+</script>
+<script>
 	$(function() {
 		//지도 생성 준비 코드
 		var container = document.querySelector("#map");
@@ -16,11 +22,37 @@
 		};
 		//지도 생성 코드
 		var map = new kakao.maps.Map(container, options);
+		
+		//지도 검색 코드
+		$(".search-btn").click(
+				function() {
+					// 주소-좌표 변환 객체를 생성합니다
+					var geocoder = new kakao.maps.services.Geocoder();
+
+					// 주소로 좌표를 검색합니다 
+
+					geocoder.addressSearch($("input[name=keyword]").val(),  
+							function(result, status) {  
+								// 정상적으로 검색이 완료됐으면 
+								if (status === kakao.maps.services.Status.OK) {
+
+									var coords = new kakao.maps.LatLng(
+											result[0].y, result[0].x);
+
+									// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+									map.setCenter(coords);
+								}
+							});
+				});
+		
+		
+		
+		
 		// 마커의 위치 , 내용을 가지고 있는 객체 배열입니다
 		var positions = [
 		];
 		var markers = [];
-		
+		 
 		for (var i = 0; i < $(".fgTitle").length; i++) {
 			let title = $(".fgTitle").eq(i).val();
 			let latti = Number($(".fgLongitude").eq(i).val());
@@ -151,64 +183,65 @@ window.addEventListener("load", function() {
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<div id="map" style="width: 800px; height: 300px; border-radius: 20px;"></div>	
+				<input name="keyword" id="result" type="text"> 
+				<button class="btn btn-primary search-btn">장소검색</button>
 					<form  method="post" class="mt-4">
 
 						<label for=searchForm_lecLocRegion class="form-label mb-0 d-block">지역</label>
 						<div class="btn-group w-100">
-							<input name="gatherLocRegion" type="checkbox" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="서울" class="btn-check" id="Seoul" autocomplete="off" onclick="getGender(event)" ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Seoul">서울</label>
-							<input name="gatherLocRegion" type="checkbox" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off" onclick="getGender(event)" ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Gyeonggi">경기</label>
-							<input name="gatherLocRegion" type="checkbox" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Busan">부산</label>
-							<input name="gatherLocRegion" type="checkbox" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
+			 	 			<input name="gatherLocRegion" type="radio" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
+				 			<label class="btn btn-outline-primary" for="Busan">부산</label>
+					 		<input name="gatherLocRegion" type="radio" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Incheon">인천</label>
-							<input name="gatherLocRegion" type="checkbox" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Daegu">대구</label>
-							<input name="gatherLocRegion" type="checkbox" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Daejeon">대전</label>
-							<input name="gatherLocRegion" type="checkbox" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Gwangju">광주</label>
-							<input name="gatherLocRegion" type="checkbox" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Ulsan">울산</label>
-							<input name="gatherLocRegion" type="checkbox" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Sejong">세종</label>
-							<input name="gatherLocRegion" type="checkbox" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Gangwon">강원</label>
-							<input name="gatherLocRegion" type="checkbox" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Jeju">제주</label>
-							<input name="gatherLocRegion" type="checkbox" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Chungcheongbuk">충북</label>
-							<input name="gatherLocRegion" type="checkbox" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Chungcheongnam">충남</label>
-							<input name="gatherLocRegion" type="checkbox" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Jeollabuk">전북</label>
-							<input name="gatherLocRegion" type="checkbox" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Jeollanam">전남</label>
-							<input name="gatherLocRegion" type="checkbox" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
+					 		<label class="btn btn-outline-primary" for="Jeollabuk">전북</label>
+							<input name="gatherLocRegion" type="radio" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
+					 		<label class="btn btn-outline-primary" for="Jeollanam">전남</label>
+							<input name="gatherLocRegion" type="radio" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Gyeongsangbuk">경북</label>
-							<input name="gatherLocRegion" type="checkbox" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Gyeongsangnam">경남</label>
 						</div>
 						<div class="form-group mb-4 col-6">
 						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
 							<div class="btn-group w-100">
-							<input name="category" type="checkbox" value="운동" class="btn-check" id="exercise" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '운동').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Gyeongsangnam">운동</label>
-							<input type="checkbox" name="category" value="운동" class="form-check-input">운동
-  							<input type="checkbox" name="category" value="미술" class="form-check-input">미술
-   							<input type="checkbox" name="category" value="음악" class="form-check-input">음악
+								<c:forEach var="lecCategory" items="${lecCategoryList}">
+									<input name="gatherCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="${lecCategory}" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
+									${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get()}
+									<label class="btn btn-outline-primary" for="${lecCategory}">${lecCategory}</label>
+								</c:forEach>
 							</div>
 					</div>
- <input type="checkbox" name="gatherLocRegion" value="제주" class="form-check-input">제주도
-  <input type="checkbox" name="gatherLocRegion" value="강원" class="form-check-input">강원도
+			<div class="form-group mb-4 col-md-6 col-lg-4">
+				<label for="searchForm_memberIdx" class="form-label mb-0">회원 번호</label>
+				<input name="gatherName" id="searchForm_memberIdx" type="text" class="form-control" placeholder="제목을 입력하세요" >
+				<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
+			</div>
+			<button type="submit" class="btn btn-danger btn-sm">검색</button>
 
-
-
- <input type="text" name="gatherName">
- <button type="submit" class="btn btn-danger btn-sm">검색</button>
- 
-</form>
+ 			</form>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
@@ -232,9 +265,17 @@ window.addEventListener("load", function() {
 						<tbody>
 						
 							<c:forEach var="GatherVO" items="${list}"> 
+							 
 								<tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}'">
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td>
-									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%"></td>
+									<c:choose>
+									<c:when test="${GatherVO.gatherFileIdx == 0 }"> 
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="5%"></td>
+									</c:when> 
+									<c:otherwise>  
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/resources/img/noImage.png" width="5%"></td> 
+									</c:otherwise> 
+									</c:choose>
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td> 
 									<td class="text-center align-middle text-nowrap">${GatherVO.lecCategoryName}</td> 

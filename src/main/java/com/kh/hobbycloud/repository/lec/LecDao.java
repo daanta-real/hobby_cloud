@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.kh.hobbycloud.entity.lec.LecDto;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
+import com.kh.hobbycloud.vo.lec.LecCriteriaSearch;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecSearchVO;
@@ -25,5 +26,10 @@ public interface LecDao {
 	int listCount();
 
 	boolean update(LecDto lecDto);
+	
+	//검색 페이지 게시글 목록 조회
+	List<LecListVO> listBy(LecCriteriaSearch cri);
+	//검색 페이지 게시글 총 개수
+	int listCountBy(LecSearchVO lecSearchVO);
 
 }

@@ -22,12 +22,15 @@ import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
 import com.kh.hobbycloud.repository.gather.GatherReplyDao;
 import com.kh.hobbycloud.repository.gather.GatherReviewDao;
+import com.kh.hobbycloud.repository.place.PlaceDao;
 import com.kh.hobbycloud.service.gather.GatherService;
 import com.kh.hobbycloud.vo.gather.GatherChartVO;
+import com.kh.hobbycloud.vo.gather.GatherEditVO;
 import com.kh.hobbycloud.vo.gather.GatherFileVO;
 import com.kh.hobbycloud.vo.gather.GatherReplyVO;
 import com.kh.hobbycloud.vo.gather.GatherReviewVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
+import com.kh.hobbycloud.vo.place.PlaceListVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +52,8 @@ public class GatherDataController {
 	private GatherHeadsDao gatherHeadsDao;
 	@Autowired
 	private GatherService gatherService;
+	@Autowired
+	private PlaceDao placeDao;
 	// 변수준비: 서버 주소 관련
 	@Autowired private String SERVER_ROOT;   // 환경변수로 설정한 사용자 루트 주소
 	@Autowired private String SERVER_PORT;   // 환경변수로 설정한 사용자 포트 번호
@@ -142,6 +147,20 @@ public class GatherDataController {
 		System.out.println("왓ㅅ음");
 		return gatherHeadsDao.countByGender(gatherIdx);
 	}
+	@GetMapping("/listPlace")
+	public List<PlaceListVO> listPlace(
+			@RequestParam(required = false, defaultValue = "1") int page, 
+			@RequestParam(required = false, defaultValue = "10") int size) {
+		System.out.println("-------"+page);
+		System.out.println("--------"+size);
+		
+		int endRow = page * size;
+		int startRow = endRow - (size - 1); 
+		return placeDao.listBy(startRow, endRow);
+	}
+	
+	
+	
 	@ResponseBody
 	@PostMapping("/insert")
 	public String insert(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
@@ -154,5 +173,20 @@ public class GatherDataController {
 		System.out.println(gatherIdx);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶gatherIdx={}",gatherIdx);
 		return  SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/gather/detail/" + gatherIdx;
+	}
+	
+	@ResponseBody
+	@PostMapping("/update")
+	public String update(@ModelAttribute GatherEditVO gatherEditVO) {
+		try {
+			Integer gatherIdx = gatherEditVO.getGatherIdx();
+			log.debug("==================== /lec/edit/{} (강좌 파일 수정 POST) 진입", gatherIdx);
+			log.debug("==================== 수정내용: {}", gatherEditVO);
+			gatherService.edit(gatherEditVO);
+			log.debug("==================== 수정이 끝났습니다. 상세보기로 돌아갑니다.", gatherEditVO);
+			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/gather/detail/" + gatherIdx;
+		} catch(Exception e) {
+			return "failed"; 
+		}
 	}
 }

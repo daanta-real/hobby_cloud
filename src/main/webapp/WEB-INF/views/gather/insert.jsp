@@ -196,92 +196,106 @@ function setLoc(el) {
 					$("#end").val(end);
 					
 				}
-				$(function(){
-					$("#insert-btn").click(function(e){
+				$(function(){ 
+					$("#fileUploadForm_submitBtn").click(function(e){
 					//시간설정 잘못 된 것
+					 
+					 e.preventDefault();
 					makeTime(); 
 					let startTime = new Date($("#start").val());
 			        let endTime    = new Date($("#end").val());
 			        let today = new Date();
-			             //빈칸일 경우
-// 					"input[name=]").val()==""||
-// 					$("input[name=]").val()==""||
-// 					$("input[name=]").val()==""||
-// 					$("input[name=]").val()==""||
-// 					$("input[name=]").val()==""
-						if(endTime>startTime&&startTime>today)
-						{  
-							
-							e.preventDefault();
-							makeTime();
-							  $("#insert-form").submit();
-   						} else{
-		                e.preventDefault();		
-		                alert("시간 설정을 확인해주세요");
-		                console.log(endTime);      
-						console.log(startTime);
-						console.log(today);
-						console.log(endTime >startTime);
-						console.log(startTime>today);
-						console.log(endTime>startTime>today);  
-   						}	    
+			       		 if(endTime<startTime||startTime<today)
+						{   e.preventDefault();	 
+		 					alert("시간 설정을 확인해주세요");  
+   						} else if( $("input[name=gatherDetail]").val()==""||
+  			 			 	  $("input[name=gatherName]").val()==""||
+  			 				  $("input[name=gatherHeadCount]").val()==""||
+   			 				  $("input[name=gatherLocRegion]").val()=="")
+							{ 
+   								e.preventDefault();	
+   								 alert("빈칸을 입력해주세요 "); 		
+				 			}else{ 
+							 $("#insert-form").submit();}    
 					});
 		        });
 				</script>
-				
+<!-- 모달 창에 띄울 장소 페이지네이션 -->				
 <script>
-	$(function() {
-		$("#showList").click(function() {
-						$.ajax({
-						url : "${pageContext.request.contextPath}/gatherData/gatherList",
-						type : "get",
-						dataType : "json",
-						success:function(resp){
-							
-							console.log("성공", resp);
-							var results = resp;
-							console.log(results);
-
-							// 제목
-							document.querySelector(".modal-title").innerText = "장소를 고르세요.";
-							
-							// 내용
-							// 표 제목부
-							var totalStr
-							    = '<table class="table table-striped">'
-			                	+ 	'<thead><tr>'
-			                    + 		'<th scope="col" class="text-center">순</th>'
-			                    + 		'<th scope="col" class="text-center">이름</th>'
-			                    +		'<th scope="col" class="text-center">지역</th>'
-			                    + 	'</tr></thead>'
-			                	+ 	'<tbody class="locTBody">';
-							$.each(results, function(i) {
-								var jsonStr = results[i];
-								console.log(i + "번째 TR: ", jsonStr);
-			                	totalStr += '<tr scope="row" data-idx="' + jsonStr.gatherIdx + '"'
-									+ 			' data-region="'+jsonStr.gatherLocRegion+'" data-longitude="'+jsonStr.gatherLocLongitude+'"'
-									+ 			' data-latitude="' + jsonStr.gatherLocLatitude+'"'
-									+ 			' onclick="setLoc(this)">'
-									+ 	'<td class="text-center">' + jsonStr.gatherIdx +'</td>'
-									+ 	'<td class="text-center">' + jsonStr.gatherName +'</td>'
-									+	'<td>' + jsonStr.gatherLocRegion +'</td>'
-									+ '</tr>';
-							});
-							// 표 꼬리부
-							totalStr += '</tbody></table>';
-							console.log("전체 HTML: ", totalStr);
-							
-							var listTarget = document.querySelector(".modal-body");
-							listTarget.innerHTML = totalStr;
-							
-						},
-						error : function(e) {
-						console.log("실패", e);
-									}
-								});
-						});
+$(function(){
+	var page =1;
+	var size = 10;
+	 
+	$("#more-btn").click(function(){
+		console.log("1111");
+		alert("확ㅇ"); 
+		loadPlace(page,size);
+		page++;
 	});
-</script>
+	$("#showList").click(function(){ 
+		loadPlace(page,size);
+		page++;
+	}); 
+
+function loadPlace(pageValue,sizeValue){
+	$.ajax({
+		url : "${pageContext.request.contextPath}/gatherData/listPlace", 
+		type : "get",
+		data:{
+			page : pageValue,
+			size : sizeValue
+		}, 
+		dataType : "json",
+		success:function(resp){
+			
+			console.log("성공", resp);
+			var results = resp;
+			console.log(results);
+
+			// 제목 
+			document.querySelector(".modal-title").innerText = "장소를 고르세요.";
+			
+			// 내용 
+			// 표 제목부
+			var totalStr
+			    = '<table class="table table-striped">'
+			    +   '<button id="more-btn">더보기</button> ' 
+            	+ 	'<thead><tr>'
+                + 		'<th scope="col" class="text-center">순</th>'
+                + 		'<th scope="col" class="text-center">이름</th>'
+                +		'<th scope="col" class="text-center">지역</th>'
+                + 	'</tr></thead>'
+            	+ 	'<tbody class="locTBody">';
+			$.each(results, function(i) {
+				var jsonStr = results[i];
+				console.log(i + "번째 TR: ", jsonStr);
+            	totalStr += '<tr scope="row" data-idx="' + jsonStr.placeIdx + '"'
+					+ 			' data-region="'+jsonStr.placeAddress+'" data-longitude="'+jsonStr.placeLocLongitude+'"'
+					+ 			' data-latitude="' + jsonStr.placeLocLatitude+'"'
+					+ 			' onclick="setLoc(this)">'
+					+ 	'<td class="text-center">' + jsonStr.placeIdx +'</td>'
+					+ 	'<td class="text-center">' + jsonStr.placeName +'</td>'
+					+	'<td>' + jsonStr.placeAddress +'</td>'
+					+ '</tr>';
+			});
+			// 표 꼬리부
+			totalStr += '</tbody></table>';
+			console.log("전체 HTML: ", totalStr);
+			
+			var listTarget = document.querySelector(".modal-body");
+			listTarget.innerHTML = totalStr;
+			
+		},
+		error : function(e) {
+		console.log("실패", e);
+					}
+				});
+	}
+});
+</script>				
+				
+				
+
 <!-- 파일 업로드 모듈 사전 설정 -->
 <%--
 파일 업로드 모듈을 적용하기 위한 준비물
@@ -313,25 +327,31 @@ const fileSubmitAjaxPage = "${root}/gatherData/insert/";
             <!-- 모달 제목 영역 -->
             <div class="modal-header">
                 <!-- 모달 타이틀 -->
-                <h5 class="modal-title">장소를 고르세요.</h5>
-                <!-- 모달 닫기 버튼 -->
+                <h5 class="modal-title">장소를 고르세요.</h5> 
+                  
+                <!-- 모달 닫기 버튼 --> 
                 <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- 모달 본문 영역 -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-center">순</th>
-                        <th scope="col" class="text-center">이름</th>
-                        <th scope="col" class="text-center">지역</th>
+            <!-- 모달 본문 영역 --> 
+            <table class="table table-striped"> 
+        
+                <thead> 
+               
+                    <tr>   
+                        <th scope="col" class="text-center">순2</th>
+                        <th scope="col" class="text-center">이름2</th> 
+                        <th scope="col" class="text-center">지역</th> 
                     </tr>
                 </thead>
                 <tbody class="locTBody">
-                <!-- ajax로 리스트 목록이 나오는 장소 -->
+                <!-- ajax로 리스트 목록이 나오는 장소 -->  
                 </tbody>
+               
             </table>
+           
             <!-- 모달 꼬리말 영역 -->
+            
         </div>
     </div>
 </div>
@@ -475,7 +495,7 @@ data-bs-toggle="modal" data-bs-target="#modal">장소 찾기</button>
 	
 </ARTICLE>
 <!-- 페이지 영역 끝 -->
-
+ 
 
 
  

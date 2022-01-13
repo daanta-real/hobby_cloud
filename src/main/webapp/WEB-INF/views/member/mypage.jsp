@@ -63,7 +63,7 @@ window.addEventListener("load", function() {
 						<img src="https://via.placeholder.com/300x300?text=User">
 					</c:when>
 					<c:otherwise>
-						<img id="" src="profile/${memberProfileDto.memberIdx}" width="300" height="300">										
+						<img id="" src="profile/${memberProfileDto.memberIdx}" width="30%" height="30%">										
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -92,6 +92,12 @@ window.addEventListener("load", function() {
             <fieldset disabled="">
              <label class="form-label" for="disabledInput">전화번호</label>
              <input class="form-control" id="disabledInput"  value="${memberDto.memberPhone}" type="text" placeholder="" disabled="">
+             </fieldset>
+             </div>
+              <div class="form-group col-12">
+            <fieldset disabled="">
+             <label class="form-label" for="disabledInput">관심분야</label>
+             <input class="form-control" id="disabledInput"  value="${memberCategoryDto.lecCategoryName}" type="text" placeholder="" disabled="">
              </fieldset>
              </div>
               <div class="form-group col-12">

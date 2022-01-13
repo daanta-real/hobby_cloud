@@ -34,7 +34,7 @@ public class MemberDaoImpl implements MemberDao{
 
 	// 단일조회 - IDX 기준
 	@Override
-	public MemberDto get(Integer memberIdx) {
+	public MemberDto getByIdx(Integer memberIdx) {
 		return sqlSession.selectOne("member.getbyIdx", memberIdx);
 	}
 
@@ -106,12 +106,18 @@ public class MemberDaoImpl implements MemberDao{
 	}
 	// 개인정보 변경 (이메일)
 	@Override
-	public int changeEmail(MemberDto memberDto) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
+	public int changeEmail(String memberEmail, Integer memberIdx) {
 		System.out.println("changeEmail() 실행");
-		return sqlSession.update("member.changeEmail", memberDto);
+		MemberDto memberDto = sqlSession.selectOne("member.getbyIdx", memberIdx);
+		System.out.println("changeEmail() member.getbyIdx  :  "+ memberIdx);
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberIdx", memberIdx);
+		map.put("memberEmail", memberEmail);
+		System.out.println("changeEmail() memberEmail  :  "+ memberEmail);
+		return sqlSession.update("member.changeEmail", map);
 	}
 
+	
 
 	// 회원 탈퇴
 	@Override
