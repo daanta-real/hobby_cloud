@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.hobbycloud.entity.gather.GatherReplyDto;
@@ -28,6 +29,9 @@ import com.kh.hobbycloud.vo.gather.GatherReplyVO;
 import com.kh.hobbycloud.vo.gather.GatherReviewVO;
 import com.kh.hobbycloud.vo.gather.GatherVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/gatherData")
 public class GatherDataController {
@@ -138,11 +142,16 @@ public class GatherDataController {
 		System.out.println("왓ㅅ음");
 		return gatherHeadsDao.countByGender(gatherIdx);
 	}
+	@ResponseBody  
 	@PostMapping("/insert")
 	public String insert(@ModelAttribute GatherFileVO gatherFileVO,HttpSession session) throws IllegalStateException, IOException {
 		int memberIdx = (int) session.getAttribute("memberIdx");
+		log.debug("----------gatherFileVO={}",gatherFileVO);
+		log.debug("-------memberIdx={}",memberIdx);
 		gatherFileVO.setMemberIdx(memberIdx); 
 		int gatherIdx = gatherService.save(gatherFileVO);	
+		System.out.println(gatherIdx);
+		log.debug("-------aaa------gatherIdx={}",gatherIdx); 
 		return  SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/gather/detail/" + gatherIdx;
 	}
 }

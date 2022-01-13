@@ -297,7 +297,7 @@ function setLoc(el) {
 <SCRIPT TYPE="text/javascript">
 const fileImageStorePath = "${root}/gather/gatherFile/";
 const fileSubmitAjaxPage = "${root}/gatherData/insert/";
-</SCRIPT>
+</SCRIPT> 
 <!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
 <SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fileUpload.css" />
@@ -379,8 +379,8 @@ const fileSubmitAjaxPage = "${root}/gatherData/insert/";
    		<input type="text" name="keyword" class="form-control" placeholder="지역명을 입력해주세요">
   		</div>
 		<button class="btn btn-primary search-btn">장소검색</button>
-	<form action="insert" method="post" enctype="multipart/form-data" id="insert-form">
-
+	<form action="insert" class="fileUploadForm" method="post" enctype="multipart/form-data" id="insert-form">
+ 
 	<div class="mb-3 justify-content-center">
     <label for="" class="form-label">제목</label>
     <input type="text" name="gatherName" class="form-control">
@@ -457,7 +457,8 @@ data-bs-toggle="modal" data-bs-target="#modal">장소 찾기</button>
 	
 			<div class="form-row text-center">
 		 <div class="col-12 pt-3"> 
-		 <input type="button" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
+		 <input type="button" id="fileUploadForm_submitBtn" value="작성완료" class="form-btn">
+		  
         <a href="${pageContext.request.contextPath}/gather/list"  class="col-auto btn  btn-secondary mx-1 my-3">취소</a>
     </div>
 	</div>
