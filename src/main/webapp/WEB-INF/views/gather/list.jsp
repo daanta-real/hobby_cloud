@@ -200,15 +200,14 @@ window.addEventListener("load", function() {
 								</c:forEach>
 							</div>
 					</div>
- <input type="checkbox" name="gatherLocRegion" value="제주" class="form-check-input">제주도
-  <input type="checkbox" name="gatherLocRegion" value="강원" class="form-check-input">강원도
+			<div class="form-group mb-4 col-md-6 col-lg-4">
+				<label for="searchForm_memberIdx" class="form-label mb-0">회원 번호</label>
+				<input name="gatherName" id="searchForm_memberIdx" type="text" class="form-control" placeholder="제목을 입력하세요" >
+				<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
+			</div>
+			<button type="submit" class="btn btn-danger btn-sm">검색</button>
 
-
-
- <input type="text" name="gatherName">
- <button type="submit" class="btn btn-danger btn-sm">검색</button>
- 
-</form>
+ 			</form>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
