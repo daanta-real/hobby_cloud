@@ -10,6 +10,7 @@
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 마이 페이지</TITLE>
 <script type='text/javascript'>
+
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
 $('.modal').css('opacity','0').css('display','none');
@@ -46,6 +47,7 @@ $('.modal').css('opacity','0').css('display','none');
         keyboard: false
     });
 });
+
 // 라이브러리: 이벤트 버블링 막기
 function stopEvent() {
     if(typeof window.event == 'undefined') return;
@@ -92,6 +94,8 @@ $(function(){
 			    modal.toggle();
 		});
 	 });
+
+
 </script>
 </HEAD>
 <BODY>
@@ -130,7 +134,7 @@ $(function(){
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-
+		
 		<!-- 소단원 내용 -->
 		<!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
 <div id="modal" class="modal" tabindex="-1">
@@ -161,8 +165,8 @@ $(function(){
     </div>
 </div>
 </div>
-
-
+		
+       
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 			<div class="form-group col-12">
@@ -194,12 +198,12 @@ $(function(){
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
-
+		
 		<!-- 소단원 내용 -->
-
+		
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
-
+	
 </ARTICLE>
 <!-- 페이지 영역 끝 -->
 
@@ -209,5 +213,3 @@ $(function(){
 
 <!-- ************************************************ 풋터 영역 ************************************************ -->
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
-</BODY>
-</HTML>
