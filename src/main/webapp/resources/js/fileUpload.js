@@ -182,7 +182,14 @@ function removeFileNew(e) {
 ///////////////////////////////////// FORM의 최종 제출 처리 /////////////////////////////////////
 
 // 파일 저장소 정보 내용대로 <input type=file> 태그를 새로 만들어 리턴해줌
-function sendForm() {
+function sendForm(e) {
+	
+	// 이벤트 버블링 방지
+	e.stopImmediatePropagation();
+	e.stopPropagation();
+	e.preventDefault();
+	e.cancelBubble = true;
+	stopEvent();
 	
 	// formData 객체 생성: 기존 Form의 입력값을 전부 품은 객체 
 	let formData = new FormData(document.querySelector(".fileUploadForm"));
