@@ -358,7 +358,7 @@ function deleteReview(lecReviewIdxValue){
 			</form>
 			
 			<!-- 강좌 추가하기 -->
-			<a href="${pageContext.request.contextPath}/lec/check/${lecDetailVO.lecIdx}" class="btn btn-danger">강좌 신청</a>
+			<a href="${pageContext.request.contextPath}/lecMy/confirm/${lecDetailVO.lecIdx}" class="btn btn-danger">강좌 신청</a>
 		</div>
 		</nav>
 		
@@ -366,7 +366,7 @@ function deleteReview(lecReviewIdxValue){
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>강좌 상세</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
-			<input type="text" name="lecDetail" value="${lecDetailVO.lecDetail}" readonly/>
+			<div class="row md-4">${lecDetailVO.lecDetail}</div>
 			<c:choose>
 				<c:when test="${list == null}">
 				<img src="https://via.placeholder.com/300x500?text=User" width="50%" class="image">

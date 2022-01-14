@@ -59,7 +59,7 @@ public class LecMyController {
 	// 강좌 구매 실행 페이지
 	@GetMapping("/buy")
 	public String buy_execute(HttpSession session, Model model) {
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/buy (GET) 강좌 구매를 실행합니다.");
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /lecMy/buy (GET) 강좌 구매를 실행합니다.");
 
 		// 변수 정의
 		int lecIdx = (int) session.getAttribute("buyTargetLecIdx");
