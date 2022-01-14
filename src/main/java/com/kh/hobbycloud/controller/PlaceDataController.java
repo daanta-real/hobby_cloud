@@ -35,15 +35,16 @@ public class PlaceDataController {
 	public String register(@ModelAttribute PlaceFileVO placeFileVO, HttpSession session) throws IllegalStateException, IOException {
 
 			log.debug("ㅡㅡㅡ /placeData/register (장소 파일 등록 AJAX POST) 진입");
-			String memberId = (String) session.getAttribute("memberId");
-			log.debug("ㅡㅡㅡ 등록내용 memberId: {}", memberId);
 			Integer memberIdx = (Integer) session.getAttribute("memberIdx");
 			log.debug("ㅡㅡㅡ /placeData/register (장소 파일 등록 AJAX POST) memberIdx" +memberIdx);
 			placeFileVO.setMemberIdx(memberIdx);
 			log.debug("ㅡㅡㅡ 등록내용: {}", placeFileVO.getMemberIdx());
-			
+
 			session.setAttribute("placeIdx", placeFileVO.getPlaceIdx());
 			int placeIdx = placeService.save(placeFileVO);
+			log.debug("ㅡㅡㅡ /placeData/register (장소 파일 등록 AJAX POST) placeIdx" +placeIdx);
+			log.debug("------------------------------------------");
+			log.debug("-------------------------------"+SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/place/detail/" + placeIdx);
 			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/place/detail/" + placeIdx;
 	}
 	
