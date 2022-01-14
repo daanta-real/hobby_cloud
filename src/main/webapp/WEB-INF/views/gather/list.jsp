@@ -7,12 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
-<script>
-function getGender(event) {
-  document.getElementById('result').innerText = 
-    event.target.value;
-}
-</script>
+
 <script>
 	$(function() {
 		//지도 생성 준비 코드
@@ -32,7 +27,7 @@ function getGender(event) {
 				var target = e.target;
 				var targetLocation = target.value;
 				console.log("타겟 객체 및 찾아낸 값: ", target, targetLocation);
-				
+				  
 				// 주소-좌표 변환 객체를 생성합니다
 				var geocoder = new kakao.maps.services.Geocoder();
 

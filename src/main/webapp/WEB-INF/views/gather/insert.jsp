@@ -249,7 +249,7 @@ function loadPlace(pageValue,sizeValue){
 			
 			var listTarget = document.querySelector(".modal-body");
 			listTarget.innerHTML += totalStr;
-			var footerStr = '<button type="button" id="more-btn">더보기</button>';
+			var footerStr = '<button type="button" id="more-btn">더보기</button>';  
 			var footerTarget =document.querySelector(".modal-footer"); 
 			footerTarget.innerHTML = footerStr;   
 	  
