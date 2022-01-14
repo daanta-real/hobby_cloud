@@ -348,25 +348,26 @@ $(function() {
 
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
 
- 
+ <!-- 이거 같이 넣어잇으면 오류떠서 따로 srcipt분류했습니다. -->
+ <!-- 
+<script>
+$(function(){
+	const buttonArr = document.getElementsByTagName('button');
+
+	for(let i = 0; i < buttonArr.length; i++){
+	  buttonArr[i].addEventListener('click',function(e){
+		
+	    e.preventDefault(); 
+	    console.log("킄ㄹ릭한 버튼:",  e.target);
+	    document.querySelector("." + e.target.id).scrollIntoView(true);
+	    //document.querySelector('.box' + (i + 1)).scrollIntoView(true);
+	  		}  
+		});
+	}); 
+</script> 
+ -->
  
 <script>
- 	
-$(function(	){
-const buttonArr = document.getElementsByTagName('button');
-
-for(let i = 0; i < buttonArr.length; i++){
-  buttonArr[i].addEventListener('click',function(e){
-	
-    e.preventDefault(); 
-    console.log("킄ㄹ릭한 버튼:",  e.target);
-    document.querySelector("." + e.target.id).scrollIntoView(true);
-    //document.querySelector('.box' + (i + 1)).scrollIntoView(true);
-  	  }
-	}  
-});
-
-
 $(function(){
 	var gatherIdx = $("#gatherIdxValue").data("gather-idx");
 $.ajax({
@@ -449,21 +450,20 @@ var sizeR = 10;
 $(function(){ 
 	$(".moreR-btn").click(function(){
 		loadReview(pageR,sizeR,gatherIdx); 
-		console.log(pageR);
-		pageR++;   
-		console.log(pageR);  
+		pageR++;    
 	});  
 	//더보기 버튼을 강제 1회 클릭(트리거) 
 	$(".moreR-btn").click(); 
 	
 	$(".lessR-btn").click(function(){
 		$("#resultReivew").empty(); 
-		pageR=1;   
+		pageR=1;       
 		loadReview(pageR,sizeR,gatherIdx); 
+		pageR++; 
 	});
-});
+}); 
 
-
+ 
 
 $(function(){
 		//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
@@ -538,19 +538,16 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 			if(resp.length < sizeRValue && pageR==2){   
 				//게시물이 10개 이하 일 떄 page=1일 떄
 				$(".moreR-btn").hide();   
-				console.log(pageR+"page1");  
 				$(".lessR-btn").hide();  
 			}else if(resp.length <sizeRValue && pageR>2){//게시물이 10개 이하 + page는 2번 
 				$(".moreR-btn").hide(); 
-				console.log(pageR+"page2");
 				$(".lessR-btn").show();     
 			}  
 			else{ 
 				$(".moreR-btn").show();
-				console.log(pageR+"page3");  
 				$(".lessR-btn").hide();  
 			} 
-			console.log(pageR+"pageR=");  
+			  
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
 				 
@@ -678,11 +675,11 @@ $(function(){
 	}); 
 	//더보기 버튼을 강제 1회 클릭(트리거) 
 	$(".more-btn").click();
-	console.log(page); 
 	$(".less-btn").click(function(){
-		page=1; 
-		$("#result").empty(); 
-		loadList(page,size,gatherIdx); 
+		$("#result").empty();  
+		page=1;        
+		loadList(page,size,gatherIdx);  
+		page++; 
 	});
 });
 
@@ -742,12 +739,15 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 		},
 		dateType:"json",
 		success:function(resp){
-			console.log(resp.length,sizeValue); 
-			console.log("성공",resp);
-			if(resp.length < sizeValue){  
+			if(resp.length < sizeValue && page==2){   
+				//게시물이 10개 이하 일 떄 page=1일 떄
+				$(".more-btn").hide();    
+				$(".less-btn").hide();  
+			}else if(resp.length <sizeValue && page>2){//게시물이 10개 이하 + page는 2번 
 				$(".more-btn").hide(); 
-				$(".less-btn").show(); 
-			}else{
+				$(".less-btn").show();     
+			}  
+			else{ 
 				$(".more-btn").show();
 				$(".less-btn").hide();  
 			} 
