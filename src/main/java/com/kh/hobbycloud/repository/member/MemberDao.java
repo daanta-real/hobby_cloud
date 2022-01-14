@@ -59,13 +59,13 @@ public interface MemberDao {
 	//임시 비밀번호 변경
 	boolean tempPw(MemberDto memberDto, String ChangePw);
 
-	//Place 목록 조회
+	//회원 목록 조회
 	List<MemberListVO> list(MemberCriteria cri);
-	//Place 총개수
+	//회원 총개수
 	int listCount();
-	//Place 검색
+	//회원 검색
 	List<MemberListVO> listSearch(MemberSearchVO memberSearchVO);
-	//Place 페이지
+	//회원 페이지 목록
 	List<MemberListVO> listPage(int startRow, int endRow);
 
 	// *포인트 관련*
@@ -73,5 +73,11 @@ public interface MemberDao {
 	boolean pointModify(MemberDto memberDto);
 	// 특정 회원의 포인트를 특정 값으로 강제변경
 	boolean pointForceToValue(MemberDto memberDto);
+
+	List<MemberListVO> list();
+
+	List<MemberListVO> search(String column, String keyword);
+
+
 
 }

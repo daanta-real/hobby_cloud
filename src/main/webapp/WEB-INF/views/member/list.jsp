@@ -54,21 +54,6 @@ window.addEventListener("load", function() {
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
 		<!-- 소단원 내용 -->
-<form  method="post" class="mt-4">
-<!--  제목 검색:	<input type="text" name="title">  -->
- <input type="checkbox" name="placeSido" value="제주" class="form-check-input">제주도
-  <input type="checkbox" name="placeSido" value="강원" class="form-check-input">강원도
-  <input type="checkbox" name="category" value="운동" class="form-check-input">운동
-  <input type="checkbox" name="category" value="미술" class="form-check-input">미술
-   <input type="checkbox" name="category" value="음악" class="form-check-input">음악
-
-
- <input type="text" name="memberId">
- <button type="submit" class="btn btn-danger btn-sm">검색</button>
- 
-</form>
-			</div>
-		</div>
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>회원 목록</div>
 		<!-- 소단원 내용 -->
@@ -79,7 +64,6 @@ window.addEventListener("load", function() {
 						<thead>
 							<tr class="table-danger">
 								<th scope="col" class="text-center align-middle text-nowrap">번호</th>
-								<th scope="col" class="text-center align-middle text-nowrap">프로필사진</th>
 								<th scope="col" class="text-center align-middle text-nowrap">아이디</th>
 								<th scope="col" class="text-center align-middle text-nowrap">이름</th>
 								<th scope="col" class="text-center align-middle text-nowrap">주소</th>
@@ -91,7 +75,6 @@ window.addEventListener("load", function() {
 							<c:forEach var="MemberListVO" items="${list}">
 								<tr class="cursor-pointer">
 									<td class="text-center align-middle text-nowrap">${MemberListVO.memberIdx}</td>
-									<td class="text-center align-middle text-nowrap"><img src="${pageContext.request.contextPath}/member/file/${MemberListVO.memberProfileIdx}" width="20%"></td>
 									<td class="text-center align-middle text-nowrap"><a href="${pageContext.request.contextPath}/member/mypage/${MemberListVO.memberIdx}">${MemberListVO.memberNick}</a></td>
 									<td class="text-center align-middle text-nowrap">${MemberListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">${MemberListVO.memberRegistered}</td>
@@ -103,24 +86,42 @@ window.addEventListener("load", function() {
 					</table>
 				</div>
 			</div>
+			</div>
+			
+			<!-- 검색창 -->
+			<form method="post" class="mt-5">
+				<div class="text-center">
+				<select name="column">
+					<option value="member_id" selected>회원 아이디</option>
+					<option value="member_nick">회원 닉네임</option>
+					<option value="member_grade_name">회원 등급</option>
+					<option value="lec_category_name">관심분야</option>
+				</select>
+				
+				<input type="search" name="keyword" placeholder="검색어 입력" required >
+				
+				<button type="submit" class="btn btn-danger btn-sm">검색</button>
+				</div>	
+			</form>
+		
+		
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
 			<button type="button"class="col-auto btn btn-sm btn-outline-primary">목록으로</button>
-  <ul class="col-auto pagination pagination-sm m-0">
-    <c:if test="${pageMaker.prev}">
-    	<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
-    	> ◁ </a></li>
-    </c:if> 
-
-    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-    	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
-    </c:forEach>
-
-    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
-    </c:if> 
-  </ul>
-  <a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
-</nav>
+			  <ul class="col-auto pagination pagination-sm m-0">
+			    <c:if test="${pageMaker.prev}">
+			    	<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
+			    	> ◁ </a></li>
+			    </c:if> 
+			
+			    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+			    	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+			    </c:forEach>
+			
+			    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+			    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+			    </c:if> 
+			  </ul>
+			</nav>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
 	

@@ -30,7 +30,6 @@ import com.kh.hobbycloud.vo.place.PlaceCriteria;
 import com.kh.hobbycloud.vo.place.PlaceFileVO;
 import com.kh.hobbycloud.vo.place.PlaceListVO;
 import com.kh.hobbycloud.vo.place.PlacePageMaker;
-import com.kh.hobbycloud.vo.place.PlaceSearchVO;
 import com.kh.hobbycloud.vo.place.PlaceVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -50,28 +49,43 @@ public class PlaceController {
 	// 내 장소 목록 페이지
 	@GetMapping("/list")
 	public String list(Model model, PlaceCriteria cri) {
-		model.addAttribute("list", placeService.list(cri));
+		log.debug("ㅡㅡㅡ 장소 목록조회 시작");
+		
+		List<PlaceListVO> placeListVO = placeService.list(cri);
+		model.addAttribute("list", placeListVO);
 		
 		PlacePageMaker pageMaker = new PlacePageMaker();
+		
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(placeService.listCount());
+		int count = placeService.listCount();
+		log.debug("장소 목록 수: {}", count);
+		
+		pageMaker.setTotalCount(count);
+		log.debug("pageMaker 정보: {}", pageMaker);
 		model.addAttribute("pageMaker",pageMaker);
 		
-		System.out.println(placeService.list(cri));
+		log.debug("장소 목록으로 이동");
 		return "place/list";
 	}
 	
-	// 검색결과 목록 페이지
+	//검색
 	@PostMapping("/list")
-	public String search(@ModelAttribute PlaceSearchVO placeSearchVO, Model model) {
-
-		log.debug("category={}", placeSearchVO);
-		List<PlaceListVO> list = placeDao.listSearch(placeSearchVO);
-		
-
-		model.addAttribute("list",list);
+	public String search(@RequestParam String column, @RequestParam String keyword, Model model) {
+		model.addAttribute("list",placeDao.search(column, keyword));
 		return "place/list";
 	}
+	
+//	// 검색결과 목록 페이지
+//	@PostMapping("/list")
+//	public String search(@ModelAttribute PlaceSearchVO placeSearchVO, Model model) {
+//
+//		log.debug("category={}", placeSearchVO);
+//		List<PlaceListVO> list = placeDao.listSearch(placeSearchVO);
+//		
+//
+//		model.addAttribute("list",list);
+//		return "place/list";
+//	}
 	
 	// 장소 등록 폼 페이지
 	@GetMapping("/register")
