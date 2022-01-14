@@ -110,7 +110,28 @@
 				<bean class="com.kh.hobbycloud.interceptor.MemberInterceptor"></bean>
 			</mvc:interceptor>
 			 
+			 <!-- 관리자만 가능한 페이지 -->
+			 <mvc:interceptor>
+			 	<mvc:mapping path="member/list"/>
+			 	<mvc:mapping path="member/search"/>
+			 	<bean class="com.kh.hobbycloud.interceptor.AdminInterceptor"></bean>
+			 </mvc:interceptor>
 			
+			<!-- 땅주인과 관리자만 가능한 페이지 -->
+			<mvc:interceptor>
+			 	<mvc:mapping path="place/register"/>
+			 	<mvc:mapping path="place/update/**"/>
+			 	<mvc:mapping path="place/delete/**"/>
+			 	<bean class="com.kh.hobbycloud.interceptor.OwnerInterceptor"></bean>
+			 </mvc:interceptor>
+			 
+			 <!-- 강사와 관리자만 가능한 페이지 -->
+			 <mvc:interceptor>
+			 	<mvc:mapping path="tutor/insert"/>
+			 	<mvc:mapping path="tutor/delete"/>
+			 	
+			 	<bean class="com.kh.hobbycloud.interceptor.TeacherInterceptor"></bean>
+			 </mvc:interceptor>
 			
 		</mvc:interceptors>
 	 	
