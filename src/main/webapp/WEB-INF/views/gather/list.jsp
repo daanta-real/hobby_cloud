@@ -131,8 +131,7 @@ function getGender(event) {
 		
 	});
 </script>
-=======
->>>>>>> refs/remotes/origin/main
+
 <style>
  .tableImg {
     max-width: 7rem;
@@ -143,16 +142,15 @@ function getGender(event) {
 
 </style>
 
->>>>>>> branch 'junsung' of https://github.com/daanta-real/hobby_cloud
+
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<<<<<<< HEAD
+
 <TITLE>HobbyCloud - 소모임 목록페이지</TITLE>
-=======
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
 <style>
@@ -164,7 +162,6 @@ function getGender(event) {
 }
 </style>
 
->>>>>>> refs/remotes/origin/main
 <script type='text/javascript'>
 
 function getGender(event) {
@@ -337,9 +334,9 @@ window.addEventListener("load", function() {
 						</div>
 						<div class="form-group mb-4 col-6">
 						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
-							<div class="btn-group w-100">
+							<div class="btn-group w-100"> 
 								<c:forEach var="lecCategory" items="${lecCategoryList}">
-									<input name="gatherCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="${lecCategory}" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
+									<input name="category" type="checkbox" value="${lecCategory}" class="btn-check" id="${lecCategory}" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
 									${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get()}
 									<label class="btn btn-outline-primary" for="${lecCategory}">${lecCategory}</label>
 								</c:forEach>
@@ -402,9 +399,8 @@ window.addEventListener("load", function() {
 				</div>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-			<a href="${pageContext.request.contextPath}/gather/list" type="button" class="col-auto btn btn-sm btn-outline-primary">목록으로</a>
+		<a href="${pageContext.request.contextPath}/gather/list" type="button" class="col-auto btn btn-sm btn-outline-primary">목록으로</a>
   <ul class="col-auto pagination pagination-sm m-0">
-<<<<<<< HEAD
     <c:if test="${pageMaker.prev}">  
     	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"> &laquo; </a></li>
     </c:if> 
@@ -412,16 +408,6 @@ window.addEventListener("load", function() {
     <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
     	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
     </c:forEach>
-=======
-	<c:if test="${pageMaker.prev}">
-		<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
-		> ◁ </a></li>
-	</c:if> 
-
-	<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-		<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
-	</c:forEach>
->>>>>>> refs/remotes/origin/main
 
 	<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 		<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
