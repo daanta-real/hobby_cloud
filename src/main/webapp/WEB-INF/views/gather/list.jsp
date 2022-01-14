@@ -337,7 +337,7 @@ window.addEventListener("load", function() {
 							</div>
 					</div>
 			<div class="form-group mb-4 col-md-6 col-lg-4">
-				<label for="searchForm_memberIdx" class="form-label mb-0">회원 번호</label>
+				<label for="searchForm_memberIdx" class="form-label mb-0">소모임 제목</label> 
 				<input name="gatherName" id="searchForm_memberIdx" type="text" class="form-control" placeholder="제목을 입력하세요" >
 				<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 			</div>
