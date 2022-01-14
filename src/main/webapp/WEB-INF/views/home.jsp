@@ -70,20 +70,22 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 		<div class="container">
-		<div class="card border-primary mb-3" style="max-width: 20rem;">
+		<nav class="row p-0 pt-4 d-flex justify-content-center">
+		<div class="card border-primary mb-3 w-50">
              <div class="card-header">Header</div>
                 <div class="card-body">
                    <h4 class="card-title">Primary card title</h4>
                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                  </div>
               </div>
-          <div class="card border-primary mb-3" style="max-width: 20rem;">
+          <div class="card border-primary mb-3 w-50">
              <div class="card-header">Header</div>
                 <div class="card-body">
                    <h4 class="card-title">Primary card title</h4>
                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                  </div>
               </div>
+              </nav>
            </div>
            </div>
            
