@@ -411,7 +411,7 @@ public class MemberController {
 		System.out.println("pwFindMail memberDto : " + memberDto);
 		System.out.println("memberDto"+ memberDto.getMemberNick());
 		System.out.println("originalPassword"+ originalPassword);
-		System.out.println("hashedPassword"+ hashedPassword);
+		System.out.println("hashedPassword"+ hashedPassword); 
 		
 		MemberDto pwFind = memberService.pwFindMail(memberDto.getMemberId(), memberDto.getMemberNick(), memberDto.getMemberEmail());
 		System.out.println("pwFind : " + pwFind);
