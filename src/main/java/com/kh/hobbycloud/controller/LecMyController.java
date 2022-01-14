@@ -49,12 +49,12 @@ public class LecMyController {
 		// lecIdx를 세션에 저장 (세션에 저장하는 게 좋을 것 같음 - 정보 변조 방지)
 		session.setAttribute("buyTargetLecIdx", lecIdx);
 
-		return "pay/confirm_buy";
+		return "lecMy/confirm_buy";
 
 	}
 
 	// 강좌 구매 실행 페이지
-	@GetMapping("/buy")
+	@GetMapping("/confirm_buy")
 	public String buy_execute(HttpSession session, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/buy (GET) 강좌 구매를 실행합니다.");
 
@@ -107,7 +107,7 @@ public class LecMyController {
 		// 세션 비우기
 		session.removeAttribute("buyTargetLecIdx");
 
-		return "pay/success_buy";
+		return "lecMy/success_buy";
 	}
 
 }
