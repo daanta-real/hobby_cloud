@@ -218,16 +218,17 @@ $(function() {
 			<c:when test="${isLogin}">
 				<a href="${pageContext.request.contextPath}/gather/insert" class="col-auto btn btn-sm btn-outline-primary mx-1">글 작성</a>
 			</c:when>
-		</c:choose>
-		<c:set var="isWriter" value="${memberIdx == GatherVO.memberIdx}"/>
+		</c:choose> 
+		<c:set var="isWriter" value="${GatherVO.memberIdx eq memberIdx}"/>  
+	 
 		<c:choose>
-			<c:when test="isWriter">
+			<c:when test="${isWriter}"> 
 				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}"
 					class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
 					class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
 			</c:when>
-		</c:choose>
+		</c:choose> 
 	</nav>
 
 <!-- 댓글 내역 -->
@@ -322,8 +323,7 @@ $(function() {
 		</div>
 		<div class="card-body position-relative p-1 px-2">   
 			<div class="card-text p-1 px-3 gatherReviewDetail">{{gatherReviewDetail}}</div>
-			<div class="floatRightTop position-absolute top-0 end-0 p-1">
-				<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn {{isWriter}}" data-gatherreview-idx="{{gatherReviewIdx}}">수정</button>
+			<div class="floatRightTop position-absolute top-0 end-0 p-1"> 
 				<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-gatherreview-idx="{{gatherReviewIdx}}">삭제</button>
 			</div>
 		</div>
