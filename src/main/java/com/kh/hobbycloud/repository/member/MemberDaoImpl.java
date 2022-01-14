@@ -194,14 +194,19 @@ public class MemberDaoImpl implements MemberDao{
 		int result=sqlSession.update("member.tempPw",param);
 		return result>0;
 	}
+	
+	@Override
+	public List<MemberListVO> list() {
+		return sqlSession.selectList("member.list");
+	}	
 
 	@Override
 	public List<MemberListVO> list(MemberCriteria cri) {
-		return sqlSession.selectList("member.list");
+		return sqlSession.selectList("member.listPage", cri);
 	}
 
 	@Override
-	public int listCount() {
+	public int listCount() {		
 		return sqlSession.selectOne("member.listCount");
 	}
 
@@ -233,6 +238,14 @@ public class MemberDaoImpl implements MemberDao{
 	public boolean pointForceToValue(MemberDto memberDto) {
 		int result = sqlSession.update("member.pointForceToValue", memberDto);
 		return result > 0;
+	}
+
+	@Override
+	public List<MemberListVO> search(String column, String keyword) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("column", column);
+		param.put("keyword", keyword);
+		return sqlSession.selectList("member.search", param);
 	}
 
 }

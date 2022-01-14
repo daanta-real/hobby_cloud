@@ -183,11 +183,11 @@
 		 (select distinct member_idx, min(member_Profile_idx) as member_Profile_idx
 		 from member_Profile group by member_idx) f 
 		on  f.member_idx = m.member_idx 
+		 left outer join member m on f.member_idx = m.member_idx
 		 order by m.member_idx desc
 		  )TMP
 		) where rn between #{rowStart} and #{rowEnd}
-	</select>
-	
+	</select>	
 
 	<!-- 상세 조회 -->	
 <!--   	<select id="get" resultType="MemberListVO">
@@ -249,5 +249,15 @@
 		WHERE
 			member_idx = #{memberIdx}
 	</update>
+	
+	<!-- 검색 -->
+	<select id="search" parameterType="map" resultType="MemberListVO">
+	select * 
+    from member m 
+    left outer join
+    member_category c
+    on  c.member_idx = m.member_idx 
+    where instr(${column},#{keyword})> 0
+	</select>
 
 </mapper>
