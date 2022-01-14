@@ -362,7 +362,7 @@ for(let i = 0; i < buttonArr.length; i++){
     console.log("킄ㄹ릭한 버튼:",  e.target);
     document.querySelector("." + e.target.id).scrollIntoView(true);
     //document.querySelector('.box' + (i + 1)).scrollIntoView(true);
-  
+  	  }
 	}  
 });
 
