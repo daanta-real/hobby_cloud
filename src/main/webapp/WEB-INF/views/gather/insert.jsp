@@ -330,7 +330,7 @@ window.addEventListener("load", function() {
 	<!-- 소단원 내용 -->
 	<div class="row p-sm-2 mx-1 mb-5 container justify-content-center">
 		<!-- 글내용 -->
-		<form action="insert" class="fileUploadForm" method="post" enctype="multipart/form-data" id="insert-form">
+		<form class="fileUploadForm" method="post" enctype="multipart/form-data" id="insert-form" onsubmit=";">
 			<div class="row mb-4">
 				<label for="" class="form-label">제목</label>
 				<input type="text" name="gatherName" class="form-control">

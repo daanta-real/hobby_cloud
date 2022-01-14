@@ -359,7 +359,7 @@ function setLoc(el) {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form name="lecForm" method="post" class="row container d-flex justify-content-center fileUploadForm">
+				<form name="lecForm" method="get" class="row container d-flex justify-content-center fileUploadForm" onsubmit=";">
 					<div class="form-group row mb-4">
 						<label>강좌 이름</label>
 						<input type="text" name="lecName" required class="form-input p-1 border-radius-all-25" />

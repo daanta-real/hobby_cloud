@@ -2,7 +2,9 @@ package com.kh.hobbycloud.repository.notice;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -58,6 +60,29 @@ public class NoticeFileDaoImpl implements NoticeFileDao{
 		return data;
 		
 	}
+
+	@Override//파일삭제
+	public boolean delete(int noticeIdx) {
+		int count = sqlSession.delete("noticeFile.delete",noticeIdx);
+		return count > 0;
+	}
+
+	@Override//실시간삭제
+	public boolean deleteAjax(int noticeFileIdx) {
+		int count = sqlSession.delete("noticeFile.deleteAjax",noticeFileIdx);
+		return count > 0;
+	}
+
+	@Override
+	public boolean deleteList(int noticeIdx, List<String> list) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("noticeIdx", noticeIdx);
+		map.put("list", list);
+		int count = sqlSession.delete("noticeFile.deleteList", map);
+		return count > 0;
+	}
+
+	
 
 	
 

@@ -87,32 +87,11 @@ const fileSubmitAjaxPage = "${root}/noticeData/insert/";
       <textarea class="form-control" name="noticeDetail" id="exampleTextarea" rows="15" style="resize:none"
       ></textarea>
     </div>
-    <label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>
-						<!-- 드롭존 겸 파일리스트 -->
-						<div id="fileDropZoneBox" class="w-100 p-0">
-							<c:choose>
-								<c:when test="${fileList != null and fileList.size() > 0}">
-									<div id="fileDropZone" class="
-											w-100 fs-4 rounded text-dark
-											border-1 border-secondary p-2">
-									</div>
-								</c:when>
-								<c:otherwise>
-									<div id="fileDropZone" class="
-											w-100 fs-4 border-5 border-light rounded p-5
-											justify-content-center align-items-center
-											text-dark bg-secondary bg-gradient">
-											<div id="fileDropZoneDefaultText" class="text-center">파일을 여기에 드래그하여 첨부해 보세요.</div>
-									</div>
-								</c:otherwise>
-							</c:choose>
-						</div>
-					</div>
-    <!-- 파일 등록 변화전 -->
-    <!-- <div class="form-group justify-content-center">
+    
+    <div class="form-group justify-content-center">
       <label for="formFile" class="form-label mt-4"></label>
       <input class="form-control" type="file" id="formFile" name="attach" enctype="multipart/form-data" multiple>
-    </div> -->
+    </div>
     <div class="form-row text-center">
     <div class="col-12 pt-3">
         <a href="${pageContext.request.contextPath}/notice/list"
