@@ -174,8 +174,8 @@ function setLoc(el) {
 	// 추출된 값을 각 INPUT 태그에 넣어주기
 //	 document.querySelector("input[name='loc_idx']"	  ).value = data.idx;
 	document.querySelector("input[name='gatherLocRegion']"   ).value = data.region;
-	document.querySelector("input[name='gatherLocLatitude']").value = data.longitude;
-	document.querySelector("input[name='gatherLocLongitude']" ).value = data.latitude;
+	document.querySelector("input[name='gatherLocLongitude']").value = data.longitude;
+	document.querySelector("input[name='gatherLocLatitude']" ).value = data.latitude;
 	
 	// 모달 토글
 	modal.toggle();
