@@ -143,6 +143,9 @@ public class LecController {
 	public String detail(@PathVariable int lecIdx, HttpSession session, Model model) {
 		log.debug("==================== /lec/edit?" + lecIdx + " (강좌 파일 상세보기 GET) 진입");
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
+		lecDetailVO.setLecDetail(
+			lecDetailVO.getLecDetail().replaceAll("\n", "<br/>")
+		);
 
 		List<LecFileDto> list = lecFileDao.getListByLecIdx(lecIdx);
 		model.addAttribute("lecDetailVO", lecDetailVO);
