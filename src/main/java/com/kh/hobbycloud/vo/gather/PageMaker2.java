@@ -13,7 +13,6 @@ public class PageMaker2 {
 	private boolean prev;
 	private boolean next;
 	private int displayPageNum = 10;
-	
 	private CriteriaSearch cri;
 
 	

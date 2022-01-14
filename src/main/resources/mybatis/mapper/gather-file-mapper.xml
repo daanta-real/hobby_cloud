@@ -37,4 +37,17 @@
 	delete from gather_file where gather_file_idx=#{gatherFileIdx}
 	</delete>
 	
+	<delete id="deleteList" parameterType="map">
+		DELETE FROM
+			gather_file
+		WHERE
+			gather_idx = #{gatherIdx}
+			<if test="list != null">
+				AND gather_file_idx IN
+				<foreach collection="list" item="one" open="(" close=")" separator=",">#{one}</foreach>
+			</if>
+			
+	</delete>
+	
+	
 </mapper>

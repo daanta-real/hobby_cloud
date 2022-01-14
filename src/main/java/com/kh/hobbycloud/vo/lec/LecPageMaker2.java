@@ -6,19 +6,18 @@ import org.springframework.web.util.UriComponentsBuilder;
 import lombok.Data;
 
 @Data
-public class LecPageMaker {
+public class LecPageMaker2 {
 	private int totalCount;
 	private int startPage;
 	private int endPage;
 	private boolean prev;
 	private boolean next;
 	private int displayPageNum = 10;
-	private LecCriteria cri;
-	private LecCriteriaSearch cri2;
+	private LecCriteriaSearch cri;
 	
 	
 	
-	public void setCri(LecCriteria cri) {
+	public void setCri(LecCriteriaSearch cri) {
 		this.cri = cri;
 	}
 	
@@ -51,7 +50,7 @@ public class LecPageMaker {
 		return displayPageNum;
 	}
 	
-	public LecCriteria getCri() {
+	public LecCriteriaSearch getCri() {
 		return cri;
 	}
 	 

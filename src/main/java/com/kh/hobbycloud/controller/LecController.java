@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,10 +33,11 @@ import com.kh.hobbycloud.service.lec.LecCartService;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecCartVO;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
+import com.kh.hobbycloud.vo.lec.LecCriteriaSearch;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
-import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecPageMaker;
+import com.kh.hobbycloud.vo.lec.LecPageMaker2;
 import com.kh.hobbycloud.vo.lec.LecSearchVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -78,15 +80,49 @@ public class LecController {
 		return "lec/list";
 	}
 
-	//목록(검색 가능)
-	@RequestMapping("/list")
-	public String search(@ModelAttribute LecSearchVO vo, Model model) {
-		log.debug("==================렉서치VO={}", vo);
-		List<LecListVO> listSearch = lecDao.listSearch(vo);
-		log.debug("===============listSearch{}", listSearch);
-		model.addAttribute("listSearch", listSearch);
+	// 검색결과 목록 페이지 
+	@PostMapping("/list")
+	public String search(@ModelAttribute LecCriteriaSearch cri, Model model) {
+
+		LecSearchVO lecSearchVO = new LecSearchVO();		
+		lecSearchVO.setLecIdx(cri.getLecIdx());
+		lecSearchVO.setLecCategoryName(cri.getLecCategoryName());
+		lecSearchVO.setLecName(cri.getLecName());
+		lecSearchVO.setMemberNick(cri.getMemberNick());
+		lecSearchVO.setLecLocRegion(cri.getLecLocRegion());
+		lecSearchVO.setMinPrice(cri.getMinPrice());
+		lecSearchVO.setMaxPrice(cri.getMaxPrice());
+		lecSearchVO.setMinCount(cri.getMinCount());
+		lecSearchVO.setMaxCount(cri.getMaxCount());
+		lecSearchVO.setMinConCount(cri.getMinConCount());
+		lecSearchVO.setMaxConCount(cri.getMaxConCount());
+		
+		model.addAttribute("lecCategoryList", lecCategoryDao.select());
+		model.addAttribute("listSearch",lecService.listBy(cri));
+		int count = lecService.listCountBy(lecSearchVO); 	
+		LecPageMaker2 lecPageMaker2 = new LecPageMaker2();	
+		lecPageMaker2.setCri(cri);		
+		lecPageMaker2.setTotalCount(count);	
+		model.addAttribute("pageMaker", lecPageMaker2);
+	
+		
 		return "lec/list";
 	}
+	
+	
+	
+	
+	
+	//목록(검색 가능)
+//	@PostMapping("/list")
+//	public String search(@ModelAttribute LecSearchVO vo, Model model) {
+//		model.addAttribute("lecCategoryList", lecCategoryDao.select());
+//		log.debug("==================렉서치VO={}", vo);
+//		List<LecListVO> listSearch = lecDao.listSearch(vo);
+//		log.debug("===============listSearch{}", listSearch);
+//		model.addAttribute("listSearch", listSearch);
+//		return "lec/list";
+//	}
 
 
 	//강좌 등록

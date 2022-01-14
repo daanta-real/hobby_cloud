@@ -13,6 +13,8 @@
 <TITLE>HobbyCloud - 강좌 목록</TITLE>
 <style type="text/css">
 	li {list-style: none; float: left; padding: 6px;}
+	.flex-wrapper { flex-wrap:wrap; }
+	.flex-wrapper > label { max-width:fit-content; min-width:5rem; min-height:3rem; display:flex; justify-content:center; align-items:center; }
 </style>
 </HEAD>
 <BODY>
@@ -57,53 +59,55 @@
 					</div>
 					<div class="form-group mb-4 col-lg-12">
 						<label for=searchForm_lecLocRegion class="form-label mb-0 d-block">지역</label>
-						<div class="btn-group w-100">
+						<div class="btn-group w-100 flex-wrapper">
 							<input name="lecLocRegion" type="checkbox" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Seoul">서울</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Seoul">서울</label>
 							<input name="lecLocRegion" type="checkbox" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Gyeonggi">경기</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Gyeonggi">경기</label>
 							<input name="lecLocRegion" type="checkbox" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Busan">부산</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Busan">부산</label>
 							<input name="lecLocRegion" type="checkbox" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Incheon">인천</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Incheon">인천</label>
 							<input name="lecLocRegion" type="checkbox" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Daegu">대구</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Daegu">대구</label>
 							<input name="lecLocRegion" type="checkbox" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Daejeon">대전</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Daejeon">대전</label>
 							<input name="lecLocRegion" type="checkbox" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Gwangju">광주</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Gwangju">광주</label>
 							<input name="lecLocRegion" type="checkbox" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Ulsan">울산</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Ulsan">울산</label>
 							<input name="lecLocRegion" type="checkbox" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Sejong">세종</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Sejong">세종</label>
 							<input name="lecLocRegion" type="checkbox" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Gangwon">강원</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Gangwon">강원</label>
 							<input name="lecLocRegion" type="checkbox" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Jeju">제주</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Jeju">제주</label>
 							<input name="lecLocRegion" type="checkbox" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Chungcheongbuk">충북</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Chungcheongbuk">충북</label>
 							<input name="lecLocRegion" type="checkbox" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Chungcheongnam">충남</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Chungcheongnam">충남</label>
 							<input name="lecLocRegion" type="checkbox" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Jeollabuk">전북</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Jeollabuk">전북</label>
 							<input name="lecLocRegion" type="checkbox" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Jeollanam">전남</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Jeollanam">전남</label>
 							<input name="lecLocRegion" type="checkbox" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Gyeongsangbuk">경북</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Gyeongsangbuk">경북</label>
 							<input name="lecLocRegion" type="checkbox" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary" for="Gyeongsangnam">경남</label>
+							<label class="btn btn-outline-primary text-nowrap" for="Gyeongsangnam">경남</label>
 						</div>
 						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 					</div>
 					<!-- 카테고리 체크박스 부분인데 지금 제대로 구현이 안됌 -->
 					<div class="form-group mb-4 col-6">
 						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
-							<div class="btn-group w-100">
-								<c:forEach var="lecCategory" items="${lecCategoryList}">
-									<input name="lecCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="category" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
-									<label class="btn btn-outline-primary" for="category">${lecCategory}</label>
-								</c:forEach>
-							</div>
+						<div class="btn-group w-100 flex-wrapper">
+							<c:forEach var="lecCategory" items="${lecCategoryList}" varStatus="status">
+								<input name="lecCategoryName" type="checkbox" value="${lecCategory}" class="btn-check"
+									id="category${status.count}" autocomplete="off"
+									${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
+								<label class="btn btn-outline-primary text-nowrap" for="category${status.count}">${lecCategory}</label>
+							</c:forEach>
+						</div>
 					</div>
 					<div class="form-group mb-4 col-12">
 						<label for="searchForm_lecName" class="form-label mb-0">강좌 이름</label>
@@ -168,7 +172,7 @@
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 결과</div>
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>강좌 목록</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="scrollXEnabler">
@@ -178,6 +182,7 @@
 							<tr class="table-danger">
 								<th scope="col" class="text-center align-middle text-nowrap">강좌 번호</th>
 								<th scope="col" class="text-center align-middle text-nowrap">카테고리</th>
+								<th scope="col" class="text-center align-middle text-nowrap">사진</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강좌 이름</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강사</th>
 								<th scope="col" class="text-center align-middle text-nowrap">수강료</th>
@@ -194,18 +199,19 @@
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/file/${lecListVO.lecFileIdx}" width="20%"></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecName}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${lecListVO.lecPrice}" pattern="#,###" /></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecContainsCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecHeadCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecLocRegion}</td>
+									<c:if test="${memberGrade == admin}">
 									<td class="text-center align-middle text-nowrap">
-										<c:if test="${memberGrade == admin}">
 											<a href="edit/${lecListVO.lecIdx}">수정</a>
 											<a href="delete/${lecListVO.lecIdx}">삭제</a>
-										</c:if>
 									</td>
+									</c:if>
 								</tr>
 							</c:forEach>
 							<c:forEach var="lecListVO" items="${listSearch}">
@@ -232,10 +238,24 @@
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
 				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/list';">전체 목록</a></button>
+				<ul class="col-auto pagination pagination-sm m-0">
+				    <c:if test="${pageMaker.prev}">
+				    	<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
+				    	> ◁ </a></li>
+				    </c:if> 
+				
+				    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+				    	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+				    </c:forEach>
+				
+				    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+				    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+				    </c:if> 
+				</ul>
 				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/register';">신규 강좌 추가</a></button>
 			</nav>
 		</div>
-
+		
 
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
@@ -247,25 +267,7 @@
 </DIV></SECTION>
 <!-- 본문 대구역 끝 -->
 
-<nav class="row pt-4">
-  <ul class="pagination justify-content-center">
-    <c:if test="${pageMaker.prev}">
-    	<li class="page-item "><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}">&laquo;</a></li>
-    </c:if> 
 
-    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-<!--     
-만약에 현재페이지면 *미완성*
-<li class="page-item active"><a class="page-link" href="#">1</a></li>
- -->
-    	<li class="page-item"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
-    </c:forEach>
-
-    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
-    </c:if> 
-  </ul>
-</nav>
 
 <!-- ************************************************ 풋터 영역 ************************************************ -->
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
