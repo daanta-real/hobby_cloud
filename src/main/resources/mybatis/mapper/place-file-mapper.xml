@@ -44,7 +44,7 @@
 	<select id="getByPlaceFileIdx" parameterType="int" resultType="placeFileDto">
 		SELECT * FROM place_file
 		WHERE place_file_idx = #{placeFileIdx}
-	</select>	
+	</select>	 
 	
 	<!--삭제 -->
 	<delete id="delete" parameterType="int">
