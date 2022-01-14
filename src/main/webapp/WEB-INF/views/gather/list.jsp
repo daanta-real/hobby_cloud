@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
@@ -130,6 +131,8 @@ function getGender(event) {
 		
 	});
 </script>
+=======
+>>>>>>> refs/remotes/origin/main
 <style>
  .tableImg {
     max-width: 7rem;
@@ -140,16 +143,117 @@ function getGender(event) {
 
 </style>
 
+>>>>>>> branch 'junsung' of https://github.com/daanta-real/hobby_cloud
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
+<<<<<<< HEAD
 <TITLE>HobbyCloud - 소모임 목록페이지</TITLE>
+=======
+<TITLE>HobbyCloud - 마이 페이지</TITLE>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
+<style>
+ .tableImg {
+	max-width: 7rem;
+	max-height: 7rem;
+	width: 100%;
+	object-fit: cover;
+}
+</style>
+
+>>>>>>> refs/remotes/origin/main
 <script type='text/javascript'>
 
+function getGender(event) {
+    document.getElementById('result').innerText = 
+    event.target.value;
+}
+	
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
+
+	//지도 생성 준비 코드
+	var container = document.querySelector("#map");
+	var options = {
+		center : new kakao.maps.LatLng(37.5339851357212, 126.897094049199),
+		level : 8
+	};
+	//지도 생성 코드
+	var map = new kakao.maps.Map(container, options);
+	// 마커의 위치 , 내용을 가지고 있는 객체 배열입니다
+	var positions = [
+	];
+	var markers = [];
+	
+	for (var i = 0; i < $(".fgTitle").length; i++) {
+		let title = $(".fgTitle").eq(i).val();
+		let latti = Number($(".fgLongitude").eq(i).val());
+		let longdi = Number($(".fgLatitude").eq(i).val());
+
+	
+		positions.push({
+			content : title ,
+			latlng : new kakao.maps.LatLng(latti,longdi)
+		});			
+	}
+	
+	for (var i = 0; i < positions.length; i++) {
+		addMarker(positions[i]);
+		
+	}
+	//마커 생성 함수 + 클릭 이벤트 추가 함수 
+	function addMarker(position){
+		var marker = new kakao.maps.Marker({
+			map : map, // 마커를 표시할 지도
+			position : position.latlng
+		
+		});
+		
+		// 마커에 표시할 인포윈도우를 생성합니다 
+		var infowindow = new kakao.maps.InfoWindow({
+				content : position.content
+			// 인포윈도우에 표시할 내용
+			});
+		
+		kakao.maps.event.addListener(marker, 'click', function() {
+
+			var lat = marker.getPosition().getLat();
+			var lng = marker.getPosition().getLng();
+			setCenter(lat,lng);
+		});
+		// 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+		// 이벤트 리스너로는 클로저를 만들어 등록합니다 
+		// for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+		kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(
+				map, marker, infowindow));
+		kakao.maps.event.addListener(marker, 'mouseout',
+				makeOutListener(infowindow));
+		
+	}
+	// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+	function makeOverListener(map, marker, infowindow) {
+		return function() {
+			infowindow.open(map, marker);
+		};
+	}
+	// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+	function makeOutListener(infowindow) {
+		return function() {
+			infowindow.close();
+		}; 
+	}
+	
+ 	function setCenter(lat,lng) {			
+		
+		var moveLatLon = new kakao.maps.LatLng(lat,lng);
+		map.setLevel(3);
+		// 지도 중심을 이동 시킵니다
+		map.setCenter(moveLatLon);
+	}
+ 	
 });
 
 </script>
@@ -300,6 +404,7 @@ window.addEventListener("load", function() {
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
 			<a href="${pageContext.request.contextPath}/gather/list" type="button" class="col-auto btn btn-sm btn-outline-primary">목록으로</a>
   <ul class="col-auto pagination pagination-sm m-0">
+<<<<<<< HEAD
     <c:if test="${pageMaker.prev}">  
     	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"> &laquo; </a></li>
     </c:if> 
@@ -307,10 +412,20 @@ window.addEventListener("load", function() {
     <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
     	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
     </c:forEach>
+=======
+	<c:if test="${pageMaker.prev}">
+		<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
+		> ◁ </a></li>
+	</c:if> 
 
-    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
-    </c:if> 
+	<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+		<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+	</c:forEach>
+>>>>>>> refs/remotes/origin/main
+
+	<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+		<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+	</c:if> 
   </ul>
      
   <c:set var="isLogin" value="${memberIdx != null}"/> 
