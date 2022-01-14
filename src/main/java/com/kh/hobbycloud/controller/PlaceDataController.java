@@ -1,5 +1,7 @@
 package com.kh.hobbycloud.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,38 +31,44 @@ public class PlaceDataController {
 	@Autowired private String CONTEXT_NAME; // 환경변수로 설정한 사용자 콘텍스트명
 	
 	@ResponseBody
-	@PostMapping("/save")
-	public String register(@ModelAttribute PlaceFileVO PlaceFileVO, HttpSession session) {
-		try {
-			
+	@PostMapping("/register")
+	public String register(@ModelAttribute PlaceFileVO placeFileVO, HttpSession session) throws IllegalStateException, IOException {
+
 			log.debug("ㅡㅡㅡ /placeData/register (장소 파일 등록 AJAX POST) 진입");
-			log.debug("ㅡㅡㅡ 등록내용: {}", PlaceFileVO);
+			String memberId = (String) session.getAttribute("memberId");
+			log.debug("ㅡㅡㅡ 등록내용 memberId: {}", memberId);
+			Integer memberIdx = (Integer) session.getAttribute("memberIdx");
+			log.debug("ㅡㅡㅡ /placeData/register (장소 파일 등록 AJAX POST) memberIdx" +memberIdx);
+			placeFileVO.setMemberIdx(memberIdx);
+			log.debug("ㅡㅡㅡ 등록내용: {}", placeFileVO.getMemberIdx());
 			
-			placeService.save(PlaceFileVO);
-			
-			log.debug("ㅡㅡㅡ 등록이 끝났습니다. AJAX를 종료합니다.");
-			Integer idx = PlaceFileVO.getPlaceIdx();
-			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/place/detail/" + idx;
-			
-		} catch(Exception e) { return "failed"; }
-		
+			session.setAttribute("placeIdx", placeFileVO.getPlaceIdx());
+			int placeIdx = placeService.save(placeFileVO);
+			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/place/detail/" + placeIdx;
 	}
 	
 	@ResponseBody
 	@PostMapping("/update")
-	public String update(@ModelAttribute PlaceEditVO placeEditVO) {
+	public String update(@ModelAttribute PlaceEditVO placeEditVO, HttpSession session) {
 		try {
-			
 			log.debug("ㅡㅡㅡ /placeData/update (장소 파일 수정 AJAX POST) 진입");
-			log.debug("ㅡㅡㅡ 수정내용: {}", placeEditVO);
+			Integer memberIdx = (Integer) session.getAttribute("memberIdx");
+			log.debug("ㅡㅡㅡ /placeData/register (장소 파일 등록 AJAX POST) memberIdx" +memberIdx);
+			placeEditVO.setMemberIdx(memberIdx);
+			Integer placeIdx = placeEditVO.getPlaceIdx();
+			log.debug("ㅡㅡㅡ 등록내용: {}", placeEditVO.getMemberIdx());
+			log.debug("ㅡㅡㅡ 강의장 수정 memberIdx: {}", placeEditVO.toString());
+			log.debug("ㅡㅡㅡ 수정내용: {}", placeEditVO);			
+
+			placeService.update(placeEditVO); 
 			
-			placeService.update(placeEditVO);
+			log.debug("==================== 수정이 끝났습니다. 상세보기로 돌아갑니다.", placeEditVO);
+
+			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/place/detail/" + placeIdx;
 			
-			log.debug("ㅡㅡㅡ 수정이 끝났습니다. AJAX를 종료합니다.");
-			Integer idx = placeEditVO.getPlaceIdx();
-			return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/place/detail/" + idx;
-			
-		} catch(Exception e) { return "failed"; }
+		} catch(Exception e) {
+			return "failed"; 
+		}
 		
 	}
 
