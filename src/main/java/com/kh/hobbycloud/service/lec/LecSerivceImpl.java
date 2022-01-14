@@ -14,10 +14,12 @@ import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.repository.lec.LecLikeDao;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
+import com.kh.hobbycloud.vo.lec.LecCriteriaSearch;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecRegisterVO;
+import com.kh.hobbycloud.vo.lec.LecSearchVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,21 +43,39 @@ public class LecSerivceImpl implements LecService{
 		//(필수) 회원정보를 뽑아서 회원테이블에 저장
 		//= LecRegisterVO에서 정보를 뽑아서 LecDto를 생성
 		int lecIdx = lecDao.getSequence();
+		int count=1;
+		log.debug("카운트:{}",count++);
 		LecDto lecDto = new LecDto();
+		log.debug("카운트:{}",count++);
 		lecDto.setLecIdx(lecIdx);
-//		lecDto.setTutorIdx(1);//
+		log.debug("카운트:{}",count++);
+		lecDto.setTutorIdx(41);//
+		log.debug("카운트:{}",count++);
 		lecDto.setLecCategoryName(lecRegisterVO.getLecCategoryName());
+		log.debug("카운트:{} / 이제 이거 넣을거야 {}",count++, lecRegisterVO.getPlaceIdx());
 		lecDto.setPlaceIdx(lecRegisterVO.getPlaceIdx());//보류
+		log.debug("카운트:{}",count++);
 		lecDto.setLecName(lecRegisterVO.getLecName());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecDetail(lecRegisterVO.getLecDetail());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecPrice(lecRegisterVO.getLecPrice());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecHeadCount(lecRegisterVO.getLecHeadCount());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecContainsCount(lecRegisterVO.getLecContainsCount());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecStart(lecRegisterVO.getLecStart());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecEnd(lecRegisterVO.getLecEnd());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecLocRegion(lecRegisterVO.getLecLocRegion());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecLocLatitude(lecRegisterVO.getLecLocLatitude());
+		log.debug("카운트:{}",count++);
 		lecDto.setLecLocLongitude(lecRegisterVO.getLecLocLongitude());
+		log.debug("카운트:{}",count++);
+		
 		lecDao.register(lecDto);
 
 		//(선택) 강사 파일을 파일 테이블과 실제 하드디스크에 저장
@@ -196,4 +216,19 @@ public class LecSerivceImpl implements LecService{
 	public int listCount() {
 		return lecDao.listCount();
 	}
+	
+	@Override
+	public List<LecListVO> listBy(LecCriteriaSearch cri) {
+		System.out.println("검색 리스트 cri : " + cri);
+		return lecDao.listBy(cri);
+	}
+	
+	@Override
+	public int listCountBy(LecSearchVO lecSearchVO) {
+		int number = lecDao.listCountBy(lecSearchVO);
+		System.out.println("Lec서비스 검색카운트" + number);
+		return lecDao.listCountBy(lecSearchVO);
+	}
+	
+	
 }

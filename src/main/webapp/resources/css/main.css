@@ -1,5 +1,5 @@
 
-/* 공통 속성 */
+/* 별칭 속성 */
 * { font-family: 'Noto Sans KR', sans-serif !important; }
 .flex { display:flex; }
 .flexCol { flex-direction:column; }
@@ -12,6 +12,7 @@
 a:hover, a:visited, a:active, a:link { color: initial; text-decoration:none !important; }
 .border-radius-all-25 { border-style:solid !important; border-width:1px !important; border-radius: 0.25rem !important; }
 .grayInputGroup :is(div, input) { border-color: var(--input-border-color) !important; }
+.screenForceTo16to9 { padding-top:56.25%; }
 /* 색상 속성 */
 :root {
     --input-border-color: rgb(118, 118, 118);
@@ -28,6 +29,11 @@ NAV .navbar-brand { font-size:25px; padding-top:0; text-transform: capitalize; l
 HEADER .subject { font-weight:900; box-sizing: border-box; width:fit-content; margin:-3px; }
 ASIDE#accordionSideMenu div.accordion-body:hover { background:var(--bs-blue); color:var(--bs-white); }
 FOOTER { background:var(--bs-gray-400); }
+
+/* 버튼 속성을 제거해주는 설정 */
+button.notButton, input[type="submit"].notButton, input[type="reset"].notButton {
+	background: none; color: inherit; border: none; padding: 0; font: inherit; cursor: pointer; outline: inherit;
+}
 
 /* 미디어쿼리 속성 */
 @media (max-width: 992px) { /* ~모바일 */

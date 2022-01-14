@@ -116,7 +116,7 @@ function loginSubmit() {
 	}).catch((response) => {
 		console.log("에러\n", response);
 	});
-	
+	 
 }
 
 // 라이브러리. 내가 올린 파일의 이미지를 로드시켜 준다.
@@ -132,13 +132,27 @@ function renderImageFromFile(file, targetEl) {
 	});
 }
 
+// 라이브러리. 모달 창 내용을 조작한다.
+// 모달 창 초기 내용 입력
+function modalInit(htmlParam) {
+	document.querySelector(".modal-title").innerHTML = htmlParam.title;
+	document.querySelector(".modal-body").innerHTML = htmlParam.body;
+	document.querySelector(".modal-footer").innerHTML = htmlParam.footer;
+}
+// 모달 창 내용 추가
+function modalAppend(htmlParam) {
+	document.querySelector(".modal-title").innerHTML += htmlParam.title;
+	document.querySelector(".modal-body").innerHTML += htmlParam.body;
+	document.querySelector(".modal-footer").innerHTML += htmlParam.footer;
+}
+
 // ************************ 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다. ***********************
 window.addEventListener("load", () => {
 
 	// 모달 변수 정의
 	window.modal = new bootstrap.Modal(document.getElementById("modal"), {
 	    keyboard: false
-	}); 
+	});
 	
 	// FORM 제출 시 자동 실행: 비밀번호 암호화
 	$("form").submit(function(e){

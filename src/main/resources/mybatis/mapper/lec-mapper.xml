@@ -25,7 +25,16 @@
 	<insert id="register" parameterType="LecDto">
 		insert into lec
 		values (
-			#{lecIdx}, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
+			#{lecIdx}, #{tutorIdx}, #{lecCategoryName}, 
+			<choose>
+				<when test="placeIdx != null">
+				#{placeIdx},
+				</when>
+				<otherwise>
+				null,
+				</otherwise>
+			</choose>
+			#{lecName},
 			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
 			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitude}, #{lecLocLongitude},
 			0, 0, 0
@@ -45,23 +54,33 @@
 	<select id="listCount" resultType="int" >
 	select count(*) as BNO from (
 		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
-			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, 
-			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
-			from lec L
+		    L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, f.lec_file_idx,
+		    (select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+		    from lec L
 		left outer join tutor T on L.tutor_idx = T.tutor_idx
 		left outer join member M on T.member_idx = M.member_idx
+		left outer join
+		(select distinct lec_idx, min(lec_file_idx) as lec_file_idx
+		  from lec_file group by lec_idx) f 
+		  on  f.lec_idx = l.lec_idx
 		)
 	</select>
-		
-	<select id="listPage" resultType="LecListVO" parameterType="Criteria">
+	
+	<!-- 목록페이지 목록 페이지 네이션 적용 -->
+	<select id="listPage" resultType="LecListVO" parameterType="LecCriteria">
 	select * from(
 	select rownum  rn , TMP.* from(
 		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
-			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, 
-			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
-			from lec L
+		    L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, f.lec_file_idx,
+		    (select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+		    from lec L
 		left outer join tutor T on L.tutor_idx = T.tutor_idx
 		left outer join member M on T.member_idx = M.member_idx
+		left outer join
+		(select distinct lec_idx, min(lec_file_idx) as lec_file_idx
+		  from lec_file group by lec_idx) f 
+		  on  f.lec_idx = l.lec_idx
+		  order by l.lec_idx desc
 	  )TMP
 	) where rn between #{rowStart} and #{rowEnd}
 	</select>
@@ -73,7 +92,7 @@
 		(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
 		from lec L
 		inner join tutor T on L.tutor_idx = T.tutor_idx
-		inner join place P on L.place_idx = P.place_idx
+		left outer join place P on L.place_idx = P.place_idx
 		inner join member M on T.member_idx = M.member_idx
 		where lec_idx = #{lecIdx}
 	</select>
@@ -81,21 +100,32 @@
 	<!-- 강좌 목록 -->
 	<select id="list" resultType="LecListVO">
 		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
-			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, 
-			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
-			from lec L
+		    L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, f.lec_file_idx,
+		    (select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+		    from lec L
 		left outer join tutor T on L.tutor_idx = T.tutor_idx
 		left outer join member M on T.member_idx = M.member_idx
+		left outer join
+		(select distinct lec_idx, min(lec_file_idx) as lec_file_idx
+		  from lec_file group by lec_idx) f 
+		  on  f.lec_idx = l.lec_idx
+		  order by l.lec_idx desc
 	</select>
 	
-	<!-- 강좌 목록 및 검색 -->
-	<select id="listSearch" parameterType="LecSearchVO" resultType="LecListVO">
+	<!-- 검색 페이지 페이지네이션 적용 -->
+	<select id="listSearchBy" parameterType="LecCriteriaSearch" resultType="LecListVO">
+		select * from(
+		select rownum  rn , TMP.* from(
 		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
-			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region,
-			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
-			from lec L
+		    L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region, f.lec_file_idx,
+		    (select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+		    from lec L
 		left outer join tutor T on L.tutor_idx = T.tutor_idx
 		left outer join member M on T.member_idx = M.member_idx
+		left outer join
+		(select distinct lec_idx, min(lec_file_idx) as lec_file_idx
+		  from lec_file group by lec_idx) f 
+		  on  f.lec_idx = l.lec_idx
 		
 		<where>
 			<if test="lecIdx != null and lecIdx != ''">
@@ -114,10 +144,7 @@
 			and instr(member_nick, #{memberNick}) > 0
 			</if>
 			<if test="lecLocRegion != '' and lecLocRegion != null">
-				and lec_loc_region in
-				<foreach item="statOne" collection="lecLocRegion" open="(" close=")" separator="," >
-				#{statOne}
-				</foreach>
+				and instr(lec_loc_region, #{lecLocRegion}) > 0
 			</if>
 			
 
@@ -194,6 +221,222 @@
 <!-- 				${vo.order} ${vo.sort} -->
 <!-- 			</foreach> -->
 <!-- 		</if> -->
+		order by l.lec_idx desc
+		  )TMP
+		) where rn between #{rowStart} and #{rowEnd}
+	</select>
+	
+	<!-- 검색 페이지 페이지네이션 적용 -->
+	<select id="listCountBy" parameterType="LecSearchVO" resultType="int">
+		select count(*) as BNO from (
+		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
+			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region,
+			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+			from lec L
+		left outer join tutor T on L.tutor_idx = T.tutor_idx
+		left outer join member M on T.member_idx = M.member_idx
+		
+		<where>
+			<if test="lecIdx != null and lecIdx != ''">
+			and lec_idx = #{lecIdx}
+			</if>
+			<if test="lecCategoryName != null and lecCategoryName != ''">
+				and lec_category_name in
+				<foreach item="statOne" collection="lecCategoryName" open="(" close=")" separator="," >
+				#{statOne}
+				</foreach>
+			</if>
+			<if test="lecName != null and lecName != ''">
+			and instr(lec_name, #{lecName}) > 0
+			</if>
+			<if test="memberNick != '' and memberNick != null">
+			and instr(member_nick, #{memberNick}) > 0
+			</if>
+			<if test="lecLocRegion != '' and lecLocRegion != null">
+				and instr(lec_loc_region, #{lecLocRegion}) > 0
+			</if>
+
+			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->
+			<choose>
+				<when test="minPrice != '' and minPrice != null and maxPrice != '' and maxPrice != null">
+				and lec_price between #{minPrice} and #{maxPrice}
+				</when>
+				<when test="minPrice != '' and minPrice != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and lec_price >= #{minPrice}
+				]]>
+				</when>
+				<when test="maxPrice != '' and maxPrice != null">
+				<![CDATA[			
+				and lec_price <= #{maxPrice}
+				]]>
+				</when>
+			</choose>
+			
+			<choose>
+				<when test="minCount != '' and minCount != null and maxCount != '' and maxCount != null">
+				and lec_head_count between #{minCount} and #{maxCount}
+				</when>
+				<when test="minCount != '' and minCount != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and lec_head_count >= #{minCount}
+				]]>
+				</when>
+				<when test="maxCount != '' and maxCount != null">
+				<![CDATA[			
+				and lec_head_count <= #{maxCount}
+				]]>
+				</when>
+			</choose>
+			
+			<choose>
+				<when test="minConCount != '' and minConCount != null and maxConCount != '' and maxConCount != null">
+				and lec_contains_count between #{minConCount} and #{maxConCount}
+				</when>
+				<when test="minConCount != '' and minConCount != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and lec_contains_count >= #{minConCount}
+				]]>
+				</when>
+				<when test="maxConCount != '' and maxConCount != null">
+				<![CDATA[			
+				and lec_contains_count <= #{maxConCount}
+				]]>
+				</when>
+			</choose>
+			
+<!-- 			<if test="lecStartStart != null and lecStartFinish != null"> -->
+<!-- 			and lec_start between  -->
+<!-- 				to_date(#{lecStartStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS')  -->
+<!-- 				and  -->
+<!-- 				to_date(#{lecStartFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS') -->
+<!-- 			</if> -->
+<!-- 			<if test="lecEndStart != null and lecEndFinish != null"> -->
+<!-- 			and expire between  -->
+<!-- 				to_date(#{lecEndStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS')  -->
+<!-- 				and  -->
+<!-- 				to_date(#{lecEndFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS') -->
+<!-- 			</if> -->
+		</where>
+		
+<!-- 		<if test="orders != null and orders.size() > 0"> -->
+<!-- 			order by  -->
+<!-- 			<foreach item="vo" collection="orders" separator=","> -->
+<!-- 				${vo.order} ${vo.sort} -->
+<!-- 			</foreach> -->
+<!-- 		</if> -->
+		order by l.lec_idx desc
+		  )
+	</select>
+	
+	
+	<!-- 강좌 목록 및 검색 -->
+	<select id="listSearch" parameterType="LecSearchVO" resultType="LecListVO">
+		select L.lec_idx, L.lec_category_name, L.lec_name, M.member_nick, L.lec_price, L.lec_head_count, 
+			L.lec_contains_count, L.lec_start, L.lec_end, L.lec_loc_region,
+			(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
+			from lec L
+		left outer join tutor T on L.tutor_idx = T.tutor_idx
+		left outer join member M on T.member_idx = M.member_idx
+		
+		<where>
+			<if test="lecIdx != null and lecIdx != ''">
+			and lec_idx = #{lecIdx}
+			</if>
+			<if test="lecCategoryName != null and lecCategoryName != ''">
+				and lec_category_name in
+				<foreach item="statOne" collection="lecCategoryName" open="(" close=")" separator="," >
+				#{statOne}
+				</foreach>
+			</if>
+			<if test="lecName != null and lecName != ''">
+			and instr(lec_name, #{lecName}) > 0
+			</if>
+			<if test="memberNick != '' and memberNick != null">
+			and instr(member_nick, #{memberNick}) > 0
+			</if>
+			<if test="lecLocRegion != '' and lecLocRegion != null">
+			and instr(lec_loc_region, #{lecLocRegion}) > 0
+			</if>
+			
+
+			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->
+			
+			<choose>
+				<when test="minPrice != '' and minPrice != null and maxPrice != '' and maxPrice != null">
+				and lec_price between #{minPrice} and #{maxPrice}
+				</when>
+				<when test="minPrice != '' and minPrice != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and lec_price >= #{minPrice}
+				]]>
+				</when>
+				<when test="maxPrice != '' and maxPrice != null">
+				<![CDATA[			
+				and lec_price <= #{maxPrice}
+				]]>
+				</when>
+			</choose>
+			
+			<choose>
+				<when test="minCount != '' and minCount != null and maxCount != '' and maxCount != null">
+				and lec_head_count between #{minCount} and #{maxCount}
+				</when>
+				<when test="minCount != '' and minCount != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and lec_head_count >= #{minCount}
+				]]>
+				</when>
+				<when test="maxCount != '' and maxCount != null">
+				<![CDATA[			
+				and lec_head_count <= #{maxCount}
+				]]>
+				</when>
+			</choose>
+			
+			<choose>
+				<when test="minConCount != '' and minConCount != null and maxConCount != '' and maxConCount != null">
+				and lec_contains_count between #{minConCount} and #{maxConCount}
+				</when>
+				<when test="minConCount != '' and minConCount != null">
+				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+				<![CDATA[			
+				and lec_contains_count >= #{minConCount}
+				]]>
+				</when>
+				<when test="maxConCount != '' and maxConCount != null">
+				<![CDATA[			
+				and lec_contains_count <= #{maxConCount}
+				]]>
+				</when>
+			</choose>
+			
+<!-- 			<if test="lecStartStart != null and lecStartFinish != null"> -->
+<!-- 			and lec_start between  -->
+<!-- 				to_date(#{lecStartStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS')  -->
+<!-- 				and  -->
+<!-- 				to_date(#{lecStartFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS') -->
+<!-- 			</if> -->
+<!-- 			<if test="lecEndStart != null and lecEndFinish != null"> -->
+<!-- 			and expire between  -->
+<!-- 				to_date(#{lecEndStart}||' '||'00:00:00', 'YYYY-MM-DD HH24:MI:SS')  -->
+<!-- 				and  -->
+<!-- 				to_date(#{lecEndFinish}||' '||'23:59:59', 'YYYY-MM-DD HH24:MI:SS') -->
+<!-- 			</if> -->
+		</where>
+		
+<!-- 		<if test="orders != null and orders.size() > 0"> -->
+<!-- 			order by  -->
+<!-- 			<foreach item="vo" collection="orders" separator=","> -->
+<!-- 				${vo.order} ${vo.sort} -->
+<!-- 			</foreach> -->
+<!-- 		</if> -->
+		
 	</select>
 	
 	<!-- 강좌 수정 -->

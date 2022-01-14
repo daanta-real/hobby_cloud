@@ -138,7 +138,10 @@ function loadReview(){
 				template = template.replace("{{lecReviewScore}}", resp[i].lecReviewScore);
 				template = template.replace("{{lecIdx}}", resp[i].lecIdx);
 				template = template.replace("{{lecReviewDetail}}", resp[i].lecReviewDetail);
-				template = template.replace("{{lecReviewRegistered}}", resp[i].lecReviewRegistered);
+				
+				var time = resp[i].gatherReplyDate;
+				var date =new Date(time);
+				template = template.replace("{{lecReviewRegistered}}", dateFormat(date));
 		
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 	
@@ -321,19 +324,20 @@ function deleteReview(lecReviewIdxValue){
 		<!-- 소단원 제목 -->
 <!-- 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>강좌 정보</div> -->
 		<!-- 소단원 내용 -->
+		<nav class="row p-0 pt-4 d-flex justify-content-end">
 		<div class="row p-sm-2 mx-1 mb-5">
 			<c:choose>
 				<c:when test="${memberIdx != null}">
 					<div id="like">
 						<c:choose>
 							<c:when test="${isLike == 0}">
-								<button type="button" class="btn btn-light" id="like-btn">🤍 ${lecDetailVO.lecLike}</button>
+								<button type="button" class="col-auto btn btn-sm btn-outline-primary mx-1" id="like-btn">🤍 ${lecDetailVO.lecLike}</button>
 								<input type="hidden" id="like-check" value="${isLike}">
 					<%-- 			<input type="hidden" id="memberIdx" value="${memberIdx}"> --%>
 								<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
 							</c:when>					
 							<c:when test="${isLike == 1}">
-								<button type="button" class="btn btn-light" id="like-btn">❤️ ${lecDetailVO.lecLike}</button>
+								<button type="button" class="col-auto btn btn-sm btn-outline-primary mx-1" id="like-btn">❤️ ${lecDetailVO.lecLike}</button>
 								<input type="hidden" id="like-check" value="${isLike}">
 					<%-- 			<input type="hidden" id="memberIdx" value="${memberIdx}"> --%>
 								<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
@@ -342,7 +346,7 @@ function deleteReview(lecReviewIdxValue){
 					</div>
 				</c:when>
 				<c:otherwise>
-					<a href="${pageContext.request.contextPath}/member/login" class="btn btn-danger">좋아요</a>
+					<a href="${pageContext.request.contextPath}/member/login" class="col-auto btn btn-sm btn-outline-primary mx-1">❤️ ${lecDetailVO.lecLike}</a>
 				</c:otherwise>
 			</c:choose>
 			
@@ -350,18 +354,19 @@ function deleteReview(lecReviewIdxValue){
 			<form name="form1" method="post"
 			 action="${pageContext.request.contextPath}/lec/cart/insert">
 			    <input type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}">
-			    <input type="submit" class="btn btn-danger" value="찜하기">
+			    <input type="submit" class="col-auto btn btn-sm btn-outline-primary mx-1" value="찜하기">
 			</form>
 			
 			<!-- 강좌 추가하기 -->
-			<a href="${pageContext.request.contextPath}/lec/check/${lecDetailVO.lecIdx}" class="btn btn-danger">강좌 신청</a>
+			<a href="${pageContext.request.contextPath}/lecMy/confirm/${lecDetailVO.lecIdx}" class="btn btn-danger">강좌 신청</a>
 		</div>
-		
+		</nav>
 		
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>강좌 상세</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
+			<div class="row md-4">${lecDetailVO.lecDetail}</div>
 			<c:choose>
 				<c:when test="${list == null}">
 				<img src="https://via.placeholder.com/300x500?text=User" width="50%" class="image">
@@ -415,6 +420,10 @@ function deleteReview(lecReviewIdxValue){
 			    <tr>
 			        <td>강사 이름</td>
 			        <td>${lecDetailVO.memberNick}</td>
+			    </tr>
+			    <tr>
+			        <td>강사 소개<td>
+			        <td>${lecDetailVO.tutorDetail}</td>
 			    </tr>
 			    <tr>
 			        <td>강사 이메일</td>
@@ -484,7 +493,7 @@ function deleteReview(lecReviewIdxValue){
 		</div>
 		
 		<nav class="row pt-4 d-flex flex-justify-between">
-			<a href="insert">글쓰기</a>
+			<a href="${pageContext.request.contextPath}/lec/register">글쓰기</a>
 		</nav>
 		<nav class="row pt-4 d-flex flex-justify-between">
 			<a href="${pageContext.request.contextPath}/lec/list">목록보기</a>

@@ -72,6 +72,15 @@ public class PlaceDaoImpl implements PlaceDao{
 		return sqlSession.selectList("place.listPage",param);
 	}
 
+	@Override
+	public List<PlaceListVO> listBy(int startRow, int endRow) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("startRow", startRow);
+		param.put("endRow", endRow);
+		System.out.println("------다오옴"); 
+		return sqlSession.selectList("place.listBy", param);
+	}
+
 
 
 }

@@ -64,13 +64,13 @@ public class PlaceController {
 	// 검색결과 목록 페이지
 	@PostMapping("/list")
 	public String search(@ModelAttribute PlaceSearchVO placeSearchVO, Model model) {
-//		log.debug("param.toString()   " + gatherSearchDto.toString());
+
 		log.debug("category={}", placeSearchVO);
 		List<PlaceListVO> list = placeDao.listSearch(placeSearchVO);
 		
 
 		model.addAttribute("list",list);
-		return "gather/list";
+		return "place/list";
 	}
 	
 	// 장소 등록 폼 페이지
@@ -81,24 +81,24 @@ public class PlaceController {
 		return "place/register";
 	}
 	
-	// 장소등록 처리 페이지
-	@PostMapping("/register")
-	public String register(@ModelAttribute PlaceFileVO placeFileVO,HttpSession session) throws IllegalStateException, IOException {
-		log.debug("ㅡㅡPlaceController - /place/register POST> 장소 DATA 입력");
-		int memberIdx = (int) session.getAttribute("memberIdx");
-		log.debug("ㅡㅡPlaceController - /place/register Post> 장소등록 처리");		
-		placeFileVO.setMemberIdx(memberIdx);
-		log.debug("ㅡㅡPlaceController - /place/register placeFileVO"+placeFileVO.toString());		
-		placeService.save(placeFileVO);
-		return "redirect:register_success";
-	}
+//	// 장소등록 처리 페이지
+//	@PostMapping("/register")
+//	public String register(@ModelAttribute PlaceFileVO placeFileVO,HttpSession session) throws IllegalStateException, IOException {
+//		log.debug("ㅡㅡPlaceController - /place/register POST> 장소 DATA 입력");
+//		int memberIdx = (int) session.getAttribute("memberIdx");
+//		log.debug("ㅡㅡPlaceController - /place/register Post> 장소등록 처리");		
+//		placeFileVO.setMemberIdx(memberIdx);
+//		log.debug("ㅡㅡPlaceController - /place/register placeFileVO"+placeFileVO.toString());		
+//		placeService.save(placeFileVO);
+//		return "redirect:register_success";
+//	}
 	
-	// 장소등록 성공 페이지
-	@RequestMapping("/register_success")
-	public String registerSuccess() {
-		log.debug("ㅡㅡPlaceController - /place/register_success REQUEST> 장소 등록 성공");
-		return "place/register_success";
-	}
+//	// 장소등록 성공 페이지
+//	@RequestMapping("/register_success")
+//	public String registerSuccess() {
+//		log.debug("ㅡㅡPlaceController - /place/register_success REQUEST> 장소 등록 성공");
+//		return "place/register_success";
+//	}
 	
 	// 장소 상세 보기
 	@RequestMapping("/detail/{placeIdx}")
