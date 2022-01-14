@@ -194,7 +194,7 @@ $(function(){
 	 
 	$("#more-btn").click(function(){
 		console.log("1111");
-		alert("확ㅇ"); 
+		alert("확인"); 
 		loadPlace(page,size);
 		page++;
 	});
@@ -224,14 +224,13 @@ function loadPlace(pageValue,sizeValue){
 			// 내용 
 			// 표 제목부
 			var totalStr
-				= '<table class="table table-striped">'
-				+   '<button id="more-btn">더보기</button> ' 
-				+ 	'<thead><tr>'
-				+ 		'<th scope="col" class="text-center">순</th>'
-				+ 		'<th scope="col" class="text-center">이름</th>'
-				+		'<th scope="col" class="text-center">지역</th>'
-				+ 	'</tr></thead>'
-				+ 	'<tbody class="locTBody">';
+			    = '<table class="table table-striped">'
+            	+ 	'<thead><tr>'
+                + 		'<th scope="col" class="text-center">순</th>'
+                + 		'<th scope="col" class="text-center">이름</th>'
+                +		'<th scope="col" class="text-center">지역</th>'
+                + 	'</tr></thead>'
+            	+ 	'<tbody class="locTBody">';
 			$.each(results, function(i) {
 				var jsonStr = results[i];
 				console.log(i + "번째 TR: ", jsonStr);
@@ -249,7 +248,17 @@ function loadPlace(pageValue,sizeValue){
 			console.log("전체 HTML: ", totalStr);
 			
 			var listTarget = document.querySelector(".modal-body");
-			listTarget.innerHTML = totalStr;
+			listTarget.innerHTML += totalStr;
+			var footerStr = '<button type="button" id="more-btn">더보기</button>';
+			var footerTarget =document.querySelector(".modal-footer"); 
+			footerTarget.innerHTML = footerStr;   
+	  
+			$("#more-btn").click(function(){
+				
+				loadPlace(page,size);
+				page++;
+			});
+		
 			
 		},
 		error : function(e) {
