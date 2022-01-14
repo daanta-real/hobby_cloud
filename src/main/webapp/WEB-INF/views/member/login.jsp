@@ -7,28 +7,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha1.min.js"></script>
 <script>
 
-<% // 문서 로딩 완료 시부터 동작 %>
-$(function(){
-	
-	<% // FORM 제출 시 자동 실행: 비밀번호 암호화 %>
-	$("form").submit(function(e){
-		
-		<% // 이벤트 버블링 방지 %>
-		e.preventDefault();
-		
-		<% // 비번 input 태그값 암호화 반영 %>
-		$(this).find("input[type=password]").each(function(){
-			var origin = $(this).val();
-			var hash = CryptoJS.SHA1(origin);
-			var encrypt = CryptoJS.enc.Hex.stringify(hash);
-			$(this).val(encrypt);
-		});
-		
-		<% // 제출 %>
-		this.submit();
-
-	});
-});
 </script>
 
 <form method="post">

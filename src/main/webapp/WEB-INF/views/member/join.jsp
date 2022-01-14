@@ -395,7 +395,7 @@
 
 	//인증 메일
 	function sendMail() {
-		var mailAddr = $(".idMail").val() + "@" + $("#inputMail").val();
+		var mailAddr = $(".idMail").val() + "@" + $(".inputMail").val();
 		$.ajax({
 			type: "post",
 			url: "sendMail",
