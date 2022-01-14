@@ -91,22 +91,21 @@
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script>	
-$(function(	){
-const buttonArr = document.getElementsByTagName('button');
-console.log("헬로");
-console.log(buttonArr);
-for(let i = 0; i < buttonArr.length; i++){
-  buttonArr[i].addEventListener('click',function(e){
-	console.log(buttonArr[i]);
-    e.preventDefault();
-    document.querySelector('.box' + (i + 1)).scrollIntoView(true);
-  	console.log(i+1); 
-  	console.log( document.querySelector('.box' + (i + 1))); 
-  });
-}
-});
-</script>
+<!-- <script>	 -->
+// $(function(	){
+// const buttonArr = document.getElementsByTagName('button');
+
+// for(let i = 0; i < buttonArr.length; i++){
+//   buttonArr[i].addEventListener('click',function(e){
+	
+//     e.preventDefault();
+//     document.querySelector('.box' + (i + 1)).scrollIntoView(true);
+//   	console.log(i+1); 
+//   	console.log( document.querySelector('.box' + (i + 1))); 
+//   });
+// } 
+// });
+<!-- </script> -->
 
 <c:set var = "start" value = " ${GatherVO.gatherStart}"/>
 <c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
@@ -125,13 +124,9 @@ for(let i = 0; i < buttonArr.length; i++){
 	<!-- 페이지 내용 시작 -->
 	
 
-		 
-
-		  
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-		<HEADER class='w-100 mb-1 p-2 px-md-3'>  
-		
+		<HEADER class='w-100 mb-1 p-2 px-md-3'>    
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
 			소모임
@@ -146,7 +141,7 @@ for(let i = 0; i < buttonArr.length; i++){
 			<button id="box1" type="button">댓글</button>
 		 <button id="box2" type="button">별점</button>
 		  <button id="box3" type="button">차트 </button>  
-		<h1>참여자 수 :${fn:length(list2)} / ${GatherVO.gatherHeadCount}</h1> 
+		
  
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
@@ -162,10 +157,9 @@ for(let i = 0; i < buttonArr.length; i++){
 				장소 : ${GatherVO.gatherLocRegion}
 				</div>
 				<div class="row">
-				${GatherVO.gatherDetail}
+				<h2>${GatherVO.gatherDetail}</h2> 
 				</div>
-					<c:forEach var="GatherFileDto" items="${list}">
-					<span><${GatherFileDto.gatherFileUserName}</span>
+					<c:forEach var="GatherFileDto" items="${list}"> 
 					<br>
 				<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
 						width="15%" class="image image-round image-border"> 
@@ -212,7 +206,7 @@ for(let i = 0; i < buttonArr.length; i++){
 				</div>    
 			</div> 	 
  				
-				<h1>${isJoin}2</h1> 
+				
 				<!-- 참가하기 버튼 -->
 				<c:set var="isLogin" value="${memberIdx != null}"/>
 				 <c:choose>
@@ -235,19 +229,27 @@ for(let i = 0; i < buttonArr.length; i++){
 				});
 			})
 			</script>
-		
-		
+		 
+			<h3>참여자 수 :${fn:length(list2)} / ${GatherVO.gatherHeadCount}</h3> 
 			<!-- 각종 버튼들 -->
 			<nav class="row p-0 pt-4 d-flex justify-content-end">
 				<a href="${pageContext.request.contextPath}/gather/list"
 				 class="col-auto btn btn-sm btn-outline-primary mx-1">목록 보기</a>
+				 	 <c:choose>
+           			<c:when test="${isLogin}">
 				<a href="${pageContext.request.contextPath}/gather/insert" class="col-auto btn btn-sm btn-outline-primary mx-1">글 작성</a>
+					</c:when>
+					</c:choose>
+						<c:set var="isWriter" value="${memberIdx == GatherVO.memberIdx}"/>
+				<c:choose>
+				<c:when test="isWriter">
 				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}"
 				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
 				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
-				<button class="btn btn-secondary more-btn">더보기!!</button>  
-				<button class="btn btn-secondary moreR-btn">더보기!2</button>   
+				</c:when>
+				</c:choose>
+				  
 			</nav>
 		
 		<!-- 댓글 내역 -->
@@ -266,8 +268,8 @@ for(let i = 0; i < buttonArr.length; i++){
 				
 				<!-- 등록버튼 -->
 				 <c:choose>
-           			<c:when test="${isLogin}">
-				  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+           			<c:when test="${isLogin}"> 
+				  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">댓글 작성</button> 
 				  	</c:when> 
 				 </c:choose>
 				</div>	  
@@ -277,7 +279,7 @@ for(let i = 0; i < buttonArr.length; i++){
 </form>
 <div id="result"></div> 
 
-<div class="box3">박스3입니다.</div>   
+
 <!-- 게시판 댓글 목록 --> 
 <template id="gatherVO-template">
 <div class="card mb-2 border border-1 border-secondary p-0 item">
@@ -292,18 +294,18 @@ for(let i = 0; i < buttonArr.length; i++){
 	<div class="floatRightTop position-absolute top-0 end-0 p-1">
 	
 <%-- 	<c:set var="writer" value="${memberNick != '{memberNick}'"/>  --%>
-<%-- 	<h1>헬로${writer}</h1>    --%>
-	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
-	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
-	 </div>  
-	</div>
+<%-- 	<h1>헬로${writer}</h1>    --%> 
+	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn {{isWriter}}" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
+	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
+	 </div>     
+	</div> 
 	  
 </div>
 
-</template>   
-	<button class="more-btn btn btn-secondary">더보기!!</button>  
+</template>    
+	
 </div>
-
+<button class="btn btn-secondary more-btn">더보기</button>  
 
   
 	
@@ -333,8 +335,8 @@ for(let i = 0; i < buttonArr.length; i++){
 	 <input type="text" name="gatherReviewDetail" placeholder="로그인을 해주세요"> 
 	<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
 	<c:choose>
-      <c:when test="${isLogin}">
-	  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+      <c:when test="${isLogin}"> 
+	  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">평점 작성</button> 
 	  </c:when>
 	 </c:choose>
 	  </div>
@@ -354,17 +356,16 @@ for(let i = 0; i < buttonArr.length; i++){
 	<div class="card-text p-1 px-3 gatherReviewDetail">{{gatherReviewDetail}}</div>
   
 	<div class="floatRightTop position-absolute top-0 end-0 p-1">
-	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreview-idx="{{gatherReviewIdx}}">수정</button>
-	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreview-idx="{{gatherReviewIdx}}">삭제</button>
+	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn {{isWriter}}" data-gatherreview-idx="{{gatherReviewIdx}}">수정</button>
+	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-gatherreview-idx="{{gatherReviewIdx}}">삭제</button>
 	 </div>  
 	</div>  
-</div>
+</div> 
 
 </template>
 		
 </div>
-
-
+<button class="btn btn-secondary moreR-btn">더보기</button> 
 
  
  
@@ -567,6 +568,13 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 				template = template.replace("{{gatherReviewRegistered}}",dateFormat(date)); 
 				template = template.replace("{{gatherReviewDetail}}", resp[i].gatherReviewDetail);
 		
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriterClass = !isWriter ? "d-none": "";
+			
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 	
 				console.log(tag.find(".remove-btn"));
@@ -730,9 +738,9 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 			console.log(resp.length,sizeValue); 
 			console.log("성공",resp);
 			if(resp.length < sizeValue){  
-				$(".more-btn").remove(); 
+				$(".more-btn").hide(); 
 			}else{
-				$(".more-btn").show();
+				$(".more-btn").show(); 
 			} 
 			
 			
@@ -748,6 +756,12 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 				var time = resp[i].gatherReplyDate;
 				var date =new Date(time);
 				template = template.replace("{{gatherReplyDate}}",dateFormat(date)); 
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriterClass = !isWriter ? "d-none": "";
+			
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				template = template.replace("{{isWriter}}", isWriterClass);
 				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 				

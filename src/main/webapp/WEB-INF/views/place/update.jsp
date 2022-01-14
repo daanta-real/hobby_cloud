@@ -62,23 +62,23 @@ $(function () {
 					$("#phone3").val()
 			);
 
-			let placeEmail = $("#idMail").val() + "@" + $("#inputMail").val();
-			$('input[name="placeEmail"]').val(placeEmail);
+			let email = $(".idMail").val() + "@" + $(".inputMail").val();
+			$('input[name="placeEmail"]').val(email);
 			console.log(
-				"이메일 합 : " + $("#idMail").val() + "@" + $("#inputMail").val()
+				"이메일 합 : " + $(".idMail").val() + "@" + $(".inputMail").val()
 			);
 	});
 
 	// 이메일 영역 전체에 대한 change 리스너
-	$("#emailBox").change(function () {
+	$(".emailBox").change(function () {
 		console.log("이메일박스 버튼 누름");
-		if ($("#emailBox").val() == "directly") {
-			$("#inputMail").attr("readonly", false);
-			$("#inputMail").val("");
-			$("#inputMail").focus();
+		if ($(".emailBox").val() == "directly") {
+			$(".inputMail").attr("readonly", false);
+			$(".inputMail").val("");
+			$(".inputMail").focus();
 		} else {
-			$("#inputMail").val($("#emailBox").val());
-			$("#inputMail").attr("readonly", true);
+			$(".inputMail").val($(".emailBox").val());
+			$(".inputMail").attr("readonly", true);
 		}
 	});
 		
@@ -255,125 +255,154 @@ function renderMap() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-
-<form id="placeFormEl" name="placeForm" method="post" enctype="multipart/form-data" class="container fileUploadForm">
-	<input type="hidden" name="placeIdx" value="${placeVO.placeIdx}" />
-	<div class="row mb-4">
-		<label>장소 이름</label>
-		<input type="text" name="placeName" required class="form-input" value="${placeVO.placeName}">
-	</div>
-	<div class="row mb-4">
-		<label>카테고리</label>
-		<select name="lecCategoryName" required class="form-input">
-				<option value="" class="">선택하세요</option>
-				<option value="운동">운동</option>
-				<option value="요리">요리</option>
-				<option value="문화">문화</option>
-				<option value="예술">예술</option>
-				<option value="IT">IT</option>
-				<option value="directly">직접입력</option>
-<!--		<option value="">선택하세요</option>
-			<c:forEach var="val" items="${lecCategoryList}">
-				<option value="${val}" ${placeVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
-			</c:forEach>-->
-		</select>
-	</div>
-	<div class="row mb-4">
-		<label>강의장 상세내용</label>
-		<textarea rows="5" cols="20" name="placeDetail" required class="form-input">${placeVO.placeDetail}</textarea>
-	</div>
-	<div class="row mb-4">
-		<label>장소 등록일</label>
-		<input type="text" name="placeRegistered" required class="form-input" value="${placeVO.placeRegistered}">
-	</div>		
-	<div class="row mb-4">
-		<label class="form-block">대여 시작일</label>
-		<input type="date" name="placeStart" required class="form-input form-inline" value="${placeVO.placeStart}">
-	</div>
-	<div class="row mb-4">
-		<label class="form-block">대여 마감일</label>
-		<input type="date" name="placeEnd" required class="form-input form-inline" value="${placeVO.placeEnd}">
-	</div>
-	<div class="row mb-4">
-		<label>최저 대여료</label>
-		<input type="number" name="placeMin" required class="form-input" value="${placeVO.placeMin}">
-	</div>
-	<div class="row mb-4">
-		<label>최고 대여료</label>
-		<input type="number" name="placeMax" required class="form-input" value="${placeVO.placeMax}">
-	</div>
-	<div class="row mb-4">
-		<label class="mail_name">이메일</label>
-	 	<div class="mail_input_box"> 
-			<input type="text" id="idMail" name="email_id"> @
-			<input type="text" id="inputMail" name="email_domain">
-			<select id="emailBox" name="emailBox" required>
-				<option value="" class="pickMail">이메일 선택</option>
-				<option value="directly">직접입력</option>
-				<option value="naver.com">naver.com</option>
-				<option value="gmail.com">gmail.com</option>
-				<option value="daum.net">daum.net</option>
-				<option value="hanmail.net">hanmail.net</option>
-				<option value="nate.com">nate.com</option>
-			</select>
-			<input type="hidden" name="placeEmail" class="mail_input" >
-		</div>
-	</div>
-	<div class="row mb-4">
-		<label class="phone_name">핸드폰 번호</label>
-		<div class="phone_wrap">
-	 			<input type="text" id="phone1" name="phone1" maxlength=3 required placeholder="000" class="phone"> -
-				<input type="text" id="phone2" name="phone2" maxlength=4  required placeholder="0000" class="phone"> -
-				<input type="text" id="phone3" name="phone3" maxlength=4  required placeholder="0000" class="phone">	
-				<input type="hidden" name="placePhone" id="phoneNum">
-		</div>
-	</div>
-	<div class="row mb-4">
-		<label>강의장 주소</label>
-		 	<input type="text" name="placePostcode" id="placePostcode" value="${placeVO.placePostcode}">
-			 	<button type="button" id="kakao_Address" class="find-address-btn" value="주소찾기">
-			 	주소 찾기
-			 	</button>
-		<label>강의장 상세주소</label>
-			<input type="text" id="placeAddress" name="placeAddress" value="${placeVO.placeAddress}">
-		 <label>강의장 상세주소</label>
-			<input type="text" id="placeDetailAddress" name="placeDetailAddress" value="${placeVO.placeDetailAddress}">
-			<input type="hidden" name="address" >
-			<div id="map" style="width:100%;height:350px;"></div>
-			<div id="clickLatlng"></div>
-	</div>
- 	<div class="row mb-4">
- 		<label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>
- 		<!-- 드롭존 겸 파일리스트 -->
- 		<div id="fileDropZoneBox" class="w-100 p-0">
-	 		<c:choose>
-	 			<c:when test="${fileList != null and fileList.size() > 0}">
-	 				<div id="fileDropZone" class="
-	 						w-100 fs-4 rounded text-dark
-	 						border-1 border-secondary p-2">
+				<form id="placeFormEl" name="placeForm" method="post" enctype="multipart/form-data" class="container fileUploadForm">
+					<input type="hidden" name="placeIdx" value="${placeVO.placeIdx}" />
+					<div class="row mb-4">
+						<label>장소 이름</label>
+						<div class="input-group flex-nowrap grayInputGroup p-0">
+						<input type="text" name="placeName" required class="form-control" value="${placeVO.placeName}">
 					</div>
-	 			</c:when>
-	 			<c:otherwise>
-	 				<div id="fileDropZone" class="
-					 		w-100 fs-4 border-5 border-light rounded p-5
-				 			justify-content-center align-items-center
-				 			text-dark bg-secondary bg-gradient">
-						<div id="fileDropZoneDefaultText" class="text-center">파일을 여기에 드래그하여 첨부해 보세요.</div>
 					</div>
-	 			</c:otherwise>
-	 		</c:choose>
- 		</div>
- 	</div>
-	<div class="row mb-4">
-		<input type="button" id="fileUploadForm_submitBtn" value="수정 완료" class="form-btn">
-	</div>
-	<div id="orgFileData" class="d-none">
-		<c:forEach items="${fileList}" var="file">
-			<div data-server-idx="${file.placeFileIdx}" data-name="${file.placeFileUserName}" data-size="${file.placeFileSize}"></div> 
-		</c:forEach>
-	</div>
-</form>
+					<div class="row mb-4">
+						<label>카테고리</label>
+						<div class="input-group flex-nowrap grayInputGroup p-0">
+							<select name="lecCategoryName" required class="form-control p-1 border-radius-all-25">
+								<option value="" class="">선택하세요</option>
+								<option value="운동">운동</option>
+								<option value="요리">요리</option>
+								<option value="문화">문화</option>
+								<option value="예술">예술</option>
+								<option value="IT">IT</option>
+								<option value="directly">기타</option>
+				<!--		<option value="">선택하세요</option>
+							<c:forEach var="val" items="${lecCategoryList}">
+								<option value="${val}" ${placeVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
+							</c:forEach>-->
+						</select>
+					</div>
+				</div>
+				<div class="row mb-4">
+					<label>강의장 상세내용</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">
+					<textarea id="exampleTextarea" name="placeDetail" required class="form-control" rows="10" style="resize:none">
+					${placeVO.placeDetail}
+					</textarea>
+					</div>
+				</div>
+				<div class="row mb-4">
+					<label>장소 등록일</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">
+					<input type="text" name="placeRegistered" required class="form-control" value="${placeVO.placeRegistered}">
+					</div>
+				</div>		
+				<div class="row mb-4">				
+					<label class="form-block">대여 시작일</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">
+					<input type="date" name="placeStart" required class="form-control" value="${placeVO.placeStart}">
+					</div>
+				</div>
+				<div class="row mb-4">				
+					<label class="form-block">대여 마감일</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">
+					<input type="date" name="placeEnd" required class="form-control" value="${placeVO.placeEnd}">
+					</div>
+				</div>
+				<div class="row mb-4">
+					<label>최저 대여료</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">
+					<input type="number" name="placeMin" required class="form-control" value="${placeVO.placeMin}">
+					</div>
+				</div>
+				<div class="row mb-4">
+					<label>최고 대여료</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">				
+					<input type="number" name="placeMax" required class="form-control" value="${placeVO.placeMax}">
+					</div>
+				</div>
+				<div class="row mb-4">
+			    	<label for="joinForm_placeEmail" class="form-label mb-0">이메일</label>
+			    	<div class="input-group flex-nowrap grayInputGroup p-0">
+						<input type="text" class="idMail form-control border-radius-all-25" name="email_id"  required>&nbsp;@&nbsp;
+						<input type="text" class="inputMail form-control border-radius-all-25" name="email_domain" required readonly>&nbsp;
+						<select class="emailBox form-control border-radius-all-25" name="emailBox" required>
+							<option>이메일 선택</option>
+							<option value="naver.com">naver.com</option>
+							<option value="gmail.com">gmail.com</option>
+							<option value="daum.net">daum.net</option>
+							<option value="hanmail.net">hanmail.net</option>
+							<option value="nate.com">nate.com</option>
+							<option value="directly">직접입력</option>
+						</select>
+						<input type="hidden" name="placeEmail" class="mail_input" >
+					</div>
+				</div>
+				<div class="row mb-4">
+	      			<label for="placeForm_placePhone" class="form-label mb-0">핸드폰 번호</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">
+	 						<input type="text" id="phone1" name="phone1" maxlength=3 required placeholder="000" class="phone form-control border-radius-all-25"> &nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
+							<input type="text" id="phone2" name="phone2" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
+							<input type="text" id="phone3" name="phone3" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">	
+							<input type="hidden" name="placePhone" id="phoneNum">
+					</div>
+				</div>
+				<div class="row mb-4">
+					<label>강의장 주소</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">
+			 			<input type="text" name="placePostcode" placeholder="우편번호" readonly id="placePostcode" class="form-control" value="${placeVO.placePostcode}">
+				 		&nbsp;&nbsp;
+				 		<button type="button" id="kakao_Address" class="btn btn-outline-primary mt-1 find-address-btn border-radius-all-25" value="주소찾기">
+				 		주소 찾기
+				 		</button>
+				 	</div>
+					<label>강의장 주소</label>
+					<div class="input-group flex-nowrap grayInputGroup p-0">
+						<input type="text"  id="placeAddress" name="placeAddress" placeholder="상세 주소" class = "form-control" required readonly value="${placeVO.placeAddress}">
+					</div>
+			 		<label>강의장 상세주소</label>
+			 		<div class="input-group flex-nowrap grayInputGroup p-0">
+						<input type="text" id="placeDetailAddress" name="placeDetailAddress" class="form-control border-radius-all-25" placeholder="상세 주소"value="${placeVO.placeDetailAddress}">
+						<input type="hidden" name="address" >
+					</div>
+						<div id="map" style="width:100%;height:350px;"></div>
+						<div id="clickLatlng"></div>
+						<input type="text" id="clickLocLatitude" name="placeLocLatitude">
+						<input type="text" id="clickLocLongitude" name="placeLocLongitude">
+				</div>
+					<input type="hidden" name="placeSido" required placeholder="광역시도">
+					<input type="hidden" name="placeSigungu" required placeholder="시군구">
+					<input type="hidden" name="placeBname" required placeholder="읍면동">
 	
+				 <div class="row mb-4">
+					<label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>
+					<!-- 드롭존 겸 파일리스트 -->
+					<div id="fileDropZoneBox" class="w-100 p-0">
+				 		<c:choose>
+				 			<c:when test="${fileList != null and fileList.size() > 0}">
+				 				<div id="fileDropZone" class="
+				 						w-100 fs-4 rounded text-dark
+				 						border-1 border-secondary p-2">
+								</div>
+				 			</c:when>
+				 			<c:otherwise>
+				 				<div id="fileDropZone" class="
+								 		w-100 fs-4 border-5 border-light rounded p-5
+							 			justify-content-center align-items-center
+							 			text-dark bg-secondary bg-gradient">
+									<div id="fileDropZoneDefaultText" class="text-center">파일을 여기에 드래그하여 첨부해 보세요.</div>
+								</div>
+				 			</c:otherwise>
+				 		</c:choose>
+			 		</div>
+			 	</div>
+				<div class="row mb-4">
+					<input type="button" id="fileUploadForm_submitBtn" value="수정 완료" class="btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control">
+				</div>
+				<div id="orgFileData" class="d-none">
+					<c:forEach items="${fileList}" var="file">
+						<div data-server-idx="${file.placeFileIdx}" data-name="${file.placeFileUserName}" data-size="${file.placeFileSize}"></div> 
+					</c:forEach>
+				</div>
+			</form>				
 			</div>
 		</div>
 	</SECTION>

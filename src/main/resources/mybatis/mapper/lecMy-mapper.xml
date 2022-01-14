@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lecMy">
+
+	<!-- 새 시퀀스 획득 -->
+	<select id="getSequence" resultType="integer">
+		SELECT lec_my_seq.NEXTVAL FROM DUAL
+	</select>
+		
+	<!-- 단일조회 BY IDX(Integer)-->
+	<select id="getByIdx" parameterType="integer" resultType="LecMyDto">
+		SELECT * FROM lec_my WHERE lec_my_idx = ${lecMyIdx}
+	</select>
+	
+	<!-- 결제이력 등록.
+	이 구문 내부에서 값을 정해주지 않는 컬럼은 아래와 같다.
+	lec_my_idx = 기본값 사용 (시퀀스)
+	lec_my_registered = 기본값 사용 (SYSDATE)
+	-->
+	<insert id="insert" parameterType="LecMyDto">
+		INSERT INTO lec_my ( lec_my_idx, member_idx, lec_idx, point_history_idx )
+		VALUES ( lec_my_seq.NEXTVAL, #{memberIdx}, #{lecIdx}, #{pointHistoryIdx} )
+	</insert>
+	
+	<!-- 내 강좌 검색 -->
+	<select id="search" parameterType="LecMySearchVO" resultType="LecMyDto">
+		SELECT l.*, m.member_id, m.member_nick
+		FROM lec_my l
+		INNER JOIN member m
+			ON l.member_idx = m.member_idx
+		<where>
+			<if test="lecMyIdx != null and !lecMyIdx.equals('')">AND INSTR(l.lec_my_idx, #{lecMyIdx}) > 0</if>
+			<if test="memberIdx != null and !memberIdx.equals('')">AND INSTR(l.member_idx, #{memberIdx}) > 0</if>
+			<if test="memberId != null and !memberId.equals('')">AND INSTR(m.member_id, #{memberId}) > 0</if>
+			<if test="memberNick != null and !memberNick.equals('')">AND INSTR(m.member_nick, #{memberNick}) > 0</if>
+			<if test="lecIdx != null and !lecIdx.equals('')">AND INSTR(l.lec_idx, #{lecIdx}) > 0</if>
+			<if test="lecMyRegistered_start != null and !lecMyRegistered_start.equals('')">
+				AND l.lec_my_registered <![CDATA[>=]]> to_date(#{lecMyRegistered_start}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test="lecMyRegistered_end != null and !lecMyRegistered_end.equals('')">
+				AND l.lec_my_registered <![CDATA[<=]]> to_date(#{lecMyRegistered_end}, 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+		</where>
+		ORDER BY lec_my_idx DESC
+	</select>
+	
+	<!-- 관리자용: 결제이력 자체 삭제 -->
+	<delete id="delete" parameterType="integer">
+		DELETE FROM lec_my
+		WHERE lec_my_idx = #{lecMyIdx};
+	</delete>
+		
+</mapper>

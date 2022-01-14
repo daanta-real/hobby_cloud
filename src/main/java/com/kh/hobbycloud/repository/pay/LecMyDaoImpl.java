@@ -16,15 +16,13 @@ public class LecMyDaoImpl implements LecMyDao {
 	// 새 시퀀스 획득
 	@Override
 	public Integer getSequence() {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne("lecMy.getSequence");
 	}
 
 	// IDX로 단일 데이터 획득
 	@Override
 	public LecMyDto getByIdx(Integer lecMyIdx) {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne("lecMy.getByIdx");
 	}
 
 	// 검색조건을 넣어 목록 획득

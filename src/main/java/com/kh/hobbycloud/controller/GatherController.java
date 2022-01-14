@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.entity.gather.GatherHeadsDto;
+import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
@@ -60,6 +61,7 @@ public class GatherController {
 	public String list(Model model,Criteria cri) {
 		model.addAttribute("lecCategoryList", lecCategoryDao.select());
 		model.addAttribute("list", gatherService.list(cri));
+		System.out.println("카테고리"+lecCategoryDao.select());  
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		int number = gatherService.listCount();
@@ -77,6 +79,8 @@ public class GatherController {
 
 		GatherSearchVO gatherSearchVO = new GatherSearchVO();		
 		gatherSearchVO.setCategory(cri2.getCategory());	
+		System.out.println("카테고리"+cri2.getCategory());
+		System.out.println("카테고리"+cri2.getGatherLocRegion()); 
 		gatherSearchVO.setGatherLocRegion(cri2.getGatherLocRegion());	
 		gatherSearchVO.setGatherName(cri2.getGatherName());	
 		
@@ -180,6 +184,10 @@ public class GatherController {
 		List<GatherFileDto> list = gatherFileDao.getIdx(gatherIdx);
 		model.addAttribute("GatherVO", gatherVO);
 		model.addAttribute("list", list);
+		
+		List<GatherFileDto> fileList = gatherFileDao.getIdx(gatherIdx);
+		log.debug("==================== List<LecFileDto> fileList = {}", fileList);
+		model.addAttribute("fileList", fileList); 
 
 		return "gather/update";
 	}

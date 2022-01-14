@@ -11,5 +11,5 @@ public class LecMyDto {
 	private Integer memberIdx;       // 회원 idx
 	private Integer lecIdx;			 // 강좌 idx
 	private Integer pointHistoryIdx; // 포인트이력 idx
-	private Date lecMyRegistered;    // 내 강좌 등록일
+	private Date lecMyRegistered;    // 내 강좌 등록일 (기본 SYSDATE)
 }

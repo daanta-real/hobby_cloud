@@ -209,21 +209,19 @@ function setLoc(el) {
 // 					$("input[name=]").val()==""||
 // 					$("input[name=]").val()==""|| 
 // 					$("input[name=]").val()==""
-						if(endTime>startTime&&startTime>today)
+			        if(endTime<startTime||startTime<today)
+					{   e.preventDefault();	 
+	 					alert("시간 설정을 확인해주세요");  
+						} else if( $("input[name=gatherDetail]").val()==""||
+			 			 	  $("input[name=gatherName]").val()==""||
+			 				  $("input[name=gatherHeadCount]").val()==""||
+			 				  $("input[name=gatherLocRegion]").val()=="")
 						{ 
-							e.preventDefault();
-							makeTime();
-							  $("#insert-form").submit();
-   						} else{
-		                e.preventDefault();		
-		                alert("시간 설정을 확인해주세요");
-		                console.log(endTime);      
-						console.log(startTime);
-						console.log(today); 
-						console.log(endTime >startTime);
-						console.log(startTime>today);
-						console.log(endTime>startTime>today);  
-   						}	    
+								e.preventDefault();	
+								 alert("빈칸을 입력해주세요 "); 		
+			 			}else{ 
+						 $("#insert-form").submit();
+						 }  
 					});
 		        });
 				</script>
@@ -452,16 +450,16 @@ data-bs-toggle="modal" data-bs-target="#modal">장소 찾기</button>
 	<div class="row mb-4">
 		<input type="button" id="fileUploadForm_submitBtn" value="수정 완료" class="form-btn">
 	</div>
-
-		  
-		  
-		  
-        <a href="${pageContext.request.contextPath}/gather/list"
-				 class="col-auto btn  btn-secondary mx-1 my-3">취소</a>
-	</div>
+<div id="orgFileData" class="d-none">
+		<c:forEach items="${fileList}" var="file">
+			<div data-server-idx="${file.gatherFileIdx}" data-name="${file.gatherFileUserName}" data-size="${file.gatherFileSize}"></div> 
+		</c:forEach>
+	</div> 
+		<a href="${pageContext.request.contextPath}/gather/list"
+		class="col-auto btn  btn-secondary mx-1 my-3">취소</a>
 	</form>
-
-
+ 
+ 
 
 			</div>
 			

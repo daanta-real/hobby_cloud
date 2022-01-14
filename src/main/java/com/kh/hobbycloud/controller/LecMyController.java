@@ -36,35 +36,38 @@ public class LecMyController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/confirm/{} (GET) 강좌 구매 확인 페이지 진입", lecIdx);
 
 		// 회원 현재 보유 포인트를 뷰로 넘김
-//		log.debug("session memberIdx1111: {}", session.getAttribute("memberIdx"));
-//		log.debug("session memberIdx22222: {}", String.valueOf(session.getAttribute("memberIdx")));
-//		log.debug("session memberIdx3333: {}", (String) (session.getAttribute("memberIdx")));
-		MemberDto memberDto = memberDao.getByIdx((int)session.getAttribute("memberIdx"));
-		
+		MemberDto memberDto = memberDao.getByIdx((int) session.getAttribute("memberIdx"));
+
 		int currentPoint = memberDto.getMemberPoint();
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 포인트 정보를 조회합니다. 조회 결과: {}", currentPoint);
 		model.addAttribute("currentPoint", currentPoint);
 
 		// 구매 대상 강좌 정보를 뷰로 넘김
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-		model.addAttribute("lecDto", lecDetailVO);
+		model.addAttribute("lecDetailVO", lecDetailVO);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌 정보를 조회합니다. 조회 결과: {}", lecDetailVO);
 
-		// lecIdx를 조회하여 세션에 저장 (세션에 저장하는 게 좋을 것 같음 - 정보 변조 방지)
+		// lecIdx를 세션에 저장 (세션에 저장하는 게 좋을 것 같음 - 정보 변조 방지)
 		session.setAttribute("buyTargetLecIdx", lecIdx);
 
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌 정보를 조회합니다. 조회 결과: {}", lecDetailVO);
-		return "lecMy/confirm";
-
+		return "lecMy/confirm_buy";
 	}
 
 	// 강좌 구매 실행 페이지
-	@GetMapping("/buy")
+	@GetMapping("/confirm_buy")
 	public String buy_execute(HttpSession session, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /lecMy/buy (GET) 강좌 구매를 실행합니다.");
 
+		// 변수 없으면 에러
+
 		// 변수 정의
-		int lecIdx = (int) session.getAttribute("buyTargetLecIdx");
-		int memberIdx = (int) session.getAttribute("memberIdx");
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 대상 강좌idx: {} / 회원번호: {}", lecIdx, memberIdx);
+		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
+		Integer lecIdx = (Integer) session.getAttribute("buyTargetLecIdx");
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원번호: {} / 대상 강좌idx: {}", lecIdx, memberIdx);
+		if(memberIdx == null || lecIdx == null) {
+			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원 번호나 대상 강좌idx가 비었습니다. 에러페이지로 갑니다.");
+			return "error/500";
+		}
 
 		// 구매 대상 강좌 정보 조회
 		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
@@ -73,7 +76,7 @@ public class LecMyController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 대상 강좌명: {} / 포인트 소모량: {}", lecName, lecDetailVO.getLecPrice());
 		model.addAttribute("lecDto", lecDetailVO);
 
-		// 포인트 변동이력 기록
+		// 1. 포인트 변동이력 기록 (point_history)
 		PointHistoryDto pointHistoryDto = new PointHistoryDto();
 		int pointHistoryIdx = pointHistoryDao.getSequence();
 		pointHistoryDto.setPointHistoryIdx(pointHistoryIdx);
@@ -84,14 +87,15 @@ public class LecMyController {
 		pointHistoryDao.insert(pointHistoryDto);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌 구매로 포인트가 감소된 이력을 기록하였습니다.");
 
-		// 멤버 포인트 감소 처리
+		// 2. 멤버 포인트 감소 처리 (member)
 		MemberDto memberDto = new MemberDto();
+		memberDto.setMemberIdx(memberIdx);
 		memberDto.setMemberPoint(pointAmount);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌를 구매함으로 인해 회원 포인트가 {} 감소하는 처리를 하겠습니다. (-{}점) / memberDto = {}", pointAmount, memberDto);
 		memberDao.pointModify(memberDto);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌를 구매함으로 인해 회원 포인트가 {} 감소되었습니다.", pointAmount);
 
-		// 내 강좌 보관소에 강좌정보 등록
+		// 3. 내 강좌 보관소에 강좌정보 등록 (lec_my)
 		LecMyDto myLecDto = new LecMyDto();
 		myLecDto.setLecIdx(lecIdx);
 		myLecDto.setMemberIdx(memberIdx);
@@ -100,11 +104,10 @@ public class LecMyController {
 		lecMyDao.insert(myLecDto);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 내 강좌 보관소에 강좌정보를 등록하였습니다.");
 
-
 		// 세션 비우기
 		session.removeAttribute("buyTargetLecIdx");
 
-		return null;
+		return "lecMy/success_buy";
 	}
 
 }

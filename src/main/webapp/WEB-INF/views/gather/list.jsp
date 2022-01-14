@@ -3,9 +3,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
+<script>
+function getGender(event) {
+  document.getElementById('result').innerText = 
+    event.target.value;
+}
+</script>
 <script>
 	$(function() {
 		//지도 생성 준비 코드
@@ -16,6 +23,40 @@
 		};
 		//지도 생성 코드
 		var map = new kakao.maps.Map(container, options);
+		
+		//지도 검색 코드
+		document.querySelectorAll("input[name=gatherLocRegion]").forEach((el) => {
+			el.addEventListener("click", function(e) {
+				
+				// 타겟 객체 찾기
+				var target = e.target;
+				var targetLocation = target.value;
+				console.log("타겟 객체 및 찾아낸 값: ", target, targetLocation);
+				
+				// 주소-좌표 변환 객체를 생성합니다
+				var geocoder = new kakao.maps.services.Geocoder();
+
+				// 주소로 좌표를 검색합니다 
+				geocoder.addressSearch(targetLocation,  
+					function(result, status) {  
+						// 정상적으로 검색이 완료됐으면 
+						if (status === kakao.maps.services.Status.OK) {
+
+							var coords = new kakao.maps.LatLng(
+									result[0].y, result[0].x);
+
+							// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+							map.setCenter(coords);
+						}
+					}
+				);
+				
+			});
+		});
+		
+		
+		
+		
 		// 마커의 위치 , 내용을 가지고 있는 객체 배열입니다
 		var positions = [
 		];
@@ -90,6 +131,7 @@
 		
 	});
 </script>
+
 <style>
  .tableImg {
     max-width: 7rem;
@@ -100,16 +142,115 @@
 
 </style>
 
+
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
+
+<TITLE>HobbyCloud - 소모임 목록페이지</TITLE>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
+<style>
+ .tableImg {
+	max-width: 7rem;
+	max-height: 7rem;
+	width: 100%;
+	object-fit: cover;
+}
+</style>
+
 <script type='text/javascript'>
 
+function getGender(event) {
+    document.getElementById('result').innerText = 
+    event.target.value;
+}
+	
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
+
+	//지도 생성 준비 코드
+	var container = document.querySelector("#map");
+	var options = {
+		center : new kakao.maps.LatLng(37.5339851357212, 126.897094049199),
+		level : 8
+	};
+	//지도 생성 코드
+	var map = new kakao.maps.Map(container, options);
+	// 마커의 위치 , 내용을 가지고 있는 객체 배열입니다
+	var positions = [
+	];
+	var markers = [];
+	
+	for (var i = 0; i < $(".fgTitle").length; i++) {
+		let title = $(".fgTitle").eq(i).val();
+		let latti = Number($(".fgLongitude").eq(i).val());
+		let longdi = Number($(".fgLatitude").eq(i).val());
+
+	
+		positions.push({
+			content : title ,
+			latlng : new kakao.maps.LatLng(latti,longdi)
+		});			
+	}
+	
+	for (var i = 0; i < positions.length; i++) {
+		addMarker(positions[i]);
+		
+	}
+	//마커 생성 함수 + 클릭 이벤트 추가 함수 
+	function addMarker(position){
+		var marker = new kakao.maps.Marker({
+			map : map, // 마커를 표시할 지도
+			position : position.latlng
+		
+		});
+		
+		// 마커에 표시할 인포윈도우를 생성합니다 
+		var infowindow = new kakao.maps.InfoWindow({
+				content : position.content
+			// 인포윈도우에 표시할 내용
+			});
+		
+		kakao.maps.event.addListener(marker, 'click', function() {
+
+			var lat = marker.getPosition().getLat();
+			var lng = marker.getPosition().getLng();
+			setCenter(lat,lng);
+		});
+		// 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+		// 이벤트 리스너로는 클로저를 만들어 등록합니다 
+		// for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+		kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(
+				map, marker, infowindow));
+		kakao.maps.event.addListener(marker, 'mouseout',
+				makeOutListener(infowindow));
+		
+	}
+	// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+	function makeOverListener(map, marker, infowindow) {
+		return function() {
+			infowindow.open(map, marker);
+		};
+	}
+	// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+	function makeOutListener(infowindow) {
+		return function() {
+			infowindow.close();
+		}; 
+	}
+	
+ 	function setCenter(lat,lng) {			
+		
+		var moveLatLon = new kakao.maps.LatLng(lat,lng);
+		map.setLevel(3);
+		// 지도 중심을 이동 시킵니다
+		map.setCenter(moveLatLon);
+	}
+ 	
 });
 
 </script>
@@ -151,13 +292,14 @@ window.addEventListener("load", function() {
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<div id="map" style="width: 800px; height: 300px; border-radius: 20px;"></div>	
+				
 					<form  method="post" class="mt-4">
 
 						<label for=searchForm_lecLocRegion class="form-label mb-0 d-block">지역</label>
 						<div class="btn-group w-100">
-							<input name="gatherLocRegion" type="radio" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="서울" class="btn-check" id="Seoul" autocomplete="off" onclick="getGender(event)" ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Seoul">서울</label>
-							<input name="gatherLocRegion" type="radio" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off" onclick="getGender(event)" ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Gyeonggi">경기</label>
 			 	 			<input name="gatherLocRegion" type="radio" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
 				 			<label class="btn btn-outline-primary" for="Busan">부산</label>
@@ -192,23 +334,22 @@ window.addEventListener("load", function() {
 						</div>
 						<div class="form-group mb-4 col-6">
 						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
-							<div class="btn-group w-100">
+							<div class="btn-group w-100"> 
 								<c:forEach var="lecCategory" items="${lecCategoryList}">
-									<input name="gatherCategoryName" type="checkbox" value="${lecCategory}" class="btn-check" id="${lecCategory}" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
+									<input name="category" type="checkbox" value="${lecCategory}" class="btn-check" id="${lecCategory}" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
 									${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get()}
 									<label class="btn btn-outline-primary" for="${lecCategory}">${lecCategory}</label>
 								</c:forEach>
 							</div>
 					</div>
- <input type="checkbox" name="gatherLocRegion" value="제주" class="form-check-input">제주도
-  <input type="checkbox" name="gatherLocRegion" value="강원" class="form-check-input">강원도
+			<div class="form-group mb-4 col-md-6 col-lg-4">
+				<label for="searchForm_memberIdx" class="form-label mb-0">회원 번호</label>
+				<input name="gatherName" id="searchForm_memberIdx" type="text" class="form-control" placeholder="제목을 입력하세요" >
+				<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
+			</div>
+			<button type="submit" class="btn btn-danger btn-sm">검색</button>
 
-
-
- <input type="text" name="gatherName">
- <button type="submit" class="btn btn-danger btn-sm">검색</button>
- 
-</form>
+ 			</form>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
@@ -232,9 +373,17 @@ window.addEventListener("load", function() {
 						<tbody>
 						
 							<c:forEach var="GatherVO" items="${list}"> 
+							 
 								<tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}'">
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td>
-									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="20%"></td>
+									<c:choose>
+									<c:when test="${GatherVO.gatherFileIdx != 0 }">   
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" width="10%"></td>
+									</c:when> 
+									<c:otherwise>  
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/resources/img/noImage.png" width="10%"></td> 
+									</c:otherwise>  
+									</c:choose>
 									<td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
 									<td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td> 
 									<td class="text-center align-middle text-nowrap">${GatherVO.lecCategoryName}</td> 
@@ -250,22 +399,40 @@ window.addEventListener("load", function() {
 				</div>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-			<a href="${pageContext.request.contextPath}/gather/list" type="button" class="col-auto btn btn-sm btn-outline-primary">목록으로</a>
+		<a href="${pageContext.request.contextPath}/gather/list" type="button" class="col-auto btn btn-sm btn-outline-primary">목록으로</a>
   <ul class="col-auto pagination pagination-sm m-0">
-    <c:if test="${pageMaker.prev}">
-    	<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
-    	> ◁ </a></li>
+    <c:if test="${pageMaker.prev}">  
+    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"> &laquo; </a></li>
     </c:if> 
-
+  
     <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
     	<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
     </c:forEach>
 
-    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
-    </c:if> 
+	<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+		<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+	</c:if> 
   </ul>
+     
+  <c:set var="isLogin" value="${memberIdx != null}"/> 
+  
+  <c:choose>
+  <c:when test="${isLogin}"> 
   <a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
+  </c:when>
+   <c:otherwise> 
+<a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/member/login">글쓰기</a>
+  </c:otherwise> 
+  </c:choose>
+  <script>
+  $(function(){
+	 $(".wrtie-btn").click(function(){
+		   
+		console.log("혹인");
+		alert("로그인을 해주세요");
+	 });
+  });
+  </script>
 </nav>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
