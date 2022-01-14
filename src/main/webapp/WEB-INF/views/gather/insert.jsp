@@ -8,7 +8,7 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
+<TITLE>HobbyCloud - 소모임 작성</TITLE>
 
 <!-- 파일 업로드 모듈 사전 설정 -->
 <%--
@@ -39,14 +39,14 @@ const fileSubmitAjaxPage = "${root}/gatherData/insert/";
 //카카오맵 전역변수 선언. 이렇게 안 하면 onload 이후 관련기능을 쓸 수 없기 때문에 전역변수로 미리 불러와 준다.
 let container, options, map, geocoder, marker, infowindow;
 
+// 좌표로 행정동 주소 정보를 요청합니다
 function searchAddrFromCoords(coords, callback) {
-	// 좌표로 행정동 주소 정보를 요청합니다
 	geocoder.coord2RegionCode(coords.getLng(), coords.getLat(),
 			callback);
 }
 
+// 좌표로 법정동 상세 주소 정보를 요청합니다
 function searchDetailAddrFromCoords(coords, callback) {
-	// 좌표로 법정동 상세 주소 정보를 요청합니다
 	geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 
 }

@@ -10,12 +10,11 @@
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 마이 페이지</TITLE>
 <script type='text/javascript'>
+
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
-$('.modal').css('opacity','0').css('display','none');
 	
 	// 이메일 유효성 검사
-	
     $("#emailBox").change(function() {
         if ($("#emailBox").val() == "directly") {
             $("#inputMail").attr("readonly", false);
@@ -41,57 +40,65 @@ $('.modal').css('opacity','0').css('display','none');
         }
     });
 	
-    // 모달 변수 정의
-    window.modal = new bootstrap.Modal(document.getElementById("modal"), {
-        keyboard: false
-    });
-});
-// 라이브러리: 이벤트 버블링 막기
-function stopEvent() {
-    if(typeof window.event == 'undefined') return;
-    if (!e) var e = window.event;
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-}
-    
-$(function(){
-	$("#findbtn").click(function(){
+	// 이메일 찾기 버튼을 누르면, AJAX로 임시 비번 발송을 요청하는 함수
+	$("#findbtn").click(function(e){
 			alert("작동시작");
 			
 		    // 이벤트 버블링 막기
-		    stopEvent();
+			e.stopImmediatePropagation();
+			e.stopPropagation();
+			e.preventDefault();
+			e.cancelBubble = true;
+			stopEvent();
 		    
 		    //비밀번호 재설정 (아이디, 닉네임, 이메일 전달)
 			var memberId = $("#memberId").val();
 			var memberNick = $("#memberNick").val();
 			var memberEmail = $("#idMail").val() + "@" + $("#inputMail").val();
-			 console.log("memberNick : " + memberNick);
-			 console.log("memberEmail : " + memberEmail);
-			    $.ajax({
-			    	type : "post",
-			        url : "pwFindMail",
-			        data : {"memberId" : memberId, "memberNick" : memberNick, "memberEmail" : memberEmail},
-			        success : function(resp){
-			        	console.log()
-			        	alert("ajax 성공!! ");
-			        	alert(resp);
-			        	console.log("resp : " + resp);
-			        	if(resp == "success") {
-			        		$('.modal').css('opacity','1').css('display','block');
-			        		$(".modal-detail").text("");
-					        $(".modal-detail").html("임시비밀번호가 전송되었습니다.");
-	
-			        	} else {
-			        		$('.modal').css('opacity','1').css('display','block');
-			        		$(".modal-detail").text("");
-					        $(".modal-detail").html("비밀번호 재설정이 실패했습니다.");
-			        		}
-			        	}
-			    });
-			    // 모달 토글
-			    modal.toggle();
+			// 임시 비번 랜덤 문자열
+			let originalPassword = Math.random().toString(36).substr(2,11);
+			// 임시 비번 랜덤 문자열을 해시화
+			let hashedPassword = CryptoJS.enc.Hex.stringify(CryptoJS.SHA1(originalPassword));
+			console.log("memberId : " + memberId);
+			console.log("memberNick : " + memberNick);
+			console.log("memberEmail : " + memberEmail);
+			console.log("originalPassword : " + originalPassword);
+			console.log("hashedPassword : " + hashedPassword);
+			
+			// AJAX 요청
+		    $.ajax({
+		    	type : "post",
+		        url : "pwFindMail",
+		        data : {
+		        	"memberId" : memberId,
+					"memberNick" : memberNick,
+					"memberEmail" : memberEmail,
+					"originalPassword": originalPassword,
+					"hashedPassword": hashedPassword
+				},
+		        success : function(resp){
+		        	console.log()
+		        	alert("ajax 성공!! ");
+		        	alert(resp);
+		        	console.log("resp : " + resp);
+		        	if(resp == "success") {
+		        		$('.modal').css('opacity','1').css('display','block');
+		        		$(".modal-detail").text("");
+				        $(".modal-detail").html("임시비밀번호가 전송되었습니다.");
+
+		        	} else {
+		        		$('.modal').css('opacity','1').css('display','block');
+		        		$(".modal-detail").text("");
+				        $(".modal-detail").html("비밀번호 재설정이 실패했습니다.");
+		        		}
+		        	}
+		    });
+		    // 모달 토글
+		    modal.toggle();
 		});
 	 });
+
+
 </script>
 </HEAD>
 <BODY>
@@ -130,7 +137,7 @@ $(function(){
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-
+		
 		<!-- 소단원 내용 -->
 		<!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
 <div id="modal" class="modal" tabindex="-1">
@@ -161,45 +168,50 @@ $(function(){
     </div>
 </div>
 </div>
-
-
+		
+       
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 			<div class="form-group col-12">
 				<label for="searchForm_memberId" class="form-label mb-0 id_input">ID</label>
 				<input name="memberId" id="memberId" type="text" class="form-control" placeholder="" value="">
-				</div>
-				<div class="form-group col-12">
+			</div>
+			<div class="form-group col-12">
 				<label for="searchForm_memberId" class="form-label mb-0 id_input">닉네임</label>
 				<input name="memberNick" id="memberNick" type="text" class="form-control" placeholder="" value="">
-				</div>
-				<div class="form-group col-12 mt-3">
+			</div>
+			<div class="form-group col-12 mt-3">
 				<label for="searchForm_memberId" class="form-label mb-0 id_input">이메일</label>
 				<input type="text"  id="idMail" name="email_id" class="input form-control"  placeholder="EMAIL" required>
-					@
-					<input type="text" id="inputMail" name="email_domain" class="input form-control" required readonly placeholder="EMAIL" >
-					<select id="emailBox" name="emailBox" required>
-						<option value="" class="pickMail">이메일 선택</option>
-						<option value="directly">직접입력</option>
-						<option value="naver.com">naver.com</option>
-						<option value="gmail.com">gmail.com</option>
-						<option value="daum.net">daum.net</option>
-						<option value="hanmail.net">hanmail.net</option>
-						<option value="nate.com">nate.com</option>
-					</select>				
-					</div>
+				@
+				<input type="text" id="inputMail" name="email_domain" class="input form-control" required readonly placeholder="EMAIL" >
+				<select id="emailBox" name="emailBox" required>
+					<option value="" class="pickMail">이메일 선택</option>
+					<option value="directly">직접입력</option>
+					<option value="naver.com">naver.com</option>
+					<option value="gmail.com">gmail.com</option>
+					<option value="daum.net">daum.net</option>
+					<option value="hanmail.net">hanmail.net</option>
+					<option value="nate.com">nate.com</option>
+				</select>				
+			</div>
+			<%-- 히든 영역 --%>
+			<div class="d-none">
+				<input type="text" name="originalPassword" />
+				<input type="password" name="hashedPassword" />
+			</div>
 					<!-- 모달 여는 버튼 -->
 <!-- 모달 여는 버튼 -->
 <button type="button" id="findbtn" class="btn btn-primary m-3 p-3">임시비밀번호 발급하기</button>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
-
+		
 		<!-- 소단원 내용 -->
-
+		
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
-
+	
 </ARTICLE>
 <!-- 페이지 영역 끝 -->
 
@@ -209,5 +221,3 @@ $(function(){
 
 <!-- ************************************************ 풋터 영역 ************************************************ -->
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
-</BODY>
-</HTML>

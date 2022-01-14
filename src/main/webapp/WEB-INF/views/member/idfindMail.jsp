@@ -79,9 +79,9 @@ $(function(){
 		        	else               		$(".modal-detail").html("회원님의 아이디는 " + resp + " 입니다");
 	        		modal.toggle();
                 }
-		})
-    })
-})
+			})
+	    })
+	})
 </script>
 </HEAD>
 <BODY>
@@ -123,35 +123,33 @@ $(function(){
 
 		<!-- 소단원 내용 -->
 		<!-- 모달 영역. HTML의 가장 처음에 배치해야 한다 -->
-<div id="modal" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content p-3">
-            <!-- 모달 제목 영역 -->
-            <div class="modal-header">
-                <!-- 모달 타이틀 -->
-                <h5 class="modal-title">아이디찾기</h5>
-                <!-- 모달 닫기 버튼 -->
-                <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
-
-            </div>
-            <!-- 모달 본문 영역 -->
-            <div class="modal-body table table-striped">
-                <div>
-                    <p class="modal-detail">
-						회원님의 아이디는 ${memberDto.memberId} 입니다.
-                   </p>
-                   <div class="buttons">
-                   <button class="button reser payment" onclick="location.href='login'">로그인</button>
-                   <button class="button reser clear" onclick="location.href='pwFindMail'">비밀번호 찾기</button>
-                   </div>
-                </div>
-
-            <!-- 모달 꼬리말 영역 -->
-        </div>
-    </div>
-</div>
-</div>
+	<div id="modal" class="modal" tabindex="-1">
+	    <div class="modal-dialog">
+	        <div class="modal-content p-3">
+	            <!-- 모달 제목 영역 -->
+	            <div class="modal-header">
+	                <!-- 모달 타이틀 -->
+	                <h5 class="modal-title">아이디찾기</h5>
+	                <!-- 모달 닫기 버튼 -->
+	                <!-- data-bs-dismiss="modal" ← 이 태그속성을 준 엘리먼트에는, 모달을 닫는 역할이 부여되는 것으로 보인다. -->
+	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>	
+	            </div>
+	            <!-- 모달 본문 영역 -->
+	            <div class="modal-body table table-striped">
+	                <div>
+	                    <p class="modal-detail">
+							회원님의 아이디는 ${memberDto.memberId} 입니다.
+	                   </p>
+	                   <div class="buttons">
+	                   <button class="button reser payment" onclick="location.href='login'">로그인</button>
+	                   <button class="button reser clear" onclick="location.href='pwFindMail'">비밀번호 찾기</button>
+	                   </div>
+	                </div>	
+	            <!-- 모달 꼬리말 영역 -->
+	        </div>
+	    </div>
+	</div>
+	</div>
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 			<div class="form-group col-12">
@@ -174,7 +172,7 @@ $(function(){
 					</select>				
 					</div>
 					<!-- 모달 여는 버튼 -->
-<button type="button" id="findbtn" class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">찾기</button>
+				<button type="button" id="findbtn" class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">찾기</button>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
@@ -186,7 +184,6 @@ $(function(){
 
 </ARTICLE>
 <!-- 페이지 영역 끝 -->
-
 
 </DIV></SECTION>
 <!-- 본문 대구역 끝 -->
