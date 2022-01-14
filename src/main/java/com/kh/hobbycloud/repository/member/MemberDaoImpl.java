@@ -181,13 +181,12 @@ public class MemberDaoImpl implements MemberDao{
 
 	//임시 비밀번호 업데이트
 	@Override
-	public boolean tempPw(MemberDto memberDto,String changePw) {
+	public boolean tempPw(MemberDto memberDto,String originalPassword) {
 
 		Map<String ,Object> param = new HashMap<>();
 		//받은 난수를 암호화 하여 업데이트 진행
-		String origin = changePw;
-		String encrypt = encoder.encode(origin);
-		memberDto.setMemberPw(encrypt);
+		String origin = originalPassword;
+		memberDto.setMemberPw(origin);
 		param.put("memberId", memberDto.getMemberId());
 		param.put("memberPw",memberDto.getMemberPw());
 

@@ -405,16 +405,21 @@ public class MemberController {
 	@PostMapping("/pwFindMail")
 	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
-	public String pwFindMail(MemberDto memberDto) throws FileNotFoundException, MessagingException, IOException {
+	public String pwFindMail(MemberDto memberDto, @RequestParam String originalPassword, @RequestParam String hashedPassword, HttpSession session ) throws FileNotFoundException, MessagingException, IOException {
+
 		System.out.println("pwFindMail");
 		System.out.println("pwFindMail memberDto : " + memberDto);
 		System.out.println("memberDto"+ memberDto.getMemberNick());
+		System.out.println("originalPassword"+ originalPassword);
+		System.out.println("hashedPassword"+ hashedPassword);
+		
 		MemberDto pwFind = memberService.pwFindMail(memberDto.getMemberId(), memberDto.getMemberNick(), memberDto.getMemberEmail());
 		System.out.println("pwFind : " + pwFind);
 		if(pwFind != null) {
-			String changePw = service.sendTempPwMail(pwFind.getMemberEmail());
-			System.out.println("changePw : "  + changePw);
-			boolean result = memberDao.tempPw(memberDto, changePw);
+			String hashedPw = (String)session.getAttribute("hashedPassword");
+			service.sendTempPwMail(pwFind.getMemberEmail(),hashedPw);
+			System.out.println("changePw : "  + originalPassword);
+			boolean result = memberDao.tempPw(memberDto, originalPassword);
 			System.out.println("result: " + result);
 			return "success";
 
