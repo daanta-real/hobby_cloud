@@ -236,28 +236,6 @@ window.addEventListener("load", function() {
 		searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 	});
 
-	$("#fileUploadForm_submitBtn").click(function(e){
-		//시간설정 잘못 된 것
-		e.preventDefault();
-		makeTime(); 
-		let startTime = new Date($("#start").val());
-		let endTime	= new Date($("#end").val());
-		let today = new Date();
-		if(endTime<startTime||startTime<today)
-		{
-			e.preventDefault();	 
-			alert("시간 설정을 확인해주세요");  
-		} else if( $("input[name=gatherDetail]").val()==""||
-				$("input[name=gatherName]").val()==""||
-				$("input[name=gatherHeadCount]").val()==""||
-				$("input[name=gatherLocRegion]").val()=="")
-				{
-			e.preventDefault();	
-			alert("빈칸을 입력해주세요 ");
-		} else {
-			$("#insert-form").submit();
-		}
-	});
 
 	// 모달 창 초기화
 	function modalInitialize() {
@@ -291,10 +269,36 @@ window.addEventListener("load", function() {
 	}); 
 
 });
-
-
 </script>
 
+<script>
+// 파일 전송 form ajax 제출 전에 반드시 실행되는 전처리 이벤트
+function sendForm_preEvent() {
+	//시간설정 잘못 된 것 
+	
+	
+	makeTime();
+	let startTime = new Date($("#start").val());
+	let endTime	= new Date($("#end").val());
+	let today = new Date();
+	console.log(today);  
+	console.log(startTime);
+	
+	if(endTime<startTime||startTime<today){
+		alert("시간 설정을 확인해주세요");
+		return false;
+	} if( $("input[name=gatherDetail]").val()==""||
+			$("input[name=gatherName]").val()==""||
+			$("input[name=gatherHeadCount]").val()==""||
+			$("input[name=gatherLocRegion]").val()==""){ 
+		alert("빈칸을 입력해주세요."); 
+		return false;
+	}
+	
+	return true;
+}
+
+</script>
 </HEAD>
 <BODY>
 <jsp:include page="/resources/template/body.jsp" flush="false" />

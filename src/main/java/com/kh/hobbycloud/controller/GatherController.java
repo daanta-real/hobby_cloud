@@ -58,16 +58,14 @@ public class GatherController {
 
 	@GetMapping("/list")
 	public String list(Model model,Criteria cri) {
+
 		model.addAttribute("lecCategoryList", lecCategoryDao.select());
 		model.addAttribute("list", gatherService.list(cri));
-		System.out.println("카테고리"+lecCategoryDao.select());
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		int number = gatherService.listCount();
 		pageMaker.setTotalCount(number);
 		model.addAttribute("pageMaker",pageMaker);
-
-		System.out.println(gatherService.list(cri));
 		return "gather/list";
 	}
 
@@ -78,11 +76,8 @@ public class GatherController {
 
 		GatherSearchVO gatherSearchVO = new GatherSearchVO();
 		gatherSearchVO.setCategory(cri2.getCategory());
-		System.out.println("카테고리"+cri2.getCategory());
-		System.out.println("카테고리"+cri2.getGatherLocRegion());
 		gatherSearchVO.setGatherLocRegion(cri2.getGatherLocRegion());
 		gatherSearchVO.setGatherName(cri2.getGatherName());
-
 		model.addAttribute("list",gatherService.listBy(cri2));
 		int count = gatherService.listCountBy(gatherSearchVO);
 		PageMaker2 pageMaker2 = new PageMaker2();
@@ -106,11 +101,8 @@ public class GatherController {
 	// 모임글 등록 폼 페이지
 	@GetMapping("/insert")
 	public String insert(Model model) {
-
-		// 데이터 획득: 카테고리 목록
 		List<String> lecCategoryList = lecCategoryDao.select();
 		model.addAttribute("lecCategoryList", lecCategoryList);
-
 		return "gather/insert";
 	}
 
@@ -127,6 +119,7 @@ public class GatherController {
 	// 상세 보기 페이지
 	@RequestMapping("/detail/{gatherIdx}")
 	public String detail(@PathVariable int gatherIdx, Model model,HttpSession session) {
+
 
 		// 데이터 획득: VO 및 DTO
 		GatherVO gatherVO = gatherDao.get(gatherIdx);
