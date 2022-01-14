@@ -189,6 +189,11 @@ public class GatherController {
 		model.addAttribute("GatherVO", gatherVO);
 		model.addAttribute("list", list);
 
+		// 데이터 획득: 카테고리 목록
+		List<String> lecCategoryList = lecCategoryDao.select();
+		model.addAttribute("lecCategoryList", lecCategoryList);
+
+		// 데이터 획득: 기존 첨부파일 리스트
 		List<GatherFileDto> fileList = gatherFileDao.getIdx(gatherIdx);
 		log.debug("==================== List<LecFileDto> fileList = {}", fileList);
 		model.addAttribute("fileList", fileList);
