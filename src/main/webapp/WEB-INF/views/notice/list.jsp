@@ -91,15 +91,16 @@ window.addEventListener("load", function() {
 <!-- 검색창 -->
 <form method="post" class="mt-5">
 	
+	<div class="text-center">
 	<select name="column">
 		<option value="notice_name" selected>제목</option>
 		<option value="notice_detail">내용</option>
 		<option value="member_nick">작성자</option>
 	</select>
 	
-	<input type="search" name="keyword" placeholder="검색어 입력" required >
-	
+	<input type="search" name="keyword" placeholder="검색어 입력" required>
 	<button type="submit" class="btn btn-danger btn-sm">검색</button>
+	</div>
 	
 </form>
 			</div>
