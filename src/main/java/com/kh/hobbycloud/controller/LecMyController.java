@@ -37,6 +37,7 @@ public class LecMyController {
 
 		// 회원 현재 보유 포인트를 뷰로 넘김
 		MemberDto memberDto = memberDao.getByIdx((int) session.getAttribute("memberIdx"));
+
 		int currentPoint = memberDto.getMemberPoint();
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 포인트 정보를 조회합니다. 조회 결과: {}", currentPoint);
 		model.addAttribute("currentPoint", currentPoint);
@@ -50,13 +51,12 @@ public class LecMyController {
 		session.setAttribute("buyTargetLecIdx", lecIdx);
 
 		return "lecMy/confirm_buy";
-
 	}
 
 	// 강좌 구매 실행 페이지
 	@GetMapping("/confirm_buy")
 	public String buy_execute(HttpSession session, Model model) {
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/buy (GET) 강좌 구매를 실행합니다.");
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /lecMy/buy (GET) 강좌 구매를 실행합니다.");
 
 		// 변수 없으면 에러
 

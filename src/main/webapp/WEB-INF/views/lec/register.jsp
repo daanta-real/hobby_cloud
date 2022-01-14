@@ -413,7 +413,7 @@ function setLoc(el) {
 						<label for="searchForm_memberIdx" class="form-label mb-0">지도 검색</label>
 						<div id="map" class="md-3"></div>
 						<label>지역<input type="text" name="lecLocRegion"></label>
-						<input id="placeIdxHolder" type="text" name="placeIdx"	value="9999">
+						<input id="placeIdxHolder" type="hidden" name="placeIdx">
 						<label>위도<input id="placeLatiHolder" type="text" name="lecLocLatitude"></label>
 						<label>경도<input id="placeLongHolder" type="text" name="lecLocLongitude"></label>
 					</div>
@@ -470,7 +470,7 @@ function setLoc(el) {
 						</div>
 					</div>
 					<div class="row mb-4">
-						<input type="button" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
+						<input type="submit" id="fileUploadForm_submitBtn" value="작성 완료" class="form-btn p-1 border-radius-all-25">
 					</div>
 				</form>
 			</div>
