@@ -201,8 +201,9 @@ public class LecController {
 	// 강좌 삭제
 	@GetMapping("/delete/{lecIdx}")
 	public String delete(@PathVariable int lecIdx) {
+		lecFileDao.delete(lecIdx);
 		lecDao.delete(lecIdx);
-		return "redirect:list";
+		return "redirect:/lec/list";
 	}
 
 	// 파일 전송 다운로드 (파일 전송 실시)
@@ -303,22 +304,22 @@ public class LecController {
     }
 
 	//결제(신청) Get페이지
-	@GetMapping("/check/{lecIdx}")
-	public String check(@PathVariable int lecIdx, HttpSession session, Model model) {
-		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-		boolean isLogin = session.getAttribute("memberId") != null;
-		if(isLogin) {
-			String memberId = (String)session.getAttribute("memberId");
-			MemberDto memberDto = memberDao.get(memberId);
-			model.addAttribute("memberDto", memberDto);
-		}
-		else {
-			return "redirect:/member/login";
-		}
-		model.addAttribute("lecDetailVO", lecDetailVO);
-
-		return "lec/check";
-	}
+//	@GetMapping("/check/{lecIdx}")
+//	public String check(@PathVariable int lecIdx, HttpSession session, Model model) {
+//		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
+//		boolean isLogin = session.getAttribute("memberId") != null;
+//		if(isLogin) {
+//			String memberId = (String)session.getAttribute("memberId");
+//			MemberDto memberDto = memberDao.get(memberId);
+//			model.addAttribute("memberDto", memberDto);
+//		}
+//		else {
+//			return "redirect:/member/login";
+//		}
+//		model.addAttribute("lecDetailVO", lecDetailVO);
+//
+//		return "lec/check";
+//	}
 
 	//강좌 신청 페이지 - 포인트 차감
 	//강사님 예전에 구현했던 포인트기능 적용?
@@ -336,12 +337,12 @@ public class LecController {
 //	}
 
 	
-	//내 강좌
-	@GetMapping("/my_lec")
-	public String my_lec(HttpSession session, Model model) {
-		String memberId = (String)session.getAttribute("memberId");
-//		MyLecDto myLecDto = myLecDao.getMyLec(memberId);
-		return "lec/my_lec";
-	}
+//	//내 강좌
+//	@GetMapping("/my_lec")
+//	public String my_lec(HttpSession session, Model model) {
+//		String memberId = (String)session.getAttribute("memberId");
+////		MyLecDto myLecDto = myLecDao.getMyLec(memberId);
+//		return "lec/my_lec";
+//	}
 
 }
