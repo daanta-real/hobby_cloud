@@ -12,7 +12,7 @@
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 강좌 목록</TITLE>
 <style type="text/css">
-	li {list-style: none; float: left; padding: 6px;}
+/* 	li {list-style: none; float: left; padding: 6px;} */
 </style>
 </HEAD>
 <BODY>
@@ -215,7 +215,7 @@
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
-									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/lecFile/${lecListVO.lecFileIdx}" width="20%"></td>
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/lecFile/${lecListVO.lecFileIdx}" width="10%"></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecName}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${lecListVO.lecPrice}" pattern="#,###" /></td>

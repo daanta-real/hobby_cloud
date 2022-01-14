@@ -25,7 +25,16 @@
 	<insert id="register" parameterType="LecDto">
 		insert into lec
 		values (
-			#{lecIdx}, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
+			#{lecIdx}, #{tutorIdx}, #{lecCategoryName}, 
+			<choose>
+				<when test="placeIdx != null">
+				#{placeIdx},
+				</when>
+				<otherwise>
+				null,
+				</otherwise>
+			</choose>
+			#{lecName},
 			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
 			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitude}, #{lecLocLongitude},
 			0, 0, 0

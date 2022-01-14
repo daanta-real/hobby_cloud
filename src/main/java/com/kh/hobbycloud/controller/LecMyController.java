@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/myLec")
+@RequestMapping("/lecMy")
 public class LecMyController {
 
 	@Autowired LecDao lecDao;
@@ -36,7 +36,11 @@ public class LecMyController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/confirm/{} (GET) 강좌 구매 확인 페이지 진입", lecIdx);
 
 		// 회원 현재 보유 포인트를 뷰로 넘김
-		MemberDto memberDto = memberDao.get((String) session.getAttribute("memberIdx"));
+//		log.debug("session memberIdx1111: {}", session.getAttribute("memberIdx"));
+//		log.debug("session memberIdx22222: {}", String.valueOf(session.getAttribute("memberIdx")));
+//		log.debug("session memberIdx3333: {}", (String) (session.getAttribute("memberIdx")));
+		MemberDto memberDto = memberDao.getByIdx((int)session.getAttribute("memberIdx"));
+		
 		int currentPoint = memberDto.getMemberPoint();
 		model.addAttribute("currentPoint", currentPoint);
 
@@ -48,7 +52,7 @@ public class LecMyController {
 		session.setAttribute("buyTargetLecIdx", lecIdx);
 
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌 정보를 조회합니다. 조회 결과: {}", lecDetailVO);
-		return "/confirm";
+		return "lecMy/confirm";
 
 	}
 

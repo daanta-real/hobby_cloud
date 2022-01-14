@@ -359,7 +359,7 @@ function setLoc(el) {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form name="lecForm" method="get" class="row container d-flex justify-content-center fileUploadForm">
+				<form name="lecForm" method="post" class="row container d-flex justify-content-center fileUploadForm">
 					<div class="form-group row mb-4">
 						<label>강좌 이름</label>
 						<input type="text" name="lecName" required class="form-input p-1 border-radius-all-25" />
@@ -413,7 +413,7 @@ function setLoc(el) {
 						<label for="searchForm_memberIdx" class="form-label mb-0">지도 검색</label>
 						<div id="map" class="md-3"></div>
 						<label>지역<input type="text" name="lecLocRegion"></label>
-						<input id="placeIdxHolder" type="text" name="placeIdx"	value="9999">
+						<input id="placeIdxHolder" type="hidden" name="placeIdx">
 						<label>위도<input id="placeLatiHolder" type="text" name="lecLocLatitude"></label>
 						<label>경도<input id="placeLongHolder" type="text" name="lecLocLongitude"></label>
 					</div>
