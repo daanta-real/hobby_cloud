@@ -104,7 +104,7 @@
 				<mvc:mapping path="/lec/car/insert"/>
 				<mvc:mapping path="/lec/cart_list"/>
 				<mvc:mapping path="/lec/cart/delete"/>
-				<mvc:mapping path="/tutor/delete"/>
+				<mvc:mapping path="/tutor/delete"/> 
 				<mvc:mapping path="/tutor/insert"/>
 
 				<bean class="com.kh.hobbycloud.interceptor.MemberInterceptor"></bean>
