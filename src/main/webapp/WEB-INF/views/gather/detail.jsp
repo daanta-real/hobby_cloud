@@ -79,6 +79,11 @@ $(function() {
 			alert("모집이 마감되었습니다.")
 		});
 	})
+		$(function(){
+		$(".goneBtn").click(function(){
+			alert("종료된 소모임입니다.")
+		});
+	})
 	
 });
 </script>
@@ -139,7 +144,7 @@ $(function() {
 	소모임시간 : ${startTime} ~ ${endTime} 
 	|
 	장소 : ${GatherVO.gatherLocRegion}
-</div>
+</div>    
 <div class="row">
 	<h2>${GatherVO.gatherDetail}</h2> 
 </div>
@@ -183,12 +188,11 @@ $(function() {
 							</c:if>
 							<!-- 참가여부를 확인 -->
 							<c:set	var="isJoin" value="false" />  
-							<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}"> 
-								<h1>${memberIdx} / ${GatherHeadsVO.memberIdx}</h1> 
+							<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}">  
 								<c:set var="isJoin" value="true" />
 							</c:if>
 					 	</tr>
-					</c:forEach> 
+					</c:forEach>  
 				</tbody>
 			</table>
 		</div>
@@ -197,7 +201,10 @@ $(function() {
 	<!-- 참가하기 버튼 -->
 	<c:set var="isLogin" value="${memberIdx != null}"/>
 	<c:choose>
-		<c:when test="${isJoin}">
+		<c:when test="${!isGone}">  
+		<a class="btn btn-secondary goneBtn">종료된 소모임</a> 
+		</c:when> 
+		<c:when test="${isJoin}"> 
 			<a class="btn btn-warning"
 				href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
 		</c:when>
@@ -219,16 +226,17 @@ $(function() {
 			<c:when test="${isLogin}">
 				<a href="${pageContext.request.contextPath}/gather/insert" class="col-auto btn btn-sm btn-outline-primary mx-1">글 작성</a>
 			</c:when>
-		</c:choose>
-		<c:set var="isWriter" value="${memberIdx == GatherVO.memberIdx}"/>
+		</c:choose> 
+		<c:set var="isWriter" value="${GatherVO.memberIdx eq memberIdx}"/>  
+	 
 		<c:choose>
-			<c:when test="isWriter">
+			<c:when test="${isWriter}"> 
 				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}"
 					class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
 					class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
 			</c:when>
-		</c:choose>
+		</c:choose> 
 	</nav>
 
 <!-- 댓글 내역 -->
@@ -288,7 +296,7 @@ $(function() {
 				<span>평점을 입력해주세요</span>
 			</div>
 			<div class="card-body position-relative p-1 px-2"> 
-				<div class="star-rating space-x-4 mx-auto"> 
+				<div class="star-rating space-x-4 mx-auto">  
 					<input type="radio" id="5-stars" name="gatherReviewScore" value="5" v-model="ratings"/>
 					<label for="5-stars" class="star pr-4">★</label>
 					<input type="radio" id="4-stars" name="gatherReviewScore" value="4" v-model="ratings"/>
@@ -323,8 +331,7 @@ $(function() {
 		</div>
 		<div class="card-body position-relative p-1 px-2">   
 			<div class="card-text p-1 px-3 gatherReviewDetail">{{gatherReviewDetail}}</div>
-			<div class="floatRightTop position-absolute top-0 end-0 p-1">
-				<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn {{isWriter}}" data-gatherreview-idx="{{gatherReviewIdx}}">수정</button>
+			<div class="floatRightTop position-absolute top-0 end-0 p-1"> 
 				<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-gatherreview-idx="{{gatherReviewIdx}}">삭제</button>
 			</div>
 		</div>
@@ -348,6 +355,25 @@ $(function() {
 <!-- 본문 대구역 끝 -->
 
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
+
+ <!-- 이거 같이 넣어잇으면 오류떠서 따로 srcipt분류했습니다. -->
+ <!-- 
+<script>
+$(function(){
+	const buttonArr = document.getElementsByTagName('button');
+
+	for(let i = 0; i < buttonArr.length; i++){
+	  buttonArr[i].addEventListener('click',function(e){
+		
+	    e.preventDefault(); 
+	    console.log("킄ㄹ릭한 버튼:",  e.target);
+	    document.querySelector("." + e.target.id).scrollIntoView(true);
+	    //document.querySelector('.box' + (i + 1)).scrollIntoView(true);
+	  		}  
+		});
+	}); 
+</script> 
+ -->
  
 <script>
 $(function(){
@@ -366,7 +392,7 @@ $.ajax({
 	},
 	error:function(e){}
 });
-});
+}); 
 	
 	function draw(selector, data){//select = 선택자 , data = JSON(List<ChartVO>)
 		//ctx는 canvas에 그림을 그리기 위한 펜 객체(고정 코드)
@@ -405,8 +431,8 @@ $.ajax({
 		                'rgba(255, 99, 132, 1)',
 		                'rgba(54, 162, 235, 1)' 
 		                
-		            ],
-		            borderWidth: 5//테두리 두께
+		            ], 
+		            borderWidth: 2//테두리 두께
 		        }]
 		    },
 		    options: {
@@ -432,28 +458,29 @@ var sizeR = 10;
 $(function(){ 
 	$(".moreR-btn").click(function(){
 		loadReview(pageR,sizeR,gatherIdx); 
-		console.log(pageR);
-		pageR++;   
-		console.log(pageR);  
+		pageR++;    
 	});  
 	//더보기 버튼을 강제 1회 클릭(트리거) 
 	$(".moreR-btn").click(); 
 	
 	$(".lessR-btn").click(function(){
 		$("#resultReivew").empty(); 
-		pageR=1;   
+		pageR=1;       
 		loadReview(pageR,sizeR,gatherIdx); 
+		pageR++; 
 	});
-});
+}); 
 
-
+ 
 
 $(function(){
 		//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insertReview-form").submit(function(e){
-		console.log("누름");
-		//this == #insert-form
+		e.stopImmediatePropagation();
+		e.stopPropagation();
 		e.preventDefault();
+		e.cancelBubble = true;
+		stopEvent();
 		
 		var dataValue =$(this).serialize();
 		
@@ -516,22 +543,19 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 		dateType:"json",
 		success:function(resp){
 			console.log("성공",resp); 
-			if(resp.length < sizeRValue && pageR==1){   
+			if(resp.length < sizeRValue && pageR==2){   
 				//게시물이 10개 이하 일 떄 page=1일 떄
 				$(".moreR-btn").hide();   
-				console.log(pageR+"1111111");
 				$(".lessR-btn").hide();  
-			}else if(resp.length <sizeRValue && pageR>1){//게시물이 10개 이하 + page는 2번 
+			}else if(resp.length <sizeRValue && pageR>2){//게시물이 10개 이하 + page는 2번 
 				$(".moreR-btn").hide(); 
-				console.log(pageR+"222222");
-				$(".lessR-btn").show();   
+				$(".lessR-btn").show();     
 			}  
 			else{ 
 				$(".moreR-btn").show();
-				console.log(pageR+"33333");  
 				$(".lessR-btn").hide();  
 			} 
-			
+			  
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
 				 
@@ -659,11 +683,11 @@ $(function(){
 	}); 
 	//더보기 버튼을 강제 1회 클릭(트리거) 
 	$(".more-btn").click();
-	console.log(page); 
 	$(".less-btn").click(function(){
-		page=1; 
-		$("#result").empty(); 
-		loadList(page,size,gatherIdx); 
+		$("#result").empty();  
+		page=1;        
+		loadList(page,size,gatherIdx);  
+		page++; 
 	});
 });
 
@@ -672,8 +696,11 @@ $(function(){
 	//처음 들어오면 목록 출력
 	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insert-form").submit(function(e){
-		//this == #insert-form
+		e.stopImmediatePropagation();
+		e.stopPropagation();
 		e.preventDefault();
+		e.cancelBubble = true;
+		stopEvent(); 
 		
 		var dataValue = $(this).serialize();
 		
@@ -720,12 +747,15 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 		},
 		dateType:"json",
 		success:function(resp){
-			console.log(resp.length,sizeValue); 
-			console.log("성공",resp);
-			if(resp.length < sizeValue){  
+			if(resp.length < sizeValue && page==2){   
+				//게시물이 10개 이하 일 떄 page=1일 떄
+				$(".more-btn").hide();    
+				$(".less-btn").hide();  
+			}else if(resp.length <sizeValue && page>2){//게시물이 10개 이하 + page는 2번 
 				$(".more-btn").hide(); 
-				$(".less-btn").show(); 
-			}else{
+				$(".less-btn").show();     
+			}  
+			else{ 
 				$(".more-btn").show();
 				$(".less-btn").hide();  
 			} 

@@ -30,9 +30,9 @@
 				  
 				// 주소-좌표 변환 객체를 생성합니다
 				var geocoder = new kakao.maps.services.Geocoder();
-
-				// 주소로 좌표를 검색합니다 
-				geocoder.addressSearch(targetLocation,  
+ 
+				// 주소로 좌표를 검색합니다  
+				geocoder.addressSearch(targetLocation,      
 					function(result, status) {  
 						// 정상적으로 검색이 완료됐으면 
 						if (status === kakao.maps.services.Status.OK) {
@@ -288,13 +288,12 @@ window.addEventListener("load", function() {
 			<div class="container">
 				<div id="map" style="width: 800px; height: 300px; border-radius: 20px;"></div>	
 				
-					<form  method="post" class="mt-4">
-
+					<form  method="post" class="mt-4"> 
 						<label for=searchForm_lecLocRegion class="form-label mb-0 d-block">지역</label>
 						<div class="btn-group w-100">
-							<input name="gatherLocRegion" type="radio" value="서울" class="btn-check" id="Seoul" autocomplete="off" onclick="getGender(event)" ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Seoul">서울</label>
-							<input name="gatherLocRegion" type="radio" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off" onclick="getGender(event)" ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
+							<input name="gatherLocRegion" type="radio" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary" for="Gyeonggi">경기</label>
 			 	 			<input name="gatherLocRegion" type="radio" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
 				 			<label class="btn btn-outline-primary" for="Busan">부산</label>
@@ -338,7 +337,7 @@ window.addEventListener("load", function() {
 							</div>
 					</div>
 			<div class="form-group mb-4 col-md-6 col-lg-4">
-				<label for="searchForm_memberIdx" class="form-label mb-0">회원 번호</label>
+				<label for="searchForm_memberIdx" class="form-label mb-0">소모임 제목</label> 
 				<input name="gatherName" id="searchForm_memberIdx" type="text" class="form-control" placeholder="제목을 입력하세요" >
 				<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 			</div>

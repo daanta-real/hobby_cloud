@@ -204,7 +204,7 @@ public class MemberController {
 //		model.addAttribute("list", memberCategoryList);
 		//페이지 리다이렉트
 		return "member/mypage";
-		
+
 	}
 
 
@@ -434,7 +434,7 @@ public class MemberController {
 		log.debug("ㅡㅡMemberController - /member/updateMail GET> 이메일 변경");
 		return "member/updateMail";
 	}
-	
+
 	// 이메일 변경
 	@PostMapping("/updateMail")
 	@ResponseBody
@@ -452,28 +452,28 @@ public class MemberController {
 			return "success";
 		}
 	}
-	
+
 	// 내 장소 목록 페이지
 	@GetMapping("/list")
 	public String list(Model model, MemberCriteria cri) {
 		model.addAttribute("list", memberService.list(cri));
-		
+
 		MemberPageMaker pageMaker = new MemberPageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(memberService.listCount());
 		model.addAttribute("pageMaker",pageMaker);
-		
+
 		System.out.println(memberService.list(cri));
 		return "member/list";
 	}
-	
+
 	// 검색결과 목록 페이지
 	@PostMapping("/list")
 	public String search(@ModelAttribute MemberSearchVO memberSearchVO, Model model) {
 //		log.debug("param.toString()   " + gatherSearchDto.toString());
 		log.debug("category={}", memberSearchVO);
 		List<MemberListVO> list = memberDao.listSearch(memberSearchVO);
-		
+
 
 		model.addAttribute("list",list);
 		return "member/list";
