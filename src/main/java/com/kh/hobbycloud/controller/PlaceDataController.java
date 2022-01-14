@@ -60,7 +60,7 @@ public class PlaceDataController {
 			log.debug("ㅡㅡㅡ 강의장 수정 memberIdx: {}", placeEditVO.toString());
 			log.debug("ㅡㅡㅡ 수정내용: {}", placeEditVO);			
 
-			placeService.update(placeEditVO);
+			placeService.update(placeEditVO); 
 			
 			log.debug("==================== 수정이 끝났습니다. 상세보기로 돌아갑니다.", placeEditVO);
 
