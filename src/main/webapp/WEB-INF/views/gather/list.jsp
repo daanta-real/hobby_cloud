@@ -145,7 +145,7 @@ function getGender(event) {
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
+<TITLE>HobbyCloud - 소모임 목록페이지</TITLE>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -191,8 +191,7 @@ window.addEventListener("load", function() {
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<div id="map" style="width: 800px; height: 300px; border-radius: 20px;"></div>	
-				<input name="keyword" id="result" type="text"> 
-				<button class="btn btn-primary search-btn">장소검색</button>
+				
 					<form  method="post" class="mt-4">
 
 						<label for=searchForm_lecLocRegion class="form-label mb-0 d-block">지역</label>

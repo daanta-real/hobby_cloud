@@ -569,9 +569,10 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 				template = template.replace("{{gatherReviewDetail}}", resp[i].gatherReviewDetail);
 		
 				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
-				console.log("댓글 작성자 여부:", resp[i].memberNick, '${sessionScope.memberNick}', resp[i].memberNick === '${sessionScope.memberNick}');
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
 				var isWriterClass = !isWriter ? "d-none": "";
 			
+				template = template.replace("{{isWriter}}", isWriterClass); 
 				template = template.replace("{{isWriter}}", isWriterClass); 
 				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
@@ -755,6 +756,12 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 				var time = resp[i].gatherReplyDate;
 				var date =new Date(time);
 				template = template.replace("{{gatherReplyDate}}",dateFormat(date)); 
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriterClass = !isWriter ? "d-none": "";
+			
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				template = template.replace("{{isWriter}}", isWriterClass);
 				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 				
