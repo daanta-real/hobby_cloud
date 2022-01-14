@@ -89,7 +89,7 @@ window.addEventListener("load", function() {
 			</div>
 <!-- 검색창 -->
 <form method="post" class="mt-5">
-	
+	<div class="text-center">
 	<select name="column">
 		<option value="petitions_name" selected>제목</option>
 		<option value="petitions_detail">내용</option>
@@ -99,6 +99,7 @@ window.addEventListener("load", function() {
 	<input type="search" name="keyword" placeholder="검색어 입력" required >
 	
 	<button type="submit" class="btn btn-danger btn-sm">검색</button>
+	</div>
 	
 </form>
 			</div>
@@ -127,9 +128,12 @@ window.addEventListener("load", function() {
 				<a class="page-link" href="#">»</a>
 			</li>-->
 		</ul>
-       
+       <c:if test="${login }">
 		<a class="col-auto btn btn-sm btn-outline-primary" href="write">글쓰기</a>
-		
+		</c:if>
+		<c:if test="${!login }">
+		<a class="col-auto" href=""></a>
+		</c:if>
 	</nav>
 
 </div>

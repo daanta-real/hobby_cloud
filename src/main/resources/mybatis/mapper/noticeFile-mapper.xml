@@ -40,6 +40,16 @@
 		WHERE notice_idx = #{noticeIdx}
 	</select>
 	
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+	  	delete from notice_file where notice_idx = #{noticeIdx}
+	</delete>
+	
+	<!-- 실시간 삭제 -->
+	<delete id="deleteAjax" parameterType="int">
+		delete from notice_file where notice_file_idx = #{noticeFileIdx}
+	</delete>
+	
 
 	
 </mapper>

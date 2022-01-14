@@ -13,6 +13,11 @@ public interface NoticeFileDao {
 	NoticeFileDto getNo(int noticeFileIdx);
 	List<NoticeFileDto> getIdx(int noticeIdx);
 	byte[] load(int noticeFileIdx) throws IOException;
+	
+	// DELETE
+		boolean delete(int noticeIdx);
+		boolean deleteAjax(int noticeFileIdx);
+		boolean deleteList(int noticeIdx, List<String> list);
 
 
 }
