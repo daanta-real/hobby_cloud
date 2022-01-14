@@ -57,17 +57,37 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-			<div class="row form-group col-12">
-				<img src="${pageContext.request.contextPath}/resources/img/gather.png" width="50" height="400">
+			<div class="row form-group d-flex justify-content-center">
+				<img src="${pageContext.request.contextPath}/resources/img/gather.png" class="w-50">
 			</div>
-			<div class="row form-group col-12 text-center">
+			<div class="row form-group text-center">
 			<h3>환영합니다</h3>
 			</div>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
-		
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>hobbycloud</div>
 		<!-- 소단원 내용 -->
+		<div class="row p-sm-2 mx-1 mb-5">
+		<div class="container">
+		<div class="card border-primary mb-3" style="max-width: 20rem;">
+             <div class="card-header">Header</div>
+                <div class="card-body">
+                   <h4 class="card-title">Primary card title</h4>
+                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                 </div>
+              </div>
+          <div class="card border-primary mb-3" style="max-width: 20rem;">
+             <div class="card-header">Header</div>
+                <div class="card-body">
+                   <h4 class="card-title">Primary card title</h4>
+                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                 </div>
+              </div>
+           </div>
+           </div>
+           
+         
 		
 			
 			
