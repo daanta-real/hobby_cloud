@@ -7,7 +7,7 @@
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=229c9e937f7dfe922976a86a9a2b723b&libraries=services"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.js" integrity="sha512-7Fh4YXugCSzbfLXgGvD/4mUJQty68IFFwB65VQwdAf1vnJSG02RjjSCslDPK0TnGRthFI8/bSecJl6vlUHklaw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
+ 
     <script>
     $(function() {
 		//지도 생성 준비 코드
@@ -81,32 +81,12 @@
 <!-- Google Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 <!-- JQuery 3.6.0 -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- XE Icon -->
-<link rel="stylesheet"
-	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<!-- <script>	 -->
-// $(function(	){
-// const buttonArr = document.getElementsByTagName('button');
-
-// for(let i = 0; i < buttonArr.length; i++){
-//   buttonArr[i].addEventListener('click',function(e){
-	
-//     e.preventDefault();
-//     document.querySelector('.box' + (i + 1)).scrollIntoView(true);
-//   	console.log(i+1); 
-//   	console.log( document.querySelector('.box' + (i + 1))); 
-//   });
-// } 
-// });
-<!-- </script> -->
-
 <c:set var = "start" value = " ${GatherVO.gatherStart}"/>
 <c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
 <c:set var = "end" value = " ${GatherVO.gatherEnd}"/>
@@ -126,15 +106,14 @@
 
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-		<HEADER class='w-100 mb-1 p-2 px-md-3'>  
-		
+		<HEADER class='w-100 mb-1 p-2 px-md-3'>    
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
 			소모임
 			</span>
 		</div> 
 	</HEADER> 
-		<!-- 소단원 내용 --> 
+		<!-- 소단원 내용 -->   
 		<h2 class="d-none" id="gatherIdxValue" data-gather-idx="${GatherVO.gatherIdx}">${GatherVO.gatherIdx}번게시글</h2> 
 		<input type="hidden" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
         <input type="hidden" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
@@ -142,7 +121,7 @@
 			<button id="box1" type="button">댓글</button>
 		 <button id="box2" type="button">별점</button>
 		  <button id="box3" type="button">차트 </button>  
-		<h1>참여자 수 :${fn:length(list2)} / ${GatherVO.gatherHeadCount}</h1> 
+		
  
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
@@ -158,10 +137,9 @@
 				장소 : ${GatherVO.gatherLocRegion}
 				</div>
 				<div class="row">
-				${GatherVO.gatherDetail}
+				<h2>${GatherVO.gatherDetail}</h2> 
 				</div>
-					<c:forEach var="GatherFileDto" items="${list}">
-					<span><${GatherFileDto.gatherFileUserName}</span>
+					<c:forEach var="GatherFileDto" items="${list}"> 
 					<br>
 				<img src="${pageContext.request.contextPath}/gather/file/${GatherFileDto.gatherFileIdx}"
 						width="15%" class="image image-round image-border"> 
@@ -185,8 +163,19 @@
 				  
 						<c:forEach var="GatherHeadsVO" items="${list2}" varStatus="status">
 						
-						 <tr class="cursor-pointer">     
-							<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberProfileIdx}</td>  
+						<tr class="cursor-pointer">     
+						  <c:choose>
+							<c:when test="${GatherHeadsVO.memberProfileIdx != 0 }">  			
+							<td class="text-center align-middle text-nowrap">
+							<img src="${pageContext.request.contextPath}/member/profile/${GatherHeadsVO.memberProfileIdx}" />
+							</td>  
+							</c:when>
+							<c:otherwise>
+							<td class="text-center align-middle text-nowrap">
+							<img src="${pageContext.request.contextPath}/resources/img/noImage.png" width="10%">
+							</td>
+							</c:otherwise>
+						  </c:choose>
 							<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td> 
 						<c:set var="isFull" value="false" />
 						<!-- 참가자가 가득찻는지 확인-->
@@ -208,7 +197,7 @@
 				</div>    
 			</div> 	 
  				
-				<h1>${isJoin}2</h1> 
+				
 				<!-- 참가하기 버튼 -->
 				<c:set var="isLogin" value="${memberIdx != null}"/>
 				 <c:choose>
@@ -231,18 +220,26 @@
 				});
 			})
 			</script>
-		
-		
+		 
+			<h3>참여자 수 :${fn:length(list2)} / ${GatherVO.gatherHeadCount}</h3> 
 			<!-- 각종 버튼들 -->
 			<nav class="row p-0 pt-4 d-flex justify-content-end">
 				<a href="${pageContext.request.contextPath}/gather/list"
 				 class="col-auto btn btn-sm btn-outline-primary mx-1">목록 보기</a>
+				 	 <c:choose>
+           			<c:when test="${isLogin}">
 				<a href="${pageContext.request.contextPath}/gather/insert" class="col-auto btn btn-sm btn-outline-primary mx-1">글 작성</a>
+					</c:when>
+					</c:choose>
+						<c:set var="isWriter" value="${memberIdx == GatherVO.memberIdx}"/>
+				<c:choose>
+				<c:when test="isWriter">
 				<a href="${pageContext.request.contextPath}/gather/update/${GatherVO.gatherIdx}"
 				 class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
 				<a href="${pageContext.request.contextPath}/gather/delete?gatherIdx=${GatherVO.gatherIdx}" 
 				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>   
-				 
+				</c:when>
+				</c:choose>
 				  
 			</nav>
 		
@@ -262,8 +259,8 @@
 				
 				<!-- 등록버튼 -->
 				 <c:choose>
-           			<c:when test="${isLogin}">
-				  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+           			<c:when test="${isLogin}"> 
+				  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">댓글 작성</button> 
 				  	</c:when> 
 				 </c:choose>
 				</div>	  
@@ -286,20 +283,19 @@
 	<div class="card-text p-1 px-3 gatherReplyDetail">{{gatherReplyDetail}}</div>
 
 	<div class="floatRightTop position-absolute top-0 end-0 p-1">
-	
-<%-- 	<c:set var="writer" value="${memberNick != '{memberNick}'"/>  --%>
-<%-- 	<h1>헬로${writer}</h1>    --%>
-	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
-	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
-	 </div>  
-	</div>
+ 
+	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn {{isWriter}}" data-gatherreply-idx="{{gatherReplyIdx}}">수정</button>
+	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-gatherreply-idx="{{gatherReplyIdx}}">삭제</button>
+	 </div>     
+	</div> 
 	  
 </div>
 
-</template>   
+</template>    
 	
 </div>
-<button class="btn btn-secondary more-btn">더보기</button>  
+<button class="btn btn-secondary more-btn">더보기</button> 
+<button class="btn btn-secondary less-btn">접기</button>    
 
   
 	
@@ -329,8 +325,8 @@
 	 <input type="text" name="gatherReviewDetail" placeholder="로그인을 해주세요"> 
 	<input	type="hidden" name="gatherIdx" value="${GatherVO.gatherIdx}">
 	<c:choose>
-      <c:when test="${isLogin}">
-	  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+      <c:when test="${isLogin}"> 
+	  	<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">평점 작성</button> 
 	  </c:when>
 	 </c:choose>
 	  </div>
@@ -350,17 +346,17 @@
 	<div class="card-text p-1 px-3 gatherReviewDetail">{{gatherReviewDetail}}</div>
   
 	<div class="floatRightTop position-absolute top-0 end-0 p-1">
-	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-gatherreview-idx="{{gatherReviewIdx}}">수정</button>
-	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-gatherreview-idx="{{gatherReviewIdx}}">삭제</button>
+	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn {{isWriter}}" data-gatherreview-idx="{{gatherReviewIdx}}">수정</button>
+	 <button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-gatherreview-idx="{{gatherReviewIdx}}">삭제</button>
 	 </div>  
 	</div>  
-</div>
+</div> 
 
 </template>
 		
 </div>
 <button class="btn btn-secondary moreR-btn">더보기</button> 
-
+<button class="btn btn-secondary lessR-btn">접기</button> 
  
  
 
@@ -470,7 +466,12 @@ $(function(){
 	});  
 	//더보기 버튼을 강제 1회 클릭(트리거) 
 	$(".moreR-btn").click(); 
-	console.log(pageR);   
+	
+	$(".lessR-btn").click(function(){
+		$("#resultReivew").empty(); 
+		pageR=1;   
+		loadReview(pageR,sizeR,gatherIdx); 
+	});
 });
 
 
@@ -542,10 +543,22 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 		},
 		dateType:"json",
 		success:function(resp){
-			console.log("성공",resp);
-			if(resp.length < sizeRValue){
-				$(".moreR-btn").remove(); 
-					}
+			console.log("성공",resp); 
+			if(resp.length < sizeRValue && pageR==1){   
+				//게시물이 10개 이하 일 떄 page=1일 떄
+				$(".moreR-btn").hide();   
+				console.log(pageR+"1111111");
+				$(".lessR-btn").hide();  
+			}else if(resp.length <sizeRValue && pageR>1){//게시물이 10개 이하 + page는 2번 
+				$(".moreR-btn").hide(); 
+				console.log(pageR+"222222");
+				$(".lessR-btn").show();   
+			}  
+			else{ 
+				$(".moreR-btn").show();
+				console.log(pageR+"33333");  
+				$(".lessR-btn").hide();  
+			} 
 			
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
@@ -562,6 +575,13 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 				template = template.replace("{{gatherReviewRegistered}}",dateFormat(date)); 
 				template = template.replace("{{gatherReviewDetail}}", resp[i].gatherReviewDetail);
 		
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriterClass = !isWriter ? "d-none": "";
+			
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 	
 				console.log(tag.find(".remove-btn"));
@@ -637,6 +657,7 @@ function deleteReview(gatherReviewIdxValue){
 		success:function(resp){
 			console.log("성공", resp);
 			$("#resultReivew").empty();
+			
 			pageR=1;
 			loadReview(pageR,sizeR,gatherIdx);
 			pageR++; 
@@ -660,13 +681,18 @@ var gatherIdx= "${gatherIdx}";
 $(function(){ 
 	$(".more-btn").click(function(){
 		loadList(page,size,gatherIdx); 
-		console.log(page);
-		page++; 
-		console.log(page);  
+		console.log(page); 
+		page++;  
+		console.log(page);   
 	}); 
 	//더보기 버튼을 강제 1회 클릭(트리거) 
 	$(".more-btn").click();
-	console.log(page);  
+	console.log(page); 
+	$(".less-btn").click(function(){
+		page=1; 
+		$("#result").empty(); 
+		loadList(page,size,gatherIdx); 
+	});
 });
 
 
@@ -726,8 +752,10 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 			console.log("성공",resp);
 			if(resp.length < sizeValue){  
 				$(".more-btn").hide(); 
+				$(".less-btn").show(); 
 			}else{
-				$(".more-btn").show(); 
+				$(".more-btn").show();
+				$(".less-btn").hide();  
 			} 
 			
 			
@@ -743,6 +771,12 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 				var time = resp[i].gatherReplyDate;
 				var date =new Date(time);
 				template = template.replace("{{gatherReplyDate}}",dateFormat(date)); 
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriterClass = !isWriter ? "d-none": "";
+			
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				template = template.replace("{{isWriter}}", isWriterClass);
 				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 				
@@ -812,7 +846,7 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 </script>
 
 
-
+ 
 <!-- 댓글삭제 -->
 <script>
 function deleteReply(gatherReplyIdxValue){

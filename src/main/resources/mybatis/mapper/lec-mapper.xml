@@ -25,7 +25,16 @@
 	<insert id="register" parameterType="LecDto">
 		insert into lec
 		values (
-			#{lecIdx}, #{tutorIdx}, #{lecCategoryName}, #{placeIdx}, #{lecName},
+			#{lecIdx}, #{tutorIdx}, #{lecCategoryName}, 
+			<choose>
+				<when test="placeIdx != null">
+				#{placeIdx},
+				</when>
+				<otherwise>
+				null,
+				</otherwise>
+			</choose>
+			#{lecName},
 			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
 			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitude}, #{lecLocLongitude},
 			0, 0, 0
@@ -83,7 +92,7 @@
 		(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
 		from lec L
 		inner join tutor T on L.tutor_idx = T.tutor_idx
-		inner join place P on L.place_idx = P.place_idx
+		left outer join place P on L.place_idx = P.place_idx
 		inner join member M on T.member_idx = M.member_idx
 		where lec_idx = #{lecIdx}
 	</select>

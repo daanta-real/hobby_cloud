@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
+<c:set var="isAdmin" value="${sessionScope.memberGrade == '관리자'}" />
+<c:set var="isLocManager" value="${sessionScope.memberGrade == '장소관리자' || sessionScope.memberGrade == '관리자'}" />
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
@@ -27,16 +29,20 @@
 		<h2 class="accordion-header" id="heading1">
 			<button class="accordion-button" type="button"
 				data-bs-toggle="collapse" data-bs-target="#collapse1"
-				aria-expanded="true" aria-controls="collapse1">회원 관리</button>
+				aria-expanded="true" aria-controls="collapse1">회원</button>
 		</h2>
 		<div id="collapse1" class="accordion-collapse collapse show"
 			aria-labelledby="heading1" data-bs-parent="#accordionSideMenu"
 			style="">
-			<div class="accordion-body">회원 통계</div>
-			<div class="accordion-body">회원 관리</div>
-			<div class="accordion-body">1:1 채팅 이력 관리</div>
-			<div class="accordion-body">채널 채팅 이력 관리</div>
-			<div class="accordion-body">회원 등급 관리</div>
+			<c:if test="${isAdmin}"><div class="accordion-body text-info">회원 통계</div></c:if>
+			<c:if test="${isAdmin}"><div class="accordion-body text-info">회원 관리</div></c:if>
+			<c:if test="${isAdmin}"><div class="accordion-body text-info">1:1 채팅 이력 관리</div></c:if>
+			<c:if test="${isAdmin}"><div class="accordion-body text-info">채널 채팅 이력 관리</div></c:if>
+			<c:if test="${isAdmin}"><div class="accordion-body text-info">회원 등급 관리</div></c:if>
+			<div class="accordion-body">내 정보</div>
+			<div class="accordion-body">회원정보 수정</div>
+			<div class="accordion-body">비밀번호 수정</div>
+			<div class="accordion-body">회원 탈퇴</div>
 		</div>
 	</div> 
 	<div class="accordion-item">
@@ -49,23 +55,27 @@
 		<div id="collapse2" class="accordion-collapse collapse"
 			aria-labelledby="heading2" data-bs-parent="#accordionSideMenu"
 			style="">
-			<div class="accordion-body">강좌 관리</div>
+			<c:if test="${isAdmin}"><div class="accordion-body text-info">강좌 정보 관리</div></c:if>
+			<div class="accordion-body">내 강좌</div>
 		</div>
 	</div>
-	<div class="accordion-item">
-		<h2 class="accordion-header" id="heading3">
-			<button class="accordion-button collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse3"
-				aria-expanded="false" aria-controls="collapse3">
-				장소</button>
-		</h2>
-		<div id="collapse3" class="accordion-collapse collapse"
-			aria-labelledby="heading3" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body">장소 관리</div>
-			<div class="accordion-body">장소담당자 관리</div>
+	<c:if test="${isLocManager}">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="heading3">
+				<button class="accordion-button collapsed" type="button"
+					data-bs-toggle="collapse" data-bs-target="#collapse3"
+					aria-expanded="false" aria-controls="collapse3">
+					장소</button>
+			</h2>
+			<div id="collapse3" class="accordion-collapse collapse"
+				aria-labelledby="heading3" data-bs-parent="#accordionSideMenu"
+				style="">
+				<c:if test="${isAdmin}"><div class="accordion-body text-info">장소 관리</div></c:if>
+				<c:if test="${isAdmin}"><div class="accordion-body text-info">장소담당자 관리</div></c:if>
+				<c:if test="${isLocManager}"><div class="accordion-body text-info">장소 관리</div></c:if>
+			</div>
 		</div>
-	</div>
+	</c:if>
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="heading4">
 			<button class="accordion-button collapsed" type="button"
@@ -76,10 +86,11 @@
 		<div id="collapse4" class="accordion-collapse collapse"
 			aria-labelledby="heading4" data-bs-parent="#accordionSideMenu"
 			style="">
-			<div class="accordion-body">소모임 관리</div>
+			<c:if test="${isAdmin}"><div class="accordion-body text-info">소모임 관리</div></c:if>
+			<div class="accordion-body">내 소모임</div>
 		</div>
 	</div>
-	<div class="accordion-item">
+	<c:if test="${isAdmin}"><div class="accordion-item">
 		<h2 class="accordion-header" id="heading5">
 			<button class="accordion-button collapsed" type="button"
 				data-bs-toggle="collapse" data-bs-target="#collapse5"
@@ -91,7 +102,7 @@
 			style="">
 			<div class="accordion-body">청원 관리</div>
 		</div>
-	</div>
+	</div></c:if>
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="heading6">
 			<button class="accordion-button collapsed" type="button"
