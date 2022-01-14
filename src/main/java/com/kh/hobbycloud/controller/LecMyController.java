@@ -36,7 +36,7 @@ public class LecMyController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/confirm/{} (GET) 강좌 구매 확인 페이지 진입", lecIdx);
 
 		// 회원 현재 보유 포인트를 뷰로 넘김
-		MemberDto memberDto = memberDao.get((int) session.getAttribute("memberIdx"));
+		MemberDto memberDto = memberDao.getByIdx((int) session.getAttribute("memberIdx"));
 		int currentPoint = memberDto.getMemberPoint();
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 포인트 정보를 조회합니다. 조회 결과: {}", currentPoint);
 		model.addAttribute("currentPoint", currentPoint);
