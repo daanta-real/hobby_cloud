@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.hobbycloud.entity.member.MemberCategoryDto;
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.member.MemberProfileDto;
 import com.kh.hobbycloud.repository.member.MemberCategoryDao;
@@ -59,6 +60,7 @@ public class MemberServiceImpl implements MemberService{
 		memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
 		memberDto.setMemberGender(memberJoinVO.getMemberGender());
 		memberDao.join(memberDto);
+		log.debug("회원 등록ㅡㅡㅡㅡㅡㅡㅡㅡmemberDao.join실행 ");
 		
 //		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
 //		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
@@ -78,21 +80,32 @@ public class MemberServiceImpl implements MemberService{
 //			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
 //			memberCategoryDao.save(memberCategoryDto);			
 //		}
-
-		//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
-		MultipartFile multipartFile = memberJoinVO.getAttach();
-		if(!multipartFile.isEmpty()) {
-			log.debug("멀티파트 = {}", multipartFile);
-			log.debug("memberDto  {}", memberJoinVO);
-			MemberProfileDto memberProfileDto = new MemberProfileDto();
-			memberProfileDto.setMemberIdx(sequence);
-			memberProfileDto.setMemberProfileUploadname(multipartFile.getOriginalFilename());
-			memberProfileDto.setMemberProfileType(multipartFile.getContentType());
-			memberProfileDto.setMemberProfileSize(multipartFile.getSize());
-			memberProfileDao.save(memberProfileDto, multipartFile);
-		}
 		
+		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
+		// memberJoinVO 안에 String lecCategoryName이 들어있다.
+		MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
+		memberCategoryDto.setLecCategoryName(memberJoinVO.getLecCategoryName());
+		memberCategoryDto.setMemberIdx(sequence);
+		log.debug("회원 가입 카테고리ㅡㅡㅡㅡㅡㅡㅡㅡㅡmemberCategoryDto "+memberCategoryDto.toString());
+
+		//관심분야 DB에 저장
+		log.debug("DTO DATA AFTR = {}", memberCategoryDto);
+		memberCategoryDao.insert(memberCategoryDto);			
+
+	//(선택) 회원이미지 정보를 뽑아서 이미지 테이블과 실제 하드디스크에 저장
+	MultipartFile multipartFile = memberJoinVO.getAttach();
+	if(!multipartFile.isEmpty()) {
+		log.debug("멀티파트 = {}", multipartFile);
+		log.debug("memberDto  {}", memberJoinVO);
+		MemberProfileDto memberProfileDto = new MemberProfileDto();
+		memberProfileDto.setMemberIdx(sequence);
+		memberProfileDto.setMemberProfileUploadname(multipartFile.getOriginalFilename());
+		memberProfileDto.setMemberProfileType(multipartFile.getContentType());
+		memberProfileDto.setMemberProfileSize(multipartFile.getSize());
+		memberProfileDao.save(memberProfileDto, multipartFile);
 	}
+	
+}
 	
 	//회원 수정
 	@Override
@@ -120,58 +133,47 @@ public class MemberServiceImpl implements MemberService{
 					target.delete();
 					//테이블에서도 파일 삭제
 					memberProfileDao.delete(memberJoinVO.getMemberIdx());
-				} 
+					} 
 			}
-				//새로운 파일이 들어온 것으로 수정해준다.
-		
-				if(!multipartFile.isEmpty()) {
-						log.debug("멀티파트 = {}", multipartFile);
-						log.debug("memberDto  {}", memberJoinVO);
-						MemberProfileDto memberProfileDto = new MemberProfileDto();
-						memberProfileDto.setMemberIdx(memberJoinVO.getMemberIdx());
-						memberProfileDto.setMemberProfileUploadname(multipartFile.getOriginalFilename());
-						memberProfileDto.setMemberProfileType(multipartFile.getContentType());
-						memberProfileDto.setMemberProfileSize(multipartFile.getSize());
-						memberProfileDao.save(memberProfileDto, multipartFile);
-					
-			//		//회원관심분야 정보 뽑아서 회원관심테이블에 저장
-			//		// memberJoinVO 안에 List<String> lecCategoryName이 들어있다.
-			//		List<String> lecCategoryName = memberJoinVO.getLecCategoryName();
-			//		System.out.println("그냥 밖에"+ lecCategoryName.toString());
-			//		//관심분야 선택했는지 확인. 선택 안했으면 저장 생략
-			//		if (lecCategoryName.size() > 0) {
-			//			//회원관심분야에 대한 DTO 생성
-			//			MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
-			//
-			//			memberCategoryDto.setMemberIdx(sequence);
-			//			log.debug("DTO DATA B4 = {}", memberCategoryDto);
-			//			log.debug("catName = {}", lecCategoryName);
-			//			log.debug("GETTER 확인 = {}", memberCategoryDto.getLecCategoryName());
-			//			memberCategoryDto.setLecCategoryName(lecCategoryName);
-			//			//관심분야 DB에 저장
-			//			log.debug("DTO DATA AFTR = {}", memberCategoryDto);
-			//			memberCategoryDao.update(memberCategoryDto);			
-			//		}
+		//새로운 파일이 들어온 것으로 수정해준다.		
+		if(!multipartFile.isEmpty()) {
+					log.debug("멀티파트 = {}", multipartFile);
+					log.debug("memberDto  {}", memberJoinVO);
+					MemberProfileDto memberProfileDto = new MemberProfileDto();
+					memberProfileDto.setMemberIdx(memberJoinVO.getMemberIdx());
+					memberProfileDto.setMemberProfileUploadname(multipartFile.getOriginalFilename());
+					memberProfileDto.setMemberProfileType(multipartFile.getContentType());
+					memberProfileDto.setMemberProfileSize(multipartFile.getSize());
+					memberProfileDao.save(memberProfileDto, multipartFile);					
 						//memberDto
-						MemberDto memberDto = new MemberDto();
-						
-						memberDto.setMemberIdx(memberJoinVO.getMemberIdx());
-						memberDto.setMemberId(memberJoinVO.getMemberId());
-						memberDto.setMemberPw(memberJoinVO.getMemberPw());
-						memberDto.setMemberNick(memberJoinVO.getMemberNick());
-						memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
-						memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
-						memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
-						memberDto.setMemberGender(memberJoinVO.getMemberGender());
-						log.debug("======================== MemberService.edit() 실시. DTO = {}", memberJoinVO);
-						//memberDto를 테이블 업데이트
-						boolean isSucceed = memberDao.changeInformation(memberDto);
-						
-						log.debug("======================== MemberService.edit() 실시 완료. 결과 = {}", isSucceed);
-			
-				}
+					MemberDto memberDto = new MemberDto();
+					
+					memberDto.setMemberIdx(memberJoinVO.getMemberIdx());
+					memberDto.setMemberId(memberJoinVO.getMemberId());
+					memberDto.setMemberPw(memberJoinVO.getMemberPw());
+					memberDto.setMemberNick(memberJoinVO.getMemberNick());
+					memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
+					memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
+					memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
+					memberDto.setMemberGender(memberJoinVO.getMemberGender());
+					log.debug("======================== MemberService.edit() 실시. DTO = {}", memberJoinVO);
+					//memberDto를 테이블 업데이트
+					boolean isSucceed = memberDao.changeInformation(memberDto);
+					
+					log.debug("======================== MemberService.edit() 실시 완료. 결과 = {}", isSucceed);
+					
+					//관심카테고리 테이블 
+					MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
+					memberCategoryDto.setLecCategoryName(memberJoinVO.getLecCategoryName());
+					memberCategoryDto.setMemberIdx(memberJoinVO.getMemberIdx());
+					log.debug("회원 수정 카테고리ㅡㅡㅡㅡㅡㅡㅡㅡㅡmemberCategoryDto "+memberCategoryDto.toString());
+					//관심분야 DB에 저장
+					boolean isSucceedCt = memberCategoryDao.update(memberCategoryDto);
+					log.debug("DTO DATA AFTR = {}", memberCategoryDto);
+					memberCategoryDao.update(memberCategoryDto);					
 			}
-	
+		}
+
 	
 	//아이디 중복 확인
 	@Override
