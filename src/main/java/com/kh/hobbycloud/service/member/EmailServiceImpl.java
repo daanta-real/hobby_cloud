@@ -65,7 +65,7 @@ public class EmailServiceImpl implements EmailService{
 	
 	//비밀번호 재설정
 	@Override
-	public String sendTempPwMail(String email, String hashedPw) throws MessagingException, FileNotFoundException, IOException {
+	public String sendTempPwMail(String email, String originalPassword) throws MessagingException, FileNotFoundException, IOException {
 				
 				//메세지 객체 생성
 				MimeMessage message = sender.createMimeMessage();
@@ -88,7 +88,7 @@ public class EmailServiceImpl implements EmailService{
 				
 				// 랜덤 인증번호 html 템플릿에 전달
 				String html = buffer.toString();
-				html = html.replace("{{hashedPw}}", hashedPw);
+				html = html.replace("{{originalPassword}}", originalPassword);
 				helper.setText(html, true);
 				System.out.println("인증번호 전송");	
 				
@@ -96,6 +96,6 @@ public class EmailServiceImpl implements EmailService{
 				sender.send(message);
 				System.out.println("이메일 전송 완료");	
 				
-				return hashedPw;
+				return originalPassword;
 	}
 }

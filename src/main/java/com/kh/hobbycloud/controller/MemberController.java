@@ -405,7 +405,7 @@ public class MemberController {
 	@PostMapping("/pwFindMail")
 	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
-	public String pwFindMail(MemberDto memberDto, @RequestParam String originalPassword, @RequestParam String hashedPassword, HttpSession session ) throws FileNotFoundException, MessagingException, IOException {
+	public String pwFindMail(MemberDto memberDto, @RequestParam String originalPassword, @RequestParam String hashedPassword, HttpSession session) throws FileNotFoundException, MessagingException, IOException {
 
 		System.out.println("pwFindMail");
 		System.out.println("pwFindMail memberDto : " + memberDto);
@@ -415,10 +415,14 @@ public class MemberController {
 		
 		MemberDto pwFind = memberService.pwFindMail(memberDto.getMemberId(), memberDto.getMemberNick(), memberDto.getMemberEmail());
 		System.out.println("pwFind : " + pwFind);
+		System.out.println("hashedPassword"+ hashedPassword); 
 		if(pwFind != null) {
-			String hashedPw = (String)session.getAttribute("hashedPassword");
-			service.sendTempPwMail(pwFind.getMemberEmail(),hashedPw);
-			System.out.println("changePw : "  + originalPassword);
+			//암호화가 안된 비밀번호를 세션에 저장 후 이메일 임시 비밀번호로 전송
+			System.out.println("originalPassword"+ originalPassword); 
+			session.setAttribute("originalPassword", originalPassword);
+			service.sendTempPwMail(pwFind.getMemberEmail(),originalPassword);
+			//암호화 된 비밀번호를 DB에 저장
+			System.out.println("originalPassword : "  + originalPassword);
 			boolean result = memberDao.tempPw(memberDto, originalPassword);
 			System.out.println("result: " + result);
 			return "success";
