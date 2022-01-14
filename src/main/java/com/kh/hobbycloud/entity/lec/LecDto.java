@@ -9,7 +9,7 @@ public class LecDto {
 	private int lecIdx;//강좌idx
 	private int tutorIdx;//강사idx
 	private String lecCategoryName;//취미 분류 이름
-	private int placeIdx;//땅idx
+	private Integer placeIdx;//땅idx
 	private String lecName;//강좌 이름
 	private String lecDetail;//강좌 상세내용
 	private Date lecRegistered;//강좌 작성일

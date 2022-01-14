@@ -15,6 +15,9 @@ import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecSearchVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class LecDaoImpl implements LecDao{
 
@@ -23,6 +26,7 @@ public class LecDaoImpl implements LecDao{
 
 	@Override
 	public void register(LecDto lecDto) {
+		log.debug("============렉DTO {}", lecDto);
 		sqlSession.insert("lec.register", lecDto);
 	}
 

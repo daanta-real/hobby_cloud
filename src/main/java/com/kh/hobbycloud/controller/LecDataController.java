@@ -59,6 +59,7 @@ public class LecDataController {
 	@PostMapping("/register")
 	public String register(@ModelAttribute LecRegisterVO lecRegisterVO, HttpSession session)
 			throws IllegalStateException, IOException {
+		log.debug("================등록(placeIdx={}),ㄱㄱㄱㄱㄱ : {}", lecRegisterVO.getPlaceIdx(), lecRegisterVO);
 		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
 		int lecIdx = lecService.register(lecRegisterVO);
 		return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/lec/detail/" + lecIdx;

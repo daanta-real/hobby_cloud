@@ -198,7 +198,7 @@
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
-									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/file/${lecListVO.lecFileIdx}" width="20%"></td>
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/lecFile/${lecListVO.lecFileIdx}" width="20%"></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecName}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${lecListVO.lecPrice}" pattern="#,###" /></td>
@@ -217,6 +217,7 @@
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
+									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/lecFile/${lecListVO.lecFileIdx}" width="10%"></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecName}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${lecListVO.lecPrice}" pattern="#,###" /></td>
@@ -236,7 +237,7 @@
 				</div>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/list';">전체 목록</a></button>
+			<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/list';">전체 목록</a></button>	
 				<ul class="col-auto pagination pagination-sm m-0">
 					<c:if test="${pageMaker.prev}">
 						<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"
@@ -251,8 +252,8 @@
 						<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
 					</c:if> 
 				</ul>
-				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/register';">신규 강좌 추가</a></button>
-			</nav>
+					<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/register';">신규 강좌 추가</a></button>
+			</nav>	
 		</div>
 		
 
