@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.entity.gather.GatherHeadsDto;
+import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
@@ -58,59 +59,51 @@ public class GatherController {
 
 	@GetMapping("/list")
 	public String list(Model model,Criteria cri) {
+		
 		model.addAttribute("lecCategoryList", lecCategoryDao.select());
-		model.addAttribute("list", gatherService.list(cri));
-		System.out.println("카테고리"+lecCategoryDao.select());
+		model.addAttribute("list", gatherService.list(cri));	
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		int number = gatherService.listCount();
-		pageMaker.setTotalCount(number);
+		pageMaker.setTotalCount(number);  
 		model.addAttribute("pageMaker",pageMaker);
-
-		System.out.println(gatherService.list(cri));
 		return "gather/list";
 	}
 
-	// 검색결과 목록 페이지
+	// 검색결과 목록 페이지 
 	@PostMapping("/list")
 	public String search(@ModelAttribute CriteriaSearch cri2, Model model) {
 		model.addAttribute("lecCategoryList", lecCategoryDao.select());
 
-		GatherSearchVO gatherSearchVO = new GatherSearchVO();
-		gatherSearchVO.setCategory(cri2.getCategory());
-		System.out.println("카테고리"+cri2.getCategory());
-		System.out.println("카테고리"+cri2.getGatherLocRegion());
-		gatherSearchVO.setGatherLocRegion(cri2.getGatherLocRegion());
-		gatherSearchVO.setGatherName(cri2.getGatherName());
-
+		GatherSearchVO gatherSearchVO = new GatherSearchVO();		
+		gatherSearchVO.setCategory(cri2.getCategory());	
+		gatherSearchVO.setGatherLocRegion(cri2.getGatherLocRegion());	
+		gatherSearchVO.setGatherName(cri2.getGatherName());			
 		model.addAttribute("list",gatherService.listBy(cri2));
-		int count = gatherService.listCountBy(gatherSearchVO);
-		PageMaker2 pageMaker2 = new PageMaker2();
-		pageMaker2.setCri(cri2);
-		pageMaker2.setTotalCount(count);
+		int count = gatherService.listCountBy(gatherSearchVO); 	
+		PageMaker2 pageMaker2 = new PageMaker2();	
+		pageMaker2.setCri(cri2);		
+		pageMaker2.setTotalCount(count);	
 		model.addAttribute("pageMaker",pageMaker2);
-
-
+	
+		
 		return "gather/list";
 	}
 	// 검색결과 목록 페이지
 //	@PostMapping("/list")
 //	public String search(@ModelAttribute GatherSearchVO gatherSearchVO, Model model) {
-//
+// 
 //		List<GatherVO> list = gatherDao.listSearch(gatherSearchVO);
 //		System.out.println("확인"+gatherSearchVO);
-//		model.addAttribute("list",list);
+//		model.addAttribute("list",list); 
 //		return "gather/list";
 //	}
 
 	// 모임글 등록 폼 페이지
 	@GetMapping("/insert")
-	public String insert(Model model) {
-
-		// 데이터 획득: 카테고리 목록
+	public String insert(Model model) { 
 		List<String> lecCategoryList = lecCategoryDao.select();
-		model.addAttribute("lecCategoryList", lecCategoryList);
-
+		model.addAttribute("lecCategoryList", lecCategoryList);  
 		return "gather/insert";
 	}
 
@@ -121,25 +114,26 @@ public class GatherController {
 //		int memberIdx = (int) session.getAttribute("memberIdx");
 //		gatherFileVO.setMemberIdx(memberIdx);
 //		int gatherIdx = gatherService.save(gatherFileVO);
-//		return "redirect:detail/" + gatherIdx;
-//	}
+//		return "redirect:detail/" + gatherIdx;	
+//	}																
 
 	// 상세 보기 페이지
 	@RequestMapping("/detail/{gatherIdx}")
 	public String detail(@PathVariable int gatherIdx, Model model,HttpSession session) {
+		
 
 		// 데이터 획득: VO 및 DTO
 		GatherVO gatherVO = gatherDao.get(gatherIdx);
 
 		// 획득된 데이터를 Model에 지정
 		List<GatherFileDto> list = gatherFileDao.getIdx(gatherIdx);
-
+		
 		//참가자 조회
 		List<GatherHeadsVO> list2 = gatherHeadsDao.list(gatherIdx);
-
+		
 		//소모임 참가자 조회
 		model.addAttribute("list2",list2);
-
+		
 		//게시판 정보 조회
 		model.addAttribute("GatherVO", gatherVO);
 		//게시판 사진 조회
@@ -148,7 +142,7 @@ public class GatherController {
 		// 페이지 리다이렉트 처리
 		return "gather/detail";
 	}
-
+	
 		//소모임 참가
 		@RequestMapping("/join")
 		public String join(@RequestParam int gatherIdx,HttpSession session) {
@@ -164,7 +158,7 @@ public class GatherController {
 	@GetMapping("/cancel")
 	public String cancel(@RequestParam int gatherIdx,HttpSession session) {
 		int memberIdx = (int) session.getAttribute("memberIdx");
-		GatherHeadsDto gatherHeadsDto = new GatherHeadsDto();
+		GatherHeadsDto gatherHeadsDto = new GatherHeadsDto();		
 		gatherHeadsDto.setGatherIdx(gatherIdx);
 		gatherHeadsDto.setMemberIdx(memberIdx);
 		 gatherHeadsDao.cancel(gatherHeadsDto);
@@ -188,10 +182,10 @@ public class GatherController {
 		List<GatherFileDto> list = gatherFileDao.getIdx(gatherIdx);
 		model.addAttribute("GatherVO", gatherVO);
 		model.addAttribute("list", list);
-
+		
 		List<GatherFileDto> fileList = gatherFileDao.getIdx(gatherIdx);
 		log.debug("==================== List<LecFileDto> fileList = {}", fileList);
-		model.addAttribute("fileList", fileList);
+		model.addAttribute("fileList", fileList); 
 
 		return "gather/update";
 	}
@@ -203,12 +197,12 @@ public class GatherController {
 //		// 수정
 //		int memberIdx = (int)session.getAttribute("memberIdx");
 //		gatherFileVO.setMemberIdx(memberIdx);
-//		gatherService.update(gatherFileVO);
+//		gatherService.update(gatherFileVO);	
 //		System.out.println("수정"+gatherFileVO);
 //		int gatherIdx = gatherFileVO.getGatherIdx();
 //		return "redirect:/gather/detail/" + gatherIdx;
-//
-//	}
+//		
+//	} 
 
 	@GetMapping("/sockjs")
 	public String sockjs() {
@@ -219,7 +213,7 @@ public class GatherController {
 	public String basic() {
 		return "gather/basic";
 	}
-
+	
 	@GetMapping("/member")
 	public String member() {
 		return "gather/member";

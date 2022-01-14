@@ -183,12 +183,11 @@ $(function() {
 							</c:if>
 							<!-- 참가여부를 확인 -->
 							<c:set	var="isJoin" value="false" />  
-							<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}"> 
-								<h1>${memberIdx} / ${GatherHeadsVO.memberIdx}</h1> 
+							<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}">  
 								<c:set var="isJoin" value="true" />
 							</c:if>
 					 	</tr>
-					</c:forEach> 
+					</c:forEach>  
 				</tbody>
 			</table>
 		</div>
@@ -288,7 +287,7 @@ $(function() {
 				<span>평점을 입력해주세요</span>
 			</div>
 			<div class="card-body position-relative p-1 px-2"> 
-				<div class="star-rating space-x-4 mx-auto"> 
+				<div class="star-rating space-x-4 mx-auto">  
 					<input type="radio" id="5-stars" name="gatherReviewScore" value="5" v-model="ratings"/>
 					<label for="5-stars" class="star pr-4">★</label>
 					<input type="radio" id="4-stars" name="gatherReviewScore" value="4" v-model="ratings"/>
@@ -348,8 +347,26 @@ $(function() {
 <!-- 본문 대구역 끝 -->
 
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
+
+ 
  
 <script>
+ 	
+$(function(	){
+const buttonArr = document.getElementsByTagName('button');
+
+for(let i = 0; i < buttonArr.length; i++){
+  buttonArr[i].addEventListener('click',function(e){
+	
+    e.preventDefault(); 
+    console.log("킄ㄹ릭한 버튼:",  e.target);
+    document.querySelector("." + e.target.id).scrollIntoView(true);
+    //document.querySelector('.box' + (i + 1)).scrollIntoView(true);
+  	  }
+	}  
+});
+
+
 $(function(){
 	var gatherIdx = $("#gatherIdxValue").data("gather-idx");
 $.ajax({
@@ -366,7 +383,7 @@ $.ajax({
 	},
 	error:function(e){}
 });
-});
+}); 
 	
 	function draw(selector, data){//select = 선택자 , data = JSON(List<ChartVO>)
 		//ctx는 canvas에 그림을 그리기 위한 펜 객체(고정 코드)
@@ -405,8 +422,8 @@ $.ajax({
 		                'rgba(255, 99, 132, 1)',
 		                'rgba(54, 162, 235, 1)' 
 		                
-		            ],
-		            borderWidth: 5//테두리 두께
+		            ], 
+		            borderWidth: 2//테두리 두께
 		        }]
 		    },
 		    options: {
@@ -451,9 +468,11 @@ $(function(){
 $(function(){
 		//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insertReview-form").submit(function(e){
-		console.log("누름");
-		//this == #insert-form
+		e.stopImmediatePropagation();
+		e.stopPropagation();
 		e.preventDefault();
+		e.cancelBubble = true;
+		stopEvent();
 		
 		var dataValue =$(this).serialize();
 		
@@ -516,22 +535,22 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 		dateType:"json",
 		success:function(resp){
 			console.log("성공",resp); 
-			if(resp.length < sizeRValue && pageR==1){   
+			if(resp.length < sizeRValue && pageR==2){   
 				//게시물이 10개 이하 일 떄 page=1일 떄
 				$(".moreR-btn").hide();   
-				console.log(pageR+"1111111");
+				console.log(pageR+"page1");  
 				$(".lessR-btn").hide();  
-			}else if(resp.length <sizeRValue && pageR>1){//게시물이 10개 이하 + page는 2번 
+			}else if(resp.length <sizeRValue && pageR>2){//게시물이 10개 이하 + page는 2번 
 				$(".moreR-btn").hide(); 
-				console.log(pageR+"222222");
-				$(".lessR-btn").show();   
+				console.log(pageR+"page2");
+				$(".lessR-btn").show();     
 			}  
 			else{ 
 				$(".moreR-btn").show();
-				console.log(pageR+"33333");  
+				console.log(pageR+"page3");  
 				$(".lessR-btn").hide();  
 			} 
-			
+			console.log(pageR+"pageR=");  
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
 				 
@@ -672,8 +691,11 @@ $(function(){
 	//처음 들어오면 목록 출력
 	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insert-form").submit(function(e){
-		//this == #insert-form
+		e.stopImmediatePropagation();
+		e.stopPropagation();
 		e.preventDefault();
+		e.cancelBubble = true;
+		stopEvent(); 
 		
 		var dataValue = $(this).serialize();
 		
