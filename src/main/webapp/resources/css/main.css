@@ -1,5 +1,5 @@
 
-/* 공통 속성 */
+/* 별칭 속성 */
 * { font-family: 'Noto Sans KR', sans-serif !important; }
 .flex { display:flex; }
 .flexCol { flex-direction:column; }
@@ -12,6 +12,7 @@
 a:hover, a:visited, a:active, a:link { color: initial; text-decoration:none !important; }
 .border-radius-all-25 { border-style:solid !important; border-width:1px !important; border-radius: 0.25rem !important; }
 .grayInputGroup :is(div, input) { border-color: var(--input-border-color) !important; }
+.screenForceTo16to9 { padding-top:56.25%; }
 /* 색상 속성 */
 :root {
     --input-border-color: rgb(118, 118, 118);
