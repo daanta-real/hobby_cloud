@@ -191,6 +191,10 @@ function sendForm(e) {
 	e.cancelBubble = true;
 	stopEvent();
 	
+	// 전처리 이벤트가 미리 정의되어 있다면, 전처리 이벤트를 먼저 실행 후,
+	// 그 실행 결과가 false로 회신된다면 더 이상 진행하지 않는다.(=이후의 AJAX 요청을 중단한다.)
+	if(sendForm_preEvent !== undefined && !sendForm_preEvent()) return;
+	
 	// formData 객체 생성: 기존 Form의 입력값을 전부 품은 객체 
 	let formData = new FormData(document.querySelector(".fileUploadForm"));
 	
