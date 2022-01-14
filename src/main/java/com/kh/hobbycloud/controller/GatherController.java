@@ -2,6 +2,11 @@ package com.kh.hobbycloud.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -23,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.entity.gather.GatherHeadsDto;
-import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.gather.GatherDao;
 import com.kh.hobbycloud.repository.gather.GatherFileDao;
 import com.kh.hobbycloud.repository.gather.GatherHeadsDao;
@@ -119,12 +123,25 @@ public class GatherController {
 
 	// 상세 보기 페이지
 	@RequestMapping("/detail/{gatherIdx}")
-	public String detail(@PathVariable int gatherIdx, Model model,HttpSession session) {
-		
-
+	public String detail(@PathVariable int gatherIdx, Model model,HttpSession session) throws ParseException {
 		// 데이터 획득: VO 및 DTO
 		GatherVO gatherVO = gatherDao.get(gatherIdx);
-
+		//문자열로 소모임 끝나는 시간을 가져옴
+		String endTime = gatherVO.getGatherEnd();
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		LocalDateTime now = LocalDateTime.now();
+		String noewTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		//문자열을 date형식으로 치환
+		Date date1= dateFormat.parse(endTime);
+		Date date2 =dateFormat.parse(noewTime);
+		
+		//시간이 지낫으면  false
+		boolean isGone = date1.after(date2);  
+		//끝나는 시간이랑 현재시간을 비교해서 알려준다. 
+		model.addAttribute("isGone",isGone);   
+		
 		// 획득된 데이터를 Model에 지정
 		List<GatherFileDto> list = gatherFileDao.getIdx(gatherIdx);
 		

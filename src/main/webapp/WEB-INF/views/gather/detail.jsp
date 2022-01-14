@@ -79,6 +79,11 @@ $(function() {
 			alert("모집이 마감되었습니다.")
 		});
 	})
+		$(function(){
+		$(".goneBtn").click(function(){
+			alert("종료된 소모임입니다.")
+		});
+	})
 	
 });
 </script>
@@ -139,7 +144,7 @@ $(function() {
 	소모임시간 : ${startTime} ~ ${endTime} 
 	|
 	장소 : ${GatherVO.gatherLocRegion}
-</div>
+</div>    
 <div class="row">
 	<h2>${GatherVO.gatherDetail}</h2> 
 </div>
@@ -196,7 +201,10 @@ $(function() {
 	<!-- 참가하기 버튼 -->
 	<c:set var="isLogin" value="${memberIdx != null}"/>
 	<c:choose>
-		<c:when test="${isJoin}">
+		<c:when test="${!isGone}">  
+		<a class="btn btn-secondary goneBtn">종료된 소모임</a> 
+		</c:when> 
+		<c:when test="${isJoin}"> 
 			<a class="btn btn-warning"
 				href="${pageContext.request.contextPath}/gather/cancel?gatherIdx=${GatherVO.gatherIdx}">취소하기</a>
 		</c:when>
