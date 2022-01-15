@@ -369,19 +369,19 @@ function sendForm_preEvent() {
 				<input type="number" name="gatherHeadCount" class="form-control">
 			</div>
 			<div class="row mb-4 justify-content-center">
-				<label for="" class="form-label">지역</label>
+				<label for="" class="form-label">소모임 장소</label>
 				<input type="text" name="gatherLocRegion" class="form-control">
-			</div>
+			</div>   
 			<div class="row mb-4 justify-content-center">
-				<button type="button" id="showList"class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">지역 검색</button>
+				<button type="button" id="showList"class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">장소 리스트에서 불러오기</button>
 			</div>
 			<div id="map" class="row rounded w-100 m-auto mb-4 screenForceTo16to9"></div>
 			<div class="row mb-4 justify-content-center">
-				<label for="" class="form-label">상세장소</label>
+				<label for="" class="form-label">검색으로 장소 찾아보기</label>
 				<input type="text" name="keyword" class="form-control" placeholder="지역명을 입력해주세요">
 			</div>
 			<div class="row mb-4">
-				<button type="button" class="btn btn-primary search-btn p-3">상세장소 검색</button>
+				<button type="button" class="btn btn-primary search-btn p-3">해당 지역으로 지도 이동</button>
 			</div>
 			<div class="row mb-4">
 				<label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>
