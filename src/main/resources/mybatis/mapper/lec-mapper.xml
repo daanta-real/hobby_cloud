@@ -139,7 +139,7 @@
 			</if>
 			<if test="lecName != null and lecName != ''">
 			and instr(lec_name, #{lecName}) > 0
-			</if>
+			</if> 
 			<if test="memberNick != '' and memberNick != null">
 			and instr(member_nick, #{memberNick}) > 0
 			</if>

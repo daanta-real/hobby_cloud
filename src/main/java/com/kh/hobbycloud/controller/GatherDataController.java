@@ -178,7 +178,7 @@ public class GatherDataController {
 	@ResponseBody
 	@PostMapping("/update")
 	public String update(@ModelAttribute GatherEditVO gatherEditVO) {
-		try {
+		try { 
 			Integer gatherIdx = gatherEditVO.getGatherIdx();
 			log.debug("==================== /lec/edit/{} (강좌 파일 수정 POST) 진입", gatherIdx);
 			log.debug("==================== 수정내용: {}", gatherEditVO);
