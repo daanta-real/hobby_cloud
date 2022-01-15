@@ -257,7 +257,7 @@ window.addEventListener("load", function() {
                           <img src="${pageContext.request.contextPath}/resources/img/noImage.png" class="m-0 p-0 tableImg">
                         </c:otherwise>  
                       </c:choose>
-                    </td>
+                    </td> 
                     <c:set var = "start" value = " ${GatherVO.gatherStart}"/> 
 					<c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
                     <td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
