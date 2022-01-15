@@ -5,7 +5,6 @@ import java.util.List;
 import com.kh.hobbycloud.entity.place.PlaceDto;
 import com.kh.hobbycloud.vo.place.PlaceCriteria;
 import com.kh.hobbycloud.vo.place.PlaceListVO;
-import com.kh.hobbycloud.vo.place.PlaceSearchVO;
 import com.kh.hobbycloud.vo.place.PlaceVO;
 
 public interface PlaceDao {
@@ -24,10 +23,14 @@ public interface PlaceDao {
 	//Place 총개수
 	int listCount();
 	//Place 검색
-	List<PlaceListVO> listSearch(PlaceSearchVO placeSearchVO);
+//	List<PlaceListVO> listSearch(PlaceSearchVO placeSearchVO);
 	//Place 페이지
 	List<PlaceListVO> listPage(int startRow, int endRow);
 	//Place Ajax 페이지네이션
 	List<PlaceListVO> listBy(int startRow, int endRow);
+	//장소 목록
+	List<PlaceListVO> list();
+	//장소 검색
+	Object search(String column, String keyword);
 }
 

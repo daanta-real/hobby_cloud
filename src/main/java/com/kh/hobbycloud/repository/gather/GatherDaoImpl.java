@@ -76,7 +76,6 @@ public class GatherDaoImpl implements GatherDao {
 
 	@Override
 	public List<GatherVO> listBy(CriteriaSearch cri2) {
-		System.out.println("다오"+cri2); 
 		return sqlSession.selectList("gather.listSearchBy",cri2);
 	}
  

@@ -291,7 +291,7 @@ window.addEventListener("load", function() {
 			<div class="container">
 
 
-<form id="lecFormEl" name="lecForm" method="post" enctype="multipart/form-data" class="container fileUploadForm">
+<form id="lecFormEl" name="lecForm" method="post" enctype="multipart/form-data" class="container fileUploadForm" onsubmit=";">
 	<input type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}" />
 	<div class="row mb-4">
 		<label>강좌 이름</label>

@@ -1,5 +1,5 @@
 
-/* 공통 속성 */
+/* 별칭 속성 */
 * { font-family: 'Noto Sans KR', sans-serif !important; }
 .flex { display:flex; }
 .flexCol { flex-direction:column; }
@@ -12,6 +12,7 @@
 a:hover, a:visited, a:active, a:link { color: initial; text-decoration:none !important; }
 .border-radius-all-25 { border-style:solid !important; border-width:1px !important; border-radius: 0.25rem !important; }
 .grayInputGroup :is(div, input) { border-color: var(--input-border-color) !important; }
+.screenForceTo16to9 { padding-top:56.25%; }
 /* 색상 속성 */
 :root {
     --input-border-color: rgb(118, 118, 118);
@@ -66,6 +67,10 @@ button.notButton, input[type="submit"].notButton, input[type="reset"].notButton 
     border-radius: 50%; box-sizing: border-box;
     animation: spinner 0.8s ease infinite;
 }
+
+/* 소모임/강좌용 지역 별 선택 연속출력 버튼용 */
+.flex-wrapper { flex-wrap:wrap; }
+.flex-wrapper > label { max-width:fit-content; min-width:5rem; min-height:3rem; display:flex; justify-content:center; align-items:center; }
 
 /* 디버그용 */
 /*HEADER { background:url("https://cdn.pixabay.com/photo/2021/12/09/20/58/christmas-cookies-6859116_960_720.jpg"); }*/

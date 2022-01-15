@@ -182,7 +182,18 @@ function removeFileNew(e) {
 ///////////////////////////////////// FORM의 최종 제출 처리 /////////////////////////////////////
 
 // 파일 저장소 정보 내용대로 <input type=file> 태그를 새로 만들어 리턴해줌
-function sendForm() {
+function sendForm(e) {
+	
+	// 이벤트 버블링 방지
+	e.stopImmediatePropagation();
+	e.stopPropagation();
+	e.preventDefault();
+	e.cancelBubble = true;
+	stopEvent();
+	
+	// 전처리 이벤트가 미리 정의되어 있다면, 전처리 이벤트를 먼저 실행 후,
+	// 그 실행 결과가 false로 회신된다면 더 이상 진행하지 않는다.(=이후의 AJAX 요청을 중단한다.)
+	if(typeof sendForm_preEvent == 'function' && sendForm_preEvent() == false) return;
 	
 	// formData 객체 생성: 기존 Form의 입력값을 전부 품은 객체 
 	let formData = new FormData(document.querySelector(".fileUploadForm"));
@@ -202,7 +213,7 @@ function sendForm() {
 		headers: { "Content-type": "multipart/form-data" }
 	}).then((response) => {
 		console.log("성공.\n", response.data);
-		location.href = response.data;
+		//location.href = response.data;
 	}).catch((response) => {
 		console.log("에러");
 		console.log(response);

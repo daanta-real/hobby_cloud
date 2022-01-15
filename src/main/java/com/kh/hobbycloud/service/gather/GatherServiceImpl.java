@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class GatherServiceImpl implements GatherService {
 
-	@Autowired 
+	@Autowired
 	private GatherDao gatherDao;
 
 	@Autowired
@@ -65,23 +65,31 @@ public class GatherServiceImpl implements GatherService {
 		log.debug("=============================모임글 파일 저장 실행");
 		List<MultipartFile> attach = gatherFileVO.getAttach();
 		log.debug("=============================attach 정의: {}", attach);
-		int count = 1;
-		for (MultipartFile file : attach) {
-			log.debug("=============================모임글 파일 저장 {}번", count++);
+		// attach가 하나도 안 넘어왔다면, 아무 처리도 하지 않고 넘긴다.
+		// (때문에 기존 첨부파일을 삭제하고 싶다면 글 수정 페이지에서 파일을 하나하나 눌러 삭제해야 한다.
+		if(attach==null) {
+			log.debug("파일 정보를 담고 있는 List<MultipartFile> attach이 비었습니다. 진짜인가 한번 보세요. attach 정보 = {}", attach);
+		}
+		// 만약에 impl로 넘어온 attach가 존재한다면, 모든 파일을 업로드 처리한다.
+		else {
+			int count = 1;
+			for (MultipartFile file : attach) {
+				log.debug("=============================모임글 파일 저장 {}번", count++);
 
-			// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
-			if (file.isEmpty())
-				continue;
+				// 우선 각 파일 비어있는지 확인. 파일이 비어있으면 이 파일 처리 생략
+				if (file.isEmpty())
+					continue;
 
-			// 파일 정보에 대한 DTO 생성
-			GatherFileDto gatherFileDto = new GatherFileDto();
-			gatherFileDto.setGatherIdx(gatherIdx);
-			gatherFileDto.setGatherFileUserName(file.getOriginalFilename());
-			gatherFileDto.setGatherFileType(file.getContentType());
-			gatherFileDto.setGatherFileSize(file.getSize());
-			// 파일 업로드 후, 파일정보를 DB에 저장
-			gatherFileDao.save(gatherFileDto, file);
+				// 파일 정보에 대한 DTO 생성
+				GatherFileDto gatherFileDto = new GatherFileDto();
+				gatherFileDto.setGatherIdx(gatherIdx);
+				gatherFileDto.setGatherFileUserName(file.getOriginalFilename());
+				gatherFileDto.setGatherFileType(file.getContentType());
+				gatherFileDto.setGatherFileSize(file.getSize());
+				// 파일 업로드 후, 파일정보를 DB에 저장
+				gatherFileDao.save(gatherFileDto, file);
 
+			}
 		}
 
 		// 3. 모임글 번호를 회신
@@ -89,9 +97,10 @@ public class GatherServiceImpl implements GatherService {
 		return gatherIdx;
 	}
 
+	@Override
 	public void edit(GatherEditVO gatherEditVO) throws IllegalStateException, IOException {
 		// 1. 모임글 수정
- 
+
 		// 모임글 DTO 설정
 		GatherDto gatherDto = new GatherDto();
 
@@ -114,9 +123,9 @@ public class GatherServiceImpl implements GatherService {
 		// Gather DTO를 테이블에 삽입
 		boolean isSucecess = gatherDao.update(gatherDto);
 		log.debug("======================== gatherDao.update() 실시 완료. 결과 = {}", isSucecess);
-		
-		
-		
+
+
+
 		List<String> fileRemoveList = gatherEditVO.getFileDelTargetList();
 		log.debug("  ㄴ 삭제요청된 파일 리스트: {}", fileRemoveList);
 		if(fileRemoveList != null && fileRemoveList.size() > 0) {
@@ -148,7 +157,7 @@ public class GatherServiceImpl implements GatherService {
 				} else {
 					// 파일이 비어있지 않는다면, 이 파일을 업로드하고 DB에 등록한다.
 					log.debug("  ㄴ 파일이 존재합니다. 업로드하고 DB에 등록하겠습니다.");
-  
+
 					// 파일 정보에 대한 DTO 생성
 			 		GatherFileDto gatherFileDto = new GatherFileDto();
 					gatherFileDto.setGatherIdx(gatherEditVO.getGatherIdx());
@@ -163,7 +172,7 @@ public class GatherServiceImpl implements GatherService {
 
 				}
 			}
-		} 
+		}
 
 	}
 
@@ -179,14 +188,12 @@ public class GatherServiceImpl implements GatherService {
 
 	@Override
 	public List<GatherVO> listBy(CriteriaSearch cri2) {
-		System.out.println("서비스"+cri2);
 		return gatherDao.listBy(cri2);
 	}
- 
+
 	@Override
 	public int listCountBy(GatherSearchVO gatherSearchVO) {
 		int number = gatherDao.listCountBy(gatherSearchVO);
-		System.out.println("서비스 숫자"+number);
 		return gatherDao.listCountBy(gatherSearchVO);
 	}
 

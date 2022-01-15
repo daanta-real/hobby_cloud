@@ -12,9 +12,9 @@
 </form>
 <c:forEach var="gatherDto" items="${list}"> 
 1
-<h1>번호 :${gatherDto.gatherIdx}
-회원 : ${gatherDto.memberIdx}
-등급 : ${gatherDto.placeIdx}
+<h1>번호 :${memberDto.gatherIdx}
+회원 : ${memberDto.memberIdx}
+등급 : ${memberDto.placeIdx}
 </h1>
 </c:forEach>
 <tr>
