@@ -44,12 +44,13 @@ select * from  gather g left outer join
 select * from(
 select rownum  rn , TMP.* from(
 select * from  gather g left outer join
- (select distinct gather_idx, min(gather_file_idx) as gather_file_idx
-  from gather_file group by gather_idx) f  
-  on  f.gather_idx = g.gather_idx  
- left outer join member m on g.member_idx = m.member_idx
- order by g.gather_idx desc
-  )TMP
+(select distinct gather_idx, min(gather_file_idx) as gather_file_idx
+from gather_file group by gather_idx) f  
+on  f.gather_idx = g.gather_idx  
+left outer join member m on g.member_idx = m.member_idx
+where g.gather_start > sysdate
+order by g.gather_start asc 
+  )TMP 
 ) where rn between #{rowStart} and #{rowEnd}
 </select>
  
