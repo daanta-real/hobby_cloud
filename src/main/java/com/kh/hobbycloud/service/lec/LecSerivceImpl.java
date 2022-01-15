@@ -75,7 +75,7 @@ public class LecSerivceImpl implements LecService{
 		log.debug("카운트:{}",count++);
 		lecDto.setLecLocLongitude(lecRegisterVO.getLecLocLongitude());
 		log.debug("카운트:{}",count++);
-		
+
 		lecDao.register(lecDto);
 
 		//(선택) 강사 파일을 파일 테이블과 실제 하드디스크에 저장
@@ -94,7 +94,7 @@ public class LecSerivceImpl implements LecService{
 			// 파일 업로드 후, 파일정보를 DB에 저장
 			lecFileDao.save(lecFileDto, file);
 		}
-		
+
 		return lecIdx;
 	}
 
@@ -216,19 +216,18 @@ public class LecSerivceImpl implements LecService{
 	public int listCount() {
 		return lecDao.listCount();
 	}
-	
+
 	@Override
 	public List<LecListVO> listBy(LecCriteriaSearch cri) {
 		System.out.println("검색 리스트 cri : " + cri);
 		return lecDao.listBy(cri);
 	}
-	
+
 	@Override
 	public int listCountBy(LecSearchVO lecSearchVO) {
 		int number = lecDao.listCountBy(lecSearchVO);
 		System.out.println("Lec서비스 검색카운트" + number);
-		return lecDao.listCountBy(lecSearchVO);
+		return number;
 	}
-	
-	
+
 }

@@ -10,20 +10,20 @@ public class LecCriteriaSearch {
 	private int perPageNum;
 	private int rowStart;
 	private int rowEnd;
-	
+
 	//LecSearchVO
 	private Integer lecIdx;
 	private List<String> lecCategoryName;
 	private String lecName;
 	private String memberNick;
-	private String lecLocRegion;
+	private List<String> lecLocRegion;
 	private String minPrice;
 	private String maxPrice;
 	private String minCount;
 	private String maxCount;
 	private String minConCount;
 	private String maxConCount;
-	
+
 	public LecCriteriaSearch() {
 		this.page = 1;
 		this.perPageNum = 10;

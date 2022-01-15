@@ -143,27 +143,22 @@
 			<if test="memberNick != '' and memberNick != null">
 			and instr(member_nick, #{memberNick}) > 0
 			</if>
-			<if test="lecLocRegion != '' and lecLocRegion != null">
-				and instr(lec_loc_region, #{lecLocRegion}) > 0
+			<if test="lecLocRegion != null">
+				<foreach item="regionOne" collection="lecLocRegion" separator="or">
+					instr(lec_loc_region, #{regionOne}) > 0
+				</foreach>
 			</if>
-			
-
 			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->
-			
 			<choose>
 				<when test="minPrice != '' and minPrice != null and maxPrice != '' and maxPrice != null">
-				and lec_price between #{minPrice} and #{maxPrice}
+					and lec_price between #{minPrice} and #{maxPrice}
 				</when>
 				<when test="minPrice != '' and minPrice != null">
-				<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
-				<![CDATA[			
-				and lec_price >= #{minPrice}
-				]]>
+					<!-- CDATA 구문을 작성하면 해당 영역은 XML로 해석되지 않으므로 특수문자를 작성할 수 있다 -->
+					<![CDATA[ and lec_price >= #{minPrice} ]]>
 				</when>
 				<when test="maxPrice != '' and maxPrice != null">
-				<![CDATA[			
-				and lec_price <= #{maxPrice}
-				]]>
+					<![CDATA[	 and lec_price <= #{maxPrice} ]]>
 				</when>
 			</choose>
 			
@@ -252,8 +247,10 @@
 			<if test="memberNick != '' and memberNick != null">
 			and instr(member_nick, #{memberNick}) > 0
 			</if>
-			<if test="lecLocRegion != '' and lecLocRegion != null">
-				and instr(lec_loc_region, #{lecLocRegion}) > 0
+			<if test="lecLocRegion != null">
+				<foreach item="regionOne" collection="lecLocRegion" separator="or">
+					instr(lec_loc_region, #{regionOne}) > 0
+				</foreach>
 			</if>
 
 			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->

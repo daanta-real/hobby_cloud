@@ -77,6 +77,8 @@ public class GatherController {
 	// 검색결과 목록 페이지 
 	@PostMapping("/list")
 	public String search(@ModelAttribute CriteriaSearch cri2, Model model) {
+
+		// 카테고리 배열을 읽어옴 (선택한 카테고리 말고 원래 있는 전체 카테고리)
 		model.addAttribute("lecCategoryList", lecCategoryDao.select());
 
 		GatherSearchVO gatherSearchVO = new GatherSearchVO();		
@@ -159,17 +161,17 @@ public class GatherController {
 		// 페이지 리다이렉트 처리
 		return "gather/detail";
 	}
-	
-		//소모임 참가
-		@RequestMapping("/join")
-		public String join(@RequestParam int gatherIdx,HttpSession session) {
-			int memberIdx = (int) session.getAttribute("memberIdx");
-			GatherHeadsDto gatherHeadsDto = new GatherHeadsDto();
-			gatherHeadsDto.setGatherIdx(gatherIdx);
-			gatherHeadsDto.setMemberIdx(memberIdx);
-			gatherHeadsDao.join(gatherHeadsDto);
-			return "redirect:detail/"+gatherIdx;
-		}
+
+	//소모임 참가
+	@RequestMapping("/join")
+	public String join(@RequestParam int gatherIdx,HttpSession session) {
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		GatherHeadsDto gatherHeadsDto = new GatherHeadsDto();
+		gatherHeadsDto.setGatherIdx(gatherIdx);
+		gatherHeadsDto.setMemberIdx(memberIdx);
+		gatherHeadsDao.join(gatherHeadsDto);
+		return "redirect:detail/"+gatherIdx;
+	}
 
 	//소모임 취소
 	@GetMapping("/cancel")
