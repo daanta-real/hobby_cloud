@@ -6,7 +6,7 @@ import lombok.Data;
 public class PlaceCriteria {
 	private int page;
 	private int perPageNum;
-	private int rowStart;
+	private int rowStart; 
 	private int rowEnd;
 
 	public PlaceCriteria() {
