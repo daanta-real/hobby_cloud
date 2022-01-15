@@ -83,7 +83,7 @@ window.addEventListener("load", function() {
 	container = document.querySelector("#map");
 	options = {
 		center : new kakao.maps.LatLng(37.5339851357212, 126.897094049199),
-		level : 8
+		level : 14   
 	};
 	map = new kakao.maps.Map(container, options); //지도 생성 코드
 	
