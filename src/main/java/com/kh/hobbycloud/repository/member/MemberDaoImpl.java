@@ -234,7 +234,7 @@ public class MemberDaoImpl implements MemberDao{
 		return result > 0;
 	}
 	// 특정 회원의 포인트를 특정 값으로 강제변경
-	@Override
+	@Override 
 	public boolean pointForceToValue(MemberDto memberDto) {
 		int result = sqlSession.update("member.pointForceToValue", memberDto);
 		return result > 0;

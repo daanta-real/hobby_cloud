@@ -119,6 +119,17 @@ public class MemberController {
 		return "redirect:/";
 
 	}
+	
+	//약관동의 폼 페이지
+	@RequestMapping("/policy")
+	public String usepolicy() {
+		return "member/policy";
+	}	
+	
+	@RequestMapping("/privacy")
+	public String privacy() {
+		return "member/privacy";
+	}
 
 	// 회원가입 폼 페이지
 	@GetMapping("/join")
