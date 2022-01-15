@@ -96,4 +96,5 @@ public class PetitionsDaoImpl implements PetitionsDao {
 		return sqlSession.selectOne("petitions.listCount");
 	}
 
+
 }

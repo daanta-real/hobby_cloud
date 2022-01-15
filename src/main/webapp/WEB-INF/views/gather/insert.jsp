@@ -8,7 +8,7 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
+<TITLE>HobbyCloud - 소모임 작성</TITLE>
 
 <!-- 파일 업로드 모듈 사전 설정 -->
 <%--
@@ -39,14 +39,14 @@ const fileSubmitAjaxPage = "${root}/gatherData/insert/";
 //카카오맵 전역변수 선언. 이렇게 안 하면 onload 이후 관련기능을 쓸 수 없기 때문에 전역변수로 미리 불러와 준다.
 let container, options, map, geocoder, marker, infowindow;
 
+// 좌표로 행정동 주소 정보를 요청합니다
 function searchAddrFromCoords(coords, callback) {
-	// 좌표로 행정동 주소 정보를 요청합니다
 	geocoder.coord2RegionCode(coords.getLng(), coords.getLat(),
 			callback);
 }
 
+// 좌표로 법정동 상세 주소 정보를 요청합니다
 function searchDetailAddrFromCoords(coords, callback) {
-	// 좌표로 법정동 상세 주소 정보를 요청합니다
 	geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 
 }
@@ -75,8 +75,8 @@ function setLoc(el) {
 	// 추출된 값을 각 INPUT 태그에 넣어주기
 //	 document.querySelector("input[name='loc_idx']"	  ).value = data.idx;
 	document.querySelector("input[name='gatherLocRegion']"   ).value = data.region;
-	document.querySelector("input[name='gatherLocLatitude']").value = data.longitude;
-	document.querySelector("input[name='gatherLocLongitude']" ).value = data.latitude;
+	document.querySelector("input[name='gatherLocLongitude']").value = data.longitude;
+	document.querySelector("input[name='gatherLocLatitude']" ).value = data.latitude; 
 	
 	// 모달 토글
 	modal.toggle();
@@ -236,28 +236,6 @@ window.addEventListener("load", function() {
 		searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 	});
 
-	$("#fileUploadForm_submitBtn").click(function(e){
-		//시간설정 잘못 된 것
-		e.preventDefault();
-		makeTime(); 
-		let startTime = new Date($("#start").val());
-		let endTime	= new Date($("#end").val());
-		let today = new Date();
-		if(endTime<startTime||startTime<today)
-		{
-			e.preventDefault();	 
-			alert("시간 설정을 확인해주세요");  
-		} else if( $("input[name=gatherDetail]").val()==""||
-				$("input[name=gatherName]").val()==""||
-				$("input[name=gatherHeadCount]").val()==""||
-				$("input[name=gatherLocRegion]").val()=="")
-				{
-			e.preventDefault();	
-			alert("빈칸을 입력해주세요 ");
-		} else {
-			$("#insert-form").submit();
-		}
-	});
 
 	// 모달 창 초기화
 	function modalInitialize() {
@@ -291,10 +269,36 @@ window.addEventListener("load", function() {
 	}); 
 
 });
-
-
 </script>
 
+<script>
+// 파일 전송 form ajax 제출 전에 반드시 실행되는 전처리 이벤트
+function sendForm_preEvent() {
+	//시간설정 잘못 된 것 
+	
+	
+	makeTime();
+	let startTime = new Date($("#start").val());
+	let endTime	= new Date($("#end").val());
+	let today = new Date();
+	console.log(today);  
+	console.log(startTime);
+	
+	if(endTime<startTime||startTime<today){
+		alert("시간 설정을 확인해주세요");
+		return false;
+	} if( $("input[name=gatherDetail]").val()==""||
+			$("input[name=gatherName]").val()==""||
+			$("input[name=gatherHeadCount]").val()==""||
+			$("input[name=gatherLocRegion]").val()==""){ 
+		alert("빈칸을 입력해주세요."); 
+		return false;
+	}
+	
+	return true;
+}
+
+</script>
 </HEAD>
 <BODY>
 <jsp:include page="/resources/template/body.jsp" flush="false" />
@@ -365,19 +369,19 @@ window.addEventListener("load", function() {
 				<input type="number" name="gatherHeadCount" class="form-control">
 			</div>
 			<div class="row mb-4 justify-content-center">
-				<label for="" class="form-label">지역</label>
+				<label for="" class="form-label">소모임 장소</label>
 				<input type="text" name="gatherLocRegion" class="form-control">
-			</div>
+			</div>   
 			<div class="row mb-4 justify-content-center">
-				<button type="button" id="showList"class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">지역 검색</button>
+				<button type="button" id="showList"class="btn btn-primary m-3 p-3" data-bs-toggle="modal" data-bs-target="#modal">장소 리스트에서 불러오기</button>
 			</div>
 			<div id="map" class="row rounded w-100 m-auto mb-4 screenForceTo16to9"></div>
 			<div class="row mb-4 justify-content-center">
-				<label for="" class="form-label">상세장소</label>
+				<label for="" class="form-label">검색으로 장소 찾아보기</label>
 				<input type="text" name="keyword" class="form-control" placeholder="지역명을 입력해주세요">
 			</div>
 			<div class="row mb-4">
-				<button type="button" class="btn btn-primary search-btn p-3">상세장소 검색</button>
+				<button type="button" class="btn btn-primary search-btn p-3">해당 지역으로 지도 이동</button>
 			</div>
 			<div class="row mb-4">
 				<label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>

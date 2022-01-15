@@ -8,45 +8,36 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 마이 페이지</TITLE>
-<script type='text/javascript'>
+<TITLE>HobbyCloud - 강의장 상세 페이지</TITLE>
 
-//문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
-window.addEventListener("load", function() {
-});
 
 <script type="text/javascript">
-$(function(){
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	mapOption = {
-	    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-	    level: 3 // 지도의 확대 레벨
-	};  
 
-	//지도를 생성합니다    
-	var map = new kakao.maps.Map(mapContainer, mapOption); 
-	//주소-좌표 변환 객체를 생성합니다
-	var geocoder = new kakao.maps.services.Geocoder();
-	//주소로 좌표를 검색합니다
-	geocoder.addressSearch('${placeVO.placeAddress}', function(result, status) {
-	// 정상적으로 검색이 완료됐으면 
-	 if (status === kakao.maps.services.Status.OK) {
-	    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-	    // 결과값으로 받은 위치를 마커로 표시합니다
-	    var marker = new kakao.maps.Marker({
-	        map: map,
-	        position: coords
-	    });
-	    // 인포윈도우로 장소에 대한 설명을 표시합니다
-	    var infowindow = new kakao.maps.InfoWindow({
-	        content: '<div style="width:150px;text-align:center;padding:6px 0;">${placeVO.placeName}</div>'
-	    });
-	    infowindow.open(map, marker);
-	    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-	    map.setCenter(coords);
-	} 
-	});    
+$(function() {
+	//지도 생성 준비 코드
+	var container = document.querySelector("#map");
+	var options = {
+		center : new kakao.maps.LatLng($("input[name=placeLocLongitude]").val(), $(
+				"input[name=placeLocLatitude]").val()),
+		level : 3
+	};
+
+	//지도 생성 코드
+	var map = new kakao.maps.Map(container, options);
+
+	// 마커가 표시될 위치입니다 
+	var markerPosition = new kakao.maps.LatLng($("input[name=placeLocLongitude]")
+			.val(), $("input[name=placeLocLatitude]").val());
+
+	// 마커를 생성합니다
+	var marker = new kakao.maps.Marker({
+		position : markerPosition
+	});
+
+	// 마커가 지도 위에 표시되도록 설정합니다
+	marker.setMap(map);
 });
+
 </script>
 </HEAD>
 <BODY>
@@ -101,72 +92,109 @@ $(function(){
 					</c:otherwise>
 				</c:choose>
 			</div>
-			<div class="form-group col-12 text-center">
+			<div class="form-group col-12">
 				<!-- 여기에 장소 표시할 지도 들어갈거임 -->
 				<!--상세페이지 지도 -->
 				<div class="form-group col-12">
-				<label class="form-label" for="disabledInput">장소 상세사진</label>
-				<input type="text" name="placeAddress" value="${placeVO.placeAddress}">
-				<input type="text" name="placeName"  value="${placeVO.placeName}">
-				<div id="map" style="width:100%;height:350px;"></div>
+				<input type="hidden" name="placeLocLongitude" value="${placeVO.placeLocLongitude}">
+				<input type="hidden" name="placeLocLatitude"  value="${placeVO.placeLocLatitude}">
+				<div id="map" style="width:50%;height:350px;"></div>
+				</div>
+				<div class="form-group col-12">
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">장소 이름</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeName}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 대여자 닉네임</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.memberNick}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">장소 설명</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeDetail}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 사용 카테고리</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.lecCategoryName}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 주소</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeAddress}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 대여 시작일</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeStart}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 대여 마감일</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeEnd}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 최소 금액</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeMin}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 대여 최대 금액</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeMax}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 문의 이메일</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeEmail}" type="text" placeholder="" disabled="">
+					</fieldset>					
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 문의 전화</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placePhone}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					<div class="form-group col-12">
+					<fieldset disabled="">
+					 	 <label class="form-label" for="disabledInput">강의장 등록일</label>
+					 	 <input class="form-control" id="disabledInput"  value="${placeVO.placeRegistered}" type="text" placeholder="" disabled="">
+					</fieldset>
+					</div>
+					</div>
+					</div>
+				<nav class="row p-0 pt-4 d-flex justify-content-end">
+					<a href="${root }/place/list" class="col-auto btn btn-sm btn-outline-primary mx-1">목록보기</a>
+					<a href="${root }/place/update/${placeVO.placeIdx}" class="col-auto btn btn-sm btn-secondary mx-1">수정</a>
+					<a href="${root }/place/delete/${placeVO.placeIdx}" class="col-auto btn btn-sm btn-secondary mx-1">삭제</a>
+				</nav>
 			</div>
-				<table border="1" width="80%">
-					 <tbody>
-					     <tr>
-					         <td>장소 이름</td>
-					         <td>${placeVO.placeName}</td>
-					     </tr>
-					     <tr>
-							<td>강의장 대여자 닉네임</td>
-							<td>${placeVO.memberNick}</td>
-					    </tr>
-					     <tr>
-					         <td>장소 설명</td>
-					         <td>${placeVO.placeDetail}</td>
-					     </tr>
-					     <tr>
-					         <td>강의장 사용 카테고리</td>
-					         <td>${placeVO.lecCategoryName}</td>
-					     </tr>
-					     <tr>
-					         <td>강의장 주소</td>
-					         <td>${placeVO.placeAddress}</td>
-					     </tr>
-						<tr>
-							<td>강의장 대여 시작일</td>
-							<td>${placeVO.placeStart}</td>
-					    </tr>
-					    		<tr>
-							<td>강의장 대여 마감일</td>
-							<td>${placeVO.placeEnd}</td>
-					    </tr>
-					    <tr>
-							<td>강의장 대여 최소 금액</td>
-							<td>${placeVO.placeMin}</td>
-					    </tr>
-					    <tr>
-							<td>강의장 대여 최대 금액</td>
-							<td>${placeVO.placeMax}</td>
-					    </tr>
-					    <tr>
-							<td>강의장 문의 이메일</td>
-							<td>${placeVO.placeEmail}</td>
-					    </tr>
-					    <tr>
-							<td>강의장 문의 전화</td>
-							<td>${placeVO.placePhone}</td>
-					    </tr>
-					    <tr>
-					         <td>강의장 등록일</td>
-					         <td>${placeVO.placeRegistered}</td>
-					     </tr>
-					 </tbody>
-				</table>
-				
-				<br>
-				
-				<hr>
-				
-				<a href="${pageContext.request.contextPath}/place/list">목록보기</a>
-				<a href="${pageContext.request.contextPath}/place/update/${placeVO.placeIdx}">수정</a>			
-				<a href="${pageContext.request.contextPath}/place/delete/${placeVO.placeIdx}">삭제</a>	
+		</div>
+		<!-- 소단원 제목 -->		
+		<!-- 소단원 내용 -->		
+	</SECTION>
+	<!-- 페이지 내용 끝. -->	
+</ARTICLE>
+<!-- 페이지 영역 끝 -->
+</DIV>
+
+</SECTION>
+<!-- 본문 대구역 끝 -->
+
+<!-- ************************************************ 풋터 영역 ************************************************ -->
+<jsp:include page="/resources/template/footer.jsp" flush="false" />
+</BODY>
+</HTML>
+	

@@ -181,13 +181,12 @@ public class MemberDaoImpl implements MemberDao{
 
 	//임시 비밀번호 업데이트
 	@Override
-	public boolean tempPw(MemberDto memberDto,String ChangePw) {
-
+	public boolean tempPw(MemberDto memberDto,String originalPassword) {
+		
+		System.out.println(">>tempPw() 메소드 실행 originalPassword ---"+originalPassword);
 		Map<String ,Object> param = new HashMap<>();
-		//받은 난수를 암호화 하여 업데이트 진행
-		String origin =	ChangePw;
-		String encrypt = encoder.encode(origin);
-		memberDto.setMemberPw(encrypt);
+		String origin = originalPassword;
+		memberDto.setMemberPw(origin);
 		param.put("memberId", memberDto.getMemberId());
 		param.put("memberPw",memberDto.getMemberPw());
 
@@ -195,14 +194,19 @@ public class MemberDaoImpl implements MemberDao{
 		int result=sqlSession.update("member.tempPw",param);
 		return result>0;
 	}
+	
+	@Override
+	public List<MemberListVO> list() {
+		return sqlSession.selectList("member.list");
+	}	
 
 	@Override
 	public List<MemberListVO> list(MemberCriteria cri) {
-		return sqlSession.selectList("member.list");
+		return sqlSession.selectList("member.listPage", cri);
 	}
 
 	@Override
-	public int listCount() {
+	public int listCount() {		
 		return sqlSession.selectOne("member.listCount");
 	}
 
@@ -230,10 +234,18 @@ public class MemberDaoImpl implements MemberDao{
 		return result > 0;
 	}
 	// 특정 회원의 포인트를 특정 값으로 강제변경
-	@Override
+	@Override 
 	public boolean pointForceToValue(MemberDto memberDto) {
 		int result = sqlSession.update("member.pointForceToValue", memberDto);
 		return result > 0;
+	}
+
+	@Override
+	public List<MemberListVO> search(String column, String keyword) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("column", column);
+		param.put("keyword", keyword);
+		return sqlSession.selectList("member.search", param);
 	}
 
 }

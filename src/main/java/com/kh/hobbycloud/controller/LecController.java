@@ -36,6 +36,7 @@ import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecCriteriaSearch;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
+import com.kh.hobbycloud.vo.lec.LecListVO;
 import com.kh.hobbycloud.vo.lec.LecPageMaker;
 import com.kh.hobbycloud.vo.lec.LecPageMaker2;
 import com.kh.hobbycloud.vo.lec.LecSearchVO;
@@ -70,7 +71,7 @@ public class LecController {
 	public String list(Model model,LecCriteria cri) {
 		model.addAttribute("list", lecService.list(cri));
 		log.debug("렉카테고리 목록 나오는지ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ = {}",lecCategoryDao.select());
-		model.addAttribute("lecCategoryList", lecCategoryDao.select());	
+		model.addAttribute("lecCategoryList", lecCategoryDao.select());
 		LecPageMaker pageMaker = new LecPageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(lecService.listCount());
@@ -80,11 +81,11 @@ public class LecController {
 		return "lec/list";
 	}
 
-	// 검색결과 목록 페이지 
+	// 검색결과 목록 페이지
 	@PostMapping("/list")
 	public String search(@ModelAttribute LecCriteriaSearch cri, Model model) {
 
-		LecSearchVO lecSearchVO = new LecSearchVO();		
+		LecSearchVO lecSearchVO = new LecSearchVO();
 		lecSearchVO.setLecIdx(cri.getLecIdx());
 		lecSearchVO.setLecCategoryName(cri.getLecCategoryName());
 		lecSearchVO.setLecName(cri.getLecName());
@@ -96,23 +97,31 @@ public class LecController {
 		lecSearchVO.setMaxCount(cri.getMaxCount());
 		lecSearchVO.setMinConCount(cri.getMinConCount());
 		lecSearchVO.setMaxConCount(cri.getMaxConCount());
-		
+
 		model.addAttribute("lecCategoryList", lecCategoryDao.select());
-		model.addAttribute("listSearch",lecService.listBy(cri));
-		int count = lecService.listCountBy(lecSearchVO); 	
-		LecPageMaker2 lecPageMaker2 = new LecPageMaker2();	
-		lecPageMaker2.setCri(cri);		
-		lecPageMaker2.setTotalCount(count);	
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 선택한 지역 리스트: {}", cri.getLecLocRegion());
+		List<LecListVO> searchResult = lecService.listBy(cri);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 검색 결과: {}", searchResult);
+		model.addAttribute("listSearch", searchResult);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 검색 결과를 model에 할당");
+		int count = lecService.listCountBy(lecSearchVO);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 1");
+		LecPageMaker2 lecPageMaker2 = new LecPageMaker2();
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 2");
+		lecPageMaker2.setCri(cri);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 3");
+		lecPageMaker2.setTotalCount(count);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 4");
 		model.addAttribute("pageMaker", lecPageMaker2);
-	
-		
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 5");
+
 		return "lec/list";
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	//목록(검색 가능)
 //	@PostMapping("/list")
 //	public String search(@ModelAttribute LecSearchVO vo, Model model) {
@@ -201,8 +210,9 @@ public class LecController {
 	// 강좌 삭제
 	@GetMapping("/delete/{lecIdx}")
 	public String delete(@PathVariable int lecIdx) {
+		lecFileDao.delete(lecIdx);
 		lecDao.delete(lecIdx);
-		return "redirect:list";
+		return "redirect:/lec/list";
 	}
 
 	// 파일 전송 다운로드 (파일 전송 실시)
@@ -303,22 +313,22 @@ public class LecController {
     }
 
 	//결제(신청) Get페이지
-	@GetMapping("/check/{lecIdx}")
-	public String check(@PathVariable int lecIdx, HttpSession session, Model model) {
-		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-		boolean isLogin = session.getAttribute("memberId") != null;
-		if(isLogin) {
-			String memberId = (String)session.getAttribute("memberId");
-			MemberDto memberDto = memberDao.get(memberId);
-			model.addAttribute("memberDto", memberDto);
-		}
-		else {
-			return "redirect:/member/login";
-		}
-		model.addAttribute("lecDetailVO", lecDetailVO);
-
-		return "lec/check";
-	}
+//	@GetMapping("/check/{lecIdx}")
+//	public String check(@PathVariable int lecIdx, HttpSession session, Model model) {
+//		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
+//		boolean isLogin = session.getAttribute("memberId") != null;
+//		if(isLogin) {
+//			String memberId = (String)session.getAttribute("memberId");
+//			MemberDto memberDto = memberDao.get(memberId);
+//			model.addAttribute("memberDto", memberDto);
+//		}
+//		else {
+//			return "redirect:/member/login";
+//		}
+//		model.addAttribute("lecDetailVO", lecDetailVO);
+//
+//		return "lec/check";
+//	}
 
 	//강좌 신청 페이지 - 포인트 차감
 	//강사님 예전에 구현했던 포인트기능 적용?
@@ -336,12 +346,13 @@ public class LecController {
 //	}
 
 	
-	//내 강좌
-	@GetMapping("/my_lec")
-	public String my_lec(HttpSession session, Model model) {
-		String memberId = (String)session.getAttribute("memberId");
-//		MyLecDto myLecDto = myLecDao.getMyLec(memberId);
-		return "lec/my_lec";
-	}
+//	//내 강좌
+//	@GetMapping("/my_lec")
+//	public String my_lec(HttpSession session, Model model) {
+//		String memberId = (String)session.getAttribute("memberId");
+////		MyLecDto myLecDto = myLecDao.getMyLec(memberId);
+//		return "lec/my_lec";
+//	}
+
 
 }

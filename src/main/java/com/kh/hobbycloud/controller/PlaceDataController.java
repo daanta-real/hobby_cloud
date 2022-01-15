@@ -56,7 +56,7 @@ public class PlaceDataController {
 			Integer memberIdx = (Integer) session.getAttribute("memberIdx");
 			log.debug("ㅡㅡㅡ /placeData/register (장소 파일 등록 AJAX POST) memberIdx" +memberIdx);
 			placeEditVO.setMemberIdx(memberIdx);
-			Integer placeIdx = placeEditVO.getPlaceIdx();
+			int placeIdx = placeEditVO.getPlaceIdx();
 			log.debug("ㅡㅡㅡ 등록내용: {}", placeEditVO.getMemberIdx());
 			log.debug("ㅡㅡㅡ 강의장 수정 memberIdx: {}", placeEditVO.toString());
 			log.debug("ㅡㅡㅡ 수정내용: {}", placeEditVO);			

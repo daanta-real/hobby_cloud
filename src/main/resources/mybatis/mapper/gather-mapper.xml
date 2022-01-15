@@ -138,7 +138,6 @@ insert into gather(gather_idx, member_idx, lec_category_name,
  place_idx, gather_name, gather_detail, gather_registered,
  gather_head_count, gather_loc_region, gather_loc_latitude,
  gather_loc_longitude,gather_start,gather_end,
- 
  gather_max, gather_status)
 values(#{gatherIdx},#{memberIdx},#{lecCategoryName},
 #{placeIdx},#{gatherName},#{gatherDetail},sysdate,

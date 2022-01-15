@@ -68,6 +68,10 @@ button.notButton, input[type="submit"].notButton, input[type="reset"].notButton 
     animation: spinner 0.8s ease infinite;
 }
 
+/* 소모임/강좌용 지역 별 선택 연속출력 버튼용 */
+.flex-wrapper { flex-wrap:wrap; }
+.flex-wrapper > label { max-width:fit-content; min-width:5rem; min-height:3rem; display:flex; justify-content:center; align-items:center; }
+
 /* 디버그용 */
 /*HEADER { background:url("https://cdn.pixabay.com/photo/2021/12/09/20/58/christmas-cookies-6859116_960_720.jpg"); }*/
 FOOTER { font-weight:100; }

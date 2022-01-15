@@ -54,7 +54,7 @@ public class LecMyController {
 	}
 
 	// 강좌 구매 실행 페이지
-	@GetMapping("/confirm_buy")
+	@GetMapping("/execute_buy")
 	public String buy_execute(HttpSession session, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /lecMy/buy (GET) 강좌 구매를 실행합니다.");
 
@@ -90,7 +90,7 @@ public class LecMyController {
 		// 2. 멤버 포인트 감소 처리 (member)
 		MemberDto memberDto = new MemberDto();
 		memberDto.setMemberIdx(memberIdx);
-		memberDto.setMemberPoint(pointAmount);
+		memberDto.setMemberPoint(-pointAmount);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌를 구매함으로 인해 회원 포인트가 {} 감소하는 처리를 하겠습니다. (-{}점) / memberDto = {}", pointAmount, memberDto);
 		memberDao.pointModify(memberDto);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌를 구매함으로 인해 회원 포인트가 {} 감소되었습니다.", pointAmount);

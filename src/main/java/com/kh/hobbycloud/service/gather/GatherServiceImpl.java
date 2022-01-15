@@ -42,10 +42,10 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherIdx(gatherIdx);
 		gatherDto.setMemberIdx(gatherFileVO.getMemberIdx());
 		gatherDto.setLecCategoryName(gatherFileVO.getLecCategoryName());
-		gatherDto.setPlaceIdx(gatherFileVO.getPlaceIdx());
+		gatherDto.setPlaceIdx(gatherFileVO.getPlaceIdx());  
 		gatherDto.setGatherName(gatherFileVO.getGatherName());
-		gatherDto.setGatherDetail(gatherFileVO.getGatherDetail());
-		gatherDto.setGatherRegistered(gatherFileVO.getGatherRegistered());
+		gatherDto.setGatherDetail(gatherFileVO.getGatherDetail()); 
+		//gatherDto.setGatherRegistered(gatherFileVO.getGatherRegistered());
 		gatherDto.setGatherHeadCount(gatherFileVO.getGatherHeadCount());
 		gatherDto.setGatherLocRegion(gatherFileVO.getGatherLocRegion());
 		gatherDto.setGatherLocLatitude(gatherFileVO.getGatherLocLatitude());
@@ -188,14 +188,12 @@ public class GatherServiceImpl implements GatherService {
 
 	@Override
 	public List<GatherVO> listBy(CriteriaSearch cri2) {
-		System.out.println("서비스"+cri2);
 		return gatherDao.listBy(cri2);
 	}
 
 	@Override
 	public int listCountBy(GatherSearchVO gatherSearchVO) {
 		int number = gatherDao.listCountBy(gatherSearchVO);
-		System.out.println("서비스 숫자"+number);
 		return gatherDao.listCountBy(gatherSearchVO);
 	}
 

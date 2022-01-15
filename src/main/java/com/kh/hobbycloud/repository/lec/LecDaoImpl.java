@@ -79,14 +79,14 @@ public class LecDaoImpl implements LecDao{
 		int count = sqlSession.update("lec.update", lecDto);
 		return count > 0;
 	}
-	
-	
+
+
 	@Override
 	public List<LecListVO> listBy(LecCriteriaSearch cri) {
 		System.out.println("Lec 디에이오에서 cri : " + cri);
 		return sqlSession.selectList("lec.listSearchBy", cri);
 	}
-	
+
 	@Override
 	public int listCountBy(LecSearchVO lecSearchVO) {
 		int number = sqlSession.selectOne("lec.listCountBy", lecSearchVO);

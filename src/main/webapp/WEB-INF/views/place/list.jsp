@@ -79,7 +79,6 @@ window.addEventListener("load", function() {
 						<thead>
 							<tr class="table-danger">
 								<th scope="col" class="text-center align-middle text-nowrap">번호</th>
-								<th scope="col" class="text-center align-middle text-nowrap">사진</th>
 								<th scope="col" class="text-center align-middle text-nowrap">장소이름</th>
 								<th scope="col" class="text-center align-middle text-nowrap">장소제공자</th>
 								<th scope="col" class="text-center align-middle text-nowrap">주소</th>
@@ -89,7 +88,6 @@ window.addEventListener("load", function() {
 							<c:forEach var="PlaceListVO" items="${list}">
 								<tr class="cursor-pointer">
 									<td class="text-center align-middle text-nowrap">${PlaceListVO.placeIdx}</td>
-									<td class="text-center align-middle text-nowrap"><img src="${pageContext.request.contextPath}/place/file/${PlaceListVO.placeFileIdx}" width="20%"></td>
 									<td class="text-center align-middle text-nowrap"><a href="${pageContext.request.contextPath}/place/detail/${PlaceListVO.placeIdx}">${PlaceListVO.placeName}</a></td>
 									<td class="text-center align-middle text-nowrap">${PlaceListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">${PlaceListVO.placeAddress}</td>

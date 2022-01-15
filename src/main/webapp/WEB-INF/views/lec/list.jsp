@@ -12,8 +12,8 @@
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 강좌 목록</TITLE>
 <style type="text/css">
-	.flex-wrapper { flex-wrap:wrap; }
-	.flex-wrapper > label { max-width:fit-content; min-width:5rem; min-height:3rem; display:flex; justify-content:center; align-items:center; }
+.tableImgBox { max-width:min-content; }
+.tableImg { max-width:7rem; max-height:7rem; width:100%; object-fit: cover; }
 </style>
 </HEAD>
 <BODY>
@@ -56,63 +56,61 @@
 						<label for="searchForm_lecIdx" class="form-label mb-0">강좌 번호</label>
 						<input name="lecIdx" id="searchForm_lecIdx" type="number" class="form-control" placeholder="강좌 번호를 입력하세요" value="${lecSearchVO.lecIdx}">
 					</div>
-					<div class="form-group mb-4 col-lg-12">
+					<div class="form-group mb-4 col-12">
 						<label for=searchForm_lecLocRegion class="form-label mb-0 d-block">지역</label>
 						<div class="btn-group w-100 flex-wrapper">
-							<input name="lecLocRegion" type="checkbox" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Seoul">서울</label>
-							<input name="lecLocRegion" type="checkbox" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeonggi">경기</label>
-							<input name="lecLocRegion" type="checkbox" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Busan">부산</label>
-							<input name="lecLocRegion" type="checkbox" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Incheon">인천</label>
-							<input name="lecLocRegion" type="checkbox" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Daegu">대구</label>
-							<input name="lecLocRegion" type="checkbox" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Daejeon">대전</label>
-							<input name="lecLocRegion" type="checkbox" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gwangju">광주</label>
-							<input name="lecLocRegion" type="checkbox" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Ulsan">울산</label>
-							<input name="lecLocRegion" type="checkbox" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Sejong">세종</label>
-							<input name="lecLocRegion" type="checkbox" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gangwon">강원</label>
-							<input name="lecLocRegion" type="checkbox" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeju">제주</label>
-							<input name="lecLocRegion" type="checkbox" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Chungcheongbuk">충북</label>
-							<input name="lecLocRegion" type="checkbox" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Chungcheongnam">충남</label>
-							<input name="lecLocRegion" type="checkbox" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeollabuk">전북</label>
-							<input name="lecLocRegion" type="checkbox" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeollanam">전남</label>
-							<input name="lecLocRegion" type="checkbox" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeongsangbuk">경북</label>
-							<input name="lecLocRegion" type="checkbox" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="checkbox" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeongsangnam">경남</label>
 						</div>
-						<!-- <small id="searchForm_memberIdx_tip" class="form-text text-muted">회원 번호를 입력하십시오.</small>-->
 					</div>
-					<!-- 카테고리 체크박스 부분인데 지금 제대로 구현이 안됌 -->
-					<div class="form-group mb-4 col-6">
+					<div class="form-group mb-4 col-12">
 						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
 						<div class="btn-group w-100 flex-wrapper">
 							<c:forEach var="lecCategory" items="${lecCategoryList}" varStatus="status">
 								<input name="lecCategoryName" type="checkbox" value="${lecCategory}" class="btn-check"
 									id="category${status.count}" autocomplete="off"
-									${paramValues.paidStatusList.stream().anyMatch(v->v == '${lecCategory}').get() ? 'checked' : ''}>
+									${paramValues.lecCategoryName.stream().anyMatch(v->v == lecCategory).get() ? 'checked' : ''}>
 								<label class="btn btn-outline-primary text-nowrap rounded m-1" for="category${status.count}">${lecCategory}</label>
 							</c:forEach>
 						</div>
 					</div>
-					<div class="form-group mb-4 col-12">
+					<div class="form-group mb-4 col-md-6">
 						<label for="searchForm_lecName" class="form-label mb-0">강좌 이름</label>
 						<input name="lecName" id="searchForm_lecName" type="text" class="form-control" placeholder="강좌명을 입력하세요" value="${param.lecName}">
 					</div>
-					<div class="form-group mb-4 col-6">
+					<div class="form-group mb-4 col-md-6">
 						<label for="searchForm_memberNick" class="form-label mb-0">강사 이름</label>
 						<input name="memberNick" id="searchForm_memberNick" type="text" class="form-control" placeholder="강사 이름을 입력하세요" value="${param.memberNick}">
 					</div>
@@ -179,10 +177,10 @@
 					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
 						<thead>
 							<tr class="table-danger">
-								<th scope="col" class="text-center align-middle text-nowrap">강좌 번호</th>
+<!-- 								<th scope="col" class="text-center align-middle text-nowrap">번호</th> -->
 								<th scope="col" class="text-center align-middle text-nowrap">카테고리</th>
 								<th scope="col" class="text-center align-middle text-nowrap">사진</th>
-								<th scope="col" class="text-center align-middle text-nowrap">강좌 이름</th>
+								<th scope="col" class="text-center align-middle text-nowrap">강좌</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강사</th>
 								<th scope="col" class="text-center align-middle text-nowrap">수강료</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강의수</th>
@@ -196,10 +194,10 @@
 						<tbody>
 							<c:forEach var="lecListVO" items="${list}">
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
-									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td>
+<%-- 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td> --%>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
 									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/lecFile/${lecListVO.lecFileIdx}" width="20%"></td>
-									<td class="text-center align-middle text-nowrap">${lecListVO.lecName}</td>
+									<td class="text-center align-middle text-nowrap"> ${lecListVO.lecName}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${lecListVO.lecPrice}" pattern="#,###" /></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecContainsCount}</td>
@@ -215,7 +213,7 @@
 							</c:forEach>
 							<c:forEach var="lecListVO" items="${listSearch}">
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
-									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td>
+<%-- 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td> --%>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
 									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/lecFile/${lecListVO.lecFileIdx}" width="10%"></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecName}</td>
