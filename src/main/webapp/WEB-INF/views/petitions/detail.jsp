@@ -80,6 +80,53 @@ class="image image-round image-border">
 				class="col-auto btn btn-sm btn-danger mx-1">삭제</a>
 				
 			</nav>
+<!-- 댓글 내역 -->
+<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold box4'>댓글</div>
+<!-- 소단원 내용 -->
+<div class="row p-sm-2 mx-1 mb-5">
+	<form id="insert-form">
+		<div class="card mb-2 border border-1 border-secondary p-0">
+			<div class="card-header d-flex align-items-center p-1 px-2">
+				<span>댓글을 입력해주세요</span>
+			</div> 
+			<div class="card-body position-relative p-1 px-2">
+				<input type="text" class="card-text p-1 px-3 petitionsReplyDetail" name="petitionsReplyDetail" placeholder="로그인을 해주세요" />
+				<input	type="hidden" name="petitionsIdx" value="${PetitionsVO.petitionsIdx}" />
+				<input type="hidden" name="memberIdx" value="${memberIdx}" /> 
+				   
+				<!-- 등록버튼 -->
+				<c:choose>
+					<c:when test="${login}"> 
+						<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">댓글 작성</button> 
+					</c:when>
+				</c:choose>
+			</div>
+			<div class="floatRightTop position-absolute top-0 end-0 p-1"></div>
+		</div>
+	</form>
+</div>
+<div id="result"></div> 
+
+
+<!-- 게시판 댓글 목록 --> 
+<template id="petitionsVO-template">
+	<div class="card mb-2 border border-1 border-secondary p-0 item">
+		<div class="card-header d-flex align-items-center p-1 px-2">
+			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+			<span class="memberNick">{{memberNick}}</span>
+			<span class="memberReplyRegistered ms-auto gatherReplyDate">{{petitionsReplyRegistered}}</span>
+		</div>  
+		<div class="card-body position-relative p-1 px-2">
+			<div class="card-text p-1 px-3 gatherReplyDetail">{{petitionsReplyDetail}}</div>
+			<div class="floatRightTop position-absolute top-0 end-0 p-1">
+				<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn {{isWriter}}" data-petitionsreply-idx="{{petitionsReplyIdx}}">수정</button>
+				<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-petitionsreply-idx="{{petitionsReplyIdx}}">삭제</button>
+			</div>
+		</div>
+	</div>
+</template>
+<button class="btn btn-secondary more-btn">더보기</button> 
+<button class="btn btn-secondary less-btn">접기</button>    			
 		</div>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
@@ -87,31 +134,10 @@ class="image image-round image-border">
 </ARTICLE>
 <!-- 페이지 영역 끝 -->
 
-<!-- 댓글 작성 -->
-<!-- 게시판 댓글 작성 -->
-<h1>댓글</h1>
 
-<form id="insert-form">
-	내용 : <input type="text" name="noticeReplyDetail"> <br> 
-	<input	type="hidden" name="noticeIdx" value="${NoticeVO.noticeIdx}">
-	<input type="hidden" name="memberIdx" value="${login }">
-	<button type="submit">등록</button>
-</form>
 
-<!-- 댓글 목록 -->
-<!-- 게시판 댓글 목록 -->
-<template id="noticeVO-template">
-<div class="item">
-	<span class="noticeReplyIdx">{{noticeReplyIdx}}</span> <span
-		class="memberNick">{{memberNick}}</span> <span
-		class="noticeReplyDetail">{{noticeReplyDetail}}</span> <span
-		class="noticeReplyDate">{{noticeReplyDate}}</span>
-	<button class="edit-btn" data-noticereply-idx="{{noticeReplyIdx}}">수정</button>
-	<button class="remove-btn" data-noticereply-idx="{{noticeReplyIdx}}">삭제</button>
-</div>
-</template>
 
-<div id="result"></div>
+
 
 </DIV></SECTION>
 <!-- 본문 대구역 끝 -->
@@ -120,179 +146,209 @@ class="image image-round image-border">
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
 </BODY>
 </HTML>
-<!-- 댓글 등록구현 -->
+	<!-- 댓글 등록구현 -->
 <script>
-$(function(){
-	//처음 들어오면 목록 출력
-	loadList();
-	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
-	$("#insert-form").submit(function(e){
-		//this == #insert-form
-		e.preventDefault();
-		
-		var dataValue = $(this).serialize();
-		
-		$.ajax({
-			url:"${pageContext.request.contextPath}/noticeReply/insert",
-			type:"post",
-			data : dataValue,
-			//dataType 없음
-			success:function(resp){
-				console.log("성공", resp);
-			
-				//주의 : this 는 form이 아니다(this는 함수를 기준으로 계산)
-				//jQuery는 reset() 명령이 없어서 get(0)으로 javascript 객체로 변경
-				//$("#insert-form").get(0).reset();
-				$("#insert-form")[0].reset();
-				
-				//성공하면 목록 갱신
-				loadList();
-			},
-			error:function(e){
-				console.log("실패", e);
-				console.log(dataValue);
-			}
+	var page = 1;
+	var size = 10;
+	var petitionsIdx= "${petitionsIdx}";
+
+	$(function(){ 
+		$(".more-btn").click(function(){
+			loadList(page,size,petitionsIdx); 
+			console.log(page); 
+			page++;  
+			console.log(page);   
+		}); 
+		//더보기 버튼을 강제 1회 클릭(트리거) 
+		$(".more-btn").click();
+		$(".less-btn").click(function(){
+			$("#result").empty();  
+			page=1;        
+			loadList(page,size,petitionsIdx);  
+			page++; 
 		});
 	});
-});
 
-//댓글 목록 리스트
-function loadList(){
-	var noticeIdxValue = $("#noticeIdxValue").data("notice-idx");
-	$.ajax({
-		url:"${pageContext.request.contextPath}/noticeReply/list",
-		type:"get",
-		data:{
-			noticeIdx:noticeIdxValue
-		},
-		dateType:"json",
-		success:function(resp){
-			console.log("성공",resp);
-			$("#result").empty();//내부영역 청소
-			for(var i=0; i<resp.length; i++){
-				var template = $("#noticeReplyVO-template").html();
-				
-				template = template.replace("{{noticeReplyIdx}}",resp[i].noticeReplyIdx);
-				template = template.replace("{{noticeReplyIdx}}",resp[i].noticeReplyIdx);
-				template = template.replace("{noticeReplyIdx}}",resp[i].noticeReplyIdx);
-				template = template.replace("{{memberNick}}",resp[i].memberNick);
-				template = template.replace("{{noticeReplyReplyDetail}}",resp[i].noticeReplyDetail);
-				template = template.replace("{{noticeReplyDate}}",resp[i].noticerReplyDate);
-				
-				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
-				
-				console.log(tag.find(".remove-btn"));
-				
-				//댓글 삭제
-				tag.find(".remove-btn").click(function(){
-					console.log("누름");
-					deleteReply($(this).data("noticereply-idx"));
-				});
-				
-				//댓글 수정
-				tag.find(".edit-btn").click(function(){
-					
-					var gatherReplyIdx =$(this).prevAll(".gatherReplyIdx").text();
-					var memberNick =$(this).prevAll(".memberNick").text();
-					var gatherReplyDetail =$(this).prevAll(".gatherReplyDetail").text();
-					var gatherReplyDate =$(this).prevAll(".gatherReplyDate").text();
-					
-					var form =$("<form>");
-					console.log(form);
-					
-					
-					form.append("<input type='hidden' name='gatherReplyIdx' value='"+gatherReplyIdx+"'>");
-					form.append("<input type='text' name='gatherReplyDetail' value='"+gatherReplyDetail+"'>");
-					form.append("<button type='submit'>수정</button>");
+
+	$(function(){
+		//처음 들어오면 목록 출력
+		//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
+	loadList(page,size,petitionsIdx); 
+		$("#insert-form").submit(function(e){
+			e.stopImmediatePropagation();
+			e.stopPropagation();
+			e.preventDefault();
+			e.cancelBubble = true;
+			stopEvent(); 
 			
-					form.submit(function(e){
-						e.preventDefault();
-						
-						
-					var dataValue=$(this).serialize();			
-					$.ajax({
-						url:"${pageContext.request.contextPath}/gatherData/replyEdit",
-						type:"post",
-						data:dataValue,
-						success:function(resp){
-							$("#result").empty();
-							loadList();
-						},
-						error:function(e){}
-					});
-							
-				});
-					
-					var div = $(this).parent();
-					console.log(div);
-					div.html(form);
+			var dataValue = $(this).serialize();
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath}/petitionsData/replyInsert",
+				type:"post",
+				data : dataValue,
+				//dataType 없음
+				success:function(resp){
+					console.log("성공", resp);
 				
-				
-				}); 
-					$("#result").append(tag);
-				} 
-			 
-		},
-		error:function(e){
-			console.log("실패",e);
-		}
+					//주의 : this 는 form이 아니다(this는 함수를 기준으로 계산)
+					//jQuery는 reset() 명령이 없어서 get(0)으로 javascript 객체로 변경
+					//$("#insert-form").get(0).reset();
+					$("#insert-form")[0].reset();
+					$("#result").empty();
+					//성공하면 목록 갱신
+					page =1; 
+					loadList(page,size,petitionsIdx);
+					console.log("입력 들어옴");
+					page++;
+				},
+				error:function(e){
+					console.log("실패", e);
+					console.log(dataValue);
+				}
+			});
+		});
 	});
-}
+
+
+
+
+	//댓글 목록 리스트
+	function loadList(pageValue, sizeValue,petitionsIdxValue){
+		var gatherIdxValue = $("#petitionsIdxValue").data("petitions-idx");
+		$.ajax({
+			url:"${pageContext.request.contextPath}/petitionsData/replyList",
+			type:"get",
+			data:{
+				page:pageValue,
+				size:sizeValue,
+				petitionsIdx:petitionsIdxValue
+			},
+			dateType:"json",
+			success:function(resp){
+				if(resp.length < sizeValue && page==2){   
+					//게시물이 10개 이하 일 떄 page=1일 떄
+					$(".more-btn").hide();    
+					$(".less-btn").hide();  
+				}else if(resp.length <sizeValue && page>2){//게시물이 10개 이하 + page는 2번 
+					$(".more-btn").hide(); 
+					$(".less-btn").show();     
+				}  
+				else{ 
+					$(".more-btn").show(); 
+					$(".less-btn").hide();  
+				} 
+				
+				
+				for(var i=0; i<resp.length; i++){
+					var template = $("#petitionsVO-template").html();
+					
+					template = template.replace("{{petitionsReplyIdx}}",resp[i].petitionsReplyIdx);
+					template = template.replace("{{petitionsReplyIdx}}",resp[i].petitionsReplyIdx);
+					template = template.replace("{{petitionsReplyIdx}}",resp[i].petitionsReplyIdx);
+					template = template.replace("{{memberNick}}",resp[i].memberNick);
+					template = template.replace("{{petitionsReplyDetail}}",resp[i].petitionsReplyDetail);
+					
+// 					var time = resp[i].petitionsReplyRegistered;
+// 					var date =new Date(time);
+					template = template.replace("{{petitionsReplyRegistered}}",resp[i].petitionsReplyRegistered);  
+					var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+					var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+					var isWriterClass = !isWriter ? "d-none": "";
+				
+					template = template.replace("{{isWriter}}", isWriterClass); 
+					template = template.replace("{{isWriter}}", isWriterClass);
+					
+					var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
+					
+					console.log(tag.find(".remove-btn"));
+					
+					//댓글 삭제
+					tag.find(".remove-btn").click(function(){
+						console.log("누름");
+						deleteReply($(this).data("petitionsreply-idx"));
+					});
+					 
+					//댓글 수정 
+					tag.find(".edit-btn").click(function(){   
+						
+						 $(this).parent().prevAll
+						var petitionsReplyIdx = $(this).data("petitionsreply-idx"); 
+						var memberNick = $(this).parent().parent().prevAll(".memberNick").text();
+						var petitionsReplyDetail = $(this).parent().prevAll(".petitionsReplyDetail").text();
+						var petitionsReplyDate = $(this).parent().prevAll(".petitionsReplyRegistered").text();
+						
+						var form =$("<form>");
+						   
+						console.log(petitionsReplyIdx);
+						console.log(petitionsReplyDetail);
+						
+						form.append("<input type='hidden' name='petitionsReplyIdx' value='"+petitionsReplyIdx+"'>");
+						form.append("<input type='text' name='petitionsReplyDetail' value='"+petitionsReplyDetail+"'>");
+						form.append("<button type='submit'>수정</button>");
+				
+						form.submit(function(e){
+						e.preventDefault();
+							
+							
+						var dataValue=$(this).serialize();			
+						$.ajax({
+							url:"${pageContext.request.contextPath}/petitionsData/replyEdit",
+							type:"post",
+							data:dataValue,
+							success:function(resp){
+								$("#result").empty();
+								page=1;
+								loadList(page,size,petitionsIdx);	
+								console.log("편집 들어옴"); 
+								page++;
+							},
+							error:function(e){}
+						});
+								
+					});
+						
+						var div = $(this).parent();
+						console.log(div);
+						div.html(form);
+					
+					
+					}); 
+						$("#result").append(tag);
+					} 
+				 
+			},
+			error:function(e){
+				console.log("실패",e);
+			}
+		});
+	}
 </script>
-<%--원래 청원상세
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
-<c:set var="login" value="${memberIdx != null }"></c:set>
 
 
+	 
+	<!-- 댓글삭제 -->
+<script>
+	function deleteReply(petitionsReplyIdxValue){
 
-<h2>${PetitionsVO.petitionsIdx}번 게시글</h2>
+		$.ajax({
+//				url:"${pageContext.request.contextPath}/data/data8?examId="+examIdValue,
+			url:"${pageContext.request.contextPath}/petitionsData/replyDelete?"+$.param({"petitionsReplyIdx":petitionsReplyIdxValue}),
+			type:"delete",
+				data:{
+					petitionsReplyIdx : petitionsReplyIdxValue
+				},
+			dataType:"text",
+			success:function(resp){
+				console.log("성공", resp);
+				$("#result").empty();
+				page=1;
+				loadList(page,size,petitionsIdx);			
+				page++;
+			},
+			error:function(e){}
+		});
+	}
+</script>
 
-<table border="1" width="80%">
-	<tbody>
-		<tr>
-			<td>
-				<h3>${PetitionsVO.petitionsName }</h3>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				등록일 : ${PetitionsVO.petitionsRegistered}
-				|
-				작성자 : ${PetitionsVO.memberNick}
-				|
-				조회수 : ${PetitionsVO.petitionsViews}
-			</td>
-		</tr>
-		<!-- 답답해 보이지 않도록 기본높이를 부여 -->
-		<!-- 
-			pre 태그를 사용하여 내용을 있는 그대로 표시되도록 설정
-			(주의) 태그 사이에 쓸데없는 엔터, 띄어쓰기 등이 들어가지 않도록 해야 한다.(모두 표시된다) 
-		-->
-		<tr height="250" valign="top">
-			<td>
-				<pre>${PetitionsVO.petitionsDetail }</pre>
-				<c:forEach var="PetitionsFileDto" items="${list}"> 
-<img src="${pageContext.request.contextPath}/petitions/file/${PetitionsFileDto.petitionsFileIdx}" width="30%" 
-class="image image-round image-border">
-</c:forEach>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-			<c:if test="${login }">
-				<a href="write">글쓰기</a>
-				</c:if>
-				<a href="${pageContext.request.contextPath}/petitions/list">목록보기</a>
-				<c:if test="${login }">
-				<a href="${pageContext.request.contextPath}/petitions/edit?petitionsIdx=${PetitionsVO.petitionsIdx }">수정하기</a>
-				<a href="${pageContext.request.contextPath}/petitions/delete?petitionsIdx=${PetitionsVO.petitionsIdx }">삭제하기</a>
-				</c:if>
-	
-	</tbody>
-</table>
-<br><br>
-<!-- 댓글란 -->
---%>
+
