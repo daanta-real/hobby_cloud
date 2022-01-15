@@ -6,6 +6,8 @@
 <c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
 <c:set var = "end" value = " ${GatherVO.gatherEnd}"/>
 <c:set var = "endTime" value = "${fn:substring(end, 0, 17)}" />
+<c:set var = "register" value = " ${GatherVO.gatherRegistered}"/>
+<c:set var = "registerTime" value = "${fn:substring(register, 0, 17)}" /> 
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
@@ -137,7 +139,7 @@ $(function() {
 <div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
 <!-- 소모임 개요 -->
 <div class="row row justify-content-end">
-	등록일 :
+	등록일 : ${registerTime}   
 	|  
 	작성자 : ${GatherVO.memberNick}
 	|
