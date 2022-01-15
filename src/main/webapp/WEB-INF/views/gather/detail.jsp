@@ -6,6 +6,8 @@
 <c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
 <c:set var = "end" value = " ${GatherVO.gatherEnd}"/>
 <c:set var = "endTime" value = "${fn:substring(end, 0, 17)}" />
+<c:set var = "register" value = " ${GatherVO.gatherRegistered}"/>
+<c:set var = "registerTime" value = "${fn:substring(register, 0, 17)}" /> 
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
@@ -137,7 +139,7 @@ $(function() {
 <div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
 <!-- 소모임 개요 -->
 <div class="row row justify-content-end">
-	등록일 :
+	등록일 : ${registerTime}   
 	|  
 	작성자 : ${GatherVO.memberNick}
 	|
@@ -166,12 +168,14 @@ $(function() {
 					</tr>
 				</thead>
 				<tbody>
+				<c:set	var="isJoin" value="false" />
+				<c:set var="isFull" value="false" />  
 					<c:forEach var="GatherHeadsVO" items="${list2}" varStatus="status">
 						<tr class="cursor-pointer">     
 							<c:choose>
 								<c:when test="${GatherHeadsVO.memberProfileIdx != 0 }">  			
-									<td class="text-center align-middle text-nowrap">
-										<img src="${pageContext.request.contextPath}/member/profile/${GatherHeadsVO.memberProfileIdx}" />
+									<td class="text-center align-middle text-nowrap">   
+										<img src="${pageContext.request.contextPath}/member/profile/${GatherHeadsVO.memberIdx}" width="40px" height="40px"/>     
 									</td>  
 								</c:when>
 								<c:otherwise>
@@ -180,15 +184,13 @@ $(function() {
 									</td>
 								</c:otherwise>
 							</c:choose>
-							<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td> 
-							<c:set var="isFull" value="false" />
+							<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td> 					
 							<!-- 참가자가 가득 찼는지 확인-->
 							<c:if test="${status.count == GatherVO.gatherHeadCount}">  
 								<c:set var="isFull" value="true" />
 							</c:if>
-							<!-- 참가여부를 확인 -->
-							<c:set	var="isJoin" value="false" />  
-							<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}">  
+							<!-- 참가여부를 확인 -->				 
+							<c:if test="${GatherHeadsVO.memberNick eq memberNick}">   
 								<c:set var="isJoin" value="true" />
 							</c:if>
 					 	</tr>
@@ -196,8 +198,7 @@ $(function() {
 				</tbody>
 			</table>
 		</div>
-	</div>
-	
+	</div>   
 	<!-- 참가하기 버튼 -->
 	<c:set var="isLogin" value="${memberIdx != null}"/>
 	<c:choose>
@@ -270,7 +271,9 @@ $(function() {
 <template id="gatherVO-template">
 	<div class="card mb-2 border border-1 border-secondary p-0 item">
 		<div class="card-header d-flex align-items-center p-1 px-2">
-			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info"
+			src="${pageContext.request.contextPath}/member/profile/{{memberIdx}}"
+			 style="width:2.3rem; height:2.3rem;"/>
 			<span class="memberNick">{{memberNick}}</span>
 			<span class="memberReplyRegistered ms-auto gatherReplyDate">{{gatherReplyDate}}</span>
 		</div>  
@@ -324,7 +327,9 @@ $(function() {
 <template id="gatherReviewVO-template">
 	<div class="card mb-2 border border-1 border-secondary p-0 item">
 		<div class="card-header d-flex align-items-center p-1 px-2">
-			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" 
+			src="${pageContext.request.contextPath}/member/profile/{{memberIdx}}"
+			style="width:2.3rem; height:2.3rem;"/>
 			<span class="memberNick">닉네임 :{{memberNick}}</span> 
 			<span class="gatherReviewScore">| 점수:{{gatherReviewScore}}</span> 
 			<span class="memberReplyRegistered ms-auto gatherReviewRegistered">{{gatherReviewRegistered}}</span>
@@ -341,8 +346,7 @@ $(function() {
 <button class="btn btn-secondary moreR-btn">더보기</button> 
 <button class="btn btn-secondary lessR-btn">접기</button> 
 <h1 class="box6">남녀 참가자 수</h1>  
-<canvas id="myChart" width="15px" height="30px"></canvas> 
-
+<canvas id="myChart" width="15px" height="30px"></canvas>    
 
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
@@ -558,7 +562,7 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 			  
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
-				 
+				template = template.replace("{{memberIdx}}", resp[i].memberIdx);   
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
@@ -719,6 +723,7 @@ $(function(){
 				$("#result").empty();
 				//성공하면 목록 갱신
 				page =1; 
+				
 				loadList(page,size,gatherIdx);
 				console.log("입력 들어옴");
 				page++;
@@ -761,9 +766,9 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 			} 
 			
 			
-			for(var i=0; i<resp.length; i++){
-				var template = $("#gatherVO-template").html();
-				
+			for(var i=0; i<resp.length; i++){ 
+				var template = $("#gatherVO-template").html();    
+				template = template.replace("{{memberIdx}}", resp[i].memberIdx); 
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);

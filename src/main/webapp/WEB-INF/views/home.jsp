@@ -61,7 +61,7 @@ window.addEventListener("load", function() {
 				<img src="${pageContext.request.contextPath}/resources/img/gather.png" class="w-50">
 			</div>
 			<div class="row form-group text-center">
-			<h3>환영합니다</h3>
+			<h3>hobbycloud에 어서오세요</h3>
 			</div>
 			</div>
 		</div>
@@ -72,22 +72,56 @@ window.addEventListener("load", function() {
 		<div class="container">
 		<nav class="row p-0 pt-4 d-flex justify-content-center">
 		<div class="card border-primary mb-3 w-50">
-             <div class="card-header">Header</div>
+             <div class="card-header">인삿말</div>
                 <div class="card-body">
-                   <h4 class="card-title">Primary card title</h4>
-                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                   <h4 class="card-title">취미를 배워보자</h4>
+                   <p class="card-text">hobbycloud는 평소 배우고싶던 취미를 제대로 배우고싶을때, 누군가의 도움이 필요할때, 취미와 관련된
+                   정보를 얻고싶을때 hobbycloud를 통해 
+                   손쇱게 강사를 찾아 배울 수 있고 
+                   자신의 지역기반으로 가까운 사람들과 만남을 가져 함께
+                   취미생활을 즐길 수 있게 해드립니다. hobbycloud를 통해 소중한 추억과 값진 시간을 보내세요   </p>
                  </div>
               </div>
           <div class="card border-primary mb-3 w-50">
-             <div class="card-header">Header</div>
+             <div class="card-header">취미종류</div>
                 <div class="card-body">
-                   <h4 class="card-title">Primary card title</h4>
-                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                   <h4 class="card-title">다양한 취미를 만나보세요</h4>
+                   <p class="card-text">운동</p>
+                   <p class="card-text">요리</p>
+                   <p class="card-text">문화</p>
+                   <p class="card-text">예술</p>
+                   <p class="card-text">IT</p>
                  </div>
               </div>
               </nav>
-           </div>
-           </div>
+         <!-- 강좌소개 -->
+           <div class="card mb-3">
+               <h3 class="card-header">이용안내</h3>
+               <div class="card-body">
+                    <h5 class="card-title">hobbycloud</h5>
+                    <h6 class="card-subtitle text-muted">클릭하면 해당 항목으로 이동됩니다</h6>
+                </div>
+             
+                 <img src="${pageContext.request.contextPath}/resources/img/cook.jpeg"></rect>
+                 <text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text>
+             </svg>
+               <div class="card-body">
+                   <p class="card-text">다양한 취미생활을 배워봅시다.</p>
+               </div>
+               <ul class="list-group list-group-flush">
+                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/lec/list" class="card-link">강좌목록보기</a></li>
+                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/gather/list" class="card-link">소모임보기</a></li>
+                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/petitions/list" class="card-link">청원하기</a></li>
+                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/notice/list" class="card-link">공지사항</a></li>
+                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/place/list" class="card-link">장소보기</a></li>
+               </ul>
+              
+      <div class="card-footer text-muted">
+    since 2022-01-17
+      </div>
+          </div>
+        </div>
+       </div>
            
          
 		

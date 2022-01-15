@@ -48,6 +48,7 @@
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/gather/list">소모임</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/petitions/list">청원</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/place/list">장소</a></li>
 			</ul>
 
 			<form class="d-flex mt-2 mt-md-0">

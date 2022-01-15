@@ -49,7 +49,7 @@ public class LecSerivceImpl implements LecService{
 		log.debug("카운트:{}",count++);
 		lecDto.setLecIdx(lecIdx);
 		log.debug("카운트:{}",count++);
-		lecDto.setTutorIdx(41);//
+		lecDto.setTutorIdx(44);//
 		log.debug("카운트:{}",count++);
 		lecDto.setLecCategoryName(lecRegisterVO.getLecCategoryName());
 		log.debug("카운트:{} / 이제 이거 넣을거야 {}",count++, lecRegisterVO.getPlaceIdx());

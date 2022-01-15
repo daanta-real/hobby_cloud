@@ -1,5 +1,7 @@
 package com.kh.hobbycloud.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.pay.LecMyDao;
 import com.kh.hobbycloud.repository.point.PointHistoryDao;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
+import com.kh.hobbycloud.vo.lec.LecMyVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +37,11 @@ public class LecMyController {
 	@GetMapping("/confirm/{lecIdx}")
 	public String confirm(@PathVariable int lecIdx, HttpSession session, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/confirm/{} (GET) 강좌 구매 확인 페이지 진입", lecIdx);
-
+		
+		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
+			return "redirect:/member/login";//로그인 화면으로 리다이렉트
+		}	
+		
 		// 회원 현재 보유 포인트를 뷰로 넘김
 		MemberDto memberDto = memberDao.getByIdx((int) session.getAttribute("memberIdx"));
 
@@ -54,7 +61,7 @@ public class LecMyController {
 	}
 
 	// 강좌 구매 실행 페이지
-	@GetMapping("/confirm_buy")
+	@GetMapping("/execute_buy")
 	public String buy_execute(HttpSession session, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /lecMy/buy (GET) 강좌 구매를 실행합니다.");
 
@@ -90,7 +97,7 @@ public class LecMyController {
 		// 2. 멤버 포인트 감소 처리 (member)
 		MemberDto memberDto = new MemberDto();
 		memberDto.setMemberIdx(memberIdx);
-		memberDto.setMemberPoint(pointAmount);
+		memberDto.setMemberPoint(-pointAmount);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌를 구매함으로 인해 회원 포인트가 {} 감소하는 처리를 하겠습니다. (-{}점) / memberDto = {}", pointAmount, memberDto);
 		memberDao.pointModify(memberDto);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌를 구매함으로 인해 회원 포인트가 {} 감소되었습니다.", pointAmount);
@@ -110,4 +117,13 @@ public class LecMyController {
 		return "lecMy/success_buy";
 	}
 
+	//내 강좌 보기
+	@GetMapping("/myLec")
+	public String myLec(HttpSession session, Model model) {
+		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
+		List<LecMyVO> myLecList = lecMyDao.getMyLec(memberIdx);
+		model.addAttribute("myLecList", myLecList);
+		return "lecMy/my_lec";
+	}
+	
 }

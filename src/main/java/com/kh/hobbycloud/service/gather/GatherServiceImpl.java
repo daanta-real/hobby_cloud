@@ -42,10 +42,10 @@ public class GatherServiceImpl implements GatherService {
 		gatherDto.setGatherIdx(gatherIdx);
 		gatherDto.setMemberIdx(gatherFileVO.getMemberIdx());
 		gatherDto.setLecCategoryName(gatherFileVO.getLecCategoryName());
-		gatherDto.setPlaceIdx(gatherFileVO.getPlaceIdx());
+		gatherDto.setPlaceIdx(gatherFileVO.getPlaceIdx());  
 		gatherDto.setGatherName(gatherFileVO.getGatherName());
-		gatherDto.setGatherDetail(gatherFileVO.getGatherDetail());
-		gatherDto.setGatherRegistered(gatherFileVO.getGatherRegistered());
+		gatherDto.setGatherDetail(gatherFileVO.getGatherDetail()); 
+		//gatherDto.setGatherRegistered(gatherFileVO.getGatherRegistered());
 		gatherDto.setGatherHeadCount(gatherFileVO.getGatherHeadCount());
 		gatherDto.setGatherLocRegion(gatherFileVO.getGatherLocRegion());
 		gatherDto.setGatherLocLatitude(gatherFileVO.getGatherLocLatitude());

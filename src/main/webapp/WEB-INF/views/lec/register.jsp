@@ -362,7 +362,7 @@ function setLoc(el) {
 				<form name="lecForm" method="get" class="row container d-flex justify-content-center fileUploadForm" onsubmit=";">
 					<div class="form-group row mb-4">
 						<label>강좌 이름</label>
-						<input type="text" name="lecName" required class="form-input p-1 border-radius-all-25" />
+						<input type="text" name="lecName" required class="form-input p-1 border-radius-all-25"/>
 					</div>
 					<div class="row mb-4">
 						<label>카테고리</label>

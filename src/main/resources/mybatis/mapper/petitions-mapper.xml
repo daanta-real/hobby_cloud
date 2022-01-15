@@ -104,4 +104,42 @@ select * from petitions p left outer join
   from petitions_file group by petitions_idx) f  
   on  f.petitions_idx = p.petitions_idx)
   </select>	
+  
+  <!-- 댓글조회 -->
+  <select id="replyList" parameterType="map" resultType="PetitionsReplyVO">
+  select * from(
+select rownum  rn , TMP.* from(
+select pr.*,m.member_nick from 
+petitions p 
+inner join
+petitions_reply pr 
+ON p.petitions_idx = pr.petitions_idx
+left outer join
+ member m
+ON pr.member_idx = m.member_idx
+where pr.petitions_idx = #{petitionsIdx}
+  )TMP
+) where rn between #{startRow} and #{endRow}
+  </select>
+  
+<!--  댓글입력 -->
+<insert id="replyInsert" parameterType="PetitionsReplyDto">
+insert into petitions_reply values
+(petitions_reply_seq.nextval,#{memberIdx},#{petitionsIdx},
+#{petitionsReplyDetail},sysdate)
+</insert>
+
+<!-- 댓글 삭제 -->
+<delete id="replyDelete" parameterType="int">
+delete from petitions_reply where petitions_reply_idx=#{petitionsReplyIdx}
+</delete>
+
+<!-- 댓글 수정 -->
+<update id="replyEdit" parameterType="PetitionsReplyDto">
+update petitions_reply set 
+ petitions_reply_detail=#{petitionsReplyDetail},
+ petitions_reply_registered=sysdate 
+ where 
+ petitions_reply_idx =#{petitionsReplyIdx}
+</update>
 </mapper>

@@ -1,13 +1,15 @@
 package com.kh.hobbycloud.entity.petitions;
 
+import java.sql.Date;
+
 import lombok.Data;
 
 @Data
 public class PetitionsReplyDto {
-	private int petitonsReplyIdx;
+	private int petitionsReplyIdx;
 	private int memberIdx;
-	private int petitonsIdx;
+	private int petitionsIdx;
 	private String petitionsReplyDetail;
-	private String petitionsReplyRegistered;
+	private Date petitionsReplyRegistered;
 
 }
