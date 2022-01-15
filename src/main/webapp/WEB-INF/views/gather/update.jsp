@@ -31,7 +31,7 @@ window.addEventListener("load", function() {
 3. HTML FORM의 class에는 fileUploadForm 항목이 있어야 한다.
 --%>
 <SCRIPT TYPE="text/javascript">
-const fileImageStorePath = "${root}/gather/gatherFile/";
+const fileImageStorePath = "${root}/gather/file/";
 const fileSubmitAjaxPage = "${root}/gatherData/update/";
 </SCRIPT> 
 <!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
@@ -327,7 +327,7 @@ window.addEventListener("load", function() {
 <HEADER class='w-100 mb-1 p-2 px-md-3'>
 	<div class='row border-bottom border-secondary border-1'>
 		<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-		소모임 글 작성
+		소모임 글 수정
 		</span>
 	</div>
 </HEADER>
@@ -341,20 +341,20 @@ window.addEventListener("load", function() {
 		<form class="fileUploadForm" method="post" enctype="multipart/form-data" id="insert-form" onsubmit=";">
 			<div class="row mb-4">
 				<label for="" class="form-label">제목</label>
-				<input type="text" name="gatherName" class="form-control" value="${GatherVO.gatherName}">
+				<input type="text" name="gatherName" class="form-control" value="${GatherVO.gatherName}" required>
 			</div>
 			<div class="row mb-4">
 				<label for="" class="form-label">카테고리</label>
 				<select name="lecCategoryName" required class="form-input">
 					<option value="">선택하세요</option>
 					<c:forEach var="val" items="${lecCategoryList}">
-						<option value="${val}" ${lecDetailVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
+						<option value="${val}" ${GatherVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
 					</c:forEach>
 				</select>
 			</div>
 			<div class="row mb-4 form-group justify-content-center">
 				<label for="exampleTextarea" class="form-label">내용</label>
-				<textarea class="form-control" name="gatherDetail" id="exampleTextarea" rows="10" style="resize:none">${GatherVO.gatherDetail}</textarea>
+				<textarea class="form-control" name="gatherDetail" id="exampleTextarea" rows="10" style="resize:none" required>${GatherVO.gatherDetail}</textarea>
 			</div>
 			<input type="hidden" name="memberIdx" value="${GatherVO.memberIdx}">
 			<div class="row mb-4 justify-content-center">
@@ -371,7 +371,7 @@ window.addEventListener("load", function() {
 			</div>
 			<div class="row mb-4 justify-content-center">
 				<label for="" class="form-label">인원</label>
-				<input type="number" name="gatherHeadCount" class="form-control" value="${GatherVO.gatherHeadCount}">
+				<input type="number" name="gatherHeadCount" class="form-control" value="${GatherVO.gatherHeadCount}" required>
 			</div>
 			<div class="row mb-4 justify-content-center">
 				<label for="" class="form-label">지역</label>
