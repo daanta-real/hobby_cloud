@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
 <HTML LANG="ko">
@@ -232,9 +234,10 @@ window.addEventListener("load", function() {
             <table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
               <thead>
                 <tr class="table-danger">
-                  <th scope="col" class="text-center align-middle text-nowrap">번호</th>
+<!--                   <th scope="col" class="text-center align-middle text-nowrap">번호</th> -->
                   <th scope="col" class="text-center align-middle text-nowrap tableImgBox">사진</th>
                   <th scope="col" class="text-center align-middle text-nowrap">제목</th>
+                   <th scope="col" class="text-center align-middle text-nowrap">시작시간</th>
                   <th scope="col" class="text-center align-middle text-nowrap">작성자</th>
                   <th scope="col" class="text-center align-middle text-nowrap">카테고리</th>
                   <th scope="col" class="text-center align-middle text-nowrap">지역</th>
@@ -244,9 +247,9 @@ window.addEventListener("load", function() {
               <tbody>
                 <c:forEach var="GatherVO" items="${list}"> 
                   <tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}'">
-                    <td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td>
+<%--                     <td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td> --%>
                     <td class="text-center align-middle text-nowrap p-0 tableImgBox">
-                      <c:choose>
+                      <c:choose> 
                         <c:when test="${GatherVO.gatherFileIdx != 0 }">   
                           <img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" class="m-0 p-0 tableImg">
                         </c:when>
@@ -255,7 +258,10 @@ window.addEventListener("load", function() {
                         </c:otherwise>  
                       </c:choose>
                     </td>
+                    <c:set var = "start" value = " ${GatherVO.gatherStart}"/> 
+					<c:set var = "startTime" value = "${fn:substring(start, 0, 17)}" />  
                     <td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
+                    <td class="text-center align-middle text-nowrap">${startTime}</td>  
                     <td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td> 
                     <td class="text-center align-middle text-nowrap">${GatherVO.lecCategoryName}</td> 
                     <td class="text-center align-middle text-nowrap">${GatherVO.gatherLocRegion}</td>
