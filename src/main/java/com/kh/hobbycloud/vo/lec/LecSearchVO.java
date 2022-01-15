@@ -10,7 +10,7 @@ public class LecSearchVO {
 	private List<String> lecCategoryName;
 	private String lecName;
 	private String memberNick;
-	private String lecLocRegion;
+	private List<String> lecLocRegion;
 	private String minPrice;
 	private String maxPrice;
 	private String minCount;
