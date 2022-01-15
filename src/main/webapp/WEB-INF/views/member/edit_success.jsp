@@ -56,7 +56,9 @@ window.addEventListener("load", function() {
 		<div class="row p-sm-2 mx-1 mb-5 jstify-content-center">
 		<div class="container jstify-content-center">
 			<div class="form-group col-12">
+			<br><br><br>
 			<h2>정보 수정 완료</h2>
+			<br><br><br><br>
 			<a class="col-auto btn btn-sm btn-outline-primary mt-4 jstify-content-center" href="${root }/member/mypage">마이페이지로</a>
 			</div>
 		</div>

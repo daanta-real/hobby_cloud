@@ -43,11 +43,11 @@
 	</insert>
 	
 	<!-- 장소 첨부파일 DTO 획득 by 파일번호 -->
-	<select id="getNo" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
+<!-- 	<select id="getNo" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
 		SELECT * FROM place_file
 		WHERE place_file_idx = #{placeFileIdx}
 	</select>
-	
+	 -->
 	<!-- 장소 DTO 획득 by idx -->
 	<select id="getIdx" parameterType="int" resultType="com.kh.hobbycloud.entity.place.PlaceFileDto">
 		SELECT * FROM place
@@ -62,60 +62,41 @@
 	<!-- 수정 -->
 	<update id="update" parameterType="com.kh.hobbycloud.entity.place.PlaceDto">
 			UPDATE PLACE 
-		<!-- set을 이용하여 수정항목을 동적으로 배치(단 마지막 콤마는 반드시 작성) -->
-		<trim prefix="SET" suffixOverrides=",">
-			<if test="placeName != null">
-				PLACE_NAME = #{placeName},
-			</if>
-			<if test="placePostcode != null">
-				PLACE_DETAIL = #{placeDetail}, 
-			</if>
-			<if test="memberPhone != null">
-				PLACE_POSTCODE =  #{placePostcode},
-			</if>
-			<if test="placeAddress != null">
-				PLACE_ADDRESS =  #{placeAddress},
-			</if>
-			<if test="placeDetailAddress != null">
-				PLACE_DETAIL_ADDRESS = #{placeDetailAddress},
-			</if>
-			<if test="placeStart != null">
-				PLACE_START = #{placeStart},
-			</if>
-			<if test="placeEnd != null">
-				PLACE_END = #{placeEnd},
-			</if>
-			<if test="placeMax != null">
-				PLACE_MIN = #{placeMin},
-			</if>
-			<if test="placeMax != null">
-				PLACE_MAX = #{placeMax},
-			</if>
-			<if test="placePhone != null">
-				PLACE_EMAIL = #{placeEmail},
-			</if>
-			<if test="placeSido != null">
-				PLACE_PHONE  = #{placePhone},
-			</if>
-			<if test="placeSigungu != null">
-				PLACE_SIDO = #{placeSido},
-			</if>
-			<if test="placeEnd != null">
-				PLACE_SIGUNGU = #{placeSigungu},
-			</if>
-			<if test="placeMax != null">
-				PLACE_BNAME = #{placeBname},
-			</if>
-			<if test="placeMax != null">
-				PLACE_LOC_LATITUDE = #{placeLocLatitude},
-			</if>
-			<if test="placePhone != null">
-				PLACE_LOC_LONGITUDE = #{placeLocLongitude},
-			</if>
+		set 
+			place_name = #{placeName},
+			PLACE_DETAIL = #{placeDetail},
+			place_start = #{placeStart},
+			place_end = #{placeEnd},
+			place_min = #{placeMin},
+			place_max = #{placeMax},
+			place_email = #{placeEmail},
+			place_postcode = #{placePostcode},
+			place_address = #{placeAddress},
+			place_detail_address = #{placeDetailAddress},
+			place_Loc_latitude = #{placeLocLatitude},
+			place_loc_longitude = #{placeLocLongitude}
+		where 
+			place_idx=#{placeIdx}
+	</update>
+ 		<!-- set을 이용하여 수정항목을 동적으로 배치(단 마지막 콤마는 반드시 작성) -->
+<!-- 		<trim prefix="SET" suffixOverrides=",">
+			<if test="placeIdx != null">place_idx = #{placeIdx},</if>
+			<if test="placeIdx != null">member_idx = #{memberIdx},</if>
+			<if test="placeName != null and !placeName.equals('')">PLACE_NAME = #{placeName},</if>
+			<if test="placeDetail != null and !placeDetail.equals('')">PLACE_DETAIL = #{placeDetail},</if>
+			<if test="placeStart != null and !placeStart.equals('')">place_start = #{placeStart},</if>
+			<if test="placeEnd != null and !placeEnd.equals('')">place_end = #{placeEnd},</if>
+			<if test="placeMin != null and !placeMin.equals('')">place_min = #{placeMin},</if>
+			<if test="placeMax != null and !placeMax.equals('')">place_max = #{placeMax},</if>
+			<if test="placeEmail != null and !placeEmail.equals('')">place_email = #{placeEmail},</if>
+			<if test="placePostcode != null and !placePostcode.equals('')">place_postcode = #{placePostcode},</if>
+			<if test="placeAddress != null and !lplaceAddress.equals('')">place_address = #{placeAddress},</if>
+			<if test="placeDetailAddress != null and !placeDetailAddress.equals('')">place_detail_address = #{placeDetailAddress},</if>
+			<if test="placeLocLatitude null and !placeLocLatitude.equals('')">place_Loc_latitude = #{placeLocLatitude},</if>
+			<if test="placeLocLongitude null and !placeLocLongitude.equals('')">place_loc_longitude = #{placeLocLongitude},</if>
 		</trim>
 		WHERE
-			PLACE_IDX = #{placeIdx}
-	</update>
+			PLACE_IDX = #{placeIdx}  -->
 	
 <!-- 장소 목록 -->
 <select id="list" resultType="com.kh.hobbycloud.vo.place.PlaceListVO">
@@ -125,6 +106,15 @@ select * from place p left outer join
   on  f.place_idx = p.place_idx  
 order by p.place_idx desc
 </select>
+
+<!-- 내 장소 목록 -->
+<select id="mylist"  resultType="PlaceListVO" parameterType="int">
+  select * from place p left outer join
+ (select distinct place_idx, min(place_file_idx) as place_file_idx
+  from place_file group by place_idx) f  
+  on  f.place_idx = p.place_idx
+  where member_idx=#{memberIdx}
+ </select>
 
 	<!-- 장소 총 개수 구하기 -->
 <select id="listCount" resultType="int" >

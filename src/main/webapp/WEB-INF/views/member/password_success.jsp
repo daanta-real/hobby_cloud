@@ -53,10 +53,15 @@ window.addEventListener("load", function() {
 		<!-- 소단원 제목 -->
 		
 		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5">
+		<div class="row p-sm-2 mx-1 mb-5 jstify-content-center">
+		<div class="container jstify-content-center">
+			<div class="form-group col-12">
+			<br><br><br>
 			<h2>비밀번호 변경 완료!</h2>
-			<a class="col-auto btn btn-sm btn-outline-primary" href="${root }">메인으로</a>
+			<br><br><br><br>
+			<a class="col-auto btn btn-sm btn-outline-primary mt-4 jstify-content-center" href="${root }/member/mypage">마이페이지로</a>
 			</div>
+		</div>
 		</div>
 		<!-- 소단원 제목 -->
 		

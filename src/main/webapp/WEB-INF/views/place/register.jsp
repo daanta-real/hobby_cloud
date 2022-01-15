@@ -181,7 +181,7 @@ $(function () {
 	
 	// 작성 완료 버튼을 누르면 > 이메일과 폰번호 값을 하나로 합쳐줌
 	// 이후에 이벤트 버블링 때문에 폼 객체의 .submit()이 실행된다.
-	$("#btnclick").click(function () {
+	$(".btnclick").click(function () {
 		console.log("작성완료 버튼 누름");
 		let placePhone =
 			$("#phone1").val() + $("#phone2").val() + $("#phone3").val();
@@ -307,9 +307,9 @@ $(function () {
 						<input type="hidden" name="address" >
 					</div>
 							<div id="map" style="width:100%;height:350px;"></div>
-							<div id="clickLatlng"></div>
-						<input type="text" id="clickLocLatitude" name="placeLocLatitude">
-						<input type="text" id="clickLocLongitude" name="placeLocLongitude">
+							<div style="display:none" id="clickLatlng"></div>
+						<input type="hidden" id="clickLocLatitude" name="placeLocLatitude">
+						<input type="hidden" id="clickLocLongitude" name="placeLocLongitude">
 				</div>
 				<div class="row mb-4">
 					<label class="form-block">대여 가능 시작일</label>
@@ -393,7 +393,7 @@ $(function () {
 					</div>
 				</div>
 				<div class="row mb-4">
-					<input type="submit" id="fileUploadForm_submitBtn" value="작성 완료" class="btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control">
+					<input type="submit" id="fileUploadForm_submitBtn" value="작성 완료" class="btnclick btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control">
 				</div>
 			</form>
 		</div>

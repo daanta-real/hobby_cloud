@@ -122,7 +122,7 @@ public class MemberDaoImpl implements MemberDao{
 	// 회원 탈퇴
 	@Override
 	public boolean quit(Integer memberIdx, String memberPw) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberIdx);
+		MemberDto findDto = sqlSession.selectOne("member.getbyIdx", memberIdx);
 		if(encoder.matches(memberPw, findDto.getMemberPw())) {
 			int count = sqlSession.delete("member.quit", memberIdx);
 			return count > 0;

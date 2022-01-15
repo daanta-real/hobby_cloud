@@ -9,7 +9,7 @@ import com.kh.hobbycloud.vo.place.PlaceVO;
 
 public interface PlaceDao {
 	//Place 삭제
-	void delete(int gatherIdx);
+	void delete(int placeIdx);
 	//Place idx
 	int getSequence();
 	//Place 등록
@@ -32,5 +32,7 @@ public interface PlaceDao {
 	List<PlaceListVO> list();
 	//장소 검색
 	Object search(String column, String keyword);
+	//내 장소
+	List<PlaceListVO> mylist(int memberIdx);
 }
 

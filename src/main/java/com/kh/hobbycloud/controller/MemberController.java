@@ -193,10 +193,8 @@ public class MemberController {
 				return "success";
 			}
 		}
-
-
+		
 	// 마이페이지 (임시용)
-
 	@RequestMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
 		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
@@ -216,7 +214,7 @@ public class MemberController {
 		return "member/mypage";
 	}
 	
-	//관리자용 회원 상세 페이지 검색
+	//회원 상세 페이지 검색
 	@RequestMapping("/mypage/{memberIdx}")
 	public String mypage(@PathVariable int memberIdx, HttpSession session, Model model) {
 		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
@@ -306,8 +304,10 @@ public class MemberController {
 	@PostMapping("/quit")
 	public String quit(HttpSession session, @RequestParam String memberPw) {
 		log.debug("ㅡㅡMemberController - /member/quit POST> 회원 탈퇴 DATA 입력됨");
-		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
-
+		int memberIdx = (Integer) session.getAttribute("memberIdx");
+		
+		memberCategoryDao.delete(memberIdx);;
+		memberProfileDao.delete(memberIdx);
 		boolean result = memberDao.quit(memberIdx, memberPw);
 		if(result) {
 			session.removeAttribute("memberIdx");
@@ -481,24 +481,32 @@ public class MemberController {
 
 	// 회원 목록 페이지
 	@GetMapping("/list")
-	public String list(Model model, MemberCriteria cri) {
-		log.debug("ㅡㅡㅡ 회원 목록조회 시작");
-		
-		List<MemberListVO> memberListVO = memberService.list(cri);
-		log.debug("회원 목록을 갖고 옴. memberListVO = {}", memberListVO);
-		model.addAttribute("list", memberService.list(cri));
-
-		MemberPageMaker pageMaker = new MemberPageMaker();
-		
-		pageMaker.setCri(cri);
-		int count = memberService.listCount();
-		log.debug("회원목록 수: {}", count);
-		
-		pageMaker.setTotalCount(count);
-		model.addAttribute("pageMaker",pageMaker);
-		
-		log.debug("회원목록으로 이동");
+	public String list(Model model, MemberCriteria cri, HttpSession session) {
+			String memberGradeName = (String) session.getAttribute("memberGrade");
+			String admin = "관리자";
+			log.debug("ㅡㅡㅡㅡㅡㅡㅡMemberController ㅡㅡㅡㅡㅡㅡ memberGradeName : " + memberGradeName);
+			if(memberGradeName.equals(admin)) {
+				
+			List<MemberListVO> memberListVO = memberService.list(cri);
+			log.debug("회원 목록을 갖고 옴. memberListVO = {}", memberListVO);
+			model.addAttribute("list", memberService.list(cri));
+	
+			MemberPageMaker pageMaker = new MemberPageMaker();
+			
+			pageMaker.setCri(cri);
+			int count = memberService.listCount();
+			log.debug("회원목록 수: {}", count);
+			
+			pageMaker.setTotalCount(count);
+			model.addAttribute("pageMaker",pageMaker);
+			
+			log.debug("회원목록으로 이동");
 		return "member/list";
+		
+		}
+		else {
+			return "redirect:/member/login";
+		}
 	}
 
 //	// 검색결과 목록 페이지

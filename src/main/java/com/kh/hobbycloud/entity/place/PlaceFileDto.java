@@ -5,8 +5,11 @@ import lombok.Data;
 @Data
 public class PlaceFileDto {
 	
-	private int PlaceFileIdx, PlaceIdx;
-	private String PlaceFileUserName, PlaceFileServerName, PlaceFileType;
+	private int PlaceFileIdx;
+	private int PlaceIdx;
+	private String PlaceFileUserName;
+	private String PlaceFileServerName;
 	private long PlaceFileSize;
+	private String PlaceFileType;
 
 }

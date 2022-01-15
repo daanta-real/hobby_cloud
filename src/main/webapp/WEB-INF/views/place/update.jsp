@@ -3,6 +3,8 @@
 <%@ taglib uri="http://www.springframework.org/tags"  prefix="spring"%>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
+<c:set var="admin" value="${memberGrade=='관리자' }"></c:set>
+<c:set var="login" value="${memberIdx != null }"></c:set>
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
@@ -50,7 +52,7 @@ let mapContainer, mapOptions, map, geocoder, marker, infowindow;
 $(function () {	
 	// 작성 완료 버튼을 누르면 > 이메일과 폰번호 값을 하나로 합쳐줌
 	// 이후에 이벤트 버블링 때문에 폼 객체의 .submit()이 실행된다.
-	$("#btnclick").click(function () {
+	$(".btnclick").click(function () {
 		console.log("작성완료 버튼 누름");
 		let placePhone =
 			$("#phone1").val() + $("#phone2").val() + $("#phone3").val();
@@ -256,7 +258,6 @@ function renderMap() {
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<form id="placeFormEl" name="placeForm" method="post" enctype="multipart/form-data" class="container fileUploadForm">
-					<input type="hidden" name="placeIdx" value="${placeVO.placeIdx}" />
 					<div class="row mb-4">
 						<label>장소 이름</label>
 						<div class="input-group flex-nowrap grayInputGroup p-0">
@@ -274,10 +275,6 @@ function renderMap() {
 								<option value="예술">예술</option>
 								<option value="IT">IT</option>
 								<option value="directly">기타</option>
-				<!--		<option value="">선택하세요</option>
-							<c:forEach var="val" items="${lecCategoryList}">
-								<option value="${val}" ${placeVO.lecCategoryName == val ? 'selected' : ''}>${val}</option>
-							</c:forEach>-->
 						</select>
 					</div>
 				</div>
@@ -289,12 +286,6 @@ function renderMap() {
 					</textarea>
 					</div>
 				</div>
-				<div class="row mb-4">
-					<label>장소 등록일</label>
-					<div class="input-group flex-nowrap grayInputGroup p-0">
-					<input type="text" name="placeRegistered" required class="form-control" value="${placeVO.placeRegistered}">
-					</div>
-				</div>		
 				<div class="row mb-4">				
 					<label class="form-block">대여 시작일</label>
 					<div class="input-group flex-nowrap grayInputGroup p-0">
@@ -363,10 +354,8 @@ function renderMap() {
 						<input type="text" id="placeDetailAddress" name="placeDetailAddress" class="form-control border-radius-all-25" placeholder="상세 주소"value="${placeVO.placeDetailAddress}">
 						<input type="hidden" name="address" >
 					</div>
-						<div id="map" style="width:100%;height:350px;"></div>
-						<div id="clickLatlng"></div>
-						<input type="text" id="clickLocLatitude" name="placeLocLatitude">
-						<input type="text" id="clickLocLongitude" name="placeLocLongitude">
+						<div style="display:none" id="map" style="width:100%; height:350px;"></div>
+						<div style="display:none" id="clickLatlng"></div>
 				</div>
 					<input type="hidden" name="placeSido" required placeholder="광역시도">
 					<input type="hidden" name="placeSigungu" required placeholder="시군구">
@@ -395,8 +384,12 @@ function renderMap() {
 			 		</div>
 			 	</div>
 				<div class="row mb-4">
-					<input type="button" id="fileUploadForm_submitBtn" value="수정 완료" class="btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control">
+					<input type="button" id="fileUploadForm_submitBtn" value="수정 완료" class="btnclick btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control">
 				</div>
+				<input id="placeIdxHolder"  type="hidden" name="placeIdx" value="${placeVO.placeIdx}" />
+				<input type="hidden" name="memberIdx" value="${placeVO.memberIdx}" />
+			<input	id="placeLatiHolder" type="hidden" name="placeLocLatitude" value="${placeVO.placeLocLatitude}">
+			<input id="placeLongHolder" type="hidden" name="placeLocLongitude"  value="${placeVO.placeLocLongitude}">
 				<div id="orgFileData" class="d-none">
 					<c:forEach items="${fileList}" var="file">
 						<div data-server-idx="${file.placeFileIdx}" data-name="${file.placeFileUserName}" data-size="${file.placeFileSize}"></div> 
