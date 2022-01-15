@@ -186,9 +186,9 @@
 								<th scope="col" class="text-center align-middle text-nowrap">강의수</th>
 								<th scope="col" class="text-center align-middle text-nowrap">수강인원</th>
 								<th scope="col" class="text-center align-middle text-nowrap">지역</th>
-								<c:if test="${memberGrade == admin}">
+<%-- 								<c:if test="${memberGrade == admin}"> --%>
 									<th scope="col" class="text-center align-middle text-nowrap">메뉴</th>
-								</c:if>
+<%-- 								</c:if> --%>
 							</tr>
 						</thead>
 						<tbody>
@@ -203,12 +203,12 @@
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecContainsCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecHeadCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecLocRegion}</td>
-									<c:if test="${memberGrade == admin}">
+<%-- 									<c:if test="${memberGrade == admin}"> --%>
 									<td class="text-center align-middle text-nowrap">
 											<a href="edit/${lecListVO.lecIdx}">수정</a>
 											<a href="delete/${lecListVO.lecIdx}">삭제</a>
 									</td>
-									</c:if>
+<%-- 									</c:if> --%>
 								</tr>
 							</c:forEach>
 							<c:forEach var="lecListVO" items="${listSearch}">
