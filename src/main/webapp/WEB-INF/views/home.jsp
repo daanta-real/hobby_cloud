@@ -72,22 +72,54 @@ window.addEventListener("load", function() {
 		<div class="container">
 		<nav class="row p-0 pt-4 d-flex justify-content-center">
 		<div class="card border-primary mb-3 w-50">
-             <div class="card-header">Header</div>
+             <div class="card-header">인삿말</div>
                 <div class="card-body">
-                   <h4 class="card-title">Primary card title</h4>
-                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                   <h4 class="card-title">취미를 배워보자</h4>
+                   <p class="card-text">hobbycloud는 평소 배우고싶던 취미를 손쇱게 강사를 찾아 배울 수 있고 가까운 사람들과 만남을 가져 함께
+                   취미생활을 공유 할 수 있습니다. hobbycloud를 통해 값진 시간을 보내세요 </p>
                  </div>
               </div>
           <div class="card border-primary mb-3 w-50">
-             <div class="card-header">Header</div>
+             <div class="card-header">취미종류</div>
                 <div class="card-body">
-                   <h4 class="card-title">Primary card title</h4>
-                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                   <h4 class="card-title">다양한 취미를 만나보세요</h4>
+                   <p class="card-text">운동</p>
+                   <p class="card-text">요리</p>
+                   <p class="card-text">문화</p>
+                   <p class="card-text">예술</p>
+                   <p class="card-text">IT</p>
                  </div>
               </div>
               </nav>
-           </div>
-           </div>
+         <!-- 강좌소개 -->
+           <div class="card mb-3">
+               <h3 class="card-header">강좌소개</h3>
+               <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+                </div>
+             
+                 <img src="${pageContext.request.contextPath}/resources/img/cook.jpeg"></rect>
+                 <text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text>
+             </svg>
+               <div class="card-body">
+                   <p class="card-text">다양한 취미생활을 배워봅시다.</p>
+               </div>
+               <ul class="list-group list-group-flush">
+                   <li class="list-group-item">강좌목록으로</li>
+                   <li class="list-group-item">소모임으로</li>
+                   <li class="list-group-item">청원으로</li>
+               </ul>
+              <div class="card-body">
+                  <a href="#" class="card-link">강좌목록으로</a>
+                  <a href="#" class="card-link">소모임으로</a>
+              </div>
+      <div class="card-footer text-muted">
+    2 days ago
+      </div>
+          </div>
+        </div>
+       </div>
            
          
 		
