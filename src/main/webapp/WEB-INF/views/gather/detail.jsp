@@ -271,7 +271,9 @@ $(function() {
 <template id="gatherVO-template">
 	<div class="card mb-2 border border-1 border-secondary p-0 item">
 		<div class="card-header d-flex align-items-center p-1 px-2">
-			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info"
+			src="${pageContext.request.contextPath}/member/profile/{{memberIdx}}"
+			 style="width:2.3rem; height:2.3rem;"/>
 			<span class="memberNick">{{memberNick}}</span>
 			<span class="memberReplyRegistered ms-auto gatherReplyDate">{{gatherReplyDate}}</span>
 		</div>  
@@ -325,7 +327,9 @@ $(function() {
 <template id="gatherReviewVO-template">
 	<div class="card mb-2 border border-1 border-secondary p-0 item">
 		<div class="card-header d-flex align-items-center p-1 px-2">
-			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" 
+			src="${pageContext.request.contextPath}/member/profile/{{memberIdx}}"
+			style="width:2.3rem; height:2.3rem;"/>
 			<span class="memberNick">닉네임 :{{memberNick}}</span> 
 			<span class="gatherReviewScore">| 점수:{{gatherReviewScore}}</span> 
 			<span class="memberReplyRegistered ms-auto gatherReviewRegistered">{{gatherReviewRegistered}}</span>
@@ -558,7 +562,7 @@ function loadReview(pageRValue,sizeRValue,gatherIdxValue){
 			  
 			for(var i=0; i < resp.length; i++){
 				var template = $("#gatherReviewVO-template").html();
-				 
+				template = template.replace("{{memberIdx}}", resp[i].memberIdx);   
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
 				template = template.replace("{{gatherReviewIdx}}", resp[i].gatherReviewIdx);
@@ -761,9 +765,9 @@ function loadList(pageValue, sizeValue, gatherIdxValue){
 			} 
 			
 			
-			for(var i=0; i<resp.length; i++){
-				var template = $("#gatherVO-template").html();
-				
+			for(var i=0; i<resp.length; i++){ 
+				var template = $("#gatherVO-template").html();    
+				template = template.replace("{{memberIdx}}", resp[i].memberIdx); 
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
 				template = template.replace("{{gatherReplyIdx}}",resp[i].gatherReplyIdx);
