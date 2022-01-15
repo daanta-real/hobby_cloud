@@ -168,12 +168,14 @@ $(function() {
 					</tr>
 				</thead>
 				<tbody>
+				<c:set	var="isJoin" value="false" />
+				<c:set var="isFull" value="false" />  
 					<c:forEach var="GatherHeadsVO" items="${list2}" varStatus="status">
 						<tr class="cursor-pointer">     
 							<c:choose>
 								<c:when test="${GatherHeadsVO.memberProfileIdx != 0 }">  			
-									<td class="text-center align-middle text-nowrap">
-										<img src="${pageContext.request.contextPath}/member/profile/${GatherHeadsVO.memberProfileIdx}" />
+									<td class="text-center align-middle text-nowrap">   
+										<img src="${pageContext.request.contextPath}/member/profile/${GatherHeadsVO.memberIdx}" width="40px" height="40px"/>     
 									</td>  
 								</c:when>
 								<c:otherwise>
@@ -182,15 +184,13 @@ $(function() {
 									</td>
 								</c:otherwise>
 							</c:choose>
-							<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td> 
-							<c:set var="isFull" value="false" />
+							<td class="text-center align-middle text-nowrap">${GatherHeadsVO.memberNick}</td> 					
 							<!-- 참가자가 가득 찼는지 확인-->
 							<c:if test="${status.count == GatherVO.gatherHeadCount}">  
 								<c:set var="isFull" value="true" />
 							</c:if>
-							<!-- 참가여부를 확인 -->
-							<c:set	var="isJoin" value="false" />  
-							<c:if test="${GatherHeadsVO.memberIdx eq memberIdx}">  
+							<!-- 참가여부를 확인 -->				 
+							<c:if test="${GatherHeadsVO.memberNick eq memberNick}">   
 								<c:set var="isJoin" value="true" />
 							</c:if>
 					 	</tr>
@@ -198,8 +198,7 @@ $(function() {
 				</tbody>
 			</table>
 		</div>
-	</div>
-	
+	</div>   
 	<!-- 참가하기 버튼 -->
 	<c:set var="isLogin" value="${memberIdx != null}"/>
 	<c:choose>
@@ -343,8 +342,7 @@ $(function() {
 <button class="btn btn-secondary moreR-btn">더보기</button> 
 <button class="btn btn-secondary lessR-btn">접기</button> 
 <h1 class="box6">남녀 참가자 수</h1>  
-<canvas id="myChart" width="15px" height="30px"></canvas> 
-
+<canvas id="myChart" width="15px" height="30px"></canvas>    
 
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
