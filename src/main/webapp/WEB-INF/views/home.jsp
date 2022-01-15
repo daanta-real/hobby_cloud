@@ -61,7 +61,7 @@ window.addEventListener("load", function() {
 				<img src="${pageContext.request.contextPath}/resources/img/gather.png" class="w-50">
 			</div>
 			<div class="row form-group text-center">
-			<h3>환영합니다</h3>
+			<h3>hobbycloud에 어서오세요</h3>
 			</div>
 			</div>
 		</div>
@@ -113,7 +113,7 @@ window.addEventListener("load", function() {
                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/gather/list" class="card-link">소모임보기</a></li>
                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/petitions/list" class="card-link">청원하기</a></li>
                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/notice/list" class="card-link">공지사항</a></li>
-                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/lec/list" class="card-link">장소보기</a></li>
+                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/place/list" class="card-link">장소보기</a></li>
                </ul>
               
       <div class="card-footer text-muted">

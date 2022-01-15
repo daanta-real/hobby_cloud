@@ -721,6 +721,7 @@ $(function(){
 				$("#result").empty();
 				//성공하면 목록 갱신
 				page =1; 
+				
 				loadList(page,size,gatherIdx);
 				console.log("입력 들어옴");
 				page++;
