@@ -136,7 +136,7 @@ select count(*) as BNO from (
 </select>
 	
 <!-- 목록페이지 목록 페이지 네이션 적용 -->	
-<select id="listPage" resultType="PlaceRegisterVO" parameterType="Criteria">
+<select id="listPage" resultType="PlaceListVO" parameterType="Criteria">
 	select * from(
 	select rownum  rn , TMP.* from(
 	select * from  place p left outer join
@@ -150,7 +150,7 @@ select count(*) as BNO from (
 	</select>
 	
 <!-- 목록페이지 목록 페이지 네이션 적용 -->	
-<select id="listBy" resultType="PlaceRegisterVO" parameterType="map">
+<select id="listBy" resultType="PlaceListVO" parameterType="map">
 	select * from(
 	select rownum  rn , TMP.* from(
 	select * from  place p left outer join
@@ -205,6 +205,17 @@ select count(*) as BNO from (
   </where>
   order by p.place_idx desc
 </select>
+
+<!-- 장소검색 -->
+
+<!-- <select id ="Search" parameterType="map" resultType="PlaceVO">
+select * from place p left outer join
+ (select distinct place_idx, min(place_file_idx) as place_file_idx
+  from place_file group by place_idx) f  
+  on  f.place_idx = p.place_idx  
+order by p.place_idx desc
+where instr(${column},#{keyword})> 0 order by place_idx desc
+</select>  -->
 	
 	
 </mapper>

@@ -15,7 +15,7 @@ public class MemberPageMaker {
 	private int displayPageNum = 10;
 	private MemberCriteria cri;
 	
-	public void setCri(MemberCriteria cri) {
+	public void setMemberCri(MemberCriteria cri) {
 		this.cri = cri;
 	}
 	

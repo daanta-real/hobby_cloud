@@ -37,7 +37,6 @@ import com.kh.hobbycloud.vo.member.MemberCriteria;
 import com.kh.hobbycloud.vo.member.MemberJoinVO;
 import com.kh.hobbycloud.vo.member.MemberListVO;
 import com.kh.hobbycloud.vo.member.MemberPageMaker;
-import com.kh.hobbycloud.vo.member.MemberSearchVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -204,9 +203,21 @@ public class MemberController {
 //		model.addAttribute("list", memberCategoryList);
 		//페이지 리다이렉트
 		return "member/mypage";
-
 	}
-
+	
+	//관리자용 회원 상세 페이지 검색
+	@RequestMapping("/mypage/{memberIdx}")
+	public String mypage(@PathVariable int memberIdx, HttpSession session, Model model) {
+		log.debug("ㅡㅡMemberController - /member/mypage REQUEST> 마이페이지");
+		//데이터 획득(memberId, memberIdx)
+		MemberDto memberDto = memberDao.getByIdx(memberIdx);
+		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
+		MemberCategoryDto memberCategoryDto = memberCategoryDao.get(memberIdx);
+		model.addAttribute("memberDto", memberDto);
+		model.addAttribute("memberProfileDto", memberProfileDto);
+		model.addAttribute("memberCategoryDto", memberCategoryDto);
+		return "member/mypage";
+	}
 
 	// 비밀번호 변경 폼 페이지
 	@GetMapping("/password")
@@ -405,16 +416,25 @@ public class MemberController {
 	@PostMapping("/pwFindMail")
 	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
-	public String pwFindMail(MemberDto memberDto) throws FileNotFoundException, MessagingException, IOException {
+	public String pwFindMail(MemberDto memberDto, @RequestParam String originalPassword, @RequestParam String hashedPassword, HttpSession session) throws FileNotFoundException, MessagingException, IOException {
+
 		System.out.println("pwFindMail");
 		System.out.println("pwFindMail memberDto : " + memberDto);
 		System.out.println("memberDto"+ memberDto.getMemberNick());
+		System.out.println("originalPassword"+ originalPassword);
+		System.out.println("hashedPassword"+ hashedPassword); 
+		
 		MemberDto pwFind = memberService.pwFindMail(memberDto.getMemberId(), memberDto.getMemberNick(), memberDto.getMemberEmail());
 		System.out.println("pwFind : " + pwFind);
+		System.out.println("hashedPassword"+ hashedPassword); 
 		if(pwFind != null) {
-			String changePw = service.sendTempPwMail(pwFind.getMemberEmail());
-			System.out.println("changePw : "  + changePw);
-			boolean result = memberDao.tempPw(memberDto, changePw);
+			//암호화가 안된 비밀번호를 세션에 저장 후 이메일 임시 비밀번호로 전송
+			System.out.println("originalPassword"+ originalPassword); 
+			session.setAttribute("originalPassword", originalPassword);
+			service.sendTempPwMail(pwFind.getMemberEmail(),originalPassword);
+			//암호화 된 비밀번호를 DB에 저장
+			System.out.println("originalPassword : "  + originalPassword);
+			boolean result = memberDao.tempPw(memberDto, originalPassword);
 			System.out.println("result: " + result);
 			return "success";
 
@@ -448,29 +468,44 @@ public class MemberController {
 		}
 	}
 
-	// 내 장소 목록 페이지
+	// 회원 목록 페이지
 	@GetMapping("/list")
 	public String list(Model model, MemberCriteria cri) {
+		log.debug("ㅡㅡㅡ 회원 목록조회 시작");
+		
+		List<MemberListVO> memberListVO = memberService.list(cri);
+		log.debug("회원 목록을 갖고 옴. memberListVO = {}", memberListVO);
 		model.addAttribute("list", memberService.list(cri));
 
 		MemberPageMaker pageMaker = new MemberPageMaker();
+		
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(memberService.listCount());
+		int count = memberService.listCount();
+		log.debug("회원목록 수: {}", count);
+		
+		pageMaker.setTotalCount(count);
 		model.addAttribute("pageMaker",pageMaker);
-
-		System.out.println(memberService.list(cri));
+		
+		log.debug("회원목록으로 이동");
 		return "member/list";
 	}
 
-	// 검색결과 목록 페이지
+//	// 검색결과 목록 페이지
+//	@PostMapping("/list")
+//	public String search(@ModelAttribute MemberSearchVO memberSearchVO, Model model) {
+////		log.debug("param.toString()   " + gatherSearchDto.toString());
+//		log.debug("category={}", memberSearchVO);
+//		List<MemberListVO> list = memberDao.listSearch(memberSearchVO);
+//
+//
+//		model.addAttribute("list",list);
+//		return "member/list";
+//	}
+	
+	//검색
 	@PostMapping("/list")
-	public String search(@ModelAttribute MemberSearchVO memberSearchVO, Model model) {
-//		log.debug("param.toString()   " + gatherSearchDto.toString());
-		log.debug("category={}", memberSearchVO);
-		List<MemberListVO> list = memberDao.listSearch(memberSearchVO);
-
-
-		model.addAttribute("list",list);
+	public String search(@RequestParam String column, @RequestParam String keyword, Model model) {
+		model.addAttribute("list",memberDao.search(column, keyword));
 		return "member/list";
 	}
 

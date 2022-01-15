@@ -50,9 +50,13 @@ public class PlaceDaoImpl implements PlaceDao{
 	
 	@Override
 	public List<PlaceListVO> list(PlaceCriteria cri) {
-		return sqlSession.selectList("place.list");
+		return sqlSession.selectList("place.listPage", cri);
 	}
-
+	
+	@Override
+	public List<PlaceListVO> list() {
+		return sqlSession.selectList("place.list");
+	}	
 
 	@Override
 	public int listCount() {
@@ -79,6 +83,17 @@ public class PlaceDaoImpl implements PlaceDao{
 		param.put("endRow", endRow);
 		System.out.println("------다오옴"); 
 		return sqlSession.selectList("place.listBy", param);
+	}
+
+	@Override
+	public List<PlaceListVO> search(String column, String keyword) {
+		// 주의 :
+		// = 마이바티스 구문을 부를 때는 데이터를 1개만 전달할 수 있다.
+		// = 보내야 할 값이 여러개라면 객체나 Map을 사용한다.
+		Map<String, Object> param = new HashMap<>();
+		param.put("column", column);
+		param.put("keyword", keyword);
+		return sqlSession.selectList("place.search", param);
 	}
 
 

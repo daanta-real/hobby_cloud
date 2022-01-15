@@ -165,140 +165,139 @@ window.addEventListener("load", function() {
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<div id="map" class="row mb-4 rounded screenForceTo16to9"></div>	
-				<form method="post" class="row mb-4"> 
-					<div class="form-group mb-4 col-12">
-						<label for=searchForm_gatherLocRegion class="form-label mb-0 d-block">지역</label>
-						<div class="btn-group w-100 flex-wrapper">
-							<input name="gatherLocRegion" type="checkbox" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Seoul">서울</label>
-							<input name="gatherLocRegion" type="checkbox" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeonggi">경기</label>
-							<input name="gatherLocRegion" type="checkbox" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Busan">부산</label>
-							<input name="gatherLocRegion" type="checkbox" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Incheon">인천</label>
-							<input name="gatherLocRegion" type="checkbox" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Daegu">대구</label>
-							<input name="gatherLocRegion" type="checkbox" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Daejeon">대전</label>
-							<input name="gatherLocRegion" type="checkbox" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gwangju">광주</label>
-							<input name="gatherLocRegion" type="checkbox" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Ulsan">울산</label>
-							<input name="gatherLocRegion" type="checkbox" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Sejong">세종</label>
-							<input name="gatherLocRegion" type="checkbox" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gangwon">강원</label>
-							<input name="gatherLocRegion" type="checkbox" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeju">제주</label>
-							<input name="gatherLocRegion" type="checkbox" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Chungcheongbuk">충북</label>
-							<input name="gatherLocRegion" type="checkbox" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Chungcheongnam">충남</label>
-							<input name="gatherLocRegion" type="checkbox" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeollabuk">전북</label>
-							<input name="gatherLocRegion" type="checkbox" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeollanam">전남</label>
-							<input name="gatherLocRegion" type="checkbox" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeongsangbuk">경북</label>
-							<input name="gatherLocRegion" type="checkbox" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
-							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeongsangnam">경남</label>
-						</div>
-					</div>
-					<div class="form-group mb-4 col-12">
-						<label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
-						<div class="btn-group w-100 flex-wrapper">
-							<c:forEach var="categoryOne" items="${lecCategoryList}" varStatus="status">
-								<input name="category" type="checkbox" value="${categoryOne}" class="btn-check" id="category${status.count}" autocomplete="off"
-									${paramValues.category.stream().anyMatch(v->v == categoryOne).get() ? ' checked' : ''}>
-								<label class="btn btn-outline-primary text-nowrap rounded m-1" for="category${status.count}">${categoryOne}</label>
-							</c:forEach>
-						</div>
-					</div>
-					<div class="form-group mb-4 col-12">
-						<label for="searchForm_memberIdx" class="form-label mb-0">회원 번호</label>
-						<input name="gatherName" id="searchForm_memberIdx" type="text" class="form-control" placeholder="회원 번호를 입력하세요" />
-					</div>
-					<div class="row d-flex justify-content-center mt-3">
-						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">검색</button>
-					</div>
-				</form>
-			</div>
-		</div>
-		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>소모임 목록</div>
-		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5">
-			<div class="scrollXEnabler">
-				<div class="card p-0 minWidthMaxContent">
-					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
-						<thead>
-							<tr class="table-danger">
-								<th scope="col" class="text-center align-middle text-nowrap">번호</th>
-								<th scope="col" class="text-center align-middle text-nowrap tableImgBox">사진</th>
-								<th scope="col" class="text-center align-middle text-nowrap">제목</th>
-								<th scope="col" class="text-center align-middle text-nowrap">작성자</th>
-								<th scope="col" class="text-center align-middle text-nowrap">카테고리</th>
-								<th scope="col" class="text-center align-middle text-nowrap">지역</th>
-								<th scope="col" class="text-center align-middle text-nowrap">인원수</th>
-							</tr>
-						</thead>  
-						<tbody>
-							<c:forEach var="GatherVO" items="${list}"> 
-								<tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}'">
-									<td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td>
-									<td class="text-center align-middle text-nowrap p-0 tableImgBox">
-										<c:choose>
-											<c:when test="${GatherVO.gatherFileIdx != 0 }">   
-												<img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" class="m-0 p-0 tableImg">
-											</c:when>
-											<c:otherwise> 
-												<img src="${pageContext.request.contextPath}/resources/img/noImage.png" class="m-0 p-0 tableImg">
-											</c:otherwise>  
-										</c:choose>
-									</td>
-									<td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
-									<td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td> 
-									<td class="text-center align-middle text-nowrap">${GatherVO.lecCategoryName}</td> 
-									<td class="text-center align-middle text-nowrap">${GatherVO.gatherLocRegion}</td>
-									<td class="text-center align-middle text-nowrap">${GatherVO.gatherHeadCount}</td>
-								</tr>
-								<input type="hidden" class="fgTitle" value="${GatherVO.gatherName}" />
-								<input type="hidden" class="fgLatitude" value="${GatherVO.gatherLocLatitude}" />
-		 						<input type="hidden" class="fgLongitude" value="${GatherVO.gatherLocLongitude}" />
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		<nav class="row p-0 pt-4 d-flex justify-content-between">
-			<a href="${pageContext.request.contextPath}/gather/list" type="button" class="col-auto btn btn-sm btn-outline-primary">목록으로</a>
-			<ul class="col-auto pagination pagination-sm m-0">
-				<c:if test="${pageMaker.prev}">  
-					<li class="page-item">
-						<a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"> &laquo; </a>
-					</li>
-				</c:if> 
-				<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-					<li class="page-item ${param.page == idx ? 'active' : ''}">
-						<a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a>
-					</li>
-				</c:forEach>
-				<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-					<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
-				</c:if> 
-			</ul>
-			<c:set var="isLogin" value="${memberIdx != null}"/> 
-			<c:choose>
-				<c:when test="${isLogin}"> 
-					<a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
-				</c:when>
-				<c:otherwise> 
-					<a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/member/login">글쓰기</a>
-				</c:otherwise> 
-			</c:choose>
-		</nav>
+          <form method="post" class="row mb-4"> 
+            <div class="form-group mb-4 col-12">
+              <label for=searchForm_gatherLocRegion class="form-label mb-0 d-block">지역</label>
+              <div class="btn-group w-100 flex-wrapper">
+                <input name="gatherLocRegion" type="checkbox" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Seoul">서울</label>
+                <input name="gatherLocRegion" type="checkbox" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeonggi">경기</label>
+                <input name="gatherLocRegion" type="checkbox" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Busan">부산</label>
+                <input name="gatherLocRegion" type="checkbox" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Incheon">인천</label>
+                <input name="gatherLocRegion" type="checkbox" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Daegu">대구</label>
+                <input name="gatherLocRegion" type="checkbox" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Daejeon">대전</label>
+                <input name="gatherLocRegion" type="checkbox" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gwangju">광주</label>
+                <input name="gatherLocRegion" type="checkbox" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Ulsan">울산</label>
+                <input name="gatherLocRegion" type="checkbox" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Sejong">세종</label>
+                <input name="gatherLocRegion" type="checkbox" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gangwon">강원</label>
+                <input name="gatherLocRegion" type="checkbox" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeju">제주</label>
+                <input name="gatherLocRegion" type="checkbox" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Chungcheongbuk">충북</label>
+                <input name="gatherLocRegion" type="checkbox" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Chungcheongnam">충남</label>
+                <input name="gatherLocRegion" type="checkbox" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeollabuk">전북</label>
+                <input name="gatherLocRegion" type="checkbox" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeollanam">전남</label>
+                <input name="gatherLocRegion" type="checkbox" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeongsangbuk">경북</label>
+                <input name="gatherLocRegion" type="checkbox" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.paidStatusList.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
+                <label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeongsangnam">경남</label>
+              </div>
+            </div>
+            <div class="form-group mb-4 col-12">
+              <label for=searchForm_lecCategoryName class="form-label mb-0 d-block">카테고리</label>
+              <div class="btn-group w-100 flex-wrapper">
+                <c:forEach var="categoryOne" items="${lecCategoryList}" varStatus="status">
+                  <input name="category" type="checkbox" value="${categoryOne}" class="btn-check" id="category${status.count}" autocomplete="off"
+                    ${paramValues.category.stream().anyMatch(v->v == categoryOne).get() ? ' checked' : ''}>
+                  <label class="btn btn-outline-primary text-nowrap rounded m-1" for="category${status.count}">${categoryOne}</label>
+                </c:forEach>
+              </div>
+            </div>
+            <div class="form-group mb-4 col-12">
+              <label for="searchForm_gatherName" class="form-label mb-0">소모임 제목</label> 
+              <input name="gatherName" id="searchForm_gatherName" type="text" class="form-control" placeholder="제목을 입력하세요" >
+            </div>
+            <button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">검색</button>
+          </form>
+			  </div>
+      </div>
+      <!-- 소단원 제목 -->
+      <div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>소모임 목록</div>
+      <!-- 소단원 내용 -->
+      <div class="row p-sm-2 mx-1 mb-5">
+        <div class="scrollXEnabler">
+          <div class="card p-0 minWidthMaxContent">
+            <table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
+              <thead>
+                <tr class="table-danger">
+                  <th scope="col" class="text-center align-middle text-nowrap">번호</th>
+                  <th scope="col" class="text-center align-middle text-nowrap tableImgBox">사진</th>
+                  <th scope="col" class="text-center align-middle text-nowrap">제목</th>
+                  <th scope="col" class="text-center align-middle text-nowrap">작성자</th>
+                  <th scope="col" class="text-center align-middle text-nowrap">카테고리</th>
+                  <th scope="col" class="text-center align-middle text-nowrap">지역</th>
+                  <th scope="col" class="text-center align-middle text-nowrap">인원수</th>
+                </tr>
+              </thead>  
+              <tbody>
+                <c:forEach var="GatherVO" items="${list}"> 
+                  <tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/gather/detail/${GatherVO.gatherIdx}'">
+                    <td class="text-center align-middle text-nowrap">${GatherVO.gatherIdx}</td>
+                    <td class="text-center align-middle text-nowrap p-0 tableImgBox">
+                      <c:choose>
+                        <c:when test="${GatherVO.gatherFileIdx != 0 }">   
+                          <img src="${pageContext.request.contextPath}/gather/file/${GatherVO.gatherFileIdx}" class="m-0 p-0 tableImg">
+                        </c:when>
+                        <c:otherwise> 
+                          <img src="${pageContext.request.contextPath}/resources/img/noImage.png" class="m-0 p-0 tableImg">
+                        </c:otherwise>  
+                      </c:choose>
+                    </td>
+                    <td class="text-center align-middle text-nowrap">${GatherVO.gatherName}</td>
+                    <td class="text-center align-middle text-nowrap">${GatherVO.memberNick}</td> 
+                    <td class="text-center align-middle text-nowrap">${GatherVO.lecCategoryName}</td> 
+                    <td class="text-center align-middle text-nowrap">${GatherVO.gatherLocRegion}</td>
+                    <td class="text-center align-middle text-nowrap">${GatherVO.gatherHeadCount}</td>
+                  </tr>
+                  <input type="hidden" class="fgTitle" value="${GatherVO.gatherName}" />
+                  <input type="hidden" class="fgLatitude" value="${GatherVO.gatherLocLatitude}" />
+                  <input type="hidden" class="fgLongitude" value="${GatherVO.gatherLocLongitude}" />
+                </c:forEach>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <nav class="row p-0 pt-4 d-flex justify-content-between">
+        <a href="${pageContext.request.contextPath}/gather/list" type="button" class="col-auto btn btn-sm btn-outline-primary">목록으로</a>
+        <ul class="col-auto pagination pagination-sm m-0">
+          <c:if test="${pageMaker.prev}">  
+            <li class="page-item">
+              <a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}"> &laquo; </a>
+            </li>
+          </c:if> 
+          <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            <li class="page-item ${param.page == idx ? 'active' : ''}">
+              <a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a>
+            </li>
+          </c:forEach>
+          <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+            <li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
+          </c:if> 
+        </ul>
+        <c:set var="isLogin" value="${memberIdx != null}"/> 
+        <c:choose>
+          <c:when test="${isLogin}"> 
+            <a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
+          </c:when>
+          <c:otherwise> 
+            <a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/member/login">글쓰기</a>
+          </c:otherwise> 
+        </c:choose>
+      </nav>
+    </div>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
 </ARTICLE>
