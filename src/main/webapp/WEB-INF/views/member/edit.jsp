@@ -89,10 +89,10 @@ window.addEventListener("load", function() {
 		$('input[name="phone"]').val(phone);
 	})
 	
-	let lecCategoryName = '${memberCategoryDto.lecCategoryName}';
+/* 	let lecCategoryName = '${memberCategoryDto.lecCategoryName}';
 	$("select[name=lecCategoryName]").val(lecCategoryName);
 	$("select[name=lecCategoryName]" option:selected).text(lecCategoryName); 
-	
+ */	
 });
 
 
