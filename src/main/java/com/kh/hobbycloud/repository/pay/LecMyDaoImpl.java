@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hobbycloud.entity.pay.LecMyDto;
+import com.kh.hobbycloud.vo.lec.LecMyVO;
 
 @Repository
 public class LecMyDaoImpl implements LecMyDao {
@@ -52,4 +53,9 @@ public class LecMyDaoImpl implements LecMyDao {
 		return result > 0;
 	}
 
+	@Override
+	public List<LecMyVO> getMyLec(Integer memberIdx) {
+		return sqlSession.selectList("lecMy.getMyLec", memberIdx);
+	}
+	
 }
