@@ -193,7 +193,9 @@ public class GatherController {
 	// 글 수정 폼 페이지/update/123
 	@GetMapping("/update/{gatherIdx}")
 	public String update(@PathVariable int gatherIdx, Model model) {
-
+		List<String> lecCategoryList = lecCategoryDao.select();
+		model.addAttribute("lecCategoryList", lecCategoryList);  
+		 
 		// 데이터 획득: VO 및 DTO
 		GatherVO gatherVO = gatherDao.get(gatherIdx);
 
