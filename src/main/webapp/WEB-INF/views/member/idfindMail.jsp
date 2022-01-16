@@ -50,34 +50,41 @@ function stopEvent() {
     if (!e) var e = window.event;
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
-}
+} 
     
 $(function(){
-	$("#findbtn").click(function(){
-	    // 이벤트 버블링 막기
-	    stopEvent();
+	$("#findbtn").click(function(){			
+		    // 이벤트 버블링 막기
+		    stopEvent();
 		    
-	    //닉네임 이메일 (닉네임 이메일 전달)
-		var memberNick = $("#memberNick").val();
-		var memberEmail = $("#idMail").val() + "@" + $("#inputMail").val();
-		 console.log("memberNick : " + memberNick);
-		 console.log("memberEmail : " + memberEmail);
-		    $.ajax({
-		    	type : "post",
-		        url : "idfindMail",
-		        data : {"memberNick" : memberNick, "memberEmail" : memberEmail},
-		        success : function(resp){
-		        	console.log()
-		        	console.log("resp : " + resp);
-		        	
-	        		$(".modal-detail").text("");
-		        	if(resp == "fail") $(".modal-detail").html("일치하는 회원정보가 없습니다.");
-		        	else               		$(".modal-detail").html("회원님의 아이디는 " + resp + " 입니다");
-	        		modal.toggle();
-                }
-			})
-	    })
-	})
+		    //닉네임 이메일 (닉네임 이메일 전달)
+			var memberNick = $("#memberNick").val();
+			var memberEmail = $("#idMail").val() + "@" + $("#inputMail").val();
+			 console.log("memberNick : " + memberNick);
+			 console.log("memberEmail : " + memberEmail);
+			    $.ajax({
+			    	type : "post",
+			        url : "idfindMail",
+			        data : {"memberNick" : memberNick, "memberEmail" : memberEmail},
+			        success : function(resp){
+			        	console.log()
+			        	console.log("resp : " + resp);
+			        	if(resp == "fail") {
+			        		$('.modal').css('opacity','1').css('display','block');
+			        		$(".modal-detail").text("");
+					        $(".modal-detail").html("일치하는 회원정보가 없습니다.");	
+			        	} else {
+			        		$('.modal').css('opacity','1').css('display','block');
+			        		$(".modal-detail").text("");
+					        $(".modal-detail").html("회원님의 아이디는 " + resp + " 입니다");
+			        	}
+			        }, 
+			    });
+			    // 모달 토글
+			    modal.toggle();
+	 });
+});
+
 </script>
 </HEAD>
 <BODY>
