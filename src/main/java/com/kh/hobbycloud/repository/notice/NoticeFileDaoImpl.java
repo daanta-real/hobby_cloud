@@ -27,15 +27,28 @@ public class NoticeFileDaoImpl implements NoticeFileDao{
 	//private File directory = new File(STOREPATH_NOTICE);
 
 	public void save(NoticeFileDto noticeFileDto, MultipartFile multipartFile) throws IllegalStateException, IOException {
-		//1. 시퀀스 획득
+		//0. 시퀀스 획득
 		int sequence = sqlSession.selectOne("noticeFile.seq");
 		
+		// 1. 실제 파일을 업로드 폴더에 저장
+				File target = new File(STOREPATH_NOTICE, String.valueOf(sequence));
+				multipartFile.transferTo(target);
+
+				// 2. 파일의 정보를 DB에 저장
+				noticeFileDto.setNoticeFileIdx(sequence);
+				noticeFileDto.setNoticeFileServerName(String.valueOf(sequence));
+				sqlSession.insert("noticeFile.save",noticeFileDto);
+		
+		
+		
+		/*
 		//2. 실제파일을 폴더에저장
 		File target = new File(STOREPATH_NOTICE,String.valueOf(sequence));
 		multipartFile.transferTo(target);
 		noticeFileDto.setNoticeFileIdx(sequence);
 		noticeFileDto.setNoticeFileServerName(String.valueOf(sequence));
 		sqlSession.insert("noticeFile.save",noticeFileDto);
+		*/
 		
 		
 		

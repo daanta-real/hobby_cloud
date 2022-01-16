@@ -122,7 +122,7 @@ public class MemberDaoImpl implements MemberDao{
 	// 회원 탈퇴
 	@Override
 	public boolean quit(Integer memberIdx, String memberPw) {
-		MemberDto findDto = sqlSession.selectOne("member.get", memberIdx);
+		MemberDto findDto = sqlSession.selectOne("member.getbyIdx", memberIdx);
 		if(encoder.matches(memberPw, findDto.getMemberPw())) {
 			int count = sqlSession.delete("member.quit", memberIdx);
 			return count > 0;
@@ -138,9 +138,17 @@ public class MemberDaoImpl implements MemberDao{
 	public void changeGradeTutor(int memberIdx) {
 		sqlSession.update("member.changeGradeTutor", memberIdx);
 	}
+	
+	//일반 회원으로 등급 변경
 	@Override
 	public void changeGradeNormal(int memberIdx) {
 		sqlSession.update("member.changeGradeNormal", memberIdx);
+	}
+	
+	//임대인 등급 변경 기능
+	@Override
+	public void changeGradeLandlord(int memberIdx) {
+		sqlSession.update("member.changeGradeLandlord", memberIdx);
 	}
 
 
@@ -234,7 +242,7 @@ public class MemberDaoImpl implements MemberDao{
 		return result > 0;
 	}
 	// 특정 회원의 포인트를 특정 값으로 강제변경
-	@Override
+	@Override 
 	public boolean pointForceToValue(MemberDto memberDto) {
 		int result = sqlSession.update("member.pointForceToValue", memberDto);
 		return result > 0;

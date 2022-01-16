@@ -68,6 +68,7 @@
 	var idckCheck = false; // 아이디중복
 	var nickckCheck = false; //닉네임중복
 	var KeyCheck = false; //인증번호
+	var checkbox = false; //약관동의 체크박스
 
 	//최종 유효성 검사
 	function checkAll() {
@@ -84,7 +85,8 @@
 			phoneCheck &&
 			idckCheck &&
 			nickckCheck &&
-			KeyCheck
+			KeyCheck &&
+			checkbox
 		) {
 			alert("Disabled 해제 처리");
 			$("#mailComm").html("");
@@ -321,6 +323,32 @@
 				"이메일 합 : " + $(".idMail").val() + "@" + $(".inputMail").val()
 			);
 		});
+	  
+		//체크박스
+		$("#selectall").click(function() {
+			if($("#selectall").is(":checked")) {
+				$("input[name=selectItem]").prop("checked", true);
+				checkbox = true;
+				} else{
+				$("input[name=selectItem]").prop("checked", false);
+				checkbox = false;
+			}
+			checkAll();
+		})
+			
+		$(".checkall").click(function() {
+			var total = $("input[name=selectItem]").length;
+			var checked = $("input[name=selectItem]:checked").length;
+			console.log("total",total);
+			console.log("checked",checked);
+			if(total != checked) {
+				$("#selectall").prop("checked", false);
+				console.log("checkbox",checkbox);
+			}else{ 
+				$("#selectall").prop("checked", true); 
+				console.log("checkbox",checkbox);
+			}
+		});				
 	});
 
 	//아이디 중복검사
@@ -574,6 +602,43 @@
 						&nbsp;<button type="button" id="reKeyCheck" class="btn btn-outline-primary mt-1 btn-sm border-radius-all-25" value="확인" >확인</button>
 						</div>
 					</div>
+					
+					<div class="bodyForm">
+					
+						<div class="checkForm">
+							<div class="row">
+								<label class="title-type">약관동의</label>
+								<div class="input-group flex-nowrap grayInputGroup p-0">
+								</div>
+							</div>
+						</div>
+
+						<div class="div-check">
+
+							<div class="div-check-one div-ob">
+								<input type="checkbox"  name="selectall" class="check-button check-size " id="selectall">
+								<label class="check-all">전체동의</label>
+							</div>
+
+							<div class="div-check-two div-ob">
+								<input type="checkbox" name="selectItem" class="check-button check-size checkall" required>
+								<span class="check-text">만 14세 이상입니다.</span> <span
+									class="check-text-ob">(필수)</span>
+							</div>
+
+							<div class="div-check-two div-ob">
+								<input type="checkbox" name="selectItem" class="check-button check-size checkall" required>
+								<a href="policy" target=”_blank” style="text-decoration : underline"><span class="check-text">이용약관</span></a>
+								<span class="check-text-ob">(필수)</span>
+							</div>
+
+							<div class="div-check-two div-ob">
+								<input type="checkbox" name="selectItem" class="check-button check-size checkall" required>
+								<a href="privacy" target=”_blank” style="text-decoration : underline"  >
+								<span class="check-text">개인정보수집 및 이용동의</span></a> <span class="check-text-ob">(필수)</span>
+							</div>
+						</div>
+						<br>						
 				<div class="row mb-4 justify-content-center">
 					<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control" id="btnclick">가입</button>
 				</div>

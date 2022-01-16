@@ -11,6 +11,7 @@ import lombok.Data;
 public class LecDetailVO {
 	private int lecIdx;//강좌idx
 	private int tutorIdx;//강사idx
+	private int memberIdx;//강사의 프로필 불러오기위한 idx
 	private String lecCategoryName;//취미 분류 이름
 	private Integer placeIdx;//땅idx
 	private String lecName;//강좌 이름

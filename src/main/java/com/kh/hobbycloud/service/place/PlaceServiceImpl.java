@@ -146,6 +146,7 @@ public class PlaceServiceImpl implements PlaceService{
 		log.debug("======================== placeCategoryDao.update() 실시 완료. 결과 = {}", isSucceedCt);
 		
 		// (선택) 파일삭제 idx 목록에 해당되는 첨부파일들을 place_file 테이블에서 삭제한다.
+		log.debug("======================== 2. 삭제요청한 첨부자료를 삭제합니다.");
 		List<String> fileRemoveList = placeEditVO.getFileDelTargetList();
 		log.debug("========삭제할 파일 리스트: {}", fileRemoveList);
 		if(fileRemoveList != null && fileRemoveList.size() > 0) {
@@ -200,5 +201,10 @@ public class PlaceServiceImpl implements PlaceService{
 	@Override
 	public int listCount() {
 		return placeDao.listCount();
+	}
+
+	@Override
+	public List<PlaceListVO> mylist(int memberIdx) {
+		return placeDao.mylist(memberIdx);
 	}
 }

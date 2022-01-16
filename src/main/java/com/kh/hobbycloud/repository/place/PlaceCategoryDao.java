@@ -9,9 +9,9 @@ public interface PlaceCategoryDao {
 	public void insert(PlaceTargetDto placeTargetDto);
 
 	public List<String> select();
-
-	boolean update(PlaceTargetDto placeTargetDto);
 	
-	void delete(PlaceTargetDto placeTargetDto);
+	public boolean update(PlaceTargetDto placeTargetDto);
+
+	void delete(int placeIdx);
 
 }

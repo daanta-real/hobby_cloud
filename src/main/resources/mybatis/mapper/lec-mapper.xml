@@ -87,7 +87,7 @@
 	
 	<!-- 강좌 상세 -->
 	<select id="get" parameterType="int" resultType="LecDetailVO">
-		select L.*, T.tutor_detail, T.tutor_registered , M.member_nick, M.member_email, M.member_phone, 
+		select L.*, T.tutor_detail, T.tutor_registered , M.member_idx, M.member_nick, M.member_email, M.member_phone, 
 		P.place_name, P.place_detail, 
 		(select count(is_like) from lec_like where lec_idx = L.lec_idx and is_like = 1)as lec_like
 		from lec L
@@ -139,11 +139,12 @@
 			</if>
 			<if test="lecName != null and lecName != ''">
 			and instr(lec_name, #{lecName}) > 0
-			</if>
+			</if> 
 			<if test="memberNick != '' and memberNick != null">
 			and instr(member_nick, #{memberNick}) > 0
 			</if>
 			<if test="lecLocRegion != null">
+				and
 				<foreach item="regionOne" collection="lecLocRegion" separator="or">
 					instr(lec_loc_region, #{regionOne}) > 0
 				</foreach>
@@ -458,7 +459,7 @@
 	
 	<!--  강좌 삭제 -->
 	<delete id="delete" parameterType="int">
-		delete lec where lec_idx = #{lecIdx}
+		delete from lec where lec_idx = #{lecIdx}
 	</delete>
 	
 	

@@ -34,11 +34,10 @@ public class PlaceCategoryDaoImpl implements PlaceCategoryDao {
 		return count > 0;
 	}
 
-
 	// 삭제
 	@Override
-	public void delete(PlaceTargetDto placeTargetDto) {
-		sqlSession.delete("placeCategory.delete", placeTargetDto);
+	public void delete(int placeIdx) {
+		sqlSession.delete("placeCategory.delete", placeIdx);
 	}
 
 

@@ -51,12 +51,13 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-		
+		<br><br><br>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
+		<br><br><br>
 			<h2>회원가입 완료</h2>
+		<br><br><br><br>
 			<a class="col-auto btn btn-sm btn-outline-primary" href="${root }">메인으로</a>
-			</div>
 		</div>
 		<!-- 소단원 제목 -->
 		

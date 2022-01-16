@@ -17,7 +17,7 @@
 <mapper namespace="member">
 
 	<!-- 등록을 하려면 시퀀스번호를 얻어내야 한다 -->
-	<select id="seq" resultType="integer">
+	<select id="seq" resultType="int">
 		SELECT member_seq.nextval FROM DUAL
 	</select>
 	
@@ -28,7 +28,7 @@
 	</select>
 	
 	<!--memberIdx로 단일조회 -->
-	<select id="getbyIdx" parameterType="Integer" resultType="MemberDto">
+	<select id="getbyIdx" parameterType="int" resultType="MemberDto">
 		SELECT * FROM member
 		WHERE member_idx = #{memberIdx}
 	</select>		
@@ -116,13 +116,13 @@
 
 	
 	<!-- 탈퇴 -->
-	<delete id="quit" parameterType="integer">
+	<delete id="quit" parameterType="int">
 		delete member WHERE member_idx = #{memberIdx}
 	</delete>
 	
 
 	<!-- 일반회원을 강사로 -->	
-	<update id="changeGradeTutor" parameterType="int">
+	<update id="changeGradeTutor" parameterType="memberDto">
 		update member set
 		member_grade_name = '강사'
 		where member_idx = #{memberIdx}
@@ -132,6 +132,13 @@
 	<update id="changeGradeNormal" parameterType="int">
 		update member set
 		member_grade_name = '회원'
+		where member_idx = #{memberIdx}
+	</update>
+	
+	<!-- 일반회원을 임대인으로 -->	
+	<update id="changeGradeLandlord" parameterType="int">
+		update member set
+		member_grade_name = '임대인'
 		where member_idx = #{memberIdx}
 	</update>
 
