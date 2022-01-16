@@ -138,9 +138,17 @@ public class MemberDaoImpl implements MemberDao{
 	public void changeGradeTutor(int memberIdx) {
 		sqlSession.update("member.changeGradeTutor", memberIdx);
 	}
+	
+	//일반 회원으로 등급 변경
 	@Override
 	public void changeGradeNormal(int memberIdx) {
 		sqlSession.update("member.changeGradeNormal", memberIdx);
+	}
+	
+	//임대인 등급 변경 기능
+	@Override
+	public void changeGradeLandlord(int memberIdx) {
+		sqlSession.update("member.changeGradeLandlord", memberIdx);
 	}
 
 
