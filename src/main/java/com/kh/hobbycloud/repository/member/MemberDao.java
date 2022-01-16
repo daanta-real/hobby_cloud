@@ -42,7 +42,8 @@ public interface MemberDao {
 	void changeGradeTutor(int memberIdx);
 	//강사를 일반회원으로
 	void changeGradeNormal(int memberIdx);
-
+	//임대인 등급 변경 기능
+	void changeGradeLandlord(int memberIdx);
 
 	// 아이디 중복 검사
 	MemberDto checkId(String memberId) throws Exception;
@@ -77,6 +78,7 @@ public interface MemberDao {
 	List<MemberListVO> list();
 
 	List<MemberListVO> search(String column, String keyword);
+
 
 
 

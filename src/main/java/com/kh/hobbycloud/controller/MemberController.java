@@ -213,7 +213,6 @@ public class MemberController {
 		//페이지 리다이렉트
 		return "member/mypage";
 	}
-	
 	//회원 상세 페이지 검색
 	@RequestMapping("/mypage/{memberIdx}")
 	public String mypage(@PathVariable int memberIdx, HttpSession session, Model model) {
@@ -526,6 +525,30 @@ public class MemberController {
 	public String search(@RequestParam String column, @RequestParam String keyword, Model model) {
 		model.addAttribute("list",memberDao.search(column, keyword));
 		return "member/list";
+	}
+	
+	// 강사 등급 변경 처리 페이지
+	@GetMapping("/updateTutor/{memberIdx}")
+	public String updateTutor(@PathVariable int memberIdx, Model model, HttpSession session) {
+		model.addAttribute("memberDto", memberIdx);
+		memberDao.changeGradeTutor(memberIdx);
+		return "redirect:/member/list";
+	}
+	
+	// 일반회원 등급 변경 처리 페이지
+	@GetMapping("/updateNomal/{memberIdx}")
+	public String updateNomal(@PathVariable int memberIdx, Model model) {
+		model.addAttribute("memberDto", memberIdx);
+		memberDao.changeGradeNormal(memberIdx);
+		return "redirect:/member/list";
+	}
+	
+	// 임대인 등급 변경 처리 페이지
+	@GetMapping("/updateLandlord/{memberIdx}")
+	public String updateLandlord(@PathVariable int memberIdx, Model model) {
+		model.addAttribute("memberDto", memberIdx);
+		memberDao.changeGradeLandlord(memberIdx);
+		return "redirect:/member/list";
 	}
 
 }
