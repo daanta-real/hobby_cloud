@@ -154,7 +154,6 @@ function loadPlace(pageValue,sizeValue){
 window.addEventListener("load", function() {
 	
 	
-	
 	//////////////////////////////////// 일반 ////////////////////////////////
 	
 	// 대여할 장소 방식 DIV에서 장소 방식을 선택하면, 해당 장소 방식의 DIV만 디스플레이시킨다. 
@@ -335,6 +334,20 @@ function setLoc(el) {
 }
 
 </script>
+<script>
+//radio 선택에 따라 파라미터 비활성화 시키기
+$(function(){
+	$("#showList").click(function(){
+		$(".placeList").attr("disabled", false);		
+		$(".mapSearch").attr("disabled", true);
+	});
+	
+	$("#radioPlaceMap").click(function(){
+		$(".mapSearch").attr("disabled", false);
+		$(".placeList").attr("disabled", true);
+	});
+});
+</script>
 
 </HEAD>
 <BODY>
@@ -416,24 +429,25 @@ function setLoc(el) {
 							<input type="hidden" name="placeType" />
 						</div>
 					</div>
+					
+					
 					<div class="row p-2 bg-warning rounded layerPlaceDIVs d-none" data-layerType="list">
 						<label>장소 목록</label>
-						<input type="text" name="lecLocRegion" required class="form-input" />
-						<input id="placeIdxHolder" type="text" name="placeIdx">
-						<label><input id="placeLatiHolder" type="text" name="lecLocLatitude"></label>
-						<label><input id="placeLongHolder" type="text" name="lecLocLongitude"></label>
-					</div>
-					
+						<input type="text" name="lecLocRegion" class="form-input placeList" />
+						<input type="hidden" name="placeIdx" class="placeList">
+						<label><input type="hidden" name="lecLocLatitude" class="placeList"></label>
+						<label><input type="hidden" name="lecLocLongitude" class="placeList"></label>
+					</div>			
+				
 					<div class="row p-2 bg-warning rounded container layerPlaceDIVs d-none" data-layerType="map">
 						<label for="searchForm_memberIdx" class="form-label mb-0">지도 검색</label>
 						<div id="map" class="md-3"></div>
-						<label>지역<input type="text" name="lecLocRegion"></label>
-						<input id="placeIdxHolder" type="hidden" name="placeIdx">
-						<label><input id="placeLatiHolder" type="hidden" name="lecLocLatitude"></label>
-						<label><input id="placeLongHolder" type="hidden" name="lecLocLongitude"></label>
+						<label>지역<input type="text" name="lecLocRegion" class="mapSearch"></label>
+						<input type="hidden" name="placeIdx" class="mapSearch">
+						<label><input type="hidden" name="lecLocLatitude" class="mapSearch"></label>
+						<label><input  type="hidden" name="lecLocLongitude" class="mapSearch"></label>
 					</div>
-					
-					
+
 					
 					<div class="row mt-4 mb-4">
 						<label>수강료</label>
