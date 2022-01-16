@@ -58,4 +58,9 @@ public class LecMyDaoImpl implements LecMyDao {
 		return sqlSession.selectList("lecMy.getMyLec", memberIdx);
 	}
 	
+	@Override
+	public int getNowCount(int lecIdx) {
+		return sqlSession.selectOne("lecMy.getNowCount", lecIdx);
+	}
+	
 }
