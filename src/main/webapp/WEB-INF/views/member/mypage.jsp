@@ -66,7 +66,7 @@ window.addEventListener("load", function() {
 						<img src="https://via.placeholder.com/300x300?text=User">
 					</c:when>
 					<c:otherwise>
-						<img id="" src="profile/${memberProfileDto.memberIdx}" width="30%" height="30%">										
+						<img id="" src="${pageContext.request.contextPath}/member/profile/${memberProfileDto.memberIdx}" width="30%" height="30%">										
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -139,9 +139,9 @@ window.addEventListener("load", function() {
 				 <nav class="row p-0 pt-4 d-flex justify-content-end">
 					<a href="${pageContext.request.contextPath}/place/myPlaceList" 
 					class="col-auto btn btn-sm btn-secondary mx-1">내 강의장 보기</a>
-				</nav>
-			
-				</c:if>	 
+				</nav>			
+				</c:if>	
+				 
 				 <c:if test="${admin}">
 				 <nav class="row p-0 pt-4 d-flex justify-content-end">
 				 	<a href="${pageContext.request.contextPath}/member/updateNomal/${memberDto.memberIdx}"

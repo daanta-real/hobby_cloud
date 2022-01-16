@@ -85,7 +85,10 @@ window.addEventListener("load", function() {
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-end">
 				<a href="${pageContext.request.contextPath}/member/mypage" class="col-auto btn btn-sm btn-secondary mx-1">내 정보 보기</a>
-			</nav>  			
+			</nav>
+			<nav class="row p-0 pt-4 d-flex justify-content-end">
+				<a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/place/register">등록하기</a>  			
+			</nav>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
 	
