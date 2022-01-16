@@ -17,7 +17,7 @@ import com.kh.hobbycloud.entity.notice.NoticeReplyDto;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.repository.notice.NoticeReplyDao;
 import com.kh.hobbycloud.vo.notice.NoticeReplyVO;
-
+/*
 @RestController
 @RequestMapping("/noticeReply")
 public class NoticeReplyController {
@@ -53,3 +53,4 @@ public class NoticeReplyController {
 	}
 
 }
+*/

@@ -1,6 +1,8 @@
 package com.kh.hobbycloud.repository.notice;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,32 +18,37 @@ public class NoticeReplyImpl implements NoticeReplyDao{
 
 	@Override
 	public void insert(NoticeReplyDto noticeReplyDto) {
-		sqlSession.insert("noticeReply.insert",noticeReplyDto);
+		sqlSession.insert("notice.replyInsert",noticeReplyDto);
 		
-	}
-
-	@Override
-	public int sequence() {
-		
-		return sqlSession.selectOne("noticeReply.seq");
 	}
 
 	@Override
 	public List<NoticeReplyVO> list(int noticeIdx) {
-		
-		return sqlSession.selectList("noticeReply.list",noticeIdx);
+		return sqlSession.selectList("notice.replyList",noticeIdx);
 	}
 
 	@Override
-	public void delete(int noticeReplyIdx) {
-		
-		sqlSession.delete("noticeReply.delete", noticeReplyIdx);
+	public List<NoticeReplyVO> listBy(int startRow, int endRow, int noticeIdx) {
+		Map<String, Object>param = new HashMap<>();
+		param.put("startRow", startRow);
+		System.out.println("댓글start"+startRow+endRow);
+		param.put("endRow", endRow); 
+		param.put("noticeIdx",noticeIdx); 
+		return sqlSession.selectList("notice.replyList",param);
 	}
 
 	@Override
-	public void edit(NoticeReplyVO noticeReplyVO) {
-		sqlSession.update("noticeReply.edit",noticeReplyVO);
+	public boolean delete(int noticeReplyIdx) {
+		int count = sqlSession.delete("notice.replyDelete",noticeReplyIdx);
+		return count >0;
+	}
+
+	@Override
+	public void edit(NoticeReplyDto noticeReplyDto) {
+		//댓글 수정 void도 가능
+		 sqlSession.update("notice.replyEdit",noticeReplyDto);
 		
 	}
 
+	
 }
