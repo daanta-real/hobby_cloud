@@ -610,7 +610,7 @@
 								<label class="title-type">약관동의</label>
 								<div class="input-group flex-nowrap grayInputGroup p-0">
 								</div>
-							</div>
+							</div> 
 						</div>
 
 						<div class="div-check">
