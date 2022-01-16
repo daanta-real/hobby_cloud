@@ -1,7 +1,6 @@
 package com.kh.hobbycloud.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -9,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kh.hobbycloud.repository.pay.LecMyDao;
 import com.kh.hobbycloud.service.member.MemberService;
+import com.kh.hobbycloud.service.my.MyMemberService;
 import com.kh.hobbycloud.vo.member.MemberCriteria;
-import com.kh.hobbycloud.vo.member.MemberListVO;
+import com.kh.hobbycloud.vo.member.MemberPageMaker;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,9 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/my")
 public class MyController {
+
 	@Autowired SqlSession sqlSession;
 	@Autowired MemberService memberService;
-	@Autowired LecMyDao lecMyDao;
+	@Autowired MyMemberService myMemberService;
 
 	@RequestMapping("/")
 	public String home() {
@@ -32,18 +31,16 @@ public class MyController {
 	}
 
 	@RequestMapping("/member")
-	public String memberList(@RequestParam MemberCriteria cri, Model model) {
+	public String memberList(MemberCriteria cri, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ /my/member 진입");
-		List<MemberListVO> list = memberService.list(cri);
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ list 목록: {}", list);
-		List<String> cols = new ArrayList<>(Arrays.asList(
-			"memberIdx", "memberGradeName", "memberId", "memberNick",
-			"memberEmail", "memberPhone", "memberRegistered", "memberPoint",
-			"memberRegion", "memberGender", "memberCategoryName"
-		));
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ cols 목록: {}", cols);
+		List<LinkedHashMap<String, String>> list = myMemberService.list(cri);
 		model.addAttribute("list", list);
-		model.addAttribute("cols", cols);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 완성된 전체 Maps 목록: {}", list);
+		MemberPageMaker pageMaker = new MemberPageMaker();
+		pageMaker.setCri(cri);
+		int count = memberService.listCount();
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원목록 수: {} / 완성된 페이지네이션 정보: {}", count, pageMaker);
+		model.addAttribute("pageMaker",pageMaker);
 		return "my/board";
 	}
 
