@@ -178,41 +178,6 @@ function renderMap() {
 
 // 문서가 로드되면 실행할 코드 영역
 $(function () {
-	
-	// 작성 완료 버튼을 누르면 > 이메일과 폰번호 값을 하나로 합쳐줌
-	// 이후에 이벤트 버블링 때문에 폼 객체의 .submit()이 실행된다.
-	$(".btnclick").click(function () {
-		console.log("작성완료 버튼 누름");
-		let placePhone =
-			$("#phone1").val() + $("#phone2").val() + $("#phone3").val();
-		$('input[name="placePhone"]').val(placePhone);
-		console.log(
-			"합해진 핸드폰 번호 placePhone : " +
-				$("#phone1").val() +
-				$("#phone2").val() +
-				$("#phone3").val()
-		);
-
-		let email = $(".idMail").val() + "@" + $(".inputMail").val();
-		$('input[name="placeEmail"]').val(email);
-		console.log(
-			"이메일 합 : " + $(".idMail").val() + "@" + $(".inputMail").val()
-		);
-	});
-
-
-	// 이메일 영역 전체에 대한 change 리스너
-	$(".emailBox").change(function () {
-		console.log("이메일박스 버튼 누름");
-		if ($(".emailBox").val() == "directly") {
-			$(".inputMail").attr("readonly", false);
-			$(".inputMail").val("");
-			$(".inputMail").focus();
-		} else {
-			$(".inputMail").val($(".emailBox").val());
-			$(".inputMail").attr("readonly", true);
-		}
-	});
 
 	// 주소찾기 버튼 누르면 > 주소 찾는 창이 뜸
 	$(".findRegion").click(function () {
@@ -236,8 +201,6 @@ $(function () {
 <!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
 <!-- 사이드메뉴 영역 시작 -->
 <!-- 사이드메뉴 영역 끝 -->
-
-
 
 <!-- ************************************************ 페이지 영역 ************************************************ -->
 <!-- 페이지 영역 시작 -->
@@ -307,7 +270,7 @@ $(function () {
 						<input type="text" id="placeDetailAddress" name="placeDetailAddress" class="form-control border-radius-all-25" placeholder="상세 주소">
 						<input type="hidden" name="address" >
 					</div>
-							<div id="map" style="width:100%;height:350px;"></div>
+						<div id="map" style="width:100%;height:350px;"></div>
 							<div style="display:none" id="clickLatlng"></div>
 						<input type="hidden" id="clickLocLatitude" name="placeLocLatitude">
 						<input type="hidden" id="clickLocLongitude" name="placeLocLongitude">
@@ -340,28 +303,14 @@ $(function () {
 			    <div class="row mb-4">
 			    	<label for="joinForm_placeEmail" class="form-label mb-0">이메일</label>
 			    	<div class="input-group flex-nowrap grayInputGroup p-0">
-						<input type="text" class="idMail form-control border-radius-all-25" name="email_id"  required>&nbsp;@&nbsp;
-						<input type="text" class="inputMail form-control border-radius-all-25" name="email_domain" required readonly>&nbsp;
-						<select class="emailBox form-control border-radius-all-25" name="emailBox" required>
-							<option>이메일 선택</option>
-							<option value="naver.com">naver.com</option>
-							<option value="gmail.com">gmail.com</option>
-							<option value="daum.net">daum.net</option>
-							<option value="hanmail.net">hanmail.net</option>
-							<option value="nate.com">nate.com</option>
-							<option value="directly">직접입력</option>
-						</select>
-						<input type="hidden" name="placeEmail" class="mail_input" >
+						<input type="text" class="idMail form-control border-radius-all-25" name="placeEmail"  required>
 					</div>
 				</div>
 				
 				<div class="row mb-4">
 	      			<label for="placeForm_placePhone" class="form-label mb-0">핸드폰 번호</label>
 					<div class="input-group flex-nowrap grayInputGroup p-0">
-	 						<input type="text" id="phone1" name="phone1" maxlength=3 required placeholder="000" class="phone form-control border-radius-all-25"> &nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
-							<input type="text" id="phone2" name="phone2" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
-							<input type="text" id="phone3" name="phone3" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">	
-							<input type="hidden" name="placePhone" id="phoneNum">
+	 						<input type="text" name="placePhone" maxlength=11 required placeholder="00000000000" class="phone form-control border-radius-all-25">
 					</div>
 				</div>
 					

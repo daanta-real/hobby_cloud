@@ -43,4 +43,9 @@
 	<select id="list" resultType="TutorDto">
 		select * from tutor
 	</select>
+	
+	<!-- 강사 Idx 불러오기 -->
+	<select id="getTutorIdx" parameterType="int" resultType="int">
+		select tutor_idx from tutor where member_idx = #{memberIdx} 
+	</select>
 </mapper>
