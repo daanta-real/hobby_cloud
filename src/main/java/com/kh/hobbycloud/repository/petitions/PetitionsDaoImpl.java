@@ -96,5 +96,13 @@ public class PetitionsDaoImpl implements PetitionsDao {
 		return sqlSession.selectOne("petitions.listCount");
 	}
 
+	@Override
+	public boolean replyCount(PetitionsDto petitionsDto) {
+		int count = sqlSession.update("petitions.replyCount", petitionsDto);
+		return count > 0;
+	}
+
+	
+
 
 }

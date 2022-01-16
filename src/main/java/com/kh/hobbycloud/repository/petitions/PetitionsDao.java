@@ -24,5 +24,8 @@ public interface PetitionsDao {
 		List<PetitionsVO>list(Criteria cri);
 		//게시글 총 개수
 		int listCount();
+		
+	//댓글수 갱신
+	boolean replyCount(PetitionsDto petitionsDto);
 
 }

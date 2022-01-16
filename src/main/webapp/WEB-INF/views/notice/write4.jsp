@@ -16,6 +16,25 @@ window.addEventListener("load", function() {
 });
 
 </script>
+<!-- 파일 업로드 모듈 사전 설정 -->
+<%--
+파일 업로드 모듈을 적용하기 위한 준비물
+1. 아래 사전 변수 설정에 경로 정확히 입력하기 ('/'기호 조심)
+   - fileImageStorePath: 이미지를 불러오기 위한 이미지 호출 경로
+   - fileUploadTargetPage: AJAX로 데이터를 전송할 대상 페이지
+2. AJAX 컨트롤러측 패러미터 VO에는, 아래 필드가 존재해야 한다.
+   - List<MultipartFile> attach: 추가할 파일들 정보가 넘어오는 필드
+   - List<String> fileDelTargetList: 삭제대상 file idx 목록 (String으로 되어 있음)
+     (단, 편집이 아니라 신규작성인 경우에는 fileDelTargetList를 만들지 않아도 된다.)
+3. HTML FORM의 class에는 fileUploadForm 항목이 있어야 한다.
+--%>
+<SCRIPT TYPE="text/javascript">
+const fileImageStorePath = "${root}/notice/noticeFile/";
+const fileSubmitAjaxPage = "${root}/noticeData/write/";
+</SCRIPT> 
+<!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
+<SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fileUpload.css" />
 </HEAD>
 <BODY>
 <jsp:include page="/resources/template/body.jsp" flush="false" />
@@ -68,16 +87,37 @@ window.addEventListener("load", function() {
       <textarea class="form-control" name="noticeDetail" id="exampleTextarea" rows="15" style="resize:none"
       ></textarea>
     </div>
-    
-    <div class="form-group justify-content-center">
+    <label>첨부 파일 ${fileList != null and fileList.size() > 0 ? fileList.size() : ''}</label>
+						<!-- 드롭존 겸 파일리스트 -->
+						<div id="fileDropZoneBox" class="w-100 p-0">
+							<c:choose>
+								<c:when test="${fileList != null and fileList.size() > 0}">
+									<div id="fileDropZone" class="
+											w-100 fs-4 rounded text-dark
+											border-1 border-secondary p-2">
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div id="fileDropZone" class="
+											w-100 fs-4 border-5 border-light rounded p-5
+											justify-content-center align-items-center
+											text-dark bg-secondary bg-gradient">
+											<div id="fileDropZoneDefaultText" class="text-center">파일을 여기에 드래그하여 첨부해 보세요.</div>
+									</div>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+    <!-- 파일 등록 변화전 -->
+    <!-- <div class="form-group justify-content-center">
       <label for="formFile" class="form-label mt-4"></label>
       <input class="form-control" type="file" id="formFile" name="attach" enctype="multipart/form-data" multiple>
-    </div>
+    </div> -->
     <div class="form-row text-center">
     <div class="col-12 pt-3">
         <a href="${pageContext.request.contextPath}/notice/list"
 				 class="col-auto btn  btn-secondary mx-1 my-3">취소</a>
-        <button type="submit" class="btn btn-primary my-3" >등록</button>
+        <button type="submit" class="btn btn-primary my-3"  id="fileUploadForm_submitBtn">등록</button>
     </div>
  </div>
 </form>

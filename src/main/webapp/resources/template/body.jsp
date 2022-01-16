@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="logout" value="${memberIdx == null }"></c:set>
+
 <!DOCTYPE HTML>
 <%-- 모달 영역. HTML의 가장 처음에 배치해야 한다 --%>
 <div id="modal" class="modal" tabindex="-1">

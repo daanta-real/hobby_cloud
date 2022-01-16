@@ -47,7 +47,7 @@ public class NoticeDataController {
 		public boolean fileDelete(@RequestParam int noticeFileIdx) {
 			return noticeFileDao.deleteAjax(noticeFileIdx);
 		}
-		
+		/*
 		@ResponseBody
 		@PostMapping("/write")
 		public String insert(@ModelAttribute NoticeFileVO noticeFileVO,HttpSession session) throws IllegalStateException, IOException {
@@ -76,5 +76,5 @@ public class NoticeDataController {
 				return "failed"; 
 			}
 		}
-
+*/
 }

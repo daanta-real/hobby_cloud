@@ -57,7 +57,7 @@ delete petitions where petitions_idx=#{petitionsIdx}
 
 <!-- 글수정 -->
 <update id="edit" parameterType="PetitionsVO">
-update notice set petitions_name=#{petitionsName},petitions_detail=#{petitionsDetail} where petitions_idx=#{petitionsIdx}
+update petitions set petitions_name=#{petitionsName},petitions_detail=#{petitionsDetail} where petitions_idx=#{petitionsIdx}
 </update>
 
 <!-- 검색 -->
@@ -141,5 +141,11 @@ update petitions_reply set
  petitions_reply_registered=sysdate 
  where 
  petitions_reply_idx =#{petitionsReplyIdx}
+</update>
+
+<!-- 댓글수 갱신 기능 -->
+<update id="replyCount" parameterType="PetitionsDto">
+update petitions 
+set petitions_replies=(select count(*) from petitions_reply where petitions_idx=#{petitions_idx}) where petitions_idx=#{petitions_idx}
 </update>
 </mapper>
