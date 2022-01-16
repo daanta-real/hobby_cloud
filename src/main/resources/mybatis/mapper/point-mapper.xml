@@ -55,10 +55,11 @@
 	<!-- 포인트상품 내용 수정 -->
 	<update id="update" parameterType="PointDto">
 		UPDATE point
-		SET
+		<trim prefix="SET" suffixOverrides=",">
 			<if test="pointName != null and !pointName.equals('')">point_name = #{pointName},</if>
 			<if test="pointPrice != null">point_price = #{pointPrice},</if>
 			<if test="pointAmount != null">point_amount = #{pointAmount},</if>
+		</trim>
 		WHERE
 			point_idx = #{pointIdx}
 	</update>
