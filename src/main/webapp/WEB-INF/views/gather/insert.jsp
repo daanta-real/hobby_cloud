@@ -415,9 +415,9 @@ function sendForm_preEvent() {
 				</div>
 			</div>
 			<input id="placeIdxHolder" type="hidden" name="placeIdx" value="9999">
-			<input	id="placeLatiHolder" type="hidden" name="gatherLocLatitude">
-			<input id="placeLongHolder" type="hidden" name="gatherLocLongitude">
-		</form>
+			<input	id="placeLatiHolder" type="text" name="gatherLocLatitude">
+			<input id="placeLongHolder" type="text" name="gatherLocLongitude">
+		</form> 
 		<!-- 글내용 종료 -->
 	</div>
 	<!-- 소단원 내용 종료 -->
