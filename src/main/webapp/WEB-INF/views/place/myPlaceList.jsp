@@ -3,6 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+</script>
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
@@ -30,7 +33,6 @@ window.addEventListener("load", function() {
 
 <!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
 <!-- 사이드메뉴 영역 시작 -->
-
 <!-- 사이드메뉴 영역 끝 -->
 
 
@@ -43,7 +45,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			회원가입
+			나의강의장
 			</span>
 		</div>
 	</HEADER>
@@ -51,18 +53,40 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-		<br><br><br>
 		<!-- 소단원 내용 -->
-		<div class="row p-sm-2 mx-1 mb-5">
-		<br><br><br>
-			<h2>회원가입 완료</h2>
-		<br><br><br><br>
-			<a class="col-auto btn btn-sm btn-outline-primary" href="${root }">메인으로</a>
+			</div>
 		</div>
 		<!-- 소단원 제목 -->
-		
 		<!-- 소단원 내용 -->
-		</SECTION>
+		<div class="row p-sm-2 mx-1 mb-5">
+			<div class="container">
+				<div class="card p-0 minWidthMaxContent">
+					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
+						<thead>
+							<tr class="table-danger">
+								<th scope="col" class="text-center align-middle text-nowrap">번호</th>
+								<th scope="col" class="text-center align-middle text-nowrap">장소이름</th>
+								<th scope="col" class="text-center align-middle text-nowrap">장소제공자</th>
+								<th scope="col" class="text-center align-middle text-nowrap">주소</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="PlaceListVO" items="${myPlaceList}">
+								<tr class="cursor-pointer">
+									<td class="text-center align-middle text-nowrap">${PlaceListVO.placeIdx}</td>
+									<td class="text-center align-middle text-nowrap"><a href="${pageContext.request.contextPath}/place/detail/${PlaceListVO.placeIdx}">${PlaceListVO.placeName}</a></td>
+									<td class="text-center align-middle text-nowrap">${PlaceListVO.memberNick}</td>
+									<td class="text-center align-middle text-nowrap">${PlaceListVO.placeAddress}</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<nav class="row p-0 pt-4 d-flex justify-content-end">
+				<a href="${pageContext.request.contextPath}/member/mypage" class="col-auto btn btn-sm btn-secondary mx-1">내 정보 보기</a>
+			</nav>  			
+	</SECTION>
 	<!-- 페이지 내용 끝. -->
 	
 </ARTICLE>
@@ -76,3 +100,4 @@ window.addEventListener("load", function() {
 <jsp:include page="/resources/template/footer.jsp" flush="false" />
 </BODY>
 </HTML>
+

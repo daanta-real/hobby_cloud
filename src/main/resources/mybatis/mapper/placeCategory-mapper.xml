@@ -27,7 +27,7 @@
 		UPDATE
 			place_target
 		SET
-			place_category_name = #{placeCategoryName}
+			LEC_CATEGORY_NAME = #{lecCategoryName}
 		WHERE
 			place_idx = #{placeIdx}
 	</update>

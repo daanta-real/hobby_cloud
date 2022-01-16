@@ -328,9 +328,12 @@
 		$("#selectall").click(function() {
 			if($("#selectall").is(":checked")) {
 				$("input[name=selectItem]").prop("checked", true);
+				checkbox = true;
 				} else{
 				$("input[name=selectItem]").prop("checked", false);
+				checkbox = false;
 			}
+			checkAll();
 		})
 			
 		$(".checkall").click(function() {
@@ -340,14 +343,11 @@
 			console.log("checked",checked);
 			if(total != checked) {
 				$("#selectall").prop("checked", false);
-				checkbox = false;
 				console.log("checkbox",checkbox);
 			}else{ 
 				$("#selectall").prop("checked", true); 
-				checkbox = true;
 				console.log("checkbox",checkbox);
 			}
-			checkAll();
 		});				
 	});
 
