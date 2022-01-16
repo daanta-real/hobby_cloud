@@ -414,8 +414,21 @@ function deleteReview(lecReviewIdxValue){
 			<table border="1" width="80%">
 		 	<tbody>
 			    <tr>
-			        <td>강사 등록일</td>
-			        <td>${lecDetailVO.tutorRegistered}</td>
+			        <td>강사 프로필</td>
+			        <td>
+						<c:choose>
+								<c:when test="${GatherHeadsVO.memberProfileIdx != 0 }">  			
+									<td class="text-center align-middle text-nowrap">
+										<img src="${pageContext.request.contextPath}/member/profile/${lecDetailVO.memberIdx}" width="10%" />
+									</td>  
+								</c:when>
+								<c:otherwise>
+									<td class="text-center align-middle text-nowrap">
+										<img src="${pageContext.request.contextPath}/resources/img/noImage.png" width="10%">
+									</td>
+								</c:otherwise>
+							</c:choose>					
+					</td>
 			   	</tr>
 			    <tr>
 			        <td>강사 이름</td>

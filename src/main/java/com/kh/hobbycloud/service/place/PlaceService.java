@@ -21,6 +21,8 @@ public interface PlaceService {
 	
 	//장소 총 갯수
 	int listCount();
+	//나의 장소
+	List<PlaceListVO> mylist(int memberIdx);
 
 
 }

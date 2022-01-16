@@ -21,20 +21,7 @@ window.addEventListener("load", function() {
 
 </script>
 <script>
-$(function(){
-	$("form").submit(function(e){
-		e.preventDefault();
-		
-		$(this).find("input[type=password]").each(function(){
-			var origin = $(this).val();
-			var hash = CryptoJS.SHA1(origin);
-			var encrypt = CryptoJS.enc.Hex.stringify(hash);
-			$(this).val(encrypt);
-		});
-		
-		this.submit();
-	});
-});
+
 </script>
 </HEAD>
 <BODY>
@@ -75,11 +62,8 @@ $(function(){
 				<form method="post" id="" class="form-input">
 					<div class="form-group mb-4 col-12">
 						<label for="pw" class="form-label mb-0 form-input">비밀번호</label>
-						<input id="pw" name="memberPw" type="password" class="form-control" placeholder="" value="">
-						
-					</div>
-					
-					
+						<input id="pw" name="memberPw" type="password" class="form-control" placeholder="" value="">						
+					</div>				
 					
 					<div class="row d-flex justify-content-center mt-3">
 						<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8">탈퇴하기</button>

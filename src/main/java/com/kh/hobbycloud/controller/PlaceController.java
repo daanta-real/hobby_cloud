@@ -14,20 +14,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.entity.place.PlaceFileDto;
+import com.kh.hobbycloud.repository.place.PlaceCategoryDao;
 import com.kh.hobbycloud.repository.place.PlaceDao;
 import com.kh.hobbycloud.repository.place.PlaceFileDao;
 import com.kh.hobbycloud.service.place.PlaceService;
 import com.kh.hobbycloud.vo.place.PlaceCriteria;
-import com.kh.hobbycloud.vo.place.PlaceFileVO;
 import com.kh.hobbycloud.vo.place.PlaceListVO;
 import com.kh.hobbycloud.vo.place.PlacePageMaker;
 import com.kh.hobbycloud.vo.place.PlaceVO;
@@ -45,8 +43,10 @@ public class PlaceController {
 	private PlaceService placeService;	
 	@Autowired	
 	private PlaceFileDao placeFileDao;	
+	@Autowired
+	private PlaceCategoryDao placeCategoryDao;
 	
-	// 내 장소 목록 페이지
+	// 장소 목록 페이지
 	@GetMapping("/list")
 	public String list(Model model, PlaceCriteria cri) {
 		log.debug("ㅡㅡㅡ 장소 목록조회 시작");
@@ -67,6 +67,9 @@ public class PlaceController {
 		log.debug("장소 목록으로 이동");
 		return "place/list";
 	}
+	
+	
+
 	
 	//검색
 	@PostMapping("/list")
@@ -123,6 +126,7 @@ public class PlaceController {
 		log.debug("ㅡㅡPlaceController - /place/detail REQUEST> 장소 PlaceVO"+placeVO);
 		// 획득된 데이터를 Model에 지정
 		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);
+		
 		model.addAttribute("placeVO", placeVO);
 		model.addAttribute("list", list);
 				
@@ -132,9 +136,11 @@ public class PlaceController {
 	
 	// 장소 삭제 처리 페이지
 	@GetMapping("/delete/{placeIdx}")
-	public String delete(@RequestParam int placeIdx) {
+	public String delete(@PathVariable int placeIdx) {
+		placeCategoryDao.delete(placeIdx);
+		placeFileDao.delete(placeIdx);		
 		placeDao.delete(placeIdx);
-		return "redirect:list";
+		return "redirect:/place/list";
 	}
 
 	// 장소 수정 폼 페이지
@@ -145,28 +151,32 @@ public class PlaceController {
 		// 데이터 획득: VO 및 DTO
 		PlaceVO placeVO = placeDao.get(placeIdx);
 		log.debug("ㅡㅡㅡ PlaceVO: {}", placeVO);
-		model.addAttribute("placeVO", placeVO);
 
 		// 획득된 데이터를 Model에 지정
-		List<PlaceFileDto> list = placeFileDao.getListByPlaceIdx(placeIdx);
+		List<PlaceFileDto> list = placeFileDao. getListByPlaceIdx(placeIdx);
 		log.debug("ㅡㅡㅡ List<PlaceFileDto> list = {}", list);
+		model.addAttribute("placeVO", placeVO);
 		model.addAttribute("list", list);
+		
+		List<PlaceFileDto> fileList = placeFileDao. getListByPlaceIdx(placeIdx);
+		log.debug("==================== List<LecFileDto> fileList = {}", fileList);
+		model.addAttribute("fileList", fileList); 
 		
 		log.debug("ㅡㅡㅡ 수정 화면으로 진입합니다.");
 		return "place/update";
 	}
 	
 	// 장소 변경 처리 페이지
-	@PostMapping("/update/{placeIdx}")
-	public String edit(@ModelAttribute PlaceFileVO placeFileVO, MultipartFile attach, HttpSession session) throws IllegalStateException, IOException {
-		log.debug("ㅡㅡMemberController - /member/edit POST> 장소 파일 변경 DATA 입력됨.");
-		int memberIdx = (int) session.getAttribute("memberIdx");
-		placeFileVO.setMemberIdx(memberIdx);
-		System.out.println("-------장소 변경 : "+placeFileVO);
-		int placeIdx = placeFileVO.getPlaceIdx();
-		return "redirect:place/detail/"+ placeIdx;
-	}
-	
+//	@PostMapping("/update/{placeIdx}")
+//	public String edit(@ModelAttribute PlaceFileVO placeFileVO, MultipartFile attach, HttpSession session) throws IllegalStateException, IOException {
+//		log.debug("ㅡㅡMemberController - /member/edit POST> 장소 파일 변경 DATA 입력됨.");
+//		int memberIdx = (int) session.getAttribute("memberIdx");
+//		placeFileVO.setMemberIdx(memberIdx);
+//		System.out.println("-------장소 변경 : "+placeFileVO);
+//		int placeIdx = placeFileVO.getPlaceIdx();
+//		return "redirect:place/detail/"+ placeIdx;
+//	}
+//	
 	// 장소 사진 전송 실시
 	@GetMapping("/placeFile/{placeFileIdx}")
 	@ResponseBody
@@ -200,6 +210,17 @@ public class PlaceController {
 				// String.valueOf(memberProfileDto.getMemberProfileSize()))
 				.contentLength(placeFileDto.getPlaceFileSize()).body(resource);
 
+	}
+	
+	//내 장소 목록 조회
+	@GetMapping("/myPlaceList")
+	public String myPlaceList(HttpSession session, Model model) {
+		int memberIdx = (int) session.getAttribute("memberIdx");
+		log.debug("ㅡㅡㅡ 장소 목록 조회으로 진입합니다. memberIdx===>" + memberIdx);
+		List<PlaceListVO> list = placeDao.mylist(memberIdx);
+		model.addAttribute("myPlaceList", list);
+		log.debug("ㅡㅡㅡ-------------------list===>" + list);
+		return "place/myPlaceList";
 	}
 
 }

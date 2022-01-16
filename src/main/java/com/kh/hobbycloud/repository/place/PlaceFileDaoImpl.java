@@ -50,10 +50,11 @@ public class PlaceFileDaoImpl implements PlaceFileDao{
 	//한 개의 장소 첨부파일 DTO 얻기(placeFileIdx)
 	@Override
 	public PlaceFileDto getByPlaceFileIdx(int placeFileIdx) {
+		log.debug("=================PlaceFileDao.getNo 실행");
 		return sqlSession.selectOne("placeFile.getByPlaceFileIdx", placeFileIdx);
 	}
 	
-	// 파일 저장 정보 DTO List 획득: placeIdx로
+	// 장소 IDX로 첨부파일 전체 List 불러오기
 	@Override	
 	public List<PlaceFileDto> getListByPlaceIdx(int placeIdx) {
 		return sqlSession.selectList("placeFile.getByPlaceIdx", placeIdx);
@@ -85,7 +86,7 @@ public class PlaceFileDaoImpl implements PlaceFileDao{
 	@Override
 	public boolean deleteList(int placeIdx, List<String> list) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("lecIdx", placeIdx);
+		map.put("placeIdx", placeIdx);
 		map.put("list", list);
 		int count = sqlSession.delete("placeFile.deleteList", map);
 		return count > 0;

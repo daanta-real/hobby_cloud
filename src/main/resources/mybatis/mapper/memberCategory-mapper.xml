@@ -31,7 +31,7 @@
 	</update> 
 	
 	 	<!--  취미구분 삭제 -->
-	<delete id="delete" parameterType="string">
+	<delete id="delete" parameterType="int">
 		DELETE FROM member_category WHERE member_idx = #{memberIdx}
 	</delete> 
 	

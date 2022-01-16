@@ -42,6 +42,7 @@ public class PlaceDaoImpl implements PlaceDao{
 
 	@Override
 	public boolean update(PlaceDto placeDto) {
+		System.out.println("================PlaceDao.update 실행"+placeDto);
 		int count  = sqlSession.update("place.update",placeDto);
 		System.out.println(count+"카운트개수");
 		return count>0;
@@ -94,6 +95,11 @@ public class PlaceDaoImpl implements PlaceDao{
 		param.put("column", column);
 		param.put("keyword", keyword);
 		return sqlSession.selectList("place.search", param);
+	}
+
+	@Override
+	public List<PlaceListVO> mylist(int memberIdx) {
+		return sqlSession.selectList("place.mylist",memberIdx);
 	}
 
 
