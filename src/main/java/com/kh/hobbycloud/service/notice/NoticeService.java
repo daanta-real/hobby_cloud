@@ -9,7 +9,7 @@ import com.kh.hobbycloud.vo.notice.NoticeFileVO;
 import com.kh.hobbycloud.vo.notice.NoticeVO;
 
 public interface NoticeService {
-	/*void save(NoticeVO noticeVO)throws IllegalStateException, IOException;*/
+	void save(NoticeVO noticeVO)throws IllegalStateException, IOException;
 	int save(NoticeFileVO noticeFileVO) throws IllegalStateException, IOException;
 	/*void edit(NoticeVO noticeVO) throws IllegalStateException, IOException;*/
 	void edit(NoticeEditVO noticeEditVO) throws IllegalStateException, IOException;

@@ -90,7 +90,7 @@ class="image image-round image-border">
 				<span>댓글을 입력해주세요</span>
 			</div> 
 			<div class="card-body position-relative p-1 px-2">
-				<input type="text" class="card-text p-1 px-3 petitionsReplyDetail" name="petitionsReplyDetail" placeholder="로그인을 해주세요" />
+				<input type="text" class="card-text p-1 px-3 petitionsReplyDetail" name="petitionsReplyDetail" placeholder="" />
 				<input	type="hidden" name="petitionsIdx" value="${PetitionsVO.petitionsIdx}" />
 				<input type="hidden" name="memberIdx" value="${memberIdx}" /> 
 				   

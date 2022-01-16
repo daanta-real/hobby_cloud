@@ -443,8 +443,8 @@ public class MemberController {
 			session.setAttribute("originalPassword", originalPassword);
 			service.sendTempPwMail(pwFind.getMemberEmail(),originalPassword);
 			//암호화 된 비밀번호를 DB에 저장
-			System.out.println("originalPassword : "  + originalPassword);
-			boolean result = memberDao.tempPw(memberDto, originalPassword);
+			System.out.println("hashedPassword : "  + hashedPassword);
+			boolean result = memberDao.tempPw(memberDto, hashedPassword);
 			System.out.println("result: " + result);
 			return "success";
 

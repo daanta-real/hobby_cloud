@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.hobbycloud.entity.petitions.PetitionsDto;
 import com.kh.hobbycloud.entity.petitions.PetitionsReplyDto;
 import com.kh.hobbycloud.repository.petitions.PetitionsDao;
 import com.kh.hobbycloud.repository.petitions.PetitionsFileDao;
@@ -52,6 +53,8 @@ public class PetitionsDataController {
 			int memberIdx =(int) session.getAttribute("memberIdx");
 			petitionsReplyDto.setMemberIdx(memberIdx);
 			petitionsReplyDao.insert(petitionsReplyDto);
+			//PetitionsDto petitionsDto = new PetitionsDto();
+			//petitionsDao.replyCount(petitionsDto);
 			log.debug("------------------------------{}",petitionsReplyDto);
 		}
 		//게시판 댓글목록(페이지네이션)

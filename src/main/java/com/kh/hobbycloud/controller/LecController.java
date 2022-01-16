@@ -144,7 +144,7 @@ public class LecController {
 		log.debug("=================================강좌 카테고리 리스트: {}", lecCategoryList);
 
 		return "lec/register";
-
+		
 	}
 
 	//상세

@@ -23,6 +23,7 @@ import com.kh.hobbycloud.entity.lec.LecReviewDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecReplyDao;
 import com.kh.hobbycloud.repository.lec.LecReviewDao;
+import com.kh.hobbycloud.repository.tutor.TutorDao;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
 import com.kh.hobbycloud.vo.lec.LecLikeVO;
@@ -40,7 +41,10 @@ public class LecDataController {
 
 	@Autowired
 	private LecReplyDao lecReplyDao;
-
+	
+	@Autowired
+	private TutorDao tutorDao;
+	
 	@Autowired
 	private LecService lecService;
 	
@@ -60,11 +64,12 @@ public class LecDataController {
 	public String register(@ModelAttribute LecRegisterVO lecRegisterVO, HttpSession session)
 			throws IllegalStateException, IOException {
 		log.debug("================등록(placeIdx={}),ㄱㄱㄱㄱㄱ : {}", lecRegisterVO.getPlaceIdx(), lecRegisterVO);
-		session.setAttribute("tutorIdx", lecRegisterVO.getTutorIdx());
+		int tutorIdx = tutorDao.getTutorIdx((int)session.getAttribute("memberIdx"));
+		lecRegisterVO.setTutorIdx(tutorIdx);
 		int lecIdx = lecService.register(lecRegisterVO);
 		return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/lec/detail/" + lecIdx;
 	}
-
+	
 	@ResponseBody
 	@PostMapping("/update")
 	public String update(@ModelAttribute LecEditVO lecEditVO) {

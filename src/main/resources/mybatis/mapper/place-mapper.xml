@@ -70,6 +70,7 @@
 			place_min = #{placeMin},
 			place_max = #{placeMax},
 			place_email = #{placeEmail},
+			place_phone = #{placePhone},
 			place_postcode = #{placePostcode},
 			place_address = #{placeAddress},
 			place_detail_address = #{placeDetailAddress},

@@ -78,7 +78,7 @@ function setLoc(el) {
 	};
   
 	// 추출된 값을 각 INPUT 태그에 넣어주기
-	//	 document.querySelector("input[name='loc_idx']"	  ).value = data.idx;
+	document.querySelector("input[name='placeIdx']"	  ).value = data.idx;
 	document.querySelector("input[name='lecLocRegion']").value = data.region;
 	document.querySelector("input[name='lecLocLongitude']").value =
 		data.longitude;
@@ -89,9 +89,69 @@ function setLoc(el) {
   
 }
 
+//모달 창에 띄울 장소 페이지네이션
+var page =1;
+var size = 10;
+// 모달창 더보기 버튼 클릭시 내용을 더 불러와 보여주는 함수 
+function showMore() {
+	console.log("더보기 버튼 클릭");
+	loadPlace(page,size);
+	page++;
+}
+
+//loadPlace
+function loadPlace(pageValue,sizeValue){
+	$.ajax({
+		url : "${pageContext.request.contextPath}/gatherData/listPlace", 
+		type : "get",
+		data:{
+			page : pageValue,
+			size : sizeValue
+		}, 
+		dataType : "json",
+		success:function(resp){
+		
+		console.log("성공", resp);
+		var results = resp;
+		console.log(results);
+
+		// 제목 
+		document.querySelector(".modal-title").innerText = "장소를 고르세요.";
+		
+		// 내용 
+		// 표 제목부
+		var totalStr = '';
+		if(results.length > 0) {
+			$.each(results, function(i) {
+				var jsonStr = results[i];
+				console.log(i + "번째 TR: ", jsonStr);
+				totalStr += '<tr scope="row" data-idx="' + jsonStr.placeIdx + '"'
+					+ 			' data-region="'+jsonStr.placeAddress+'" data-longitude="'+jsonStr.placeLocLongitude+'"'
+					+ 			' data-latitude="' + jsonStr.placeLocLatitude+'"'
+					+ 			' onclick="setLoc(this)">'
+					+ 	'<td class="text-center">' + jsonStr.placeIdx +'</td>'
+					+ 	'<td class="text-center">' + jsonStr.placeName +'</td>'
+					+	'<td>' + jsonStr.placeAddress +'</td>'
+					+ '</tr>';
+			});
+		}
+		// 표 꼬리부
+		console.log("추가될 HTML: ", totalStr);
+		document.querySelector(".locTBody").innerHTML += totalStr;
+		// 모달 끝으로 스크롤
+		$('#modal').animate({ scrollTop: $('#modal .modal-dialog').height() }, 500);
+	},
+	error : function(e) {
+		console.log("실패", e);
+		}
+	});
+}
+
+
+
+
 // 문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
 window.addEventListener("load", function() {
-	
 	
 	
 	//////////////////////////////////// 일반 ////////////////////////////////
@@ -206,43 +266,35 @@ window.addEventListener("load", function() {
 	});
 	
 
-	$("#showList").click(function() {
-		$.ajax({
-			url : "${pageContext.request.contextPath}/gatherData/gatherList",
-			type : "get",
-			dataType : "json",
-			success:function(resp){
-				
-				var results = resp;
-				console.log("성공");
-				console.log(resp);
-				console.log(results);
-				
-				var totalStr = "";
-				$.each(results, function(i) {
-					var jsonStr = results[i];
-					console.log(i + "번째 TR: ", jsonStr);
-					totalStr += '<tr scope="row" data-idx="' + jsonStr.lecIdx + '"'
-						+ ' data-region="'+jsonStr.lecLocRegion+'" data-longitude="'+jsonStr.lecLocLongitude+'"'
-						+ ' data-latitude="' + jsonStr.lecLocLatitude+'"'
-						+ ' onclick="setLoc(this)">'
-						+ '<td class="text-center">' + jsonStr.lecIdx +'</td>'
-						+ '<td class="text-center">' + jsonStr.lecName +'</td>'
-						+ '<td>' + jsonStr.lecLocRegion +'</td></tr>';
-				});
-				console.log("전체 HTML: ", totalStr);
-				
-				var listTarget = document.querySelector(".locTBody");
-				console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
-				listTarget.innerHTML = totalStr;
-				
-			},
-			
-			error : function(e) {
-				console.log("실패", e);
-			}
-			
+	// 모달 창 초기화
+	function modalInitialize() {
+		modalInit({
+			head:
+				'장소를 선택해 주세요.',
+			body:
+				'<table class="table table-striped">' 
+					+ '<thead>' 
+						+ '<tr>'
+							+ '<th scope="col" class="text-center">순2</th>'
+							+ '<th scope="col" class="text-center">이름2</th>'
+							+ '<th scope="col" class="text-center">지역</th>'
+						+ '</tr>'
+					+ '</thead>'
+					+ '<tbody class="locTBody">'
+						// ajax로 리스트 목록이 나오는 장소
+					+ '</tbody>'
+				+ '</table>',
+			footer: '<button type="button" id="more-btn" onclick="showMore()">더보기</button>'
 		});
+	}
+	modalInitialize();
+
+	// 모달 버튼 클릭 시 모달 여는 이벤트 발생시키기
+	$("#showList").click(function(){
+		console.log("showList 클릭");
+		modalInitialize();
+		loadPlace(page,size);
+		page++;
 	});
 	
 });
@@ -271,7 +323,7 @@ function setLoc(el) {
     };
 	// 장소 만들어지면 value값 대체해야함
     // 추출된 값을 각 INPUT 태그에 넣어주기
-//     document.querySelector("input[name='loc_idx']"      ).value = data.idx;
+    document.querySelector("input[name='placeIdx']"      ).value = data.idx;
     document.querySelector("input[name='lecLocRegion']"   ).value = data.region;
     document.querySelector("input[name='lecLocLongitude']").value = data.longitude;
     document.querySelector("input[name='lecLocLatitude']" ).value = data.latitude;
@@ -282,45 +334,19 @@ function setLoc(el) {
 }
 
 </script>
-
-
 <script>
-	$(function() {
-		$("#showList").click(function() {
-			$.ajax({
-			url : "${pageContext.request.contextPath}/lecData/lecList",
-			type : "get",
-			dataType : "json",
-			success:function(resp){
-				
-				console.log("성공", resp);
-				var results = resp;
-				console.log(results);
-				var totalStr = "";
-				$.each(results, function(i) {
-					var jsonStr = results[i];
-					console.log(i + "번째 TR: ", jsonStr);
-					totalStr += '<tr scope="row" data-idx="' + jsonStr.lecIdx + '"'
-						+ ' data-region="'+jsonStr.lecLocRegion+'" data-longitude="'+jsonStr.lecLocLongitude+'"'
-						+ ' data-latitude="' + jsonStr.lecLocLatitude+'"'
-						+ ' onclick="setLoc(this)">'
-						+ '<td class="text-center">' + jsonStr.lecIdx +'</td>'
-						+ '<td class="text-center">' + jsonStr.lecName +'</td>'
-						+ '<td>' + jsonStr.lecLocRegion +'</td></tr>';
-				});
-				console.log("전체 HTML: ", totalStr);
-				
-				var listTarget = document.querySelector(".locTBody");
-				console.log("내용을 반영할 타겟 엘리먼트: ", listTarget);
-				listTarget.innerHTML = totalStr;
-				
-			},
-			error : function(e) {
-			console.log("실패", e);
-						}
-					});
-			});
+//radio 선택에 따라 파라미터 비활성화 시키기
+$(function(){
+	$("#showList").click(function(){
+		$(".placeList").attr("disabled", false);		
+		$(".mapSearch").attr("disabled", true);
 	});
+	
+	$("#radioPlaceMap").click(function(){
+		$(".mapSearch").attr("disabled", false);
+		$(".placeList").attr("disabled", true);
+	});
+});
 </script>
 
 </HEAD>
@@ -344,7 +370,6 @@ function setLoc(el) {
 <!-- ************************************************ 페이지 영역 ************************************************ -->
 <!-- 페이지 영역 시작 -->
 <ARTICLE class="d-flex flex-column align-items-start col-lg-8 mx-md-1 mt-xs-2 mt-md-3 pt-2">
-
 	<!-- 제목 영역 시작 -->
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
@@ -394,8 +419,8 @@ function setLoc(el) {
 						<label for="placeType">대여할 장소 선택</label>
 						<div class="input-group p-0">
 							<div class="btn-group" data-toggles="placeType">
-								<input type="radio" name="placeType" class="btn-check" id="radioPlaceList" value="list">
-								<label class="btn btn-primary" for="radioPlaceList">장소 목록에서 선택</label>
+								<input type="radio" name="placeType" class="btn-check" data-bs-toggle="modal" data-bs-target="#modal" id="showList" value="list">
+								<label class="btn btn-primary" for="showList">장소 목록에서 선택</label>
 								<input type="radio" name="placeType" class="btn-check" id="radioPlaceMap" value="map">
 								<label class="btn btn-primary" for="radioPlaceMap">지도에서 선택</label>
 								<input type="radio" name="placeType" class="btn-check" id="radioPlaceOnline" value="online">
@@ -404,21 +429,25 @@ function setLoc(el) {
 							<input type="hidden" name="placeType" />
 						</div>
 					</div>
+					
+					
 					<div class="row p-2 bg-warning rounded layerPlaceDIVs d-none" data-layerType="list">
 						<label>장소 목록</label>
-						<input type="text" name="lecName" required class="form-input" />
-					</div>
-					
+						<input type="text" name="lecLocRegion" class="form-input placeList" />
+						<input type="hidden" name="placeIdx" class="placeList">
+						<label><input type="hidden" name="lecLocLatitude" class="placeList"></label>
+						<label><input type="hidden" name="lecLocLongitude" class="placeList"></label>
+					</div>			
+				
 					<div class="row p-2 bg-warning rounded container layerPlaceDIVs d-none" data-layerType="map">
 						<label for="searchForm_memberIdx" class="form-label mb-0">지도 검색</label>
 						<div id="map" class="md-3"></div>
-						<label>지역<input type="text" name="lecLocRegion"></label>
-						<input id="placeIdxHolder" type="hidden" name="placeIdx">
-						<label>위도<input id="placeLatiHolder" type="text" name="lecLocLatitude"></label>
-						<label>경도<input id="placeLongHolder" type="text" name="lecLocLongitude"></label>
+						<label>지역<input type="text" name="lecLocRegion" class="mapSearch"></label>
+						<input type="hidden" name="placeIdx" class="mapSearch">
+						<label><input type="hidden" name="lecLocLatitude" class="mapSearch"></label>
+						<label><input  type="hidden" name="lecLocLongitude" class="mapSearch"></label>
 					</div>
-					
-					
+
 					
 					<div class="row mt-4 mb-4">
 						<label>수강료</label>

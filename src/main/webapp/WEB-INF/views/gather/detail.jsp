@@ -133,9 +133,7 @@ $(function() {
 <input type="hidden" name="gatherLocLongitude" value="${GatherVO.gatherLocLongitude}">
 <input type="hidden" name="gatherLocLatitude"  value="${GatherVO.gatherLocLatitude}">
 <div id="map" style="width:90%;height:400px;"></div>
-<button id="box1" type="button">댓글</button>
-<button id="box2" type="button">별점</button>
-<button id="box3" type="button">차트 </button>
+ 
 <div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>${GatherVO.gatherName}</div>
 <!-- 소모임 개요 -->
 <div class="row row justify-content-end">
