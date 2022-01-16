@@ -14,4 +14,5 @@ public interface LecReviewDao {
 	boolean delete(int lecReviewIdx);
 	//평점수정
 	void edit(LecReviewDto lecReviewDto);
+	List<LecReviewVO> listBy(int startRow, int endRow, int lecIdx);
 }

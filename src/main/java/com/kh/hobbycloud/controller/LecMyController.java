@@ -17,6 +17,7 @@ import com.kh.hobbycloud.repository.member.MemberDao;
 import com.kh.hobbycloud.repository.pay.LecMyDao;
 import com.kh.hobbycloud.repository.point.PointHistoryDao;
 import com.kh.hobbycloud.vo.lec.LecDetailVO;
+import com.kh.hobbycloud.vo.lec.LecMyVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -112,6 +113,19 @@ public class LecMyController {
 		session.removeAttribute("buyTargetLecIdx");
 
 		return "lecMy/success_buy";
+	}
+
+	//내 강좌 보기
+	@GetMapping("/myLec")
+	public String myLec(HttpSession session, Model model) {
+		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
+			return "redirect:/member/login";//로그인 화면으로 리다이렉트
+		}
+
+		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
+		List<LecMyVO> myLecList = lecMyDao.getMyLec(memberIdx);
+		model.addAttribute("myLecList", myLecList);
+		return "lecMy/my_lec";
 	}
 
 }

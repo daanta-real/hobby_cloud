@@ -82,6 +82,9 @@
 							<input type="submit" value="로그인" class="btn btn-danger form-btn form-inline">
 						</div>
 						<nav class="row p-0 pt-4 d-flex justify-content-end">
+							<a href="${root}/member/join" class="col-auto btn btn-sm btn-outline-primary mx-1">회원가입 하기</a>
+						</nav>
+						<nav class="row p-0 pt-4 d-flex justify-content-end">
 							<a href="${root}/member/idfindMail" class="col-auto btn btn-sm btn-outline-primary mx-1">아이디 찾기</a>
 							<a href="${root}/member/pwFindMail" class="col-auto btn btn-sm btn-outline-primary mx-1">비밀번호 찾기</a>
 						</nav>

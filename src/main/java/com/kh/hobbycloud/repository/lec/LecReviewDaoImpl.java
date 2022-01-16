@@ -1,6 +1,8 @@
 package com.kh.hobbycloud.repository.lec;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +36,15 @@ public class LecReviewDaoImpl implements LecReviewDao{
 	@Override
 	public void edit(LecReviewDto lecReviewDto) {
 		sqlSession.update("lecReview.edit", lecReviewDto);
+	}
+	
+	@Override
+	public List<LecReviewVO> listBy(int startRow, int endRow, int lecIdx) {
+		Map<String, Object>param = new HashMap<>();
+		param.put("startRow", startRow);	
+		param.put("endRow", endRow); 	
+		param.put("lecIdx", lecIdx); 
+		
+		return sqlSession.selectList("lecReview.listBy", param);
 	}
 }

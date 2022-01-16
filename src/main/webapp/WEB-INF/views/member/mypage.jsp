@@ -131,6 +131,8 @@ window.addEventListener("load", function() {
 				<a href="${root }/member/password" class="col-auto btn btn-sm btn-outline-primary mx-1">비밀번호 변경</a>
 				<a href="${root }/member/edit"
 				 class="col-auto btn btn-sm btn-secondary mx-1">개인정보 변경</a>
+				 <a href="${root }/member/quit"
+				 class="col-auto btn btn-sm btn-secondary mx-1">회원탈퇴</a>
 			</nav>
 			
 				 <c:if test="${Landlord}"> 
