@@ -62,24 +62,22 @@ window.addEventListener("load", function() {
 						<thead>
 							<tr class="table-danger">
 								<th scope="col" class="text-center align-middle text-nowrap">번호</th>
-								<th scope="col" class="text-center align-middle text-nowrap">사진</th>
+								<!--<th scope="col" class="text-center align-middle text-nowrap">사진</th>-->
 								<th scope="col" class="text-center align-middle text-nowrap">제목</th>
 								<th scope="col" class="text-center align-middle text-nowrap">작성자</th>
 								<th scope="col" class="text-center align-middle text-nowrap">작성일</th>
 								<th scope="col" class="text-center align-middle text-nowrap">조회수</th>
-								<th scope="col" class="text-center align-middle text-nowrap">댓글수</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="PetitionsVO" items="${list}">
-								<tr class="cursor-pointer">
+								<tr class="cursor-pointer" onclick="location.href='${pageContext.request.contextPath}/petitions/detail/${PetitionsVO.petitionsIdx}'">
 									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsIdx}</td>
-									<td class="text-center align-middle text-nowrap"></td>
-									<td class="text-center align-middle text-nowrap"><a href="detail/${PetitionsVO.petitionsIdx }">${PetitionsVO.petitionsName }</a></td>
+									<!--<td class="text-center align-middle text-nowrap"></td>-->
+									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsName }</td>
 									<td class="text-center align-middle text-nowrap">${PetitionsVO.memberNick }</td>
 									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsRegistered }</td>
 									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsViews }</td>
-									<td class="text-center align-middle text-nowrap">${PetitionsVO.petitionsReplies }</td>
 									
 								</tr>
 							</c:forEach>

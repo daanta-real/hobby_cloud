@@ -183,18 +183,21 @@ public class NoticeController {
 //		return "redirect:detail?noticeIdx="+noticeIdx;
 //		
 //	}
-	/*
-	 * @PostMapping("/write") public String write(@ModelAttribute NoticeVO
-	 * noticeVO,HttpSession session) throws IllegalStateException, IOException {
-	 * log.debug("---------------------{}",noticeVO); int
-	 * noticeIdx=noticeDao.getsequences(); int
-	 * memberIdx=(int)session.getAttribute("memberIdx");
-	 * noticeVO.setNoticeIdx(noticeIdx); noticeVO.setMemberIdx(memberIdx);
-	 * //noticeVO.setMemberIdx(99996); noticeService.save(noticeVO); return
-	 * "redirect:detail/"+noticeIdx;
-	 * 
-	 * }
-	 */
+	
+	  @PostMapping("/write") 
+	  public String write(@ModelAttribute NoticeVO noticeVO,HttpSession session) throws IllegalStateException, IOException {
+	  log.debug("---------------------{}",noticeVO);
+	  int noticeIdx=noticeDao.getsequences();
+	  int memberIdx=(int)session.getAttribute("memberIdx");
+	  noticeVO.setNoticeIdx(noticeIdx);
+	  noticeVO.setMemberIdx(memberIdx);
+	  //noticeVO.setMemberIdx(99996);
+	  noticeService.save(noticeVO);
+	  
+	  return "redirect:detail/"+noticeIdx;
+	  
+	  }
+	 
 	//글삭제
 	@GetMapping("/delete")
 	public String delete(@RequestParam int noticeIdx) {
@@ -203,54 +206,54 @@ public class NoticeController {
 		return "redirect:list";
 	}
 	//글 수정
-//	@GetMapping("/edit")
-//	public String edit(@RequestParam int noticeIdx, Model model) {
-//		model.addAttribute("noticeVO",noticeDao.get(noticeIdx));
-//	    
-//	return "notice/edit";
-//	}
-//	@PostMapping("/edit")
-//	public String edit(@ModelAttribute NoticeVO noticeVO ,@RequestParam int noticeIdx) {
-//		noticeVO.setNoticeIdx(noticeIdx);
-//		noticeDao.edit(noticeVO);
-//		
-//		
-//		return "redirect:detail?noticeIdx="+noticeIdx;
-//	}
+	@GetMapping("/edit")
+	public String edit(@RequestParam int noticeIdx, Model model) {
+		model.addAttribute("noticeVO",noticeDao.get(noticeIdx));
+	    
+	return "notice/edit";
+	}
+	@PostMapping("/edit")
+	public String edit(@ModelAttribute NoticeVO noticeVO ,@RequestParam int noticeIdx) {
+		noticeVO.setNoticeIdx(noticeIdx);
+		noticeDao.edit(noticeVO);
+		
+		
+		return "redirect:detail/"+noticeIdx;
+	}
 	//글수정 (파일)
 	// 글 수정 폼 페이지/update/123
-		@GetMapping("/edit/{noticeIdx}")
-		public String update(@PathVariable int noticeIdx, Model model) {
-			// 데이터 획득: VO 및 DTO
-			NoticeVO noticeVO = noticeDao.get(noticeIdx);
-
-			// 획득된 데이터를 Model에 지정
-			List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
-			model.addAttribute("NoticeVO", noticeVO);
-			model.addAttribute("list", list);
-			
-			List<NoticeFileDto> fileList = noticeFileDao.getIdx(noticeIdx);
-	
-			model.addAttribute("fileList", fileList); 
-
-			return "notice/edit";
-		}
-		/*
+//		@GetMapping("/edit/{noticeIdx}")
+//		public String update(@PathVariable int noticeIdx, Model model) {
+//			// 데이터 획득: VO 및 DTO
+//			NoticeVO noticeVO = noticeDao.get(noticeIdx);
+//
+//			// 획득된 데이터를 Model에 지정
+//			List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
+//			model.addAttribute("NoticeVO", noticeVO);
+//			model.addAttribute("list", list);
+//			
+//			List<NoticeFileDto> fileList = noticeFileDao.getIdx(noticeIdx);
+//	
+//			model.addAttribute("fileList", fileList); 
+//
+//			return "notice/edit";
+//		}
+		
 		//글 수정 실시
-		@PostMapping("/edit/{noticeIdx}")
-		public String update2(@ModelAttribute NoticeVO noticeVO,HttpSession session) throws IllegalStateException, IOException {
+		//@PostMapping("/edit/{noticeIdx}")
+		//public String update2(@ModelAttribute NoticeVO noticeVO,HttpSession session) throws IllegalStateException, IOException {
 
 			// 수정
-			int memberIdx = (int)session.getAttribute("memberIdx");
-			noticeVO.setMemberIdx(memberIdx);
+			//int memberIdx = (int)session.getAttribute("memberIdx");
+			//noticeVO.setMemberIdx(memberIdx);
 			//noticeService.edit(noticeVO);	
-			noticeDao.edit(noticeVO);
-			System.out.println("수정"+noticeVO);
-			int noticeIdx = noticeVO.getNoticeIdx();
-			return "redirect:/notice/detail/" + noticeIdx;
+			//noticeDao.edit(noticeVO);
+			//System.out.println("수정"+noticeVO);
+			//int noticeIdx = noticeVO.getNoticeIdx();
+			//return "redirect:/notice/detail/" + noticeIdx;
 			
-		}
-		*/
+		//}
+		
 	
 	
 	
