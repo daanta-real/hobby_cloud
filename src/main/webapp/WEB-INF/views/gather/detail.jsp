@@ -166,8 +166,8 @@ $(function() {
 					</tr>
 				</thead>
 				<tbody>
-				<c:set	var="isJoin" value="false" />
-				<c:set var="isFull" value="false" />  
+					<c:set	var="isJoin" value="false" />
+					<c:set var="isFull" value="false" />  
 					<c:forEach var="GatherHeadsVO" items="${list2}" varStatus="status">
 						<tr class="cursor-pointer">     
 							<c:choose>
@@ -344,7 +344,7 @@ $(function() {
 <button class="btn btn-secondary moreR-btn">더보기</button> 
 <button class="btn btn-secondary lessR-btn">접기</button> 
 <h1 class="box6">남녀 참가자 수</h1>  
-<canvas id="myChart" width="15px" height="30px"></canvas>    
+<canvas id="myChart"></canvas>    
 
 	</SECTION>
 	<!-- 페이지 내용 끝. -->

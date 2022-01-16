@@ -38,7 +38,7 @@ public class LecMyController {
 	@GetMapping("/confirm/{lecIdx}")
 	public String confirm(@PathVariable int lecIdx, HttpSession session, Model model, RedirectAttributes ra) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/confirm/{} (GET) 강좌 구매 확인 페이지 진입", lecIdx);
-		
+
 		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
 			return "redirect:/member/login";//로그인 화면으로 리다이렉트
 		}	
@@ -132,11 +132,11 @@ public class LecMyController {
 		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
 			return "redirect:/member/login";//로그인 화면으로 리다이렉트
 		}
-		
+
 		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
 		List<LecMyVO> myLecList = lecMyDao.getMyLec(memberIdx);
 		model.addAttribute("myLecList", myLecList);
 		return "lecMy/my_lec";
 	}
-	
+
 }

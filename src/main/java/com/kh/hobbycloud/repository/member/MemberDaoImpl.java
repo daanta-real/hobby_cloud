@@ -52,7 +52,7 @@ public class MemberDaoImpl implements MemberDao{
 
 		// ID와 비밀번호를 입력하였으므로, IDX가 아니라 ID로 조회해야 함
 		MemberDto foundDto = sqlSession.selectOne("member.get", memberDto.getMemberId());
-		System.out.println(">> login() 메소드 foundDto.getMemberPw() ===> "+foundDto.toString());
+		System.out.println(">> login() 메소드 foundDto.getMemberPw() ===> "+foundDto.getMemberPw());
 		System.out.println(">> login() 메소드 memberDto.getMemberPw() ===> "+memberDto.getMemberPw());
 		// 해당 아이디의 회원정보가 존재 && 입력 비밀번호와 조회된 비밀번호가 같다면 => 로그인 성공(객체를 반환)
 		if(foundDto != null &&encoder.matches(memberDto.getMemberPw(), foundDto.getMemberPw())) {
@@ -206,7 +206,8 @@ public class MemberDaoImpl implements MemberDao{
 		System.out.println(">>tempPw() 메소드 실행 originalPassword ---"+originalPassword);
 		Map<String ,Object> param = new HashMap<>();
 		String origin = originalPassword;
-		memberDto.setMemberPw(origin);
+		String encrypt = encoder.encode(origin);
+		memberDto.setMemberPw(encrypt);
 		param.put("memberId", memberDto.getMemberId());
 		param.put("memberPw",memberDto.getMemberPw());
 

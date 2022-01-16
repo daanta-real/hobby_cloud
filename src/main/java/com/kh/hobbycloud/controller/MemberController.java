@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -443,8 +444,8 @@ public class MemberController {
 			session.setAttribute("originalPassword", originalPassword);
 			service.sendTempPwMail(pwFind.getMemberEmail(),originalPassword);
 			//암호화 된 비밀번호를 DB에 저장
-			System.out.println("originalPassword : "  + originalPassword);
-			boolean result = memberDao.tempPw(memberDto, originalPassword);
+			System.out.println("hashedPassword : "  + hashedPassword);
+			boolean result = memberDao.tempPw(memberDto, hashedPassword);
 			System.out.println("result: " + result);
 			return "success";
 
@@ -549,6 +550,12 @@ public class MemberController {
 		model.addAttribute("memberDto", memberIdx);
 		memberDao.changeGradeLandlord(memberIdx);
 		return "redirect:/member/list";
+	}
+	
+	//파일삭제(ajax)
+	@DeleteMapping("/fileDelete")
+	public boolean fileDelete(@RequestParam int memberProfileIdx) {
+		return memberProfileDao.deleteAjax(memberProfileIdx);
 	}
 
 }
