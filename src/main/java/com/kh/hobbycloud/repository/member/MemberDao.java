@@ -15,7 +15,7 @@ public interface MemberDao {
 
 	// 단일조회(memberId)
 	MemberDto get(String memberId);
-	
+
 	//단일조회(memberIdx)
 	MemberDto getByIdx(Integer memberIdx);
 
@@ -79,6 +79,8 @@ public interface MemberDao {
 	List<MemberListVO> list();
 
 	List<MemberListVO> search(String column, String keyword);
+
+	boolean forcedDelete(Integer memberIdx);
 
 
 

@@ -34,11 +34,12 @@ public class MyMemberServiceImpl implements MyMemberService {
 	public List<LinkedHashMap<String, String>> list(MemberCriteria cri) {
 		List<MemberListVO> listOrg = memberService.list(cri);
 		List<LinkedHashMap<String, String>> listNew = new ArrayList<>();
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ Original list 목록: {}", listOrg);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ Original list 목록: {}개, {}", listOrg.size(), listOrg);
 		int count = 1;
 		for(MemberListVO listOne: listOrg) {
 			LinkedHashMap<String, String> map = new LinkedHashMap<>();
 			map.put("순", String.valueOf(count++));
+			map.put("targetIdx", String.valueOf(listOne.getMemberIdx()));
 			map.put("회원번호", String.valueOf(listOne.getMemberIdx()));
 			map.put("등급", listOne.getMemberGradeName());
 			map.put("ID", listOne.getMemberId());
@@ -49,7 +50,6 @@ public class MyMemberServiceImpl implements MyMemberService {
 			map.put("보유포인트", String.valueOf(listOne.getMemberPoint()));
 			map.put("지역", listOne.getMemberRegion());
 			map.put("성별", listOne.getMemberGender());
-			map.put("관심사", listOne.getLecCategoryName());
 			listNew.add(map);
 			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 완성된 Maps 목록: {}", map);
 		}
@@ -68,6 +68,15 @@ public class MyMemberServiceImpl implements MyMemberService {
 		map.put("memberProfileDto", memberProfileDto);
 		map.put("memberCategoryDto", memberCategoryDto);
 		return map;
+	}
+
+
+	@Override
+	public boolean delete(int memberIdx) {
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ MyMemberService.delete 진입: {}");
+		memberCategoryDao.delete(memberIdx);
+		memberProfileDao.delete(memberIdx);
+		return memberDao.forcedDelete(memberIdx);
 	}
 
 }

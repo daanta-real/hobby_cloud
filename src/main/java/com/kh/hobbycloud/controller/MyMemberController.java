@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hobbycloud.service.member.MemberService;
@@ -38,12 +39,13 @@ public class MyMemberController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ /my/member 진입");
 		List<LinkedHashMap<String, String>> list = myMemberService.list(cri);
 		model.addAttribute("list", list);
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 완성된 전체 Maps 목록: {}", list);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 완성된 전체 Maps 목록: {}개 - {}", list.size(), list);
 		MemberPageMaker pageMaker = new MemberPageMaker();
 		pageMaker.setCri(cri);
 		int count = memberService.listCount();
+		pageMaker.setTotalCount(count);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원목록 수: {} / 완성된 페이지네이션 정보: {}", count, pageMaker);
-		model.addAttribute("pageMaker",pageMaker);
+		model.addAttribute("pageMaker", pageMaker);
 		return "my/board";
 	}
 
@@ -70,7 +72,7 @@ public class MyMemberController {
 		model.addAttribute("memberDto", map.get("memberDto"));
 		model.addAttribute("memberProfileDto", map.get("memberProfileDto"));
 		model.addAttribute("memberCategoryDto", map.get("memberCategoryDto"));
-		return "my/update/member";
+		return "redirect:/my/member/";
 	}
 
 	@PostMapping("/update/{memberIdx}")
@@ -84,17 +86,18 @@ public class MyMemberController {
 		memberJoinVO.setMemberIdx(memberJoinVO.getMemberIdx());
 		memberService.edit(memberJoinVO, attach);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원 정보 업데이트 완료");
-		return "redirect:/my/member";
-	}
-/*
-	@GetMapping("/member/delete")
-	public String memberDelete(@RequestParam int memberIdx) {
-		MemberDto memberDto = new MemberDto();
-		memberDto.setMemberIdx(memberIdx);
-		sqlSession.update("member.update", memberIdx);
-		return "my/main";
+		return "redirect:/my/member/";
 	}
 
+	@GetMapping("/member/delete")
+	public String memberDelete(@RequestParam int memberIdx) {
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ /my/member/delete [GET] 진입:");
+		myMemberService.delete(memberIdx);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원 삭제 완료");
+		return "redirect:/my/member/";
+	}
+
+	/*
 	@RequestMapping("/lec/myLec")
 	public String myLecList() {
 		return "my/lec/myLec";

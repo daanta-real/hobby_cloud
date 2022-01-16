@@ -35,7 +35,8 @@
 		<div id="collapse2" class="accordion-collapse collapse"
 			aria-labelledby="heading2" data-bs-parent="#accordionSideMenu"
 			style="">
-			<div class="accordion-body px-3 py-2">강좌 관리</div>
+				<c:if test="${isAdmin}"><div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/member/">강좌 관리</a></div></c:if>
+				<div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/lec/">내 강좌</a></div>
 		</div>
 	</div>
 	<div class="accordion-item">

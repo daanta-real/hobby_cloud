@@ -117,7 +117,7 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.update("member.changeEmail", map);
 	}
 
-	
+
 
 	// 회원 탈퇴
 	@Override
@@ -143,6 +143,12 @@ public class MemberDaoImpl implements MemberDao{
 			return false;
 		}
 	}
+	//회원탈퇴 : 비밀번호 미요구 (관리자용)
+	@Override
+	public boolean forcedDelete(Integer memberIdx) {
+		int count = sqlSession.delete("member.delete", memberIdx);
+		return count > 0;
+	}
 
 
 	//tutor에서 이용할 등급 변경 기능
@@ -150,13 +156,13 @@ public class MemberDaoImpl implements MemberDao{
 	public void changeGradeTutor(int memberIdx) {
 		sqlSession.update("member.changeGradeTutor", memberIdx);
 	}
-	
+
 	//일반 회원으로 등급 변경
 	@Override
 	public void changeGradeNormal(int memberIdx) {
 		sqlSession.update("member.changeGradeNormal", memberIdx);
 	}
-	
+
 	//임대인 등급 변경 기능
 	@Override
 	public void changeGradeLandlord(int memberIdx) {
@@ -202,7 +208,7 @@ public class MemberDaoImpl implements MemberDao{
 	//임시 비밀번호 업데이트
 	@Override
 	public boolean tempPw(MemberDto memberDto,String originalPassword) {
-		
+
 		System.out.println(">>tempPw() 메소드 실행 originalPassword ---"+originalPassword);
 		Map<String ,Object> param = new HashMap<>();
 		String origin = originalPassword;
@@ -215,11 +221,11 @@ public class MemberDaoImpl implements MemberDao{
 		int result=sqlSession.update("member.tempPw",param);
 		return result>0;
 	}
-	
+
 	@Override
 	public List<MemberListVO> list() {
 		return sqlSession.selectList("member.list");
-	}	
+	}
 
 	@Override
 	public List<MemberListVO> list(MemberCriteria cri) {
@@ -227,7 +233,7 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
-	public int listCount() {		
+	public int listCount() {
 		return sqlSession.selectOne("member.listCount");
 	}
 
@@ -255,7 +261,7 @@ public class MemberDaoImpl implements MemberDao{
 		return result > 0;
 	}
 	// 특정 회원의 포인트를 특정 값으로 강제변경
-	@Override 
+	@Override
 	public boolean pointForceToValue(MemberDto memberDto) {
 		int result = sqlSession.update("member.pointForceToValue", memberDto);
 		return result > 0;

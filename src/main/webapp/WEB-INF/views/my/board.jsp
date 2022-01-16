@@ -59,15 +59,19 @@ window.addEventListener("load", function() {
 						<thead>
 							<tr class="table-danger">
 								<c:forEach items="${list.get(0)}" var="one">
-									<th scope="col" class="text-center align-middle text-nowrap">${one.key}</th>
+									<c:if test="${one.key != 'targetIdx'}">
+										<th scope="col" class="text-center align-middle text-nowrap">${one.key}</th>
+									</c:if>
 								</c:forEach>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach items="${list}" var="oneMap">
-								<tr class="cursor-pointer">
+								<tr class="cursor-pointer" onclick="location.href='${root}/my/member/detail/${oneMap.get('targetIdx')}';">
 									<c:forEach items="${oneMap}" var="one">
-										<td class="text-center align-middle text-nowrap"><a href="${root}/my/member/detail/${oneMap.get('회원번호')}">${one.value}</a></td>
+										<c:if test="${one.key != 'targetIdx'}">
+											<td class="text-center align-middle text-nowrap">${one.value}</td>
+										</c:if>
 									</c:forEach>
 								</tr>
 							</c:forEach>
@@ -80,13 +84,13 @@ window.addEventListener("load", function() {
 				<ul class="col-auto pagination pagination-sm m-0">
 					<c:if test="${pageMaker.startPage < pageMaker.endPage}">
 						<c:if test="${pageMaker.prev}">
-							<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}" >«</a></li>
+							<li class="page-item disabled"><a class="page-link" href="${root}/my/member/${pageMaker.makeQuery(pageMaker.startPage - 1)}" >«</a></li>
 						</c:if>
 							<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-								<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+								<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="${root}/my/member/${pageMaker.makeQuery(idx)}">${idx}</a></li>
 							</c:forEach>
 						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-							<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">»</a></li>
+							<li class="page-item"><a class="page-link" href="${root}/my/member/${pageMaker.makeQuery(pageMaker.endPage + 1)}">»</a></li>
 						</c:if>
 					</c:if>
 				</ul>

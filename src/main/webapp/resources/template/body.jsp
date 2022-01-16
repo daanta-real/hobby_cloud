@@ -58,10 +58,10 @@
 				</c:if>
 			</ul>
 
-			<form class="d-flex mt-2 mt-md-0">
-				<input class="form-control form-control-sm mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0" type="text" placeholder="Search">
-				<button class="btn btn-sm btn-secondary mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0" type="submit">Search</button>
-			</form>
+<!-- 			<form class="d-flex mt-2 mt-md-0"> -->
+<!-- 				<input class="form-control form-control-sm mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0" type="text" placeholder="Search"> -->
+<!-- 				<button class="btn btn-sm btn-secondary mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0" type="submit">Search</button> -->
+<!-- 			</form> -->
 			<c:choose>
 				<%-- 로그인했을 경우 내 회원정보 표시 --%>
 				<c:when test="${not empty sessionScope.memberId}">
@@ -81,9 +81,9 @@
 				<%-- 로그인하지 않았을 경우 ID/PW 입력창 표시 --%>
 				<c:otherwise>
 					<a href="${pageContext.request.contextPath}/member/idfindMail"
-						class="btn btn-sm btn-secondary mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0 text-white">ID찾기</a>
+						class="btn btn-sm btn-secondary mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0 text-white text-nowrap">ID찾기</a>
 					<a href="${pageContext.request.contextPath}/member/pwFindMail"
-						class="btn btn-sm btn-secondary mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0 text-white">PW찾기</a>
+						class="btn btn-sm btn-secondary mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0 text-white text-nowrap">PW찾기</a>
 					<form id="topLoginBox" class="d-flex mt-2 mt-md-0" action="${pageContext.request.contextPath}/member/login" method="post">
 						<input class="form-control form-control-sm mt-xs-2 mt-md-0 mx-xs-0 mx-sm-1 my-0" type="text" size=5
 							id="topLoginBoxMemberId" name="memberId" required class="form-input" placeholder="ID" />

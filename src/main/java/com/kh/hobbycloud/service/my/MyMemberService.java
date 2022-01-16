@@ -12,4 +12,6 @@ public interface MyMemberService {
 
 	Map<String, Object> detail(int memberIdx);
 
+	boolean delete(int memberIdx);
+
 }
