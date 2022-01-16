@@ -42,7 +42,6 @@ window.addEventListener("load", function() {
 	
 	// 이메일 찾기 버튼을 누르면, AJAX로 임시 비번 발송을 요청하는 함수
 	$("#findbtn").click(function(e){
-			alert("작동시작");
 			
 		    // 이벤트 버블링 막기
 			e.stopImmediatePropagation();
@@ -78,8 +77,6 @@ window.addEventListener("load", function() {
 				},
 		        success : function(resp){
 		        	console.log()
-		        	alert("ajax 성공!! ");
-		        	alert(resp);
 		        	console.log("resp : " + resp);
 		        	if(resp == "success") {
 		        		$('.modal').css('opacity','1').css('display','block');

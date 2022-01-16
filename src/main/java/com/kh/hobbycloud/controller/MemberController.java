@@ -307,7 +307,7 @@ public class MemberController {
 		
 		memberCategoryDao.delete(memberIdx);;
 		memberProfileDao.delete(memberIdx);
-		boolean result = memberDao.quit(memberIdx, memberPw);
+		boolean result = memberDao.delete(memberIdx, memberPw);
 		if(result) {
 			session.removeAttribute("memberIdx");
 			session.removeAttribute("memberId");

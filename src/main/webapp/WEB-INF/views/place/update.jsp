@@ -267,14 +267,58 @@ function renderMap() {
 					<div class="row mb-4">
 						<label>카테고리</label>
 						<div class="input-group flex-nowrap grayInputGroup p-0">
-							<select name="lecCategoryName" required class="form-control p-1 border-radius-all-25">
+						<select name="lecCategoryName" required class="lecCategoryName form-input p-1 border-radius-all-25 form-control">
+							<c:if test="${placeVO.lecCategoryName eq '운동'}">						
+								<option value="운동" selected>운동</option>
+								<option value="요리">요리</option>
+								<option value="문화">문화</option>
+								<option value="예술">예술</option>
+								<option value="IT">IT</option>
+							</c:if>
+							<c:if test="${placeVO.lecCategoryName eq '운동'}">
+								<option value="운동" selected>운동</option>
+								<option value="요리">요리</option>
+								<option value="문화">문화</option>
+								<option value="예술">예술</option>
+								<option value="IT">IT</option>
+							</c:if>
+							<c:if test="${placeVO.lecCategoryName eq '요리'}">
+								<option value="운동">운동</option>
+								<option value="요리" selected>요리</option>
+								<option value="문화">문화</option>
+								<option value="예술">예술</option>
+								<option value="IT">IT</option>
+							</c:if>
+							<c:if test="${placeVO.lecCategoryName eq '문화'}">
+								<option value="운동">운동</option>
+								<option value="요리">요리</option>
+								<option value="문화" selected>문화</option>
+								<option value="예술">예술</option>
+								<option value="IT">IT</option>
+							</c:if>
+							<c:if test="${placeVO.lecCategoryName eq '예술'}">
+								<option value="운동">운동</option>
+								<option value="요리">요리</option>
+								<option value="문화">문화</option>
+								<option value="예술"selected>예술</option>
+								<option value="IT">IT</option>
+							</c:if>
+							<c:if test="${placeVO.lecCategoryName eq 'IT'}">
+								<option value="운동">운동</option>
+								<option value="요리">요리</option>
+								<option value="문화">문화</option>
+								<option value="예술">예술</option>
+								<option value="IT" selected>IT</option>
+							</c:if>
+							<c:if test="">		
 								<option value="" class="">선택하세요</option>
 								<option value="운동">운동</option>
 								<option value="요리">요리</option>
 								<option value="문화">문화</option>
 								<option value="예술">예술</option>
 								<option value="IT">IT</option>
-								<option value="directly">기타</option>
+								<option value="directly">직접입력</option>							
+							</c:if>
 						</select>
 					</div>
 				</div>
@@ -330,9 +374,9 @@ function renderMap() {
 				<div class="row mb-4">
 	      			<label for="placeForm_placePhone" class="form-label mb-0">핸드폰 번호</label>
 					<div class="input-group flex-nowrap grayInputGroup p-0">
-	 						<input type="text" id="phone1" name="phone1" maxlength=3 required placeholder="000" class="phone form-control border-radius-all-25"> &nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
-							<input type="text" id="phone2" name="phone2" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
-							<input type="text" id="phone3" name="phone3" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">	
+	 						<input type="text" id="phone1" maxlength=3 required placeholder="000" class="phone form-control border-radius-all-25"> &nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
+							<input type="text" id="phone2" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
+							<input type="text" id="phone3" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">	
 							<input type="hidden" name="placePhone" id="phoneNum">
 					</div>
 				</div>

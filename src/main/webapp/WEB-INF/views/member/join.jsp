@@ -51,7 +51,6 @@
 	});
 
 	$("#btnclick").click(function () {
-		alert("Disabled 처리");
 		$("#btnclick").prop("disabled", true);
 	});
 
@@ -88,7 +87,6 @@
 			KeyCheck &&
 			checkbox
 		) {
-			alert("Disabled 해제 처리");
 			$("#mailComm").html("");
 			$("#btnclick").prop("disabled", false);
 			$("#btnclick").css("color", "white");
@@ -429,7 +427,7 @@
 			url: "sendMail",
 			data: { email: mailAddr },
 			success: function (resp) {
-				alert("메일이 성공적으로 보내졌습니다.  " + resp);
+				alert("메일이 성공적으로 보내졌습니다. ");
 				$("#reKeyCheck").click(function () {
 					if (resp == $("#reKey").val()) {
 						alert("인증이 완료되었습니다.");
@@ -547,7 +545,7 @@
 					<div class="row mb-4">
 						 <label for="joinForm_memberRegion" class="form-label mb-0">주소</label>
 						 <div class="input-group flex-nowrap grayInputGroup p-0">
-							<input name="memberRegion" id="searchForm_memberNick" type="text" class="form-control border-radius-all-25" placeholder="주소" value="">
+							<input name="memberRegion" id="searchForm_memberNick" type="text" readonly class="form-control border-radius-all-25" placeholder="주소" value="">
 							&nbsp;&nbsp;
 						 	<button type="button" class="btn btn-outline-primary mt-1 findRegion border-radius-all-25">주소 찾기</button>
 						 </div>
@@ -638,7 +636,7 @@
 								<span class="check-text">개인정보수집 및 이용동의</span></a> <span class="check-text-ob">(필수)</span>
 							</div>
 						</div>
-						<br>						
+						<br>				
 				<div class="row mb-4 justify-content-center">
 					<button type="submit" class="btn btn-danger col-sm-12 col-md-9 col-xl-8 border-radius-all-25 form-control" id="btnclick">가입</button>
 				</div>

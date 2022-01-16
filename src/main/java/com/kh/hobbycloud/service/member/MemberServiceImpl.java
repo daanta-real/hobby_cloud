@@ -110,7 +110,33 @@ public class MemberServiceImpl implements MemberService{
 	//회원 수정
 	@Override
 	public void edit(MemberJoinVO memberJoinVO, MultipartFile attach) throws IllegalStateException, IOException {
-		log.debug("======================== MemberService.edit(memberJoinVO)가 실행되었습니다.");		
+		log.debug("======================== MemberService.edit(memberJoinVO)가 실행되었습니다.");
+		//memberDto
+		MemberDto memberDto = new MemberDto();					
+		memberDto.setMemberIdx(memberJoinVO.getMemberIdx());
+		memberDto.setMemberId(memberJoinVO.getMemberId());
+		memberDto.setMemberPw(memberJoinVO.getMemberPw());
+		memberDto.setMemberNick(memberJoinVO.getMemberNick());
+		memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
+		memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
+		memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
+		memberDto.setMemberGender(memberJoinVO.getMemberGender());
+		log.debug("======================== MemberService.edit() 실시. DTO = {}", memberJoinVO);
+		//memberDto를 테이블 업데이트
+		boolean isSucceed = memberDao.changeInformation(memberDto);
+		
+		log.debug("======================== MemberService.edit() 실시 완료. 결과 = {}", isSucceed);
+		
+		//관심카테고리 테이블 
+		MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
+		memberCategoryDto.setLecCategoryName(memberJoinVO.getLecCategoryName());
+		memberCategoryDto.setMemberIdx(memberJoinVO.getMemberIdx());
+		log.debug("회원 수정 카테고리ㅡㅡㅡㅡㅡㅡㅡㅡㅡmemberCategoryDto "+memberCategoryDto.toString());
+		//관심분야 DB에 저장
+		boolean isSucceedCt = memberCategoryDao.update(memberCategoryDto);
+		log.debug("DTO DATA AFTR = {}", memberCategoryDto);
+		memberCategoryDao.update(memberCategoryDto);			
+		
 		//검사값 false를 변수에 담고
 		boolean check = false;
 		//파일이 있는지 없는 체크
@@ -144,33 +170,7 @@ public class MemberServiceImpl implements MemberService{
 					memberProfileDto.setMemberProfileUploadname(multipartFile.getOriginalFilename());
 					memberProfileDto.setMemberProfileType(multipartFile.getContentType());
 					memberProfileDto.setMemberProfileSize(multipartFile.getSize());
-					memberProfileDao.save(memberProfileDto, multipartFile);					
-						//memberDto
-					MemberDto memberDto = new MemberDto();
-					
-					memberDto.setMemberIdx(memberJoinVO.getMemberIdx());
-					memberDto.setMemberId(memberJoinVO.getMemberId());
-					memberDto.setMemberPw(memberJoinVO.getMemberPw());
-					memberDto.setMemberNick(memberJoinVO.getMemberNick());
-					memberDto.setMemberEmail(memberJoinVO.getMemberEmail());
-					memberDto.setMemberPhone(memberJoinVO.getMemberPhone());
-					memberDto.setMemberRegion(memberJoinVO.getMemberRegion());
-					memberDto.setMemberGender(memberJoinVO.getMemberGender());
-					log.debug("======================== MemberService.edit() 실시. DTO = {}", memberJoinVO);
-					//memberDto를 테이블 업데이트
-					boolean isSucceed = memberDao.changeInformation(memberDto);
-					
-					log.debug("======================== MemberService.edit() 실시 완료. 결과 = {}", isSucceed);
-					
-					//관심카테고리 테이블 
-					MemberCategoryDto memberCategoryDto = new MemberCategoryDto();
-					memberCategoryDto.setLecCategoryName(memberJoinVO.getLecCategoryName());
-					memberCategoryDto.setMemberIdx(memberJoinVO.getMemberIdx());
-					log.debug("회원 수정 카테고리ㅡㅡㅡㅡㅡㅡㅡㅡㅡmemberCategoryDto "+memberCategoryDto.toString());
-					//관심분야 DB에 저장
-					boolean isSucceedCt = memberCategoryDao.update(memberCategoryDto);
-					log.debug("DTO DATA AFTR = {}", memberCategoryDto);
-					memberCategoryDao.update(memberCategoryDto);					
+					memberProfileDao.save(memberProfileDto, multipartFile);							
 			}
 		}
 

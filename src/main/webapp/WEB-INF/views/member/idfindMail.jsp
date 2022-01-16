@@ -54,8 +54,6 @@ function stopEvent() {
     
 $(function(){
 	$("#findbtn").click(function(){
-		alert("작동시작");
-			
 	    // 이벤트 버블링 막기
 	    stopEvent();
 		    
@@ -70,8 +68,6 @@ $(function(){
 		        data : {"memberNick" : memberNick, "memberEmail" : memberEmail},
 		        success : function(resp){
 		        	console.log()
-		        	alert("ajax 성공!!");
-		        	alert(resp);
 		        	console.log("resp : " + resp);
 		        	
 	        		$(".modal-detail").text("");
