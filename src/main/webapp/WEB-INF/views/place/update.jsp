@@ -354,30 +354,17 @@ function renderMap() {
 					<input type="number" name="placeMax" required class="form-control" value="${placeVO.placeMax}">
 					</div>
 				</div>
-				<div class="row mb-4">
-			    	<label for="joinForm_placeEmail" class="form-label mb-0">이메일</label>
+			    <div class="row mb-4">
+			    	<label>이메일</label>
 			    	<div class="input-group flex-nowrap grayInputGroup p-0">
-						<input type="text" class="idMail form-control border-radius-all-25" name="email_id"  required>&nbsp;@&nbsp;
-						<input type="text" class="inputMail form-control border-radius-all-25" name="email_domain" required readonly>&nbsp;
-						<select class="emailBox form-control border-radius-all-25" name="emailBox" required>
-							<option>이메일 선택</option>
-							<option value="naver.com">naver.com</option>
-							<option value="gmail.com">gmail.com</option>
-							<option value="daum.net">daum.net</option>
-							<option value="hanmail.net">hanmail.net</option>
-							<option value="nate.com">nate.com</option>
-							<option value="directly">직접입력</option>
-						</select>
-						<input type="hidden" name="placeEmail" class="mail_input" >
+						<input type="text" class="form-control" name="placeEmail"  value="${placeVO.placeEmail}"required>
 					</div>
 				</div>
+				
 				<div class="row mb-4">
-	      			<label for="placeForm_placePhone" class="form-label mb-0">핸드폰 번호</label>
+	      			<label>핸드폰 번호</label>
 					<div class="input-group flex-nowrap grayInputGroup p-0">
-	 						<input type="text" id="phone1" maxlength=3 required placeholder="000" class="phone form-control border-radius-all-25"> &nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
-							<input type="text" id="phone2" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;
-							<input type="text" id="phone3" maxlength=4  required placeholder="0000" class="phone form-control border-radius-all-25">	
-							<input type="hidden" name="placePhone" id="phoneNum">
+	 						<input type="text" name="placePhone" maxlength=11 required placeholder="00000000000" class="form-control" value="${placeVO.placePhone}">
 					</div>
 				</div>
 				<div class="row mb-4">
