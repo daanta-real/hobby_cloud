@@ -95,12 +95,12 @@ var size = 10;
 // 모달창 더보기 버튼 클릭시 내용을 더 불러와 보여주는 함수 
 function showMore() {
 	console.log("더보기 버튼 클릭");
-	loadPlace(page,size);
-	page++;
+	loadPlace(page++,size);
 }
 
 //loadPlace
 function loadPlace(pageValue,sizeValue){
+	console.log(pageValue + "페이지 불러옴");
 	$.ajax({
 		url : "${pageContext.request.contextPath}/gatherData/listPlace", 
 		type : "get",
@@ -268,6 +268,7 @@ window.addEventListener("load", function() {
 
 	// 모달 창 초기화
 	function modalInitialize() {
+		page = 1;
 		modalInit({
 			head:
 				'장소를 선택해 주세요.',
@@ -337,14 +338,17 @@ function setLoc(el) {
 <script>
 //radio 선택에 따라 파라미터 비활성화 시키기
 $(function(){
-	$("#showList").click(function(){
-		$(".placeList").attr("disabled", false);		
-		$(".mapSearch").attr("disabled", true);
+	function truncatePlaceInfoes() {
+		$(".placeList").val();		
+		$(".mapSearch").val();
+	}
+	$("#showList").click(function() {
+		
+		truncatePlaceInfoes();
 	});
-	
-	$("#radioPlaceMap").click(function(){
-		$(".mapSearch").attr("disabled", false);
-		$(".placeList").attr("disabled", true);
+	$("#radioPlaceMap").click(function() {
+		modal.hide();
+		truncatePlaceInfoes();
 	});
 });
 </script>
@@ -435,8 +439,6 @@ $(function(){
 						<label>장소 목록</label>
 						<input type="text" name="lecLocRegion" class="form-input placeList" />
 						<input type="hidden" name="placeIdx" class="placeList">
-						<label><input type="hidden" name="lecLocLatitude" class="placeList"></label>
-						<label><input type="hidden" name="lecLocLongitude" class="placeList"></label>
 					</div>			
 				
 					<div class="row p-2 bg-warning rounded container layerPlaceDIVs d-none" data-layerType="map">
@@ -444,9 +446,10 @@ $(function(){
 						<div id="map" class="md-3"></div>
 						<label>지역<input type="text" name="lecLocRegion" class="mapSearch"></label>
 						<input type="hidden" name="placeIdx" class="mapSearch">
-						<label><input type="hidden" name="lecLocLatitude" class="mapSearch"></label>
-						<label><input  type="hidden" name="lecLocLongitude" class="mapSearch"></label>
 					</div>
+					
+					<input type="hidden" name="lecLocLatitude">
+					<input type="hidden" name="lecLocLongitude">
 
 					
 					<div class="row mt-4 mb-4">

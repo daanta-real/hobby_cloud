@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.entity.pay.LecMyDto;
@@ -35,29 +36,37 @@ public class LecMyController {
 
 	// 강좌 구매를 선택했을 때, 구매 의사를 확인하는 페이지
 	@GetMapping("/confirm/{lecIdx}")
-	public String confirm(@PathVariable int lecIdx, HttpSession session, Model model) {
+	public String confirm(@PathVariable int lecIdx, HttpSession session, Model model, RedirectAttributes ra) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /myLec/confirm/{} (GET) 강좌 구매 확인 페이지 진입", lecIdx);
 		
 		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
 			return "redirect:/member/login";//로그인 화면으로 리다이렉트
 		}	
+		LecDetailVO lecDetailVO = lecDao.get(lecIdx);//
+		int count = lecMyDao.getNowCount(lecIdx);
 		
-		// 회원 현재 보유 포인트를 뷰로 넘김
-		MemberDto memberDto = memberDao.getByIdx((int) session.getAttribute("memberIdx"));
+		if(count < lecDetailVO.getLecHeadCount()) {//수강 신청 가능하면
+			// 회원 현재 보유 포인트를 뷰로 넘김
+			MemberDto memberDto = memberDao.getByIdx((int) session.getAttribute("memberIdx"));
 
-		int currentPoint = memberDto.getMemberPoint();
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 포인트 정보를 조회합니다. 조회 결과: {}", currentPoint);
-		model.addAttribute("currentPoint", currentPoint);
+			int currentPoint = memberDto.getMemberPoint();
+			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 포인트 정보를 조회합니다. 조회 결과: {}", currentPoint);
+			model.addAttribute("currentPoint", currentPoint);
 
-		// 구매 대상 강좌 정보를 뷰로 넘김
-		LecDetailVO lecDetailVO = lecDao.get(lecIdx);
-		model.addAttribute("lecDetailVO", lecDetailVO);
-		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌 정보를 조회합니다. 조회 결과: {}", lecDetailVO);
+			// 구매 대상 강좌 정보를 뷰로 넘김
+//			LecDetailVO lecDetailVO = lecDao.get(lecIdx);
+			model.addAttribute("lecDetailVO", lecDetailVO);
+			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 강좌 정보를 조회합니다. 조회 결과: {}", lecDetailVO);
 
-		// lecIdx를 세션에 저장 (세션에 저장하는 게 좋을 것 같음 - 정보 변조 방지)
-		session.setAttribute("buyTargetLecIdx", lecIdx);
+			// lecIdx를 세션에 저장 (세션에 저장하는 게 좋을 것 같음 - 정보 변조 방지)
+			session.setAttribute("buyTargetLecIdx", lecIdx);
 
-		return "lecMy/confirm_buy";
+			return "lecMy/confirm_buy";
+		}	
+		else {
+			ra.addFlashAttribute("msg", "인원수 초과로 강좌 신청이 불가능합니다");
+			return "redirect:/lec/detail/"+lecIdx;//신청 실패 페이지로 리다이렉트
+		}
 	}
 
 	// 강좌 구매 실행 페이지

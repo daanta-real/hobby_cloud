@@ -208,10 +208,10 @@
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecHeadCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecLocRegion}</td>
 									<c:if test="${memberGrade == '관리자'} and ${memberIdx != null}">
-									<td class="text-center align-middle text-nowrap">
+										<td class="text-center align-middle text-nowrap">
 											<a href="edit/${lecListVO.lecIdx}">수정</a>
 											<a href="delete/${lecListVO.lecIdx}">삭제</a>
-									</td>
+										</td>
 									</c:if>
 								</tr>
 							</c:forEach>
@@ -219,19 +219,21 @@
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
 <%-- 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td> --%>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
-									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/lecFile/${lecListVO.lecFileIdx}" width="10%"></td>
+									<td class="text-center align-middle text-nowrap p-0 tableImgBox">
+										<img src="${root}/lec/lecFile/${lecListVO.lecFileIdx}" class="m-0 p-0 tableImg">
+									</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecName}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${lecListVO.lecPrice}" pattern="#,###" /></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecContainsCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecHeadCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecLocRegion}</td>
-									<td class="text-center align-middle text-nowrap">
-										<c:if test="${memberGrade == admin}">
+									<c:if test="${memberGrade == '관리자'} and ${memberIdx != null}">
+										<td class="text-center align-middle text-nowrap">
 											<a href="edit/${lecListVO.lecIdx}">수정</a>
 											<a href="delete/${lecListVO.lecIdx}">삭제</a>
-										</c:if>
-									</td>
+										</td>
+									</c:if>
 								</tr>
 							</c:forEach>
 						</tbody>

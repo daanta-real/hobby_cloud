@@ -213,7 +213,7 @@ function sendForm(e) {
 		headers: { "Content-type": "multipart/form-data" }
 	}).then((response) => {
 		console.log("성공.\n", response.data);
-		//location.href = response.data;
+		location.href = response.data;
 	}).catch((response) => {
 		console.log("에러");
 		console.log(response);
