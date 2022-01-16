@@ -49,7 +49,7 @@ public class NoticeDataController {
 		}
 		
 		@ResponseBody
-		@PostMapping("/insert")
+		@PostMapping("/write")
 		public String insert(@ModelAttribute NoticeFileVO noticeFileVO,HttpSession session) throws IllegalStateException, IOException {
 			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶NoticeDataController.insert 실행");
 			int memberIdx = (int) session.getAttribute("memberIdx");
