@@ -112,9 +112,11 @@ class="image image-round image-border">
 <template id="petitionsVO-template">
 	<div class="card mb-2 border border-1 border-secondary p-0 item">
 		<div class="card-header d-flex align-items-center p-1 px-2">
-			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
+			<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" 
+			src="${pageContext.request.contextPath}/member/profile/{{memberIdx}}"
+			style="width:2.3rem; height:2.3rem;"/>
 			<span class="memberNick">{{memberNick}}</span>
-			<span class="memberReplyRegistered ms-auto gatherReplyDate">{{petitionsReplyRegistered}}</span>
+			<span class="memberReplyRegistered ms-auto petitionsReplyRegistered">{{petitionsReplyRegistered}}</span>
 		</div>  
 		<div class="card-body position-relative p-1 px-2">
 			<div class="card-text p-1 px-3 gatherReplyDetail">{{petitionsReplyDetail}}</div>
@@ -249,7 +251,7 @@ class="image image-round image-border">
 					template = template.replace("{{memberNick}}",resp[i].memberNick);
 					template = template.replace("{{petitionsReplyDetail}}",resp[i].petitionsReplyDetail);
 					
-// 					var time = resp[i].petitionsReplyRegistered;
+ //					var time = resp[i].petitionsReplyRegistered;
 // 					var date =new Date(time);
 					template = template.replace("{{petitionsReplyRegistered}}",resp[i].petitionsReplyRegistered);  
 					var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';

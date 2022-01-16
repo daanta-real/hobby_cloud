@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.hobbycloud.entity.gather.GatherFileDto;
 import com.kh.hobbycloud.entity.notice.NoticeDto;
 import com.kh.hobbycloud.entity.notice.NoticeFileDto;
 import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.repository.notice.NoticeFileDao;
 import com.kh.hobbycloud.service.notice.NoticeService;
 import com.kh.hobbycloud.vo.gather.Criteria;
+import com.kh.hobbycloud.vo.gather.GatherVO;
 import com.kh.hobbycloud.vo.gather.PageMaker;
 import com.kh.hobbycloud.vo.notice.NoticeVO;
 
@@ -43,6 +45,8 @@ public class NoticeController {
 	
 	@Autowired
 	private NoticeFileDao noticeFileDao;
+	
+	
 	
 	
 	
@@ -217,7 +221,6 @@ public class NoticeController {
 	// 글 수정 폼 페이지/update/123
 		@GetMapping("/edit/{noticeIdx}")
 		public String update(@PathVariable int noticeIdx, Model model) {
-
 			// 데이터 획득: VO 및 DTO
 			NoticeVO noticeVO = noticeDao.get(noticeIdx);
 
@@ -225,22 +228,29 @@ public class NoticeController {
 			List<NoticeFileDto> list = noticeFileDao.getIdx(noticeIdx);
 			model.addAttribute("NoticeVO", noticeVO);
 			model.addAttribute("list", list);
+			
+			List<NoticeFileDto> fileList = noticeFileDao.getIdx(noticeIdx);
+	
+			model.addAttribute("fileList", fileList); 
 
-			return "edit/update";
+			return "notice/edit";
 		}
-		// 글 수정 실시
+		/*
+		//글 수정 실시
 		@PostMapping("/edit/{noticeIdx}")
 		public String update2(@ModelAttribute NoticeVO noticeVO,HttpSession session) throws IllegalStateException, IOException {
 
 			// 수정
 			int memberIdx = (int)session.getAttribute("memberIdx");
 			noticeVO.setMemberIdx(memberIdx);
-			noticeService.edit(noticeVO);	
+			//noticeService.edit(noticeVO);	
+			noticeDao.edit(noticeVO);
 			System.out.println("수정"+noticeVO);
 			int noticeIdx = noticeVO.getNoticeIdx();
 			return "redirect:/notice/detail/" + noticeIdx;
 			
 		}
+		*/
 	
 	
 	
