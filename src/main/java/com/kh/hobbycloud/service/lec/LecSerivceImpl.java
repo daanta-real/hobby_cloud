@@ -13,6 +13,7 @@ import com.kh.hobbycloud.entity.lec.LecFileDto;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.repository.lec.LecLikeDao;
+import com.kh.hobbycloud.repository.tutor.TutorDao;
 import com.kh.hobbycloud.vo.lec.LecCriteria;
 import com.kh.hobbycloud.vo.lec.LecCriteriaSearch;
 import com.kh.hobbycloud.vo.lec.LecEditVO;
@@ -49,7 +50,7 @@ public class LecSerivceImpl implements LecService{
 		log.debug("카운트:{}",count++);
 		lecDto.setLecIdx(lecIdx);
 		log.debug("카운트:{}",count++);
-		lecDto.setTutorIdx(44);//
+		lecDto.setTutorIdx(lecRegisterVO.getTutorIdx());
 		log.debug("카운트:{}",count++);
 		lecDto.setLecCategoryName(lecRegisterVO.getLecCategoryName());
 		log.debug("카운트:{} / 이제 이거 넣을거야 {}",count++, lecRegisterVO.getPlaceIdx());
