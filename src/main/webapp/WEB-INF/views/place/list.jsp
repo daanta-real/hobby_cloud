@@ -113,7 +113,7 @@ window.addEventListener("load", function() {
     	<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
     </c:if> 
   </ul>
-  <a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/gather/insert">글쓰기</a>
+  <a class="col-auto btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/place/register">등록하기</a>
 </nav>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->

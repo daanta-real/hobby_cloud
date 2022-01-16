@@ -75,7 +75,7 @@ window.addEventListener("load", function() {
 							<c:forEach var="MemberListVO" items="${list}">
 								<tr class="cursor-pointer">
 									<td class="text-center align-middle text-nowrap">${MemberListVO.memberIdx}</td>
-									<td class="text-center align-middle text-nowrap"><a href="${pageContext.request.contextPath}/member/mypage/${MemberListVO.memberId}">${MemberListVO.memberId}</a></td>
+									<td class="text-center align-middle text-nowrap"><a href="${pageContext.request.contextPath}/member/mypage/${MemberListVO.memberIdx}">${MemberListVO.memberId}</a></td>
 									<td class="text-center align-middle text-nowrap">${MemberListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">${MemberListVO.memberRegistered}</td>
 									<td class="text-center align-middle text-nowrap">${MemberListVO.memberGradeName}</td>

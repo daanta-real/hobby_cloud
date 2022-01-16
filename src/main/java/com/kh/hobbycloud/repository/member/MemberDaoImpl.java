@@ -131,6 +131,18 @@ public class MemberDaoImpl implements MemberDao{
 			return false;
 		}
 	}
+	//회원탈퇴 : 비밀번호 null
+	@Override
+	public boolean delete(Integer memberIdx, String memberPw) {
+		MemberDto findDto = sqlSession.selectOne("member.getbyIdx", memberIdx);
+		if(encoder.matches(memberPw, findDto.getMemberPw())) {
+			int count = sqlSession.delete("member.delete", memberIdx);
+			return count > 0;
+		}
+		else {
+			return false;
+		}
+	}
 
 
 	//tutor에서 이용할 등급 변경 기능
@@ -138,9 +150,17 @@ public class MemberDaoImpl implements MemberDao{
 	public void changeGradeTutor(int memberIdx) {
 		sqlSession.update("member.changeGradeTutor", memberIdx);
 	}
+	
+	//일반 회원으로 등급 변경
 	@Override
 	public void changeGradeNormal(int memberIdx) {
 		sqlSession.update("member.changeGradeNormal", memberIdx);
+	}
+	
+	//임대인 등급 변경 기능
+	@Override
+	public void changeGradeLandlord(int memberIdx) {
+		sqlSession.update("member.changeGradeLandlord", memberIdx);
 	}
 
 

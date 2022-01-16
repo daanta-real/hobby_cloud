@@ -101,7 +101,6 @@ window.addEventListener("load", function() {
 		        data : {"memberEmail" : memberEmail},
 		        success : function(resp){
 		        	if(resp == "success") {
-		        		alert("이메일 수정이 성공적으로 진행되었습니다.");
 		        		$('.modal').css('opacity','1').css('display','block');
 		        		$(".modal-detail").text("");
 				        $(".modal-detail").html("Email이 정상적으로 수정되었습니다.");
@@ -132,7 +131,6 @@ window.addEventListener("load", function() {
 //이메일 인증
 
 	function sendMail() {	
-		alert("작동시작");
 			
 		var mailAddr = $(".idMail").val() +"@"+ $(".inputMail").val();
 		
@@ -141,15 +139,12 @@ window.addEventListener("load", function() {
 		        url : "sendMail",
 		        data : {"email" : mailAddr},
 		        success : function(resp){
-		        	alert("메일이 성공적으로 보내졌습니다."+resp);
 		        	$("#reKeyCheck").click(function(){
 		        		if(resp == $("#reKey").val()) {
-		        			alert("인증 완료");
 						
 		            		$("#findbtn").prop("disabled", false);
 		    		        $("#findbtn").css("color", "black");
 		            	} else {
-		            		alert("인증번호가 다릅니다. 다시 인증해주세요");
 		            		$("#reKey").focus();
 		            		$("#findbtn").prop("disabled", true);
 		    		        $("#findbtn").css("color", "gray");
@@ -157,7 +152,6 @@ window.addEventListener("load", function() {
 		        	});
 		        },
 				error : function(jqXHR, textStatus, errorThrown){
-					alert("메일보내기 실패 다시 시도해주세요");
 					
 				}
 			})
@@ -284,7 +278,6 @@ window.addEventListener("load", function() {
             </div>
         </nav>
 		<nav class="row p-0 pt-4 d-flex justify-content-end">
-            <button class="button reser clear col-auto btn btn-sm btn-primary" onclick="location.href='login'">로그인</button>
             <button class="button reser clear col-auto btn btn-sm btn-secondary mx-2" onclick="location.href='edit'">뒤로가기</button>
          </nav>
 		</div>   

@@ -120,9 +120,14 @@
 		delete member WHERE member_idx = #{memberIdx}
 	</delete>
 	
+	<update id="delete" parameterType="int">
+		UPDATE member SET member_pw = null
+		WHERE member_idx = #{memberIdx}	
+	</update>
+	
 
 	<!-- 일반회원을 강사로 -->	
-	<update id="changeGradeTutor" parameterType="int">
+	<update id="changeGradeTutor" parameterType="memberDto">
 		update member set
 		member_grade_name = '강사'
 		where member_idx = #{memberIdx}
@@ -132,6 +137,13 @@
 	<update id="changeGradeNormal" parameterType="int">
 		update member set
 		member_grade_name = '회원'
+		where member_idx = #{memberIdx}
+	</update>
+	
+	<!-- 일반회원을 임대인으로 -->	
+	<update id="changeGradeLandlord" parameterType="int">
+		update member set
+		member_grade_name = '임대인'
 		where member_idx = #{memberIdx}
 	</update>
 

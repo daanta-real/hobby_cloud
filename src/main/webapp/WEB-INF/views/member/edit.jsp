@@ -21,8 +21,19 @@ window.addEventListener("load", function() {
 	// 파일 input 태그에 새 파일이 첨부되었을 때 이미지 모습을 보여준다.
 	document.getElementById("profileImageInput").addEventListener("change", function(e) {
 		// 접수된 파일(들) 전송 정보 객체를 이벤트 객체에서 캐냄
-		renderImageFromFile(e.target.files[0], document.getElementById("profileImageOutput"));
+		renderImageFromFile(e.target.files[0], document.getElementById("profileImageOutput"));		
 	})
+	
+	$("#btnclick").click(function(){
+		let memberPhone = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
+		$('input[name="memberPhone"]').val(memberPhone);
+		console.log(
+				"합해진 핸드폰 번호 memberPhone : " +
+					$("#phone1").val() +
+					$("#phone2").val() +
+					$("#phone3").val()
+			);
+	})	
 	
 	// 비밀번호 동일한지 여부
 	 $("#pwch").keyup(function(){
@@ -82,13 +93,7 @@ window.addEventListener("load", function() {
 	let phone = '${memberDto.memberPhone}';
 	$('input[name="phone1"]').val(phone.substr(0,3));
 	$('input[name="phone2"]').val(phone.substr(3,4));
-	$('input[name="phone3"]').val(phone.substr(7,4));
-	
-	$("#btnclick").click(function(){
-		let phone = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
-		$('input[name="phone"]').val(phone);
-	})
-	
+	$('input[name="phone3"]').val(phone.substr(7,4));	
 /* 	let lecCategoryName = '${memberCategoryDto.lecCategoryName}';
 	$("select[name=lecCategoryName]").val(lecCategoryName);
 	$("select[name=lecCategoryName]" option:selected).text(lecCategoryName); 
@@ -118,6 +123,7 @@ function deleteFile(memberProfileIdxValue){
 		}
 	});
 }
+
 </script>
 </HEAD>
 <BODY>
@@ -174,7 +180,7 @@ function deleteFile(memberProfileIdxValue){
 						<div>
 							<span>${memberDto.memberEmail}</span>
 							<input type="button" id="emailCheck" class="adCheck" value="메일변경하기" onclick="location.href='updateMail'">
-						</div>
+						</div> 
 					</div>
 					<div class="form-group mb-4 col-12 container">
 						<label class="row form-label mb-0">핸드폰 번호</label>
@@ -182,7 +188,7 @@ function deleteFile(memberProfileIdxValue){
 							<div class="col-3"><input name="phone1" type="text" class="form-control col-4" maxlength="3" placeholder="000"/></div>
 							<div class="col-4"><input name="phone2" type="text" class="form-control col-4" maxlength="4" placeholder="0000" /></div>
 							<div class="col-4"><input name="phone3" type="text" class="form-control col-4" maxlength="4" placeholder="0000" /></div>
-							<input type="hidden" id="phoneNum" name="phone">
+							<input type="hidden" id="phoneNum" name="memberPhone">
 						</div>
 						<div id="phComm" class="row fs-6"></div>
 					</div>
