@@ -1,0 +1,216 @@
+<mxfile host="65bd71144e">
+    <diagram id="wWDEBk1oxjoXnhqujuZg" name="페이지-1">
+        <mxGraphModel dx="1041" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="40" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;gradientColor=#ffd966;" vertex="1" parent="1">
+                    <mxGeometry x="664" y="290" width="270" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;lt;신규 첨부파일의 편집&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="764" y="266" width="216" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;gradientColor=#ffd966;" vertex="1" parent="1">
+                    <mxGeometry x="376" y="290" width="270" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="2" target="7">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1024" y="260" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="12" value="&lt;span style=&quot;font-size: 12px ; background-color: rgb(248 , 249 , 250)&quot;&gt;글 내용&lt;br&gt;기존&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;font-size: 12px ; background-color: rgb(248 , 249 , 250)&quot;&gt;첨부파일 정보&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="11">
+                    <mxGeometry x="-0.21" y="3" relative="1" as="geometry">
+                        <mxPoint x="13" y="3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="&amp;lt;컨트롤러&amp;gt;&lt;br&gt;/update [GET]&lt;br&gt;글 수정 진입" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+                    <mxGeometry x="401" y="180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="&lt;h1&gt;글 수정 구조 (전체 메뉴에 적용)&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="20" width="560" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="edgeStyle=none;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="16">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="534" y="300" as="sourcePoint"/>
+                        <mxPoint x="566" y="359.9999999999998" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="576" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="59" value="&quot;기존파일 삭제&quot;&lt;br&gt;체크 해제 시" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="17">
+                    <mxGeometry x="0.2769" y="-1" relative="1" as="geometry">
+                        <mxPoint x="1" y="7" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="27" value="" style="edgeStyle=none;rounded=0;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="22">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="694" y="270" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="764" y="270"/>
+                            <mxPoint x="764" y="300"/>
+                            <mxPoint x="734" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="65" value="&quot;새로운 파일&quot;을&lt;br&gt;드래그로 추가 시" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="27">
+                    <mxGeometry x="0.5236" y="-1" relative="1" as="geometry">
+                        <mxPoint x="1" y="15" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="35" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=classic;endFill=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.25;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="7" target="36">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="700" y="170" as="sourcePoint"/>
+                        <mxPoint x="994" y="640" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="46" value="&lt;b&gt;&amp;lt;글 수정 완료 절차&amp;gt;&lt;/b&gt;&lt;br&gt;① FormData() 객체 AJAX 전송&lt;br&gt;&amp;nbsp; - 글 내용&lt;br&gt;&amp;nbsp; - 기존 첨부파일 중 삭제 목록&lt;br&gt;&amp;nbsp; - 신규 첨부파일 정보" style="edgeLabel;html=1;align=left;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="35">
+                    <mxGeometry x="-0.2633" y="-2" relative="1" as="geometry">
+                        <mxPoint x="-166" y="-24" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="51" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=classic;endFill=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="7" target="78">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="110" y="410" as="sourcePoint"/>
+                        <mxPoint x="970" y="210" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="62" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=classic;endFill=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="26">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="764" y="300" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="864" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="63" value="등록된&lt;br&gt;&quot;새로운 파일&quot;을 삭제 시" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="62">
+                    <mxGeometry x="0.4214" y="-1" relative="1" as="geometry">
+                        <mxPoint x="1" y="16" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="7" value="&amp;lt;JSP&amp;gt;&lt;br&gt;/insert.jsp&lt;br&gt;글 편집" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+                    <mxGeometry x="664" y="180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="&amp;lt;자바스크립트&amp;gt;&lt;br&gt;삭제목록에 등재" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="382" y="360" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="7" target="19">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="564" y="380" as="sourcePoint"/>
+                        <mxPoint x="674" y="310" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="694" y="270"/>
+                            <mxPoint x="534" y="270"/>
+                            <mxPoint x="534" y="300"/>
+                            <mxPoint x="442" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="64" value="&quot;기존파일 삭제&quot;&lt;br&gt;누를 시" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="20">
+                    <mxGeometry x="0.7747" y="-1" relative="1" as="geometry">
+                        <mxPoint x="1" y="12" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="22" value="&amp;lt;자바스크립트&amp;gt;&lt;br&gt;추가목록에 등재" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="674" y="360" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="&amp;lt;자바스크립트&amp;gt;&lt;br&gt;추가목록에서 제거" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="804" y="360" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="컨트롤러&lt;br&gt;/data [POST]&lt;br&gt;글 등록" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+                    <mxGeometry x="664" y="50" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;lt;기존 첨부파일의 편집&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="354" y="266" width="196" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="36" target="7">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1084" y="540" as="sourcePoint"/>
+                        <mxPoint x="1134" y="490" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="47" value="③ 전송 결과 회신&lt;br&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- &quot;이동할 주소&quot; 회신&lt;/div&gt;" style="edgeLabel;html=1;align=left;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="45">
+                    <mxGeometry x="0.3869" relative="1" as="geometry">
+                        <mxPoint x="10" y="-19" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="49" value="② 글 수정 처리&lt;br&gt;&amp;nbsp; - 글 내용 수정&lt;br&gt;&amp;nbsp; - 삭제 목록대로 기존 파일 삭제&lt;br&gt;&amp;nbsp; - 신규 첨부파일 정보대로 파일 신규 저장&amp;nbsp;" style="edgeLabel;html=1;align=left;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="783.9976470588234" y="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=classic;endFill=1;" edge="1" parent="1" source="55" target="2">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="&amp;lt;JSP&amp;gt;&lt;br&gt;/detail.jsp" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+                    <mxGeometry x="234" y="180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="&lt;span&gt;&amp;lt;자바스크립트&amp;gt;&lt;br&gt;삭제목록에서 제거&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="516" y="360" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="19" target="7">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="694" y="430" as="sourcePoint"/>
+                        <mxPoint x="534" y="490" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="442" y="440"/>
+                            <mxPoint x="534" y="440"/>
+                            <mxPoint x="534" y="480"/>
+                            <mxPoint x="954" y="480"/>
+                            <mxPoint x="954" y="260"/>
+                            <mxPoint x="754" y="260"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="68" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endFill=0;" edge="1" parent="1" source="16">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="694" y="430" as="sourcePoint"/>
+                        <mxPoint x="534" y="440" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="576" y="440"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="70" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="22">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="694" y="430" as="sourcePoint"/>
+                        <mxPoint x="764" y="480" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="734" y="440"/>
+                            <mxPoint x="764" y="440"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="71" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="26">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="760" y="440" as="sourcePoint"/>
+                        <mxPoint x="744" y="380" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="864" y="440"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="77" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=classic;endFill=1;" edge="1" parent="1" source="76" target="55">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="&amp;lt;컨트롤러&amp;gt;&lt;br&gt;/detail [GET]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+                    <mxGeometry x="70" y="180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="&lt;span&gt;&amp;lt;자바스크립트&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span&gt;주소 이동 처리&lt;/span&gt;&lt;br&gt;&lt;span&gt;(location.href=&amp;nbsp;&lt;/span&gt;&lt;span&gt;/detail)&lt;/span&gt;&lt;span style=&quot;color: rgba(0 , 0 , 0 , 0) ; font-family: monospace ; font-size: 0px&quot;&gt;on&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="820" y="180" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=none;endFill=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="78" target="76">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="784" y="210" as="sourcePoint"/>
+                        <mxPoint x="120.00000000000023" y="240" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="990" y="210"/>
+                            <mxPoint x="990" y="510"/>
+                            <mxPoint x="130" y="510"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
