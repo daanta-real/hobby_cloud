@@ -143,11 +143,11 @@
 			<if test="memberNick != '' and memberNick != null">
 			and instr(member_nick, #{memberNick}) > 0
 			</if>
-			<if test="lecLocRegion != null">
+			<if test="lecLocRegion != null and lecLocRegion != ''">
 				and
-				<foreach item="regionOne" collection="lecLocRegion" separator="or">
-					instr(lec_loc_region, #{regionOne}) > 0
-				</foreach>
+<!-- 				<foreach item="regionOne" collection="lecLocRegion" separator="or"> -->
+					instr(lec_loc_region, #{lecLocRegion}) > 0
+<!-- 				</foreach> -->
 			</if>
 			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->
 			<choose>
@@ -248,10 +248,10 @@
 			<if test="memberNick != '' and memberNick != null">
 			and instr(member_nick, #{memberNick}) > 0
 			</if>
-			<if test="lecLocRegion != null">
-				<foreach item="regionOne" collection="lecLocRegion" separator="or">
-					instr(lec_loc_region, #{regionOne}) > 0
-				</foreach>
+			<if test="lecLocRegion != null and lecLocRegion != ''">
+<!-- 				<foreach item="regionOne" collection="lecLocRegion" separator="or"> -->
+					and instr(lec_loc_region, #{lecLocRegion}) > 0
+<!-- 				</foreach> -->
 			</if>
 
 			<!-- choose 구문은 switch 처럼 when이 case 역할, otherwise가 default 역할 -->

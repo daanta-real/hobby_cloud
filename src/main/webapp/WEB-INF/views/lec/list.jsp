@@ -59,40 +59,42 @@
 					<div class="form-group mb-4 col-12">
 						<label for=searchForm_lecLocRegion class="form-label mb-0 d-block">지역</label>
 						<div class="btn-group w-100 flex-wrapper">
-							<input name="lecLocRegion" type="checkbox" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="서울" class="btn-check" id="Seoul" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '서울').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Seoul">서울</label>
-							<input name="lecLocRegion" type="checkbox" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="경기" class="btn-check" id="Gyeonggi" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경기').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeonggi">경기</label>
-							<input name="lecLocRegion" type="checkbox" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="부산" class="btn-check" id="Busan" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '부산').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Busan">부산</label>
-							<input name="lecLocRegion" type="checkbox" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="인천" class="btn-check" id="Incheon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '인천').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Incheon">인천</label>
-							<input name="lecLocRegion" type="checkbox" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="대구" class="btn-check" id="Daegu" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '대구').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Daegu">대구</label>
-							<input name="lecLocRegion" type="checkbox" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="대전" class="btn-check" id="Daejeon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '대전').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Daejeon">대전</label>
-							<input name="lecLocRegion" type="checkbox" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="광주" class="btn-check" id="Gwangju" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '광주').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gwangju">광주</label>
-							<input name="lecLocRegion" type="checkbox" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="울산" class="btn-check" id="Ulsan" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '울산').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Ulsan">울산</label>
-							<input name="lecLocRegion" type="checkbox" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="세종" class="btn-check" id="Sejong" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '세종').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Sejong">세종</label>
-							<input name="lecLocRegion" type="checkbox" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="강원" class="btn-check" id="Gangwon" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '강원').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gangwon">강원</label>
-							<input name="lecLocRegion" type="checkbox" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="제주" class="btn-check" id="Jeju" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '제주').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeju">제주</label>
-							<input name="lecLocRegion" type="checkbox" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="충청북" class="btn-check" id="Chungcheongbuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '충북').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Chungcheongbuk">충북</label>
-							<input name="lecLocRegion" type="checkbox" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="충청남" class="btn-check" id="Chungcheongnam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '충남').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Chungcheongnam">충남</label>
-							<input name="lecLocRegion" type="checkbox" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="전라북" class="btn-check" id="Jeollabuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '전북').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeollabuk">전북</label>
-							<input name="lecLocRegion" type="checkbox" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="전라남" class="btn-check" id="Jeollanam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '전남').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Jeollanam">전남</label>
-							<input name="lecLocRegion" type="checkbox" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="경상북" class="btn-check" id="Gyeongsangbuk" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경북').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeongsangbuk">경북</label>
-							<input name="lecLocRegion" type="checkbox" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
+							<input name="lecLocRegion" type="radio" value="경상남" class="btn-check" id="Gyeongsangnam" autocomplete="off"  ${paramValues.lecLocRegion.stream().anyMatch(v->v == '경남').get() ? 'checked' : ''}>
 							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="Gyeongsangnam">경남</label>
+							<input name="lecLocRegion" type="radio" value="" class="btn-check" id="null" autocomplete="off">
+							<label class="btn btn-outline-primary text-nowrap rounded m-1" for="null">선택해제</label>
 						</div>
 					</div>
 					<div class="form-group mb-4 col-12">
