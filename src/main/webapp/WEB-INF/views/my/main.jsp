@@ -50,47 +50,14 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 제목 -->
-		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>검색 결과</div>
+		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>마이페이지에 오신 것을 환영합니다.</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
-			<div class="scrollXEnabler">
-				<div class="card p-0 minWidthMaxContent">
-					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
-						<thead>
-							<tr class="table-danger">
-								<c:forEach items="${list.get(0)}" var="one">
-									<th scope="col" class="text-center align-middle text-nowrap">${one.key}</th>
-								</c:forEach>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${list}" var="oneMap">
-								<tr class="cursor-pointer">
-									<c:forEach items="${oneMap}" var="one">
-										<td class="text-center align-middle text-nowrap"><a href="${root}/my/member/detail/${oneMap.get('회원번호')}">${one.value}</a></td>
-									</c:forEach>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
+			<div class="container">
+				<div class="row">
+					<img src="${root}/resources/img/mypage_main.jpg" />
 				</div>
 			</div>
-			<nav class="row p-0 pt-4 d-flex justify-content-between">
-				<a class="col-auto btn btn-sm btn-outline-primary bg-primary text-light" href="${root}/my/member">전체목록</a>
-				<ul class="col-auto pagination pagination-sm m-0">
-					<c:if test="${pageMaker.startPage < pageMaker.endPage}">
-						<c:if test="${pageMaker.prev}">
-							<li class="page-item disabled"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.startPage - 1)}" >«</a></li>
-						</c:if>
-							<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-								<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="list${pageMaker.makeQuery(idx)}">${idx}</a></li>
-							</c:forEach>
-						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-							<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">»</a></li>
-						</c:if>
-					</c:if>
-				</ul>
-			</nav>
 		</div>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->

@@ -165,7 +165,7 @@ function deleteFile(memberProfileIdxValue){
 					<input type="hidden" name="memberPw" id="pw" class="mail_input" value="${memberDto.memberId}">
 					<div class="form-group mb-4 col-12">
 						<label class="id_name form-label mb-0">아이디</label>
-						<input type="text" class="form-control" value="${memberDto.memberId}" readonly>
+						<input type="text" class="form-control" value="${memberDto.memberId}">
 					</div>
 					<div class="form-group mb-4 col-12">
 						<label for="pw" class="form-label mb-0">비밀번호</label>
@@ -174,7 +174,7 @@ function deleteFile(memberProfileIdxValue){
 					</div>
 					<div class="form-group mb-4 col-12">
 						<label class="id_name form-label mb-0">닉네임</label>
-						<input type="text" class="form-control" value="${memberDto.memberNick}" readonly>
+						<input type="text" class="form-control" value="${memberDto.memberNick}">
 					</div>
 					<div class="form-group mb-4 col-12">
 						<label class="form-label mb-0">이메일</label>
@@ -264,7 +264,7 @@ function deleteFile(memberProfileIdxValue){
 									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100" src="https://via.placeholder.com/300x300?text=사진을%20첨부하세요.">
 								</c:when>
 								<c:otherwise>
-									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100"" src="profile/${memberProfileDto.memberIdx}" width="100%">
+									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100"" src="${root}/member/profile/${memberProfileDto.memberIdx}" width="100%">
 									<button class="remove-btn" data-gatherfileidx="${memberProfileDto.memberProfileIdx}">삭제</button>
 								</c:otherwise>
 							</c:choose>

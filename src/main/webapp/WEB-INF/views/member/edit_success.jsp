@@ -30,7 +30,7 @@ window.addEventListener("load", function() {
 
 <!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
 <!-- 사이드메뉴 영역 시작 -->
-
+<jsp:include page="/resources/template/leftMenu.jsp" flush="false" />
 <!-- 사이드메뉴 영역 끝 -->
 
 

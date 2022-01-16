@@ -1,12 +1,20 @@
 package com.kh.hobbycloud.service.my;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.hobbycloud.entity.member.MemberCategoryDto;
+import com.kh.hobbycloud.entity.member.MemberDto;
+import com.kh.hobbycloud.entity.member.MemberProfileDto;
+import com.kh.hobbycloud.repository.member.MemberCategoryDao;
+import com.kh.hobbycloud.repository.member.MemberDao;
+import com.kh.hobbycloud.repository.member.MemberProfileDao;
 import com.kh.hobbycloud.service.member.MemberService;
 import com.kh.hobbycloud.vo.member.MemberCriteria;
 import com.kh.hobbycloud.vo.member.MemberListVO;
@@ -18,6 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 public class MyMemberServiceImpl implements MyMemberService {
 
 	@Autowired MemberService memberService;
+	@Autowired MemberDao memberDao;
+	@Autowired MemberProfileDao memberProfileDao;
+	@Autowired MemberCategoryDao memberCategoryDao;
 
 	@Override
 	public List<LinkedHashMap<String, String>> list(MemberCriteria cri) {
@@ -43,6 +54,20 @@ public class MyMemberServiceImpl implements MyMemberService {
 			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 완성된 Maps 목록: {}", map);
 		}
 		return listNew;
+	}
+
+	@Override
+	public Map<String, Object> detail(int memberIdx) {
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ MyMemberService.detail 진입: {}");
+		//데이터 Model에 저장
+		MemberDto memberDto = memberDao.getByIdx(memberIdx);
+		MemberProfileDto memberProfileDto = memberProfileDao.getByMemberIdx(memberIdx);
+		MemberCategoryDto memberCategoryDto = memberCategoryDao.get(memberIdx);
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberDto", memberDto);
+		map.put("memberProfileDto", memberProfileDto);
+		map.put("memberCategoryDto", memberCategoryDto);
+		return map;
 	}
 
 }

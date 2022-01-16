@@ -33,7 +33,6 @@ window.addEventListener("load", function() {
 
 <!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
 <!-- 사이드메뉴 영역 시작 -->
-<!-- 사이드메뉴 220117 -->
 <jsp:include page="/resources/template/leftMenu.jsp" flush="false" />
 <!-- 사이드메뉴 영역 끝 -->
 
@@ -129,10 +128,9 @@ window.addEventListener("load", function() {
              </fieldset>
              </div>
              <nav class="row p-0 pt-4 d-flex justify-content-end">
-				<a href="${root }/member/password" class="col-auto btn btn-sm btn-outline-primary mx-1">비밀번호 변경</a>
-				<a href="${root }/member/edit"
+				<a href="${root }/my/member/update/${memberDto.memberIdx}"
 				 class="col-auto btn btn-sm btn-secondary mx-1">개인정보 변경</a>
-				 <a href="${root }/member/quit"
+				 <a href="${root }/my/member/delete/${memberDto.memberIdx}"
 				 class="col-auto btn btn-sm btn-secondary mx-1">회원탈퇴</a>
 			</nav>
 			
