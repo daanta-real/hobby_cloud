@@ -25,4 +25,9 @@ public class TutorDaoImpl implements TutorDao{
 		sqlSession.delete("tutor.delete", memberIdx);
 	}
 	
+	@Override
+	public int getTutorIdx(int memberIdx) {
+		return sqlSession.selectOne("tutor.getTutorIdx", memberIdx);
+	}
+	
 }

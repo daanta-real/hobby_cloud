@@ -32,4 +32,6 @@ public interface LecDao {
 	//검색 페이지 게시글 총 개수
 	int listCountBy(LecSearchVO lecSearchVO);
 
+	
+	
 }
