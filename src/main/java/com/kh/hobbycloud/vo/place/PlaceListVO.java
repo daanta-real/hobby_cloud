@@ -22,6 +22,8 @@ public class PlaceListVO {
 	private String placeSido;//장소 시도
 	private String placeSigungu;//장소 시군구
 	private String placeBname;//장소 읍면동
+	private String placeLocLongitude; 
+	private String placeLocLatitude;  
 	
 	//땅주인 이름
 	private String memberNick;
