@@ -322,16 +322,15 @@
 			);
 		});
 	  
+
+	  
 		//체크박스
 		$("#selectall").click(function() {
 			if($("#selectall").is(":checked")) {
 				$("input[name=selectItem]").prop("checked", true);
-				checkbox = true;
 				} else{
 				$("input[name=selectItem]").prop("checked", false);
-				checkbox = false;
 			}
-			checkAll();
 		})
 			
 		$(".checkall").click(function() {
@@ -341,11 +340,14 @@
 			console.log("checked",checked);
 			if(total != checked) {
 				$("#selectall").prop("checked", false);
+				checkbox = false;
 				console.log("checkbox",checkbox);
 			}else{ 
-				$("#selectall").prop("checked", true); 
+				$("#selectall").prop("checked", true);
+				checkbox = true;
 				console.log("checkbox",checkbox);
 			}
+			checkAll();
 		});				
 	});
 
@@ -501,7 +503,7 @@
 					<div class="row mb-4">
 						<label for="joinForm_memberNick" class="form-label mb-0">비밀번호</label>
 						<div class="input-group flex-nowrap grayInputGroup p-0">
-							<input name="memberPw" id="pw" type="password" class="pw form-control" placeholder="특수문자, 영문, 숫자, 6자 이상 20자 이내로 입력하세요" value="}">
+							<input name="memberPw" id="pw" type="password" class="pw form-control" placeholder="특수문자, 영문, 숫자, 6자 이상 20자 이내로 입력하세요">
 						</div>
 							<div id="pwComm"></div>
 					</div>
@@ -614,8 +616,8 @@
 						<div class="div-check">
 
 							<div class="div-check-one div-ob">
-								<input type="checkbox"  name="selectall" class="check-button check-size " id="selectall">
-								<label class="check-all">전체동의</label>
+								<input style="display:none;"type="checkbox"  name="selectall" class="check-button check-size " id="selectall">
+								<label style="display:none;"class="check-all">전체동의</label>
 							</div>
 
 							<div class="div-check-two div-ob">
