@@ -36,7 +36,16 @@
 			</choose>
 			#{lecName},
 			#{lecDetail}, sysdate , #{lecPrice}, #{lecHeadCount}, #{lecContainsCount},
-			#{lecStart}, #{lecEnd}, #{lecLocRegion}, #{lecLocLatitude}, #{lecLocLongitude},
+			#{lecStart}, #{lecEnd}, 
+			<if test="lecLocRegion != null and lecLocRegion != ''">
+				#{lecLocRegion}, 
+			</if>
+			<if test="lecLocLatitude != null and lecLocLatitude != ''">
+				#{lecLocLatitude},
+			</if>
+			<if test="lecLocLongitude != null and lecLocLongitude != ''">
+				#{lecLocLongitude},
+			</if>	 
 			0, 0, 0
 		)
 	</insert>
