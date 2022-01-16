@@ -131,6 +131,18 @@ public class MemberDaoImpl implements MemberDao{
 			return false;
 		}
 	}
+	//회원탈퇴 : 비밀번호 null
+	@Override
+	public boolean delete(Integer memberIdx, String memberPw) {
+		MemberDto findDto = sqlSession.selectOne("member.getbyIdx", memberIdx);
+		if(encoder.matches(memberPw, findDto.getMemberPw())) {
+			int count = sqlSession.delete("member.delete", memberIdx);
+			return count > 0;
+		}
+		else {
+			return false;
+		}
+	}
 
 
 	//tutor에서 이용할 등급 변경 기능

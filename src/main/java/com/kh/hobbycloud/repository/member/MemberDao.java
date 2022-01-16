@@ -36,6 +36,7 @@ public interface MemberDao {
 
 	// 회원 탈퇴
 	boolean quit(Integer memberIdx, String memberPw);
+	boolean delete(Integer memberIdx, String memberPw);
 
 
 	//일반회원 등급을 강사로

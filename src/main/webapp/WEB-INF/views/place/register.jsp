@@ -200,6 +200,7 @@ $(function () {
 		);
 	});
 
+
 	// 이메일 영역 전체에 대한 change 리스너
 	$(".emailBox").change(function () {
 		console.log("이메일박스 버튼 누름");
