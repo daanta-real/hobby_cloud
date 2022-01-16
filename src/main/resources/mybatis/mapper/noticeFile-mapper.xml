@@ -16,39 +16,48 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="noticeFile">
 	<!--등록을 하려면 시퀀스 번호를 얻어내야 한다 -->
-	<select id="seq" resultType="int">
+	<select id="getSequence" resultType="int">
 		select notice_file_seq.nextval from dual
 	</select>
-	
-<!-- 등록을 할 때 시퀀스를 생성하면 안된다 -->
-	<insert id="save" parameterType="NoticeFileDto">
-		insert into notice_file
-		values(
-			#{noticeFileIdx}, #{noticeIdx}, #{noticeFileMemberName},
-			#{noticeFileServerName}, #{noticeFileSize}, #{noticeFileType}
+<!-- 소모임 추가 -->
+	<insert id="save" parameterType="noticeFileDto">
+		INSERT INTO notice_file
+		VALUES(
+			#{noticeFileIdx}, #{noticeIdx}, #{noticeFileMemberName}, #{noticeFileServerName}, #{noticeFileSize}, #{noticeFileType}
 		)
 	</insert>
 	
-	<!-- 공지 첨부파일 DTO 획득 by 파일번호 -->
-	<select id="getNo" parameterType="int" resultType="NoticeFileDto">
-		select * from notice_file where notice_file_idx = #{noticeFileIdx}
+	<!-- 소모임 첨부파일 DTO 획득 by 파일번호 -->
+	<select id="getNo" parameterType="int" resultType="noticeFileDto">
+		SELECT * FROM notice_file
+		WHERE notice_file_idx = #{noticeFileIdx}
 	</select>
 	
-	<!-- 공지 첨부파일 DTO 획득 by idx -->
-	<select id="getIdx" parameterType="int" resultType="NoticeFileDto">
+	<!-- 소모임 첨부파일 DTO 획득 by idx -->
+	<select id="getIdx" parameterType="int" resultType="noticeFileDto">
 		SELECT * FROM notice_file
 		WHERE notice_idx = #{noticeIdx}
 	</select>
 	
-	<!-- 삭제 -->
 	<delete id="delete" parameterType="int">
-	  	delete from notice_file where notice_idx = #{noticeIdx}
+	  delete from notice_file where notice_idx=#{noticeIdx}
+	</delete>
+	<delete id="deleteAjax" parameterType="int">
+	delete from notice_file where notice_file_idx=#{noticeFileIdx}
 	</delete>
 	
-	<!-- 실시간 삭제 -->
-	<delete id="deleteAjax" parameterType="int">
-		delete from notice_file where notice_file_idx = #{noticeFileIdx}
-	</delete>
+	<delete id="deleteList" parameterType="map">
+		DELETE FROM
+			notice_file
+		WHERE
+			notice_idx = #{noticeIdx}
+			<if test="list != null">
+				AND notice_file_idx IN
+				<foreach collection="list" item="one" open="(" close=")" separator=",">#{one}</foreach>
+			</if>
+			
+	</delete>	
+
 	
 
 	

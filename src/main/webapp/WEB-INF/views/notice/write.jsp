@@ -30,7 +30,7 @@ window.addEventListener("load", function() {
 --%>
 <SCRIPT TYPE="text/javascript">
 const fileImageStorePath = "${root}/notice/noticeFile/";
-const fileSubmitAjaxPage = "${root}/noticeData/insert/";
+const fileSubmitAjaxPage = "${root}/noticeData/write/";
 </SCRIPT> 
 <!-- 파일 업로드 모듈 자바스크립트 및 CSS 로드 -->
 <SCRIPT type='text/javascript' src="${pageContext.request.contextPath}/resources/js/fileUpload.js"></SCRIPT>
@@ -117,7 +117,7 @@ const fileSubmitAjaxPage = "${root}/noticeData/insert/";
     <div class="col-12 pt-3">
         <a href="${pageContext.request.contextPath}/notice/list"
 				 class="col-auto btn  btn-secondary mx-1 my-3">취소</a>
-        <button type="submit" class="btn btn-primary my-3" >등록</button>
+        <button type="submit" class="btn btn-primary my-3"  id="fileUploadForm_submitBtn">등록</button>
     </div>
  </div>
 </form>

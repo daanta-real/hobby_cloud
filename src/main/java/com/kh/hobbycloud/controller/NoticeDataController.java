@@ -17,7 +17,8 @@ import com.kh.hobbycloud.repository.notice.NoticeDao;
 import com.kh.hobbycloud.repository.notice.NoticeFileDao;
 import com.kh.hobbycloud.repository.notice.NoticeReplyDao;
 import com.kh.hobbycloud.service.notice.NoticeService;
-import com.kh.hobbycloud.vo.notice.NoticeVO;
+import com.kh.hobbycloud.vo.notice.NoticeEditVO;
+import com.kh.hobbycloud.vo.notice.NoticeFileVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,18 +50,31 @@ public class NoticeDataController {
 		
 		@ResponseBody
 		@PostMapping("/write")
-		public String insert(@ModelAttribute NoticeVO noticeVO,HttpSession session) throws IllegalStateException, IOException {
+		public String insert(@ModelAttribute NoticeFileVO noticeFileVO,HttpSession session) throws IllegalStateException, IOException {
 			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶NoticeDataController.insert 실행");
 			int memberIdx = (int) session.getAttribute("memberIdx");
-			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶noticeVO={}",noticeVO);
+			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶noticeFileVO={}",noticeFileVO);
 			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶memberIdx={}",memberIdx);
-			noticeVO.setMemberIdx(memberIdx);
-			int noticeIdx = noticeVO.getNoticeIdx();
-			noticeService.save(noticeVO);
-			
+			noticeFileVO.setMemberIdx(memberIdx);
+			int noticeIdx = noticeService.save(noticeFileVO);
 			System.out.println(noticeIdx);
-			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶gatherIdx={}",noticeIdx);
+			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶noticeIdx={}",noticeIdx);
 			return  SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/notice/detail/" + noticeIdx;
+		}
+		
+		@ResponseBody
+		@PostMapping("/update")
+		public String update(@ModelAttribute NoticeEditVO noticeEditVO) {
+			try { 
+				Integer noticeIdx = noticeEditVO.getNoticeIdx();
+				log.debug("==================== /lec/edit/{} (강좌 파일 수정 POST) 진입", noticeIdx);
+				log.debug("==================== 수정내용: {}", noticeEditVO);
+				noticeService.edit(noticeEditVO);
+				log.debug("==================== 수정이 끝났습니다. 상세보기로 돌아갑니다.", noticeEditVO);
+				return SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/notice/detail/" + noticeIdx;
+			} catch(Exception e) {
+				return "failed"; 
+			}
 		}
 
 }
