@@ -181,16 +181,16 @@
 							<tr class="table-danger">
 <!-- 								<th scope="col" class="text-center align-middle text-nowrap">번호</th> -->
 								<th scope="col" class="text-center align-middle text-nowrap">카테고리</th>
-								<th scope="col" class="text-center align-middle text-nowrap">사진</th>
+								<th scope="col" class="text-center align-middle text-nowrap tableImgBox">썸네일</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강좌</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강사</th>
 								<th scope="col" class="text-center align-middle text-nowrap">수강료</th>
 								<th scope="col" class="text-center align-middle text-nowrap">강의수</th>
 								<th scope="col" class="text-center align-middle text-nowrap">수강인원</th>
 								<th scope="col" class="text-center align-middle text-nowrap">지역</th>
-<%-- 								<c:if test="${memberGrade == admin}"> --%>
+								<c:if test="${memberGrade == '관리자' and memberIdx != null}">
 									<th scope="col" class="text-center align-middle text-nowrap">메뉴</th>
-<%-- 								</c:if> --%>
+								</c:if>
 							</tr>
 						</thead>
 						<tbody>
@@ -198,19 +198,21 @@
 								<tr class="cursor-pointer" onclick="location.href='${root}/lec/detail/${lecListVO.lecIdx}'">
 <%-- 									<td class="text-center align-middle text-nowrap">${lecListVO.lecIdx}</td> --%>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecCategoryName}</td>
-									<td class="text-center align-middle text-nowrap tableImg"><img src="${pageContext.request.contextPath}/lec/lecFile/${lecListVO.lecFileIdx}" width="20%"></td>
+									<td class="text-center align-middle text-nowrap p-0 tableImgBox">
+										<img src="${root}/lec/lecFile/${lecListVO.lecFileIdx}" class="m-0 p-0 tableImg">
+									</td>
 									<td class="text-center align-middle text-nowrap"> ${lecListVO.lecName}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.memberNick}</td>
 									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${lecListVO.lecPrice}" pattern="#,###" /></td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecContainsCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecHeadCount}</td>
 									<td class="text-center align-middle text-nowrap">${lecListVO.lecLocRegion}</td>
-<%-- 									<c:if test="${memberGrade == admin}"> --%>
+									<c:if test="${memberGrade == '관리자'} and ${memberIdx != null}">
 									<td class="text-center align-middle text-nowrap">
 											<a href="edit/${lecListVO.lecIdx}">수정</a>
 											<a href="delete/${lecListVO.lecIdx}">삭제</a>
 									</td>
-<%-- 									</c:if> --%>
+									</c:if>
 								</tr>
 							</c:forEach>
 							<c:forEach var="lecListVO" items="${listSearch}">
@@ -252,7 +254,14 @@
 						<li class="page-item"><a class="page-link" href="list${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a></li>
 					</c:if> 
 				</ul>
-					<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/register';">신규 강좌 추가</a></button>
+					<c:choose>
+						<c:when test="${memberIdx != null and memberGrade == '강사'}">
+							<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/register';">신규 강좌 추가</a></button>
+						</c:when>
+						<c:otherwise>
+							<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lecMy/myLec';">내 강좌 보기</a></button>
+						</c:otherwise>
+					</c:choose>	
 			</nav>	
 		</div>
 		

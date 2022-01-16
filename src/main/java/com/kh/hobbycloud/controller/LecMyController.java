@@ -120,6 +120,10 @@ public class LecMyController {
 	//내 강좌 보기
 	@GetMapping("/myLec")
 	public String myLec(HttpSession session, Model model) {
+		if(session.getAttribute("memberIdx") == null) {//로그인 하지 않았으면
+			return "redirect:/member/login";//로그인 화면으로 리다이렉트
+		}
+		
 		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
 		List<LecMyVO> myLecList = lecMyDao.getMyLec(memberIdx);
 		model.addAttribute("myLecList", myLecList);
