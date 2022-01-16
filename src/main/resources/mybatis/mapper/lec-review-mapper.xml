@@ -36,6 +36,22 @@ insert into lec_review values(lec_review_seq.nextval,
  where l.lec_idx = #{lecIdx}
 </select>
 
+<!-- 평점 내역 페이지네이션 적용 -->
+<select id="listBy" parameterType="map" resultType="LecReviewVO">
+select * from(
+	select rownum  rn , TMP.* from(
+		 select lr.*, m.member_nick, mp.member_profile_idx from lec l 
+		 	inner  join
+		 		lec_review lr ON l.lec_idx = lr.lec_idx
+		 	left outer join
+				member m ON lr.member_idx = m.member_idx
+		 	left outer join 
+		 		member_profile mp ON m.member_idx = mp.member_idx
+		 where l.lec_idx = #{lecIdx}
+ 	)TMP
+) where rn between #{startRow} and #{endRow}
+</select>
+
 <!-- 평점 삭제 -->
 <delete id="delete" parameterType="int">
  	delete from lec_review where lec_review_idx = #{lecReviewIdx}

@@ -181,8 +181,13 @@ public class LecDataController {
 	}
 	//평점목록
 	@GetMapping("/reviewList")
-	public List<LecReviewVO> list(int lecIdx){
-		return lecReviewDao.list(lecIdx);
+	public List<LecReviewVO> list(
+			@RequestParam(required = false, defaultValue = "1") int pageR,
+			@RequestParam(required = false, defaultValue = "10") int sizeR,
+			@RequestParam int lecIdx){
+		int endRow = pageR * sizeR;
+		int startRow = endRow - (sizeR - 1);
+		return lecReviewDao.listBy(startRow, endRow, lecIdx);
 	}
 	//평점삭제
 	@DeleteMapping("/reviewDelete")

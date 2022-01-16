@@ -63,25 +63,20 @@ window.addEventListener("load", function() {
 						<thead>
 							<tr class="table-danger">
 								<th scope="col" class="text-center align-middle text-nowrap">번호</th>
-								<th scope="col" class="text-center align-middle text-nowrap">사진</th>
 								<th scope="col" class="text-center align-middle text-nowrap">제목</th>
 								<th scope="col" class="text-center align-middle text-nowrap">작성자</th>
 								<th scope="col" class="text-center align-middle text-nowrap">작성일</th>
 								<th scope="col" class="text-center align-middle text-nowrap">조회수</th>
-								<th scope="col" class="text-center align-middle text-nowrap">댓글수</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="NoticeVO" items="${list}">
 								<tr class="cursor-pointer">
 									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeIdx}</td>
-									<td class="text-center align-middle text-nowrap"></td>
 									<td class="text-center align-middle text-nowrap"><a href="detail/${NoticeVO.noticeIdx }">${NoticeVO.noticeName }</a></td>
 									<td class="text-center align-middle text-nowrap">${NoticeVO.memberNick }</td>
 									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeRegistered }</td>
-									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeViews }</td>
-									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeReplies }</td>
-									
+									<td class="text-center align-middle text-nowrap">${NoticeVO.noticeViews }</td>		
 								</tr>
 							</c:forEach>
 						</tbody>

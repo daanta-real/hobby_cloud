@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="logout" value="${memberIdx == null }"></c:set>
+<c:set var="Landlord" value="${memberGrade=='임대인'}"></c:set>
 <!DOCTYPE HTML>
 <%-- 모달 영역. HTML의 가장 처음에 배치해야 한다 --%>
 <div id="modal" class="modal" tabindex="-1">
@@ -49,7 +50,9 @@
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/gather/list">소모임</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/petitions/list">청원</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지</a></li>
+				<c:if test="${Landlord }">
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/place/list">장소</a></li>
+				</c:if>
 				<c:if test="${logout }">
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/join">회원가입</a></li>
 				</c:if>

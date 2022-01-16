@@ -224,7 +224,7 @@ public class PetitionsController {
 	public String edit(@ModelAttribute PetitionsVO petitionsVO ,@RequestParam int petitionsIdx) {
 		petitionsVO.setPetitionsIdx(petitionsIdx);
 		petitionsDao.edit(petitionsVO);
-		return "redirect:detail?petitionsIdx="+petitionsIdx;
+		return "redirect:detail/"+petitionsIdx;
 	}
 	
 	
