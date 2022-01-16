@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
+<c:set var="isLogin" value="${memberIdx != null}"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
@@ -78,14 +79,34 @@ window.addEventListener("load", function() {
 
 <!-- 평점 등록 -->
 <script>
+var pageR = 1;
+var sizeR = 10;
+$(function(){ 
+	$(".moreR-btn").click(function(){
+		loadReview(pageR,sizeR,lecIdx); 
+		pageR++;    
+	});  
+	//더보기 버튼을 강제 1회 클릭(트리거) 
+	$(".moreR-btn").click(); 
+	
+	$(".lessR-btn").click(function(){
+		$("#resultReview").empty(); 
+		pageR=1;       
+		loadReview(pageR,sizeR,lecIdx); 
+		pageR++; 
+	});
+}); 
+
 $(function(){
 	//처음 들어오면 목록 출력.
-	loadReview();
+// 	loadReview();
 	//#insert-form이 전송되면 전송 못하게 막고 ajax로 insert
 	$("#insertReview-form").submit(function(e){
-		console.log("누름");
-		//this == #insert-form
+		e.stopImmediatePropagation();
+		e.stopPropagation();
 		e.preventDefault();
+		e.cancelBubble = true;
+		stopEvent();
 		
 		var dataValue =$(this).serialize();
 		
@@ -99,7 +120,10 @@ $(function(){
 				$("#insertReview-form")[0].reset();
 				
 				//성공하면 목록 갱신
-				loadReview();
+				$("#resultReview").empty();
+				pageR=1;
+				loadReview(pageR,sizeR,lecIdx);
+				pageR++;
 			
 			},
 			error:function(e){
@@ -111,26 +135,57 @@ $(function(){
 });
 </script>
 
+<script>
+function dateFormat(date) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+
+    return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute; 
+}
+</script>
+
 <!-- 평점 조회 -->
 <script>
-function loadReview(){
+function loadReview(pageRValue,sizeRValue,lecIdxValue){
 	var lecIdxValue = $("#lecIdxValue").data("lec-idx");
 	$.ajax({
 		url:"${pageContext.request.contextPath}/lecData/reviewList",
 		type:"get",
 		data:{
+			pageR:pageRValue,
+			sizeR:sizeRValue,
 			lecIdx:lecIdxValue
 		},
 		dateType:"json",
 		success:function(resp){
 			console.log("성공",resp);
-			$("#resultReview").empty();//내부영역 청소
-			//$("#result").html("");
-			//$("#result").text("");
+// 			$("#resultReview").empty();//내부영역 청소
+// 			//$("#result").html("");
+// 			//$("#result").text("");
+			if(resp.length < sizeRValue && pageR==2){   
+				//게시물이 10개 이하 일 떄 page=1일 떄
+				$(".moreR-btn").hide();   
+				$(".lessR-btn").hide();  
+			}else if(resp.length <sizeRValue && pageR>2){//게시물이 10개 이하 + page는 2번 
+				$(".moreR-btn").hide(); 
+				$(".lessR-btn").show();     
+			}  
+			else{ 
+				$(".moreR-btn").show();
+				$(".lessR-btn").hide();  
+			} 
 			
 			for(var i=0; i < resp.length; i++){
 				var template = $("#lecReviewVO-template").html();
-				
+				template = template.replace("{{memberIdx}}", resp[i].memberIdx);   
 				template = template.replace("{{lecReviewIdx}}", resp[i].lecReviewIdx);
 				template = template.replace("{{lecReviewIdx}}", resp[i].lecReviewIdx);
 				template = template.replace("{{lecReviewIdx}}", resp[i].lecReviewIdx);
@@ -139,10 +194,17 @@ function loadReview(){
 				template = template.replace("{{lecIdx}}", resp[i].lecIdx);
 				template = template.replace("{{lecReviewDetail}}", resp[i].lecReviewDetail);
 				
-				var time = resp[i].gatherReplyDate;
+				var time = resp[i].lecReviewRegistered;
 				var date =new Date(time);
 				template = template.replace("{{lecReviewRegistered}}", dateFormat(date));
-		
+			
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriter = resp[i].memberNick === '${sessionScope.memberNick}';
+				var isWriterClass = !isWriter ? "d-none": "";
+			
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				template = template.replace("{{isWriter}}", isWriterClass); 
+				
 				var tag = $(template);//template은 글자니까 jQuery로 감싸서 생성을 시키고
 	
 				console.log(tag.find(".remove-btn"));
@@ -180,9 +242,10 @@ function loadReview(){
 						success:function(resp){
 							console.log("성공", resp);
 						
-							$("#result").empty();
-							
-							loadReview();
+							$("#resultReview").empty();
+							pageR=1;
+							loadReview(pageR,sizeR,lecIdx);
+							pageR++;
 						},
 						error:function(e){}
 					});
@@ -216,13 +279,17 @@ function deleteReview(lecReviewIdxValue){
 		dataType:"text",
 		success:function(resp){
 			console.log("성공", resp);
+			$("#resultReview").empty();
 			
-			loadReview();//데이터가 변하면 무조건 갱신
+			pageR=1;
+			loadReview(pageR,sizeR,lecIdx);
+			pageR++; 
 		},
 		error:function(e){}
 	});
 }
 </script>
+
 <!-- 좋아요 -->
 <script>
  $(function(){
@@ -391,16 +458,16 @@ function deleteReview(lecReviewIdxValue){
 			<div id="map" style="width:50%;height:350px;"></div>
 			<table border="1" width="80%">
 				 <tbody>
+<!-- 				     <tr> -->
+<!-- 				         <td>지역</td> -->
+<%-- 				         <td>${lecDetailVO.placeName}</td> --%>
+<!-- 				     </tr> -->
+<!-- 				     <tr> -->
+<!-- 				         <td>지역 상세</td> -->
+<%-- 				         <td>${lecDetailVO.placeDetail}</td> --%>
+<!-- 				     </tr> -->
 				     <tr>
-				         <td>지역</td>
-				         <td>${lecDetailVO.placeName}</td>
-				     </tr>
-				     <tr>
-				         <td>지역 상세</td>
-				         <td>${lecDetailVO.placeDetail}</td>
-				     </tr>
-				     <tr>
-				         <td>강좌 지역 정보</td>
+				         <td>강좌 장소 정보</td>
 				         <td>${lecDetailVO.lecLocRegion}</td>
 				     </tr>
 				 </tbody>
@@ -460,8 +527,7 @@ function deleteReview(lecReviewIdxValue){
 			<div class="card-header d-flex align-items-center p-1 px-2">
 				<span>평점을 입력해주세요</span>
 			</div>
-			<div class="card-body position-relative p-1 px-2"> 
-			
+			<div class="card-body position-relative p-1 px-2"> 		
 			 	<div class="star-rating space-x-4 mx-auto"> 
 			        <input type="radio" id="5-stars" name="lecReviewScore" value="5" v-model="ratings"/>
 			        <label for="5-stars" class="star pr-4">★</label>
@@ -475,35 +541,40 @@ function deleteReview(lecReviewIdxValue){
 			        <label for="1-star" class="star">★</label>
 			    </div> 
 			    
-				<input type="text" name="lecReviewDetail">
+				<input type="text" name="lecReviewDetail" placeholder="로그인을 해주세요">
 				<input	type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}">
-				<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">등록</button> 
+				<c:if test="${isLogin}">
+					<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">평점 등록</button> 
+				</c:if>				
 			</div>
 			</div>
 			</form>
 			<div id="resultReview"></div>  
+			</div>
 			
 			<!-- 평점목록 -->
 			<template id="lecReviewVO-template">
 			<div class="card mb-2 border border-1 border-secondary p-0 item">
 				<div class="card-header d-flex align-items-center p-1 px-2">
-					<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" style="width:2.3rem; height:2.3rem;"/>
-					<span class="memberNick">{{memberNick}}</span> 
-					<span class="lecReviewScore">점수:{{lecReviewScore}}</span> 
+					<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" 
+					src="${root}/member/profile/{{memberIdx}}"
+					style="width:2.3rem; height:2.3rem;"/>
+					<span class="memberNick">닉네임 : {{memberNick}}</span> 
+					<span class="lecReviewScore">점수 : {{lecReviewScore}}</span> 
 					<span class="memberReviewRegistered ms-auto lecReviewRegistered">{{lecReviewRegistered}}</span>
 				</div>
 				<div class="card-body position-relative p-1 px-2">
-				<div class="card-text p-1 px-3 lecReviewDetail">{{lecReviewDetail}}</div>	
+					<div class="card-text p-1 px-3 lecReviewDetail">{{lecReviewDetail}}</div>	
 					<div class="floatRightTop position-absolute top-0 end-0 p-1">
-						<button type="button" class="btn btn-sm btn-secondary p-1 me-1 edit-btn" data-lecreview-idx="{{lecReviewIdx}}">수정</button>
-					 	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn" data-lecreview-idx="{{lecReviewIdx}}">삭제</button>
+					 	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-lecreview-idx="{{lecReviewIdx}}">삭제</button>
 				 	</div>
 				</div>
 			</div>
 			</template>
 			
-			<div id="resultReview"></div> 
-		</div>
+			<button class="btn btn-secondary moreR-btn">더보기</button> 
+			<button class="btn btn-secondary lessR-btn">접기</button>
+		
 		
 		<nav class="row pt-4 d-flex flex-justify-between">
 			<a href="${pageContext.request.contextPath}/lec/register">글쓰기</a>
