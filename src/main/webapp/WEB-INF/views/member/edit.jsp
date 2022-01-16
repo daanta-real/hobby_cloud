@@ -180,7 +180,7 @@ function deleteFile(memberProfileIdxValue){
 						<div>
 							<span>${memberDto.memberEmail}</span>
 							<input type="button" id="emailCheck" class="adCheck" value="메일변경하기" onclick="location.href='updateMail'">
-						</div>
+						</div> 
 					</div>
 					<div class="form-group mb-4 col-12 container">
 						<label class="row form-label mb-0">핸드폰 번호</label>
