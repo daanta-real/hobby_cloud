@@ -16,6 +16,7 @@ public interface MyLecDao {
 	public boolean update(MyLecDto dto);
 	public List<MyLecVO> getMyLec(Integer memberIdx);//내 강좌 보기
 
+	public int getNowCount(int lecIdx);//강좌의 현재 신청 인원수 조회
 
 
 }

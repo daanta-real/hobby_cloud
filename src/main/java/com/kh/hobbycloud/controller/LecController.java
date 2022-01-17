@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hobbycloud.entity.lec.LecFileDto;
-import com.kh.hobbycloud.entity.member.MemberDto;
 import com.kh.hobbycloud.repository.lec.LecCategoryDao;
 import com.kh.hobbycloud.repository.lec.LecDao;
 import com.kh.hobbycloud.repository.lec.LecFileDao;
 import com.kh.hobbycloud.repository.member.MemberDao;
+import com.kh.hobbycloud.repository.pay.MyLecDao;
 import com.kh.hobbycloud.service.lec.LecCartService;
 import com.kh.hobbycloud.service.lec.LecService;
 import com.kh.hobbycloud.vo.lec.LecCartVO;
@@ -59,6 +59,9 @@ public class LecController {
 
 	@Autowired
 	private MemberDao memberDao;
+
+	@Autowired
+	private MyLecDao myLecDao;
 
 	@Autowired
 	private LecFileDao lecFileDao;
@@ -144,7 +147,7 @@ public class LecController {
 		log.debug("=================================강좌 카테고리 리스트: {}", lecCategoryList);
 
 		return "lec/register";
-		
+
 	}
 
 	//상세
@@ -159,6 +162,9 @@ public class LecController {
 		List<LecFileDto> list = lecFileDao.getListByLecIdx(lecIdx);
 		model.addAttribute("lecDetailVO", lecDetailVO);
 		model.addAttribute("list", list);
+
+		int count = myLecDao.getNowCount(lecIdx);
+		model.addAttribute("getNowCount", count);
 
 		log.debug("세션 memberIdx = {},", session.getAttribute("memberIdx"));
 
@@ -345,7 +351,7 @@ public class LecController {
 //
 //	}
 
-	
+
 //	//내 강좌
 //	@GetMapping("/my_lec")
 //	public String my_lec(HttpSession session, Model model) {

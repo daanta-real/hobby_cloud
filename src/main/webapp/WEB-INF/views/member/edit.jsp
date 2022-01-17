@@ -103,18 +103,19 @@ window.addEventListener("load", function() {
 
 $(function(){
 	$(".remove-btn").click(function(){
-		console.log($(this).data("memberProfileIdx"));
-		deleteFile($(this).data("memberProfileIdx"));
+		var memberProfileIdxValue = $(this).data("member-profileidx");
+		deleteFile(memberProfileIdxValue);
 	});
 });
 
 function deleteFile(memberProfileIdxValue){
 	
 	$.ajax({
-		url:"${pageContext.request.contextPath}/placeData/fileDelete?memberProfileIdx="+memberProfileIdxValue,
+		url:"${pageContext.request.contextPath}/member/fileDelete?memberProfileIdx="+memberProfileIdxValue,
 		type:"delete",
 		dataType:"text",
 		success:function(resp){
+			
 			console.log("성공",resp);
 			
 		},
@@ -186,9 +187,9 @@ function deleteFile(memberProfileIdxValue){
 					<div class="form-group mb-4 col-12 container">
 						<label class="row form-label mb-0">핸드폰 번호</label>
 						<div class="row d-flex">
-							<div class="col-3"><input name="phone1" type="text" class="form-control col-4" maxlength="3" placeholder="000"/></div>
-							<div class="col-4"><input name="phone2" type="text" class="form-control col-4" maxlength="4" placeholder="0000" /></div>
-							<div class="col-4"><input name="phone3" type="text" class="form-control col-4" maxlength="4" placeholder="0000" /></div>
+							<div class="col-3"><input name="phone1" id="phone1" type="text" class="form-control col-4" maxlength="3" placeholder="000"/></div>
+							<div class="col-4"><input name="phone2" id ="phone2"type="text" class="form-control col-4" maxlength="4" placeholder="0000" /></div>
+							<div class="col-4"><input name="phone3" id = "phone3"type="text" class="form-control col-4" maxlength="4" placeholder="0000" /></div>
 							<input type="hidden" id="phoneNum" name="memberPhone">
 						</div>
 						<div id="phComm" class="row fs-6"></div>
@@ -265,7 +266,7 @@ function deleteFile(memberProfileIdxValue){
 								</c:when>
 								<c:otherwise>
 									<img id="profileImageOutput" class="position-absolute top-50 start-50 bottom-0 end-0 w-100"" src="profile/${memberProfileDto.memberIdx}" width="100%">
-									<button class="remove-btn" data-gatherfileidx="${memberProfileDto.memberProfileIdx}">삭제</button>
+									<button class="remove-btn" data-member-profileidx="${memberProfileDto.memberProfileIdx}">삭제</button>
 								</c:otherwise>
 							</c:choose>
 						</div>

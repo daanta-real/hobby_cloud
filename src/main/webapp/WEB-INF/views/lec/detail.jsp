@@ -11,6 +11,8 @@
 <jsp:include page="/resources/template/header.jsp" flush="false" />
 <TITLE>HobbyCloud - 결제 상세조회</TITLE>
 <style>
+#like-btn, #jjim-btn { width:6rem; }
+
 .star-rating {
   display: flex;
   flex-direction: row-reverse;
@@ -304,8 +306,9 @@ function deleteReview(lecReviewIdxValue){
  		data = {
 //  			"memberIdx" : memberIdx,
  				"lecIdx" : lecIdx,
- 				"count" : count};
-		
+ 				"count" : count
+ 				};
+
  	$.ajax({
  		url : "${pageContext.request.contextPath}/lecData/likeUpdate",
  		type : 'POST',
@@ -314,15 +317,25 @@ function deleteReview(lecReviewIdxValue){
  		success : function(result){
  			console.log("수정" + result.like);
  			if(count == 1){
- 				console.log("좋아요 취소");
+ 				// 좋아요를 뺐을 때
  				 $('#like-check').val(0);
- 				 $('#like-btn').attr('class','btn btn-light');
- 				 $('#likecount').html(result.like);
+ 				 document.getElementById('like-btn').classList.remove('btn-primary');
+ 				 document.getElementById('like-btn').classList.add('btn-light');
+ 				 document.getElementById('like-btn').classList.remove('text-light');
+ 				 document.getElementById('like-btn').classList.add('text-primary');
+ 				document.getElementById('like-btn').innerHTML = "♥ " + result.like;
+ 				 $('#likecount').text(result.like);
  			}else if(count == 0){
+ 				// 좋아요를 눌렀을 때
  				console.log("좋아요!");
  				$('#like-check').val(1);
- 				$('#like-btn').attr('class','btn btn-danger');
- 				$('#likecount').html(result.like);
+ 				 document.getElementById('like-btn').classList.remove('btn-light');
+				 document.getElementById('like-btn').classList.add('btn-primary');
+ 				 document.getElementById('like-btn').classList.remove('text-primary');
+ 				 document.getElementById('like-btn').classList.add('text-light');
+  				document.getElementById('like-btn').innerHTML = "♥ " + result.like;
+ 				document.getElementById('like-btn')
+ 				$('#likecount').text(result.like);
  			}
  		}, error : function(result){
  			console.log("에러" + result.result)
@@ -331,6 +344,17 @@ function deleteReview(lecReviewIdxValue){
  	};
  });
 </script>
+<script>
+$(function(){
+	var msg = "${msg}";
+	console.log(msg);
+	if(msg.length > 0){
+		alert(msg);
+	}
+});
+</script>
+
+
 </HEAD>
 <BODY>
 <jsp:include page="/resources/template/body.jsp" flush="false" />
@@ -377,7 +401,7 @@ function deleteReview(lecReviewIdxValue){
 			         <td>강사명</td>
 			         <td>${lecDetailVO.memberNick}</td>
 			         <td>수강인원</td>
-			         <td>${lecDetailVO.lecHeadCount} 명</td>
+			         <td>${getNowCount} / ${lecDetailVO.lecHeadCount} 명</td>
 			     </tr>
 			     <tr>
 			         <td>기간</td>
@@ -391,43 +415,58 @@ function deleteReview(lecReviewIdxValue){
 		<!-- 소단원 제목 -->
 <!-- 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>강좌 정보</div> -->
 		<!-- 소단원 내용 -->
-		<nav class="row p-0 pt-4 d-flex justify-content-end">
 		<div class="row p-sm-2 mx-1 mb-5">
-			<c:choose>
-				<c:when test="${memberIdx != null}">
-					<div id="like">
-						<c:choose>
-							<c:when test="${isLike == 0}">
-								<button type="button" class="col-auto btn btn-sm btn-outline-primary mx-1" id="like-btn">🤍 ${lecDetailVO.lecLike}</button>
-								<input type="hidden" id="like-check" value="${isLike}">
-					<%-- 			<input type="hidden" id="memberIdx" value="${memberIdx}"> --%>
-								<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
-							</c:when>					
-							<c:when test="${isLike == 1}">
-								<button type="button" class="col-auto btn btn-sm btn-outline-primary mx-1" id="like-btn">❤️ ${lecDetailVO.lecLike}</button>
-								<input type="hidden" id="like-check" value="${isLike}">
-					<%-- 			<input type="hidden" id="memberIdx" value="${memberIdx}"> --%>
-								<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
-							</c:when>			
-						</c:choose>
-					</div>
-				</c:when>
-				<c:otherwise>
-					<a href="${pageContext.request.contextPath}/member/login" class="col-auto btn btn-sm btn-outline-primary mx-1">❤️ ${lecDetailVO.lecLike}</a>
-				</c:otherwise>
-			</c:choose>
-			
-			<!-- 찜하기 -->
-			<form name="form1" method="post"
-			 action="${pageContext.request.contextPath}/lec/cart/insert">
-			    <input type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}">
-			    <input type="submit" class="col-auto btn btn-sm btn-outline-primary mx-1" value="찜하기">
-			</form>
-			
-			<!-- 강좌 추가하기 -->
-			<a href="${pageContext.request.contextPath}/my/lec/confirm/${lecDetailVO.lecIdx}" class="btn btn-danger">강좌 신청</a>
+			<div class="container">
+				<div class="row md-4 d-flex justify-content-between">
+					<c:choose>
+						<c:when test="${memberIdx != null}">
+							<div id="like" class="col-6 p-0">
+								<c:choose>
+									<c:when test="${isLike == 0}">
+										<button type="button" class="col-auto btn text-primary btn-light btn-outline-primary" id="like-btn">♥ ${lecDetailVO.lecLike}</button>
+										<input type="hidden" id="like-check" value="${isLike}">
+							<%-- 			<input type="hidden" id="memberIdx" value="${memberIdx}"> --%>
+										<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
+									</c:when>					
+									<c:when test="${isLike == 1}">
+										<button type="button" class="col-auto btn text-light btn-primary btn-outline-primary" id="like-btn">♥ ${lecDetailVO.lecLike}</button>
+										<input type="hidden" id="like-check" value="${isLike}">
+							<%-- 			<input type="hidden" id="memberIdx" value="${memberIdx}"> --%>
+										<input type="hidden" id="lecIdx" value="${lecDetailVO.lecIdx}">
+									</c:when>			
+								</c:choose>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<a href="${pageContext.request.contextPath}/member/login" class="col-auto btn btn-outline-primary mx-1">❤️ ${lecDetailVO.lecLike}</a>
+						</c:otherwise>
+					</c:choose>
+				
+				<!-- 찜하기 -->
+					<form name="form1" method="post" class="col-6 d-flex justify-content-end p-0"
+					 action="${pageContext.request.contextPath}/lec/cart/insert">
+					    <input type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}">
+					    <input type="submit" id="jjim-btn" class="btn btn-outline-primary" value="찜하기">
+					</form>
+				</div>
+				
+				<!-- 강좌 추가하기 -->
+<%-- 				${getNowCount < lecDetailVO.lecHeadCount} --%>
+<%-- 				${lecDetailVO.lecHeadCount} --%>
+<%-- 				${getNowCount} --%>
+				<div class="row md-4">
+					<c:choose>
+						<c:when test="${getNowCount < lecDetailVO.lecHeadCount}">
+							<a href="${pageContext.request.contextPath}/lecMy/confirm/${lecDetailVO.lecIdx}" class="btn btn-danger text-light">강좌 신청</a>
+						</c:when>
+						<c:otherwise>
+							<span class="btn btn-secondary text-light">강좌 신청 불가</span>
+						</c:otherwise>
+					</c:choose>
+				</div>
+				
+			</div>
 		</div>
-		</nav>
 		
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>강좌 상세</div>
@@ -482,27 +521,25 @@ function deleteReview(lecReviewIdxValue){
 		 	<tbody>
 			    <tr>
 			        <td>강사 프로필</td>
-			        <td>
-						<c:choose>
-								<c:when test="${GatherHeadsVO.memberProfileIdx != 0 }">  			
-									<td class="text-center align-middle text-nowrap">
-										<img src="${pageContext.request.contextPath}/member/profile/${lecDetailVO.memberIdx}" width="10%" />
-									</td>  
-								</c:when>
-								<c:otherwise>
-									<td class="text-center align-middle text-nowrap">
-										<img src="${pageContext.request.contextPath}/resources/img/noImage.png" width="10%">
-									</td>
-								</c:otherwise>
-							</c:choose>					
-					</td>
+					<c:choose>
+						<c:when test="${GatherHeadsVO.memberProfileIdx != 0 }">  			
+							<td class="text-center align-middle text-nowrap">
+								<img src="${pageContext.request.contextPath}/member/profile/${lecDetailVO.memberIdx}" width="10%" />
+							</td>  
+						</c:when>
+						<c:otherwise>
+							<td class="text-center align-middle text-nowrap">
+								<img src="${pageContext.request.contextPath}/resources/img/noImage.png" width="10%">
+							</td>
+						</c:otherwise>
+					</c:choose>					
 			   	</tr>
 			    <tr>
 			        <td>강사 이름</td>
 			        <td>${lecDetailVO.memberNick}</td>
 			    </tr>
 			    <tr>
-			        <td>강사 소개<td>
+			        <td>강사 소개</td>
 			        <td>${lecDetailVO.tutorDetail}</td>
 			    </tr>
 			    <tr>
@@ -521,73 +558,72 @@ function deleteReview(lecReviewIdxValue){
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>평점</div>
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
-			<!-- 평점 -->
-			<form id="insertReview-form">
-			<div class="card mb-2 border border-1 border-secondary p-0">
-			<div class="card-header d-flex align-items-center p-1 px-2">
-				<span>평점을 입력해주세요</span>
-			</div>
-			<div class="card-body position-relative p-1 px-2"> 		
-			 	<div class="star-rating space-x-4 mx-auto"> 
-			        <input type="radio" id="5-stars" name="lecReviewScore" value="5" v-model="ratings"/>
-			        <label for="5-stars" class="star pr-4">★</label>
-			        <input type="radio" id="4-stars" name="lecReviewScore" value="4" v-model="ratings"/>
-			        <label for="4-stars" class="star">★</label>
-			        <input type="radio" id="3-stars" name="lecReviewScore" value="3" v-model="ratings"/>
-			        <label for="3-stars" class="star">★</label>
-			        <input type="radio" id="2-stars" name="lecReviewScore" value="2" v-model="ratings"/>
-			        <label for="2-stars" class="star">★</label>
-			        <input type="radio" id="1-star" name="lecReviewScore" value="1" v-model="ratings" />
-			        <label for="1-star" class="star">★</label>
-			    </div> 
-			    
-				<input type="text" name="lecReviewDetail" placeholder="로그인을 해주세요">
-				<input	type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}">
-				<c:if test="${isLogin}">
-					<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">평점 등록</button> 
-				</c:if>				
-			</div>
-			</div>
-			</form>
-			<div id="resultReview"></div>  
-			</div>
-			
-			<!-- 평점목록 -->
-			<template id="lecReviewVO-template">
-			<div class="card mb-2 border border-1 border-secondary p-0 item">
+			<div class="container"></div>
+				<!-- 평점 -->
+				<form id="insertReview-form">
+				<div class="card mb-2 border border-1 border-secondary p-0">
 				<div class="card-header d-flex align-items-center p-1 px-2">
-					<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" 
-					src="${root}/member/profile/{{memberIdx}}"
-					style="width:2.3rem; height:2.3rem;"/>
-					<span class="memberNick">닉네임 : {{memberNick}}</span> 
-					<span class="lecReviewScore">점수 : {{lecReviewScore}}</span> 
-					<span class="memberReviewRegistered ms-auto lecReviewRegistered">{{lecReviewRegistered}}</span>
+					<span>평점을 입력해주세요</span>
 				</div>
-				<div class="card-body position-relative p-1 px-2">
-					<div class="card-text p-1 px-3 lecReviewDetail">{{lecReviewDetail}}</div>	
-					<div class="floatRightTop position-absolute top-0 end-0 p-1">
-					 	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-lecreview-idx="{{lecReviewIdx}}">삭제</button>
-				 	</div>
+				<div class="card-body position-relative p-1 px-2"> 		
+				 	<div class="star-rating space-x-4 mx-auto"> 
+				        <input type="radio" id="5-stars" name="lecReviewScore" value="5" v-model="ratings"/>
+				        <label for="5-stars" class="star pr-4">★</label>
+				        <input type="radio" id="4-stars" name="lecReviewScore" value="4" v-model="ratings"/>
+				        <label for="4-stars" class="star">★</label>
+				        <input type="radio" id="3-stars" name="lecReviewScore" value="3" v-model="ratings"/>
+				        <label for="3-stars" class="star">★</label>
+				        <input type="radio" id="2-stars" name="lecReviewScore" value="2" v-model="ratings"/>
+				        <label for="2-stars" class="star">★</label>
+				        <input type="radio" id="1-star" name="lecReviewScore" value="1" v-model="ratings" />
+				        <label for="1-star" class="star">★</label>
+				    </div> 
+				    
+					<input type="text" name="lecReviewDetail" placeholder="로그인을 해주세요">
+					<input	type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}">
+					<c:if test="${isLogin}">
+						<button type="submit" class="btn btn-sm btn-secondary p-1 me-1">평점 등록</button> 
+					</c:if>				
 				</div>
-			</div>
-			</template>
-			
-			<button class="btn btn-secondary moreR-btn">더보기</button> 
-			<button class="btn btn-secondary lessR-btn">접기</button>
+				</div>
+				</form>
+				<div id="resultReview"></div>  
+				</div>
+				
+				<!-- 평점목록 -->
+				<template id="lecReviewVO-template">
+				<div class="card mb-2 border border-1 border-secondary p-0 item">
+					<div class="card-header d-flex align-items-center p-1 px-2">
+						<img class="memberImage rounded-circle border border-light border-2 me-1 bg-info" 
+						src="${root}/member/profile/{{memberIdx}}"
+						style="width:2.3rem; height:2.3rem;"/>
+						<span class="memberNick">닉네임 : {{memberNick}}</span> 
+						<span class="lecReviewScore">점수 : {{lecReviewScore}}</span> 
+						<span class="memberReviewRegistered ms-auto lecReviewRegistered">{{lecReviewRegistered}}</span>
+					</div>
+					<div class="card-body position-relative p-1 px-2">
+						<div class="card-text p-1 px-3 lecReviewDetail">{{lecReviewDetail}}</div>	
+						<div class="floatRightTop position-absolute top-0 end-0 p-1">
+						 	<button type="button" class="btn btn-sm btn-secondary p-1 me-1 remove-btn {{isWriter}}" data-lecreview-idx="{{lecReviewIdx}}">삭제</button>
+					 	</div>
+					</div>
+				</div>
+				</template>
+				
+				<div class="row mb-4">
+					<button class="btn btn-secondary moreR-btn">더보기</button> 
+					<button class="btn btn-secondary lessR-btn">접기</button>
+				</div>
 		
-		
-		<nav class="row pt-4 d-flex flex-justify-between">
-			<a href="${pageContext.request.contextPath}/lec/register">글쓰기</a>
-		</nav>
-		<nav class="row pt-4 d-flex flex-justify-between">
-			<a href="${pageContext.request.contextPath}/lec/list">목록보기</a>
-		</nav>
-		<nav class="row pt-4 d-flex flex-justify-between">
-			<a href="${pageContext.request.contextPath}/lec/edit/${lecDetailVO.lecIdx}">수정</a>			
-		</nav>
-		<nav class="row pt-4 d-flex flex-justify-between">
-			<a href="${pageContext.request.contextPath}/lec/delete/${lecDetailVO.lecIdx}">삭제</a>	
-		</nav>
+				<div class="row mb-4 container">
+					<nav class="row pt-4 d-flex flex-row flex-justify-between">
+						<div class="col-sm-6 col-md-3 px-3 d-flex justify-content-center"><a class="btn btn-primary text-light text-center" href="${pageContext.request.contextPath}/lec/register">글쓰기</a></div>
+						<div class="col-sm-6 col-md-3 px-3 d-flex justify-content-center"><a class="btn btn-primary text-light text-center" href="${pageContext.request.contextPath}/lec/list">목록보기</a></div>
+						<div class="col-sm-6 col-md-3 px-3 d-flex justify-content-center"><a class="btn btn-primary text-light text-center" href="${pageContext.request.contextPath}/lec/edit/${lecDetailVO.lecIdx}">수정</a></div>	
+						<div class="col-sm-6 col-md-3 px-3 d-flex justify-content-center"><a class="btn btn-primary text-light text-center" href="${pageContext.request.contextPath}/lec/delete/${lecDetailVO.lecIdx}">삭제</a>	</div>
+					</nav>
+				</div>
+				
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
 
