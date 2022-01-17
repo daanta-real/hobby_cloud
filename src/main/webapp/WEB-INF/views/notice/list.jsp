@@ -100,8 +100,9 @@ window.addEventListener("load", function() {
 </form>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-		<button type="button"
-			class="col-auto btn btn-sm btn-outline-primary">목록으로</button>
+			<a class="col-auto btn btn-sm btn-outline-primary" href="${root }/notice/list">목록으로</a>
+		<!--<button type="button"
+			class="col-auto btn btn-sm btn-outline-primary">목록으로</button>-->
 		<ul class="col-auto pagination pagination-sm m-0">
 			<c:if test="${pageMaker.prev}">
 			<li class="page-item disabled">
