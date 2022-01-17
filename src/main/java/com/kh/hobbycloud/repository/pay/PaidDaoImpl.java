@@ -52,10 +52,10 @@ public class PaidDaoImpl implements PaidDao {
 	}
 
 	// 결제 취소
-	@Override public boolean markCancel(String idx) { return markCancel(Integer.valueOf(idx)); }
-	@Override public boolean markCancel(Integer idx) {
+	@Override public boolean cancel(String idx) { return cancel(Integer.valueOf(idx)); }
+	@Override public boolean cancel(Integer idx) {
 		log.debug("ㅡㅡㅡPaidDao.markCancel() 실행. 취소할 idx: {}", idx);
-		Integer result = sqlSession.update("paid.markCancel", idx);
+		Integer result = sqlSession.update("paid.cancel", idx);
 		return result > 0;
 	}
 

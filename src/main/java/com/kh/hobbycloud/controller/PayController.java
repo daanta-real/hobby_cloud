@@ -31,13 +31,14 @@ import com.kh.hobbycloud.vo.pay.KakaoPayCancelResponseVO;
 import com.kh.hobbycloud.vo.pay.KakaoPayReadyRequestVO;
 import com.kh.hobbycloud.vo.pay.KakaoPayReadyResponseVO;
 import com.kh.hobbycloud.vo.pay.KakaoPayVO;
+import com.kh.hobbycloud.vo.pay.PaidSearchVO;
 import com.kh.hobbycloud.vo.pay.PaidVO;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/pay")
+@RequestMapping("/my/pay")
 public class PayController {
 
 	@Autowired PayService payService;
@@ -80,7 +81,7 @@ public class PayController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /pay/new(GET) 결제 신규작성(테스트) 진입.");
 		List<PointDto> list = pointDao.select();
 		model.addAttribute("pointList", list);
-		return "pay/new";
+		return "my/pay/new";
 	}
 
 	// 결제 내용을 최종 확인하는 페이지.
@@ -102,7 +103,7 @@ public class PayController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ pointIdx를 세션에 저장했습니다. 저장된 세션 정보: {}",
 			session.getAttribute("pointIdx"));
 		printAllSessionStatus(session);
-		return "pay/confirm_pay";
+		return "my/pay/confirm_pay";
 	}
 
 
@@ -243,7 +244,7 @@ public class PayController {
 	@GetMapping("/success_pay")
 	public String success() {
 		// 성공 확인 페이지로 이동
-		return "pay/success_pay";
+		return "my/pay/success_pay";
 	}
 
 	// 카카오페이 실패 페이지
@@ -261,18 +262,27 @@ public class PayController {
 		printAllSessionStatus(session);
 
 		// 실패 페이지로 리다이렉트
-		return "pay/fail";
+		return "my/pay/fail";
 	}
 
 	// ************************************************************
 	// 이력 조회
 	// ************************************************************
 
-	// 목록
-	@RequestMapping("/list")
-	public String list() {
+	// 목록 (운영자용)
+	@RequestMapping("/")
+	public String list(PaidSearchVO paidSearchVO, HttpSession session, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /pay/list(GET) 진입");
-		return "pay/list";
+		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
+		boolean isLoggedIn = memberIdx != null;
+		boolean isAdmin
+			=  isLoggedIn
+			&& session.getAttribute("memberGrade") != null
+			&& session.getAttribute("memberGrade").equals("관리자");
+		if(!isAdmin) paidSearchVO.setMemberIdx(String.valueOf(session.getAttribute("memberIdx")));
+		List<PaidVO> paidList = paidDao.select(paidSearchVO);
+		model.addAttribute("paidList", paidList);
+		return "my/pay/list";
 	}
 
 	// 상세
@@ -289,7 +299,7 @@ public class PayController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 찾아낸 kakaoPayVO: {}", kakaoPayVO);
 		model.addAttribute("paidPrice", CommonUtils.attachComma(paidVO.getPaidPrice()));
 
-		return "pay/detail";
+		return "my/pay/detail";
 
 	}
 
@@ -304,15 +314,31 @@ public class PayController {
 
 		// idx로 tid 및 amount 알아내기
 		PaidVO vo = paidDao.getByIdx(paidIdx);
-		String paidTid = vo.getPaidTid();
-		Integer paidPrice = vo.getPaidPrice();
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 대상 결제이력: {}", vo);
+		String paidTid = vo.getPaidTid();
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ paidTid: {}", paidTid);
+		Integer paidPrice = vo.getPaidPrice();
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ paidPrice: {}", paidPrice);
+		log.debug("vo.getPaidIdx() = {}", vo.getPaidIdx());
+		log.debug("pointHistoryDao.getByPaidIdx(vo.getPaidIdx()) = {}", pointHistoryDao.getByPaidIdx(vo.getPaidIdx()));
+		PointHistoryDto historyDto = pointHistoryDao.getByPaidIdx(vo.getPaidIdx());
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ pointHistoryDto: {}", historyDto);
 
 		// 해당 결제가 이미 취소되어 있으면 빠꾸
 		if(!vo.getPaidStatus()) {
 			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 결제를 취소할 수 없습니다. 이미 취소된 결제입니다.");
+			throw new Exception();
+		}
+
+		// 취소 후 잔액이 마이너스가 될 것 같으면 빠꾸
+		MemberDto memberDto = memberDao.getByIdx(vo.getMemberIdx());
+		int curr = memberDto.getMemberPoint();
+		int minus = historyDto.getPointHistoryAmount();
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 현재 포인트 보유량: {}", curr);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 차감할 포인트 보유량: {}", minus);
+		boolean pointAfterCancel = curr > minus;
+		if(!pointAfterCancel) {
+			log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 결제를 취소할 수 없습니다. 잔고가 모자랍니다.");
 			throw new Exception();
 		}
 
@@ -321,8 +347,36 @@ public class PayController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 취소 결과: {}", responseVO);
 		model.addAttribute("cancelResponseVO", responseVO);
 
+		// 결제 취소 결과를 반영: point history
+
+		// 결제가 최종 완료된 이후, 각종 테이블에 결제내역을 저장/반영할 서비스를 실행시킨다.
+		// 1. PAID 테이블
+		PaidDto paidDto = new PaidDto();
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 결제 이력 기록(paidDao.markCancel): {}", paidDto);
+		paidDao.cancel(paidIdx);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 결제 이력 기록(paidDao.markCancel) 완료.");
+
+		// 2. point_history 테이블
+		PointHistoryDto pointHistoryDto = new PointHistoryDto();
+		pointHistoryDto.setMemberIdx(vo.getMemberIdx());
+		pointHistoryDto.setPaidIdx(paidIdx);
+		pointHistoryDto.setPointIdx(historyDto.getPointIdx());
+		pointHistoryDto.setPointHistoryAmount(-historyDto.getPointHistoryAmount());
+		pointHistoryDto.setPointHistoryMemo("포인트 결제 취소: " + historyDto.getPointHistoryMemo());
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 포인트 변동이력 기록(pointHistoryDao.insert): {}", pointHistoryDto);
+		pointHistoryDao.insert(pointHistoryDto);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 포인트 변동이력 기록(pointHistoryDao.insert) 완료.");
+
+		// 3. member 테이블
+		MemberDto memberDtoRecord = new MemberDto();
+		memberDtoRecord.setMemberIdx(vo.getMemberIdx());
+		memberDtoRecord.setMemberPoint(-historyDto.getPointHistoryAmount());
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원 포인트 보유량 변경(MemberDao.pointModify): {}", memberDto);
+		memberDao.pointModify(memberDto);
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원 포인트 보유량 변경(MemberDao.pointModify) 완료.");
+
 		// 결제 취소 컨트롤러로
-		return "/pay/success_cancel";
+		return "my/pay/success_cancel";
 
 	}
 

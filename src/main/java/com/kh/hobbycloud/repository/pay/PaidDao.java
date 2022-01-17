@@ -22,7 +22,7 @@ public interface PaidDao {
 	public boolean insert(PaidDto dto);
 
 	// 결제 취소
-	public boolean markCancel(String idx);
-	public boolean markCancel(Integer idx);
+	public boolean cancel(String idx);
+	public boolean cancel(Integer idx);
 
 }

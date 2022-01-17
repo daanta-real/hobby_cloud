@@ -57,77 +57,73 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-			<div class="row form-group d-flex justify-content-center">
-				<img src="${pageContext.request.contextPath}/resources/img/gather.png" class="w-50">
-			</div>
-			<div class="row form-group text-center">
-			<h3>hobbycloud에 어서오세요</h3>
-			</div>
+				<div class="row form-group d-flex justify-content-center">
+					<img src="${pageContext.request.contextPath}/resources/img/gather.png" class="w-25">
+				</div>
+				<div class="row form-group text-center">
+					<h3>hobbycloud에 어서오세요</h3>
+				</div>
 			</div>
 		</div>
 		<!-- 소단원 제목 -->
 		<div class='row border-bottom border-1 my-4 mx-2 p-1 fs-3 fw-bold'>hobbycloud</div>
 		<!-- 소단원 내용 -->
+		<div class="row p-sm-2 mx-1 mb-2">
+			<div class="container">
+				<nav class="row pt-4 d-flex justify-content-center p-0">
+					<div class="col-lg-6 mb-3">
+						<div class="card" style="border:1px solid rgba(0, 0, 0, 0.125);">
+							<div class="card-header">인삿말</div>
+							<div class="card-body" style="min-height:16rem;">
+								<h4 class="card-title">취미를 배워보자</h4>
+								<p class="card-text">hobbycloud는 평소 관심만 가지고 있던 취미를 제대로 배우고 싶을 때, 누군가의 도움이 필요할 때, 취미와 관련된
+									정보를 얻고 싶을 때 hobbycloud를 통해 손쉽게 강사를 찾아 배울 수 있고, 자신의 지역기반으로 가까운 사람들과 만남을 가져 함께
+									취미생활을 즐길 수 있게 해드립니다. hobbycloud를 통해 소중한 추억과 값진 시간을 보내세요.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 mb-3">
+						<div class="card" style="border:1px solid rgba(0, 0, 0, 0.125);">
+							<div class="card-header">취미종류</div>
+							<div class="card-body" style="min-height:16rem;">
+								<h4 class="card-title">다양한 취미를 만나보세요</h4>
+								<p class="card-text">운동</p>
+								<p class="card-text">요리</p>
+								<p class="card-text">문화</p>
+								<p class="card-text">예술</p>
+								<p class="card-text">IT</p>
+							</div>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
-		<div class="container">
-		<nav class="row p-0 pt-4 d-flex justify-content-center">
-		<div class="card border-primary mb-3 w-50">
-             <div class="card-header">인삿말</div>
-                <div class="card-body">
-                   <h4 class="card-title">취미를 배워보자</h4>
-                   <p class="card-text">hobbycloud는 평소 배우고싶던 취미를 제대로 배우고싶을때, 누군가의 도움이 필요할때, 취미와 관련된
-                   정보를 얻고싶을때 hobbycloud를 통해 
-                   손쇱게 강사를 찾아 배울 수 있고 
-                   자신의 지역기반으로 가까운 사람들과 만남을 가져 함께
-                   취미생활을 즐길 수 있게 해드립니다. hobbycloud를 통해 소중한 추억과 값진 시간을 보내세요   </p>
-                 </div>
-              </div>
-          <div class="card border-primary mb-3 w-50">
-             <div class="card-header">취미종류</div>
-                <div class="card-body">
-                   <h4 class="card-title">다양한 취미를 만나보세요</h4>
-                   <p class="card-text">운동</p>
-                   <p class="card-text">요리</p>
-                   <p class="card-text">문화</p>
-                   <p class="card-text">예술</p>
-                   <p class="card-text">IT</p>
-                 </div>
-              </div>
-              </nav>
-         <!-- 강좌소개 -->
-           <div class="card mb-3">
-               <h3 class="card-header">이용안내</h3>
-               <div class="card-body">
-                    <h5 class="card-title">hobbycloud</h5>
-                    <h6 class="card-subtitle text-muted">클릭하면 해당 항목으로 이동됩니다</h6>
-                </div>
-             
-                 <img src="${pageContext.request.contextPath}/resources/img/cook.jpeg"></rect>
-                 <text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text>
-             </svg>
-               <div class="card-body">
-                   <p class="card-text">다양한 취미생활을 배워봅시다.</p>
-               </div>
-               <ul class="list-group list-group-flush">
-                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/lec/list" class="card-link">강좌목록보기</a></li>
-                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/gather/list" class="card-link">소모임보기</a></li>
-                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/petitions/list" class="card-link">청원하기</a></li>
-                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/notice/list" class="card-link">공지사항</a></li>
-                   <li class="list-group-item"><a href="${pageContext.request.contextPath}/place/list" class="card-link">장소보기</a></li>
-               </ul>
-              
-      <div class="card-footer text-muted">
-    since 2022-01-17
-      </div>
-          </div>
-        </div>
-       </div>
-           
-         
-		
-			
-			
-			
+			<div class="container">			<!-- 강좌소개 -->
+				<div class="row card mb-3 mx-1">
+					<h3 class="card-header">이용안내</h3>
+					<div class="card-body">
+						<h5 class="card-title">hobbycloud</h5>
+						<h6 class="card-subtitle text-muted">클릭하면 해당 항목으로 이동됩니다</h6>
+					</div>
+					<div style="border-radius:20px; overflow:hidden; max-height:fit-content;" class="w-100">
+						<img src="${pageContext.request.contextPath}/resources/img/cook.jpeg" class="w-100">
+					</div>
+					<div class="card-body my-3">
+						<p class="card-text">다양한 취미생활을 배워봅시다.</p>
+					</div>
+					<ul class="list-group list-group-flush p-0">
+						<li class="list-group-item w-100"><a href="${pageContext.request.contextPath}/lec/list" class="card-link">강좌목록보기</a></li>
+						<li class="list-group-item w-100"><a href="${pageContext.request.contextPath}/gather/list" class="card-link">소모임보기</a></li>
+						<li class="list-group-item w-100"><a href="${pageContext.request.contextPath}/petitions/list" class="card-link">청원하기</a></li>
+						<li class="list-group-item w-100"><a href="${pageContext.request.contextPath}/notice/list" class="card-link">공지사항</a></li>
+						<li class="list-group-item w-100"><a href="${pageContext.request.contextPath}/place/list" class="card-link">장소보기</a></li>
+					</ul>
+					<div class="card-footer text-muted">since 2022-01-17</div>
+				</div>
+			</div>
+		</div>
 	</SECTION>
 	<!-- 페이지 내용 끝. -->
 	

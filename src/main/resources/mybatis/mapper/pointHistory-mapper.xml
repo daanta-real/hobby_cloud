@@ -17,7 +17,7 @@
 	</select>
 	
 	<!-- paid_idx로 단일 데이터 획득 -->
-	<select id="getByPaidIdx" parameterType="string" resultType="PointHistoryDto">
+	<select id="getByPaidIdx" parameterType="integer" resultType="PointHistoryDto">
 		SELECT * FROM point_history
 		WHERE paid_idx = #{val}
 	</select>

@@ -79,9 +79,9 @@ public class PayServiceImpl implements PayService {
 				// 필요정보 3. 카카오서버에게 결제 결과에 따른 페이지를 미리 안내
 				// 카카오 개발자 페이지의 애플리케이션에 등록된 주소만 가능하므로 사전 등록 여부 필히 확인
 				// 아래 세 개의 페이지가 미리 준비되어 있어야 결제 자체가 가능하다.
-				add("approval_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/pay/success");
-				add("cancel_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/pay/cancel");
-				add("fail_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/pay/fail");
+				add("approval_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/my/pay/success");
+				add("cancel_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/my/pay/cancel");
+				add("fail_url", SERVER_ROOT + ":" + SERVER_PORT + "/" + CONTEXT_NAME + "/my/pay/fail");
 			}}, "ready", KakaoPayReadyResponseVO.class
 		);
 	}

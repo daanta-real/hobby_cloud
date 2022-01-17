@@ -2,14 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
-<c:set var="vo" value="${cancelResponseVO}" />
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 결제 취소 성공</TITLE>
+<TITLE>HobbyCloud - 결제 확인</TITLE>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -29,6 +28,13 @@ window.addEventListener("load", function() {
 
 
 
+<!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
+<!-- 사이드메뉴 영역 시작 -->
+<jsp:include page="/resources/template/leftMenu.jsp" flush="false" />
+<!-- 사이드메뉴 영역 끝 -->
+
+
+
 <!-- ************************************************ 페이지 영역 ************************************************ -->
 <!-- 페이지 영역 시작 -->
 <ARTICLE class="d-flex flex-column align-items-start col-lg-8 mx-md-1 mt-xs-2 mt-md-3 pt-2">
@@ -37,7 +43,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			결제 취소 성공
+			결제 내용 확인
 			</span>
 		</div>
 	</HEADER>
@@ -45,11 +51,23 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 내용 -->
-		<div class="d-flex flex-row justify-content-center align-items-center p-sm-2 mx-1 mb-5 container">
-			<div class="m-5 fs-4 row">결제 취소에 성공하였습니다.</div>
-			<div class="m-5 row">
-				<a class="btn btn-primary m-5 col-auto" href="${root}/my/pay">결제 이력 화면으로 돌아가기</a>
-				<a class="btn btn-primary m-5 col-auto" href="${root}/my/">마이페이지로 돌아가기</a>
+		<div class="row p-sm-2 mx-1 mb-5">
+			<div class="container">
+				<div class="form-group my-5 col-12">
+					<h3 class="text-info">포인트상품명</h3>
+					<h5>${pointName}</h5>
+				</div>
+				<div class="form-group my-5 col-12">
+					<h3 class="text-info">포인트상품 가격</h3>
+					<h5>&#8361;&nbsp;<fmt:formatNumber value="${pointPrice}" pattern="#,###" /></h5>
+				</div>
+				<div class="form-group my-5 col-12">
+					<h3 class="text-info">포인트상품 포인트 충전량</h3>
+					<h5><fmt:formatNumber value="${pointAmount}" pattern="#,###" /></h5>
+				</div>
+				<form class="row d-flex justify-content-center mt-3" action="ready" method="get">
+					<button class="btn btn-danger col-sm-12 col-md-9 col-xl-8">결제 실행</button>
+				</form>
 			</div>
 		</div>
 	</SECTION>

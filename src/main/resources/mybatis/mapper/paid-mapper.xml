@@ -30,11 +30,11 @@
 	
 	<!-- 결제 취소처리. 삭제하지 않는 대신, 결제상태를 0(취소)로 돌린다.
 	사이트 내에 부분취소가 없으므로 부분취소는 구현하지 않아도 된다. -->
-	<delete id="cancel" parameterType="integer">
+	<update id="cancel" parameterType="integer">
 		UPDATE paid
 		SET paid_status = 0
 		WHERE paid_idx = #{paidIdx}
-	</delete>
+	</update>
 	
 	<!-- 관리자용: 결제이력 목록 조회 -->
 	<select id="search" parameterType="PaidSearchVO" resultType="PaidVO">

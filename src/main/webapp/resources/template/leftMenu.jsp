@@ -27,30 +27,20 @@
 	</div> 
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="heading2">
-			<button class="accordion-button p-3 collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse2"
-				aria-expanded="false" aria-controls="collapse2">
-				강좌</button>
+			<button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">강좌</button>
 		</h2>
-		<div id="collapse2" class="accordion-collapse collapse"
-			aria-labelledby="heading2" data-bs-parent="#accordionSideMenu"
-			style="">
+		<div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#accordionSideMenu" style="">
 				<c:if test="${isAdmin}"><div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/member/">강좌 관리</a></div></c:if>
 				<div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/lec/">내 강좌</a></div>
 		</div>
 	</div>
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="heading3">
-			<button class="accordion-button p-3 collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#collapse3"
-				aria-expanded="false" aria-controls="collapse3">
-				장소</button>
+			<button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse2">결제</button>
 		</h2>
-		<div id="collapse3" class="accordion-collapse collapse"
-			aria-labelledby="heading3" data-bs-parent="#accordionSideMenu"
-			style="">
-			<div class="accordion-body px-3 py-2">장소 관리</div>
-			<div class="accordion-body px-3 py-2">장소담당자 관리</div>
+		<div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordionSideMenu" style="">
+				<div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/pay/new">포인트 충전</a></div>
+				<div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/pay/">결제이력</a></div>
 		</div>
 	</div>
 	<div class="accordion-item">
@@ -58,49 +48,63 @@
 			<button class="accordion-button p-3 collapsed" type="button"
 				data-bs-toggle="collapse" data-bs-target="#collapse4"
 				aria-expanded="false" aria-controls="collapse4">
-				소모임</button>
+				장소</button>
 		</h2>
-		<div id="collapse4" class="accordion-collapse collapse"
+		<div id="collapse5" class="accordion-collapse collapse"
 			aria-labelledby="heading4" data-bs-parent="#accordionSideMenu"
 			style="">
-			<div class="accordion-body px-3 py-2">소모임 관리</div>
+			<div class="accordion-body px-3 py-2">장소 관리</div>
+			<div class="accordion-body px-3 py-2">장소담당자 관리</div>
 		</div>
 	</div>
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="heading5">
 			<button class="accordion-button p-3 collapsed" type="button"
 				data-bs-toggle="collapse" data-bs-target="#collapse5"
-				aria-expanded="false" aria-controls="collapse5">
-				청원</button>
+				aria-expanded="false" aria-controls="collapse4">
+				소모임</button>
 		</h2>
-		<div id="collapse5" class="accordion-collapse collapse"
+		<div id="collapse4" class="accordion-collapse collapse"
 			aria-labelledby="heading5" data-bs-parent="#accordionSideMenu"
 			style="">
-			<div class="accordion-body px-3 py-2">청원 관리</div>
+			<div class="accordion-body px-3 py-2">소모임 관리</div>
 		</div>
 	</div>
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="heading6">
 			<button class="accordion-button p-3 collapsed" type="button"
 				data-bs-toggle="collapse" data-bs-target="#collapse6"
-				aria-expanded="false" aria-controls="collapse6">
-				공지</button>
+				aria-expanded="false" aria-controls="collapse5">
+				청원</button>
 		</h2>
-		<div id="collapse6" class="accordion-collapse collapse"
+		<div id="collapse5" class="accordion-collapse collapse"
 			aria-labelledby="heading6" data-bs-parent="#accordionSideMenu"
 			style="">
-			<div class="accordion-body px-3 py-2">공지 관리</div>
+			<div class="accordion-body px-3 py-2">청원 관리</div>
 		</div>
 	</div>
 	<div class="accordion-item">
 		<h2 class="accordion-header" id="heading7">
 			<button class="accordion-button p-3 collapsed" type="button"
 				data-bs-toggle="collapse" data-bs-target="#collapse7"
+				aria-expanded="false" aria-controls="collapse6">
+				공지</button>
+		</h2>
+		<div id="collapse6" class="accordion-collapse collapse"
+			aria-labelledby="heading7" data-bs-parent="#accordionSideMenu"
+			style="">
+			<div class="accordion-body px-3 py-2">공지 관리</div>
+		</div>
+	</div>
+	<div class="accordion-item">
+		<h2 class="accordion-header" id="heading8">
+			<button class="accordion-button p-3 collapsed" type="button"
+				data-bs-toggle="collapse" data-bs-target="#collapse8"
 				aria-expanded="false" aria-controls="collapse7">
 				수익</button>
 		</h2>
 		<div id="collapse7" class="accordion-collapse collapse"
-			aria-labelledby="heading7" data-bs-parent="#accordionSideMenu"
+			aria-labelledby="heading8" data-bs-parent="#accordionSideMenu"
 			style="">
 			<div class="accordion-body px-3 py-2">광고 관리</div>
 			<a class="accordion-body px-3 py-2" href="${root}/admin/pay/list">결제이력 관리</a>
