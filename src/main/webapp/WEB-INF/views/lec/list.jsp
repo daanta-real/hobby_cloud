@@ -261,7 +261,7 @@
 							<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/register';">신규 강좌 추가</a></button>
 						</c:when>
 						<c:otherwise>
-							<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lecMy/myLec';">내 강좌 보기</a></button>
+							<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/my/lec/';">내 강좌 보기</a></button>
 						</c:otherwise>
 					</c:choose>	
 			</nav>	

@@ -11,7 +11,7 @@
 		
 	<!-- 단일조회 BY IDX(Integer)-->
 	<select id="getByIdx" parameterType="integer" resultType="MyLecDto">
-		SELECT * FROM my_lec WHERE my_lec_idx = ${lecMyIdx}
+		SELECT * FROM my_lec WHERE my_lec_idx = ${myLecIdx}
 	</select>
 	
 	<!-- 결제이력 등록.
@@ -33,16 +33,16 @@
 			INNER JOIN lec l
 				ON l.lec_idx = y.lec_idx
 		<where>
-			<if test="lecMyIdx != null and !lecMyIdx.equals('')">AND INSTR(l.my_lec_idx, #{lecMyIdx}) > 0</if>
+			<if test="myLecIdx != null and !myLecIdx.equals('')">AND INSTR(l.my_lec_idx, #{myLecIdx}) > 0</if>
 			<if test="memberIdx != null and !memberIdx.equals('')">AND INSTR(m.member_idx, #{memberIdx}) > 0</if>
 			<if test="memberId != null and !memberId.equals('')">AND INSTR(m.member_id, #{memberId}) > 0</if>
 			<if test="memberNick != null and !memberNick.equals('')">AND INSTR(m.member_nick, #{memberNick}) > 0</if>
 			<if test="lecIdx != null and !lecIdx.equals('')">AND INSTR(l.lec_idx, #{lecIdx}) > 0</if>
-			<if test="lecMyRegistered_start != null and !lecMyRegistered_start.equals('')">
-				AND l.my_lec_registered <![CDATA[>=]]> to_date(#{lecMyRegistered_start}, 'YYYY-MM-DD HH24:MI:SS')
+			<if test="myLecRegistered_start != null and !myLecRegistered_start.equals('')">
+				AND l.my_lec_registered <![CDATA[>=]]> to_date(#{myLecRegistered_start}, 'YYYY-MM-DD HH24:MI:SS')
 			</if>
-			<if test="lecMyRegistered_end != null and !lecMyRegistered_end.equals('')">
-				AND l.my_lec_registered <![CDATA[<=]]> to_date(#{lecMyRegistered_end}, 'YYYY-MM-DD HH24:MI:SS')
+			<if test="myLecRegistered_end != null and !myLecRegistered_end.equals('')">
+				AND l.my_lec_registered <![CDATA[<=]]> to_date(#{myLecRegistered_end}, 'YYYY-MM-DD HH24:MI:SS')
 			</if>
 		</where>
 		ORDER BY my_lec_idx DESC
@@ -51,7 +51,7 @@
 	<!-- 관리자용: 결제이력 자체 삭제 -->
 	<delete id="delete" parameterType="integer">
 		DELETE FROM my_lec
-		WHERE my_lec_idx = #{lecMyIdx};
+		WHERE my_lec_idx = #{myLecIdx};
 	</delete>
 	
 	<!-- 내 강좌 조회 -->

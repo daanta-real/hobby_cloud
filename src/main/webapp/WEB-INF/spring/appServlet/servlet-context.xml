@@ -84,8 +84,7 @@
 				<mvc:mapping path="/gather/update/**"/>
 				<mvc:mapping path="/gather/delete/**"/>
 				
-				<mvc:mapping path="/lecMy/confirm_buy"/>
-				<mvc:mapping path="/lecMy/confirm"/>
+				<mvc:mapping path="/my/**"/>
 				<mvc:mapping path="/pay/**"/>
 				<mvc:mapping path="/point/**"/>
 				<mvc:mapping path="/pointHistory/**"/>

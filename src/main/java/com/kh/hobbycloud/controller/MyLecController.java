@@ -51,8 +51,8 @@ public class MyLecController {
 		for(MyLecVO listOne: listOrg) {
 			LinkedHashMap<String, String> map = new LinkedHashMap<>();
 			map.put("순", String.valueOf(count++));
-			map.put("targetIdx", String.valueOf(listOne.getLecMyIdx()));
-			map.put("내강좌번호", String.valueOf(listOne.getLecMyIdx()));
+			map.put("targetIdx", String.valueOf(listOne.getMyLecIdx()));
+			map.put("내강좌번호", String.valueOf(listOne.getMyLecIdx()));
 			map.put("강좌번호", String.valueOf(listOne.getLecIdx()));
 			map.put("분류", String.valueOf(listOne.getLecContainsCount()));
 			map.put("강좌명", listOne.getLecName());

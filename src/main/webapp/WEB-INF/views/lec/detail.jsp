@@ -457,7 +457,7 @@ $(function(){
 				<div class="row md-4">
 					<c:choose>
 						<c:when test="${getNowCount < lecDetailVO.lecHeadCount}">
-							<a href="${pageContext.request.contextPath}/lecMy/confirm/${lecDetailVO.lecIdx}" class="btn btn-danger text-light">강좌 신청</a>
+							<a href="${pageContext.request.contextPath}/my/lec/confirm/${lecDetailVO.lecIdx}" class="btn btn-danger text-light">강좌 신청</a>
 						</c:when>
 						<c:otherwise>
 							<span class="btn btn-secondary text-light">강좌 신청 불가</span>

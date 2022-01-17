@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class MyLecVO {
-	private int lecMyIdx;
+	private int myLecIdx;
 	private int lecIdx;
 	private String lecName;
 	private String lecLocRegion;

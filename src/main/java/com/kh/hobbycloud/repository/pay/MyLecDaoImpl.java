@@ -50,7 +50,7 @@ public class MyLecDaoImpl implements MyLecDao {
 
 	@Override
 	public boolean update(MyLecDto dto) {
-		int result = sqlSession.update("lecMy.update", dto);
+		int result = sqlSession.update("myLec.update", dto);
 		return result > 0;
 	}
 

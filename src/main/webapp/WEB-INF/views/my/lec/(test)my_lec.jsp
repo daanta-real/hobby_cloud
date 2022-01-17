@@ -4,12 +4,12 @@
 
 <h1>내 강좌</h1>
 
-<c:forEach var="lecMyVO" items="${myLecList}">
-	카테고리 : ${lecMyVO.lecCategoryName}
-	강좌 이름 : ${lecMyVO.lecName}
-	강사 이름 : ${lecMyVO.memberNick}
-	강좌 수 : ${lecMyVO.lecContainsCount}
-	강좌 지역 : ${lecMyVO.lecLocRegion}
-	강좌 시작 날짜 : ${lecMyVO.lecStart}
-	강좌 종료 날짜 : ${lecMyVO.lecEnd}
+<c:forEach var="myLecVO" items="${myLecList}">
+	카테고리 : ${myLecVO.lecCategoryName}
+	강좌 이름 : ${myLecVO.lecName}
+	강사 이름 : ${myLecVO.memberNick}
+	강좌 수 : ${myLecVO.lecContainsCount}
+	강좌 지역 : ${myLecVO.lecLocRegion}
+	강좌 시작 날짜 : ${myLecVO.lecStart}
+	강좌 종료 날짜 : ${myLecVO.lecEnd}
 </c:forEach>
