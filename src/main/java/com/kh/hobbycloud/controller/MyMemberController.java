@@ -83,7 +83,7 @@ public class MyMemberController {
 		model.addAttribute("memberDto", map.get("memberDto"));
 		model.addAttribute("memberProfileDto", map.get("memberProfileDto"));
 		model.addAttribute("memberCategoryDto", map.get("memberCategoryDto"));
-		return "redirect:/my/member/";
+		return "my/member/update";
 	}
 
 	@PostMapping("/update/{memberIdx}")
