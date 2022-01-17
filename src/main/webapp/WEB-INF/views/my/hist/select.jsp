@@ -30,6 +30,7 @@ window.addEventListener("load", function() {
 
 <!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
 <!-- 사이드메뉴 영역 시작 -->
+<jsp:include page="/resources/template/leftMenu.jsp" flush="false" />
 <!-- 사이드메뉴 영역 끝 -->
 
 
@@ -42,7 +43,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			포인트상품 목록
+			포인트 변동이력
 			</span>
 		</div>
 	</HEADER>
@@ -60,7 +61,7 @@ window.addEventListener("load", function() {
 						<input name="pointIdx" id="searchForm_pointIdx" type="number" class="form-control" placeholder="포인트 번호를 입력하세요" value="${param.pointIdx}">
 					</div>
 					<div class="form-group mb-4 col-12">
-						<label for="searchForm_pointName" class="form-label mb-0">포인트상품명</label>
+						<label for="searchForm_pointName" class="form-label mb-0">포인트상품 변동이력명</label>
 						<input name="pointName" id="searchForm_pointName" type="text" class="form-control" placeholder="포인트상품명을 입력하세요" value="${param.pointName}">
 					</div>
 					<div class="form-group mb-4 col-md-6 container">
@@ -110,19 +111,21 @@ window.addEventListener("load", function() {
 					<table class="table table-striped table-hover table-bordered table-sm table-responsive m-0">
 						<thead>
 							<tr class="table-danger">
-								<th scope="col" class="text-center align-middle text-nowrap">상품 번호</th>
-								<th scope="col" class="text-center align-middle text-nowrap">상품명</th>
-								<th scope="col" class="text-center align-middle text-nowrap">구매가</th>
-								<th scope="col" class="text-center align-middle text-nowrap">포인트 충전량</th>
+								<th scope="col" class="text-center align-middle text-nowrap">번호</th>
+								<th scope="col" class="text-center align-middle text-nowrap">구매자</th>
+								<th scope="col" class="text-center align-middle text-nowrap">일자</th>
+								<th scope="col" class="text-center align-middle text-nowrap">변동이력</th>
+								<th scope="col" class="text-center align-middle text-nowrap">포인트 변동량</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="PointDto" items="${list}">
-								<tr class="cursor-pointer" onclick="location.href='${root}/point/detail/${PointDto.getPointIdx()}'">
-									<td class="text-center align-middle text-nowrap">${PointDto.getPointIdx()}</td>
-									<td class="text-center align-middle text-nowrap">${PointDto.getPointName()}</td>
-									<td class="text-center align-middle text-nowrap">&#8361;&nbsp;<fmt:formatNumber value="${PointDto.getPointPrice()}" pattern="#,###" /></td>
-									<td class="text-center align-middle text-nowrap"><fmt:formatNumber value="${PointDto.getPointAmount()}" pattern="#,###" /></td>
+							<c:forEach var="pointHistoryVO" items="${list}">
+								<tr>
+									<td class="text-center align-middle text-nowrap">${pointHistoryVO.pointHistoryIdx}</td>
+									<td class="text-center align-middle text-nowrap">${pointHistoryVO.memberNick}</td>
+									<td class="text-center align-middle text-nowrap">${pointHistoryVO.pointHistoryRegistered}</td>
+									<td class="text-center align-middle text-nowrap">${pointHistoryVO.pointHistoryMemo}</td>
+									<td class="text-center align-middle text-nowrap"><fmt:formatNumber value="${pointHistoryVO.pointHistoryAmount}" pattern="#,###" /></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -130,8 +133,7 @@ window.addEventListener("load", function() {
 				</div>
 			</div>
 			<nav class="row p-0 pt-4 d-flex justify-content-between">
-				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/point/';">전체 목록</a></button>
-				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/point/insert';">신규상품 추가</a></button>
+				<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/my/hist/';">전체 목록</button>
 			</nav>
 		</div>
 	</SECTION>

@@ -269,7 +269,7 @@ public class PayController {
 	// 이력 조회
 	// ************************************************************
 
-	// 목록 (운영자용)
+	// 목록
 	@RequestMapping("/")
 	public String list(PaidSearchVO paidSearchVO, HttpSession session, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶ /pay/list(GET) 진입");

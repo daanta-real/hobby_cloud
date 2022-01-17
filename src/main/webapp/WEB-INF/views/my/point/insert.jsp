@@ -2,14 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%-- 원화 표시 --%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
-<c:set var="vo" value="${KakaoPayApproveResponseVO}" />
 <!DOCTYPE HTML>
 <HTML LANG="ko">
 
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 결제 성공</TITLE>
+<TITLE>HobbyCloud - 포인트상품 조회</TITLE>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -44,7 +43,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			결제 성공
+			포인트상품 등록
 			</span>
 		</div>
 	</HEADER>
@@ -52,14 +51,34 @@ window.addEventListener("load", function() {
 	<!-- 페이지 내용 시작 -->
 	<SECTION class="w-100 pt-0 fs-6">
 		<!-- 소단원 내용 -->
-		<div class="p-sm-2 mx-1 mb-5">
-			<div class="m-5 fs-4 text-center">결제에 성공하였습니다.</div>
-			<div class="m-5 fs-4 d-flex flex-column align-items-center justify-content-center">
-				<form method="get" class="m-2" action="${root}/lec/list"><button class="btn btn-sm btn-primary fs-4 p-2 px-4">강좌 선택하러 가기</button></form>
-				<form method="get" class="m-2" action="${root}/">        <button class="btn btn-sm btn-primary fs-4 p-2 px-4">메인 화면으로 돌아가기</button></form>
-				<form method="get" class="m-2" action="${root}/my/pay/"> <button class="btn btn-sm btn-primary fs-4 p-2 px-4">결제 이력 화면으로 돌아가기</button></form>
-				<form method="get" class="m-2" action="${root}/my/hist/"> <button class="btn btn-sm btn-primary fs-4 p-2 px-4">포인트 증감 이력 화면으로 돌아가기</button></form>
-				<form method="get" class="m-2" action="${root}/my/">     <button class="btn btn-sm btn-primary fs-4 p-2 px-4">마이페이지로 돌아가기</button></form>
+		<div class="row p-sm-2 mx-1 mb-5">
+			<div class="container">
+				<form name="pointForm" method="post" class="row container d-flex justify-content-center">
+					<div class="form-group row mb-4">
+						<label for="form_pointName" class="form-label mb-0">포인트상품명</label>
+						<input name="pointName" id="form_pointName" type="text" class="form-input p-2 px-3 border-radius-all-25" placeholder="포인트상품 이름을 입력하세요" required>
+					</div>
+					<div class="row mb-4">
+						<label>포인트상품 가격</label>
+						<div class="input-group flex-nowrap grayInputGroup p-0">
+							<div class="input-group-text">&#8361;</div>
+							<input type="number" name="pointPrice" placeholder="가격을 입력하세요" required class="form-control">
+						</div>
+					</div>
+					<div class="row mb-4">
+						<label>포인트상품 충전량</label>
+						<div class="input-group flex-nowrap grayInputGroup p-0">
+							<input type="number" name="pointAmount" placeholder="충전량을 입력하세요" required class="form-control">
+							<div class="input-group-text">포인트</div>
+						</div>
+					</div>
+					<div class="row p-sm-2 mx-1 mb-5">
+						<nav class="row p-0 pt-4 d-flex justify-content-between">
+							<button type="button" class="col-auto btn btn-sm btn-outline-primary" onclick="history.go(-1);">취소</button>
+							<button type="submit" class="col-auto btn btn-sm btn-outline-primary">등록</button>
+						</nav>
+					</div>
+				</form>
 			</div>
 		</div>
 	</SECTION>

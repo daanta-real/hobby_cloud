@@ -41,6 +41,7 @@
 		<div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordionSideMenu" style="">
 				<div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/pay/new">포인트 충전</a></div>
 				<div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/pay/">결제이력</a></div>
+				<div class="accordion-body p-0"><a class="w-100 px-3 py-3 d-flex justify-content-start" href="${root}/my/hist/">포인트 변동이력</a></div>
 		</div>
 	</div>
 	<div class="accordion-item">

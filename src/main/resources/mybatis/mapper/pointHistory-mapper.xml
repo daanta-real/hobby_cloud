@@ -35,11 +35,10 @@
 		INNER JOIN member m
 			ON m.member_idx = p.member_idx
 	 	<where>
-			<if test="memberIdx != null">AND h.member_idx = #{memberIdx},</if>
-			<if test="pointHistoryIdx != null">AND h.point_history_idx = #{pointHistoryIdx},</if>
-			<if test="paidIdx != null">AND h.paid_idx = #{paidIdx},</if>
-			<if test="pointIdx != null">AND h.point_idx = #{pointIdx},</if>
-			<if test="pointHistoryRegistered_min != null">AND h.point_idx = #{pointIdx},</if>
+			<if test="memberIdx != null">AND h.member_idx = #{memberIdx}</if>
+			<if test="pointHistoryIdx != null">AND h.point_history_idx = #{pointHistoryIdx}</if>
+			<if test="paidIdx != null">AND h.paid_idx = #{paidIdx}</if>
+			<if test="pointIdx != null">AND h.point_idx = #{pointIdx}</if>
 			<if test="pointHistoryRegistered_start != null and !pointHistoryRegistered_start.equals('')">
 				AND h.point_history_registered <![CDATA[>=]]> TO_DATE(#{pointHistoryRegistered_start}, 'YYYY-MM-DD HH24:MI:SS')
 			</if>
@@ -55,7 +54,7 @@
 			<if test="pointHistoryMemo != null and !pointHistoryMemo.equals('')">
 				AND INSTR(h.point_history_memo, #{pointHistoryMemo}) > 0
 			</if>
-		</where>-->
+		</where>
 		ORDER BY h.point_history_idx DESC
 	</select>
 	

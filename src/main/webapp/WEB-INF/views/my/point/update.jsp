@@ -8,7 +8,7 @@
 <!-- ************************************************ 헤드 영역 ************************************************ -->
 <HEAD>
 <jsp:include page="/resources/template/header.jsp" flush="false" />
-<TITLE>HobbyCloud - 포인트상품 조회</TITLE>
+<TITLE>HobbyCloud - 포인트상품 수정</TITLE>
 <script type='text/javascript'>
 
 //문서가 로드되자마자 실행될 내용을 여기다 담으면 된다.
@@ -30,6 +30,7 @@ window.addEventListener("load", function() {
 
 <!-- ************************************************ 사이드메뉴 영역 ************************************************ -->
 <!-- 사이드메뉴 영역 시작 -->
+<jsp:include page="/resources/template/leftMenu.jsp" flush="false" />
 <!-- 사이드메뉴 영역 끝 -->
 
 
@@ -42,7 +43,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			포인트상품 등록
+			포인트상품 수정
 			</span>
 		</div>
 	</HEADER>
@@ -52,22 +53,27 @@ window.addEventListener("load", function() {
 		<!-- 소단원 내용 -->
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
-				<form name="pointForm" method="post" class="row container d-flex justify-content-center">
+				<form name="pointForm" action="${root}/point/update" method="post" class="row container d-flex justify-content-center"> 
+					<div class="form-group row mb-4">
+						<label for="form_pointName" class="form-label mb-0">포인트상품 번호</label>
+						<input name="pointIdx" id="form_pointName" type="text" class="form-input p-2 px-3 border-radius-all-25" required value="${dto.getPointIdx()}" disabled>
+						<input type="hidden" name="pointIdx" value="${dto.getPointIdx()}" />
+					</div>
 					<div class="form-group row mb-4">
 						<label for="form_pointName" class="form-label mb-0">포인트상품명</label>
-						<input name="pointName" id="form_pointName" type="text" class="form-input p-2 px-3 border-radius-all-25" placeholder="포인트상품 이름을 입력하세요" required>
+						<input name="pointName" id="form_pointName" type="text" class="form-input p-2 px-3 border-radius-all-25" placeholder="포인트상품 이름을 입력하세요" required value="${dto.getPointName()}">
 					</div>
 					<div class="row mb-4">
 						<label>포인트상품 가격</label>
 						<div class="input-group flex-nowrap grayInputGroup p-0">
 							<div class="input-group-text">&#8361;</div>
-							<input type="number" name="pointPrice" placeholder="가격을 입력하세요" required class="form-control">
+							<input type="number" name="pointPrice" placeholder="가격을 입력하세요" required class="form-control" required value="${dto.getPointPrice()}">
 						</div>
 					</div>
 					<div class="row mb-4">
 						<label>포인트상품 충전량</label>
 						<div class="input-group flex-nowrap grayInputGroup p-0">
-							<input type="number" name="pointAmount" placeholder="충전량을 입력하세요" required class="form-control">
+							<input type="number" name="pointAmount" placeholder="충전량을 입력하세요" required class="form-control" value="${dto.getPointAmount()}">
 							<div class="input-group-text">포인트</div>
 						</div>
 					</div>
