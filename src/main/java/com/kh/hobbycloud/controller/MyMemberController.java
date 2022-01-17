@@ -38,14 +38,25 @@ public class MyMemberController {
 	public String memberList(MemberCriteria cri, Model model) {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ /my/member 진입");
 		List<LinkedHashMap<String, String>> list = myMemberService.list(cri);
-		model.addAttribute("list", list);
+
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 완성된 전체 Maps 목록: {}개 - {}", list.size(), list);
+		model.addAttribute("list", list);
+
 		MemberPageMaker pageMaker = new MemberPageMaker();
 		pageMaker.setCri(cri);
 		int count = memberService.listCount();
 		pageMaker.setTotalCount(count);
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원목록 수: {} / 완성된 페이지네이션 정보: {}", count, pageMaker);
 		model.addAttribute("pageMaker", pageMaker);
+
+		String title = "회원 목록";
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 페이지 제목: {}", title);
+		model.addAttribute("title", title);
+
+		String menu = "member";
+		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 메뉴명: {}", menu);
+		model.addAttribute("menu", menu);
+
 		return "my/board";
 	}
 
@@ -59,7 +70,7 @@ public class MyMemberController {
 		model.addAttribute("memberDto", map.get("memberDto"));
 		model.addAttribute("memberProfileDto", map.get("memberProfileDto"));
 		model.addAttribute("memberCategoryDto", map.get("memberCategoryDto"));
-		return "my/detail/member";
+		return "my/member/detail";
 	}
 
 	@GetMapping("/update/{memberIdx}")
@@ -96,26 +107,5 @@ public class MyMemberController {
 		log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 회원 삭제 완료");
 		return "redirect:/my/member/";
 	}
-
-	/*
-	@RequestMapping("/lec/myLec")
-	public String myLecList() {
-		return "my/lec/myLec";
-	}
-
-	@RequestMapping("/")
-	public String myLec() {
-		return "my/main";
-	}
-
-	//내 강좌 보기
-	@GetMapping("/lecMy")
-	public String myLec(HttpSession session, Model model) {
-		Integer memberIdx = (Integer) session.getAttribute("memberIdx");
-		List<LecMyVO> myLecList = lecMyDao.getMyLec(memberIdx);
-		model.addAttribute("myLecList", myLecList);
-		return "lecMy/my_lec";
-	}
-*/
 
 }

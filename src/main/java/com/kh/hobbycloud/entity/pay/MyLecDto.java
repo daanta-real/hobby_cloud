@@ -6,7 +6,7 @@ import lombok.Data;
 
 // 내 강좌 목록 DTO
 @Data
-public class LecMyDto {
+public class MyLecDto {
 	private Integer lecMyIdx;        // 내 강좌 idx
 	private Integer memberIdx;       // 회원 idx
 	private Integer lecIdx;			 // 강좌 idx

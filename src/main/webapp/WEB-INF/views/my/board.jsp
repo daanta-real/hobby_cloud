@@ -42,7 +42,7 @@ window.addEventListener("load", function() {
 	<HEADER class='w-100 mb-1 p-2 px-md-3'>
 		<div class='row border-bottom border-secondary border-1'>
 			<span class="subject border-bottom border-primary border-5 px-3 fs-1">
-			회원 목록
+			${title}
 			</span>
 		</div>
 	</HEADER>
@@ -67,7 +67,7 @@ window.addEventListener("load", function() {
 						</thead>
 						<tbody>
 							<c:forEach items="${list}" var="oneMap">
-								<tr class="cursor-pointer" onclick="location.href='${root}/my/member/detail/${oneMap.get('targetIdx')}';">
+								<tr class="cursor-pointer" onclick="location.href='${root}/my/${menu}/detail/${oneMap.get('targetIdx')}';">
 									<c:forEach items="${oneMap}" var="one">
 										<c:if test="${one.key != 'targetIdx'}">
 											<td class="text-center align-middle text-nowrap">${one.value}</td>
@@ -86,9 +86,9 @@ window.addEventListener("load", function() {
 						<c:if test="${pageMaker.prev}">
 							<li class="page-item disabled"><a class="page-link" href="${root}/my/member/${pageMaker.makeQuery(pageMaker.startPage - 1)}" >«</a></li>
 						</c:if>
-							<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-								<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="${root}/my/member/${pageMaker.makeQuery(idx)}">${idx}</a></li>
-							</c:forEach>
+						<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+							<li class="page-item ${param.page == idx ? 'active' : ''}"><a  class="page-link" href="${root}/my/member/${pageMaker.makeQuery(idx)}">${idx}</a></li>
+						</c:forEach>
 						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 							<li class="page-item"><a class="page-link" href="${root}/my/member/${pageMaker.makeQuery(pageMaker.endPage + 1)}">»</a></li>
 						</c:if>

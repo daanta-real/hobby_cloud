@@ -3,7 +3,7 @@ package com.kh.hobbycloud.vo.pay;
 import lombok.Data;
 
 @Data
-public class LecMySearchVO {
+public class MyLecSearchVO {
 	private Integer lecMyIdx;           // 내 강좌 idx
 	private Integer memberIdx;          // 회원 idx
 	private Integer memberId;          // 회원 ID

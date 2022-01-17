@@ -5,7 +5,9 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class LecMyVO {
+public class MyLecVO {
+	private int lecMyIdx;
+	private int lecIdx;
 	private String lecName;
 	private String lecLocRegion;
 	private int lecContainsCount;

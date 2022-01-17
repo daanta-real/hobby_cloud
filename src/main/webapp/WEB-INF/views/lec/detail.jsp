@@ -425,7 +425,7 @@ function deleteReview(lecReviewIdxValue){
 			</form>
 			
 			<!-- 강좌 추가하기 -->
-			<a href="${pageContext.request.contextPath}/lecMy/confirm/${lecDetailVO.lecIdx}" class="btn btn-danger">강좌 신청</a>
+			<a href="${pageContext.request.contextPath}/my/lec/confirm/${lecDetailVO.lecIdx}" class="btn btn-danger">강좌 신청</a>
 		</div>
 		</nav>
 		

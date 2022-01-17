@@ -143,7 +143,7 @@ window.addEventListener("load", function() {
 					<h5><fmt:formatNumber value="${currentPoint - lecDetailVO.lecPrice}" pattern="#,###" /> 포인트</h5>
 				</div>
 				<div class="row">
-					<form class="pt-5 d-flex align-items-center justify-content-center" method="get" action="${root}/lecMy/execute_buy"><button class="btn btn-sm btn-primary fs-4 p-2 px-4">강좌 구매하기</button></form>
+					<form class="pt-5 d-flex align-items-center justify-content-center" method="get" action="${root}/my/lec/execute_buy"><button class="btn btn-sm btn-primary fs-4 p-2 px-4">강좌 구매하기</button></form>
 				</div>
 				<div class="row">
 					<form class="pt-5 d-flex align-items-center justify-content-center" method="get" action="${root}/lec/detail/${lecDetailVO.lecIdx}"><button class="btn btn-sm btn-secondary fs-4 p-2 px-4">이전 화면으로 돌아가기</button></form>
