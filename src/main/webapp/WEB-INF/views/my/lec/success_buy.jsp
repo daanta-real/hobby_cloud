@@ -49,10 +49,10 @@ window.addEventListener("load", function() {
 			<div class="m-5 fs-4 text-center">강좌 구매에 성공하였습니다.</div>
 			<div class="m-5 fs-4 d-flex flex-column align-items-center justify-content-center">
 				<form method="get" class="m-2" action="${root}/lec/list"><button class="btn btn-sm btn-primary fs-4 p-2 px-4">강좌 목록으로 가기</button></form>
-				<form method="get" class="m-2" action="${root}/">        <button class="btn btn-sm btn-primary fs-4 p-2 px-4">메인 화면으로 가기가기</button></form>
-				<form method="get" class="m-2" action="${root}/my/pay">  <button class="btn btn-sm btn-primary fs-4 p-2 px-4">결제 이력 화면으로 가기</button></form>
+				<form method="get" class="m-2" action="${root}/">        <button class="btn btn-sm btn-primary fs-4 p-2 px-4">메인 화면으로 가기</button></form>
+				<form method="get" class="m-2" action="${root}/my/pay/">  <button class="btn btn-sm btn-primary fs-4 p-2 px-4">결제 이력 화면으로 가기</button></form>
 				<form method="get" class="m-2" action="${root}/my/">     <button class="btn btn-sm btn-primary fs-4 p-2 px-4">마이페이지로 가기</button></form>
-				<form method="get" class="m-2" action="${root}/lecmy/myLec">     <button class="btn btn-sm btn-primary fs-4 p-2 px-4">내 강좌로 가기</button></form>
+				<form method="get" class="m-2" action="${root}/my/lec/">     <button class="btn btn-sm btn-primary fs-4 p-2 px-4">내 강좌로 가기</button></form>
 			</div>
 		</div>
 	</SECTION>
