@@ -78,7 +78,7 @@
 	<!-- 기본 로깅 설정(세부 설정이 있을 경우 세부 설정이 우선 적용) -->
 	<root>
 		<!-- 기본 출력 수준 정의 -->
-		<priority value="debug" />
+		<priority value="warn" />
 		
 		<!-- 기본 출력 대상 정의 -->
 		<appender-ref ref="console" />

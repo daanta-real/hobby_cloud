@@ -1,8 +1,4 @@
-강좌를 추가할 수 있는 강사 아이디
-= teacherkim1, teachersim1, teacherlee1, hanteacher1, khteacher1, khteacher2 
-땅주인 아이디
-= khLandlord1, khLandlord2
-어드민 아이디
-= khadmin1
-민간인 아이디
-= khmember1
+일반회원 : khmember1 ~ khmember10
+강사 아이디 : teacherkim1, teachersim1, teacherlee1, hanteacher1, khteacher1, khteacher2
+임대인 아이디 :  khLandlord1, khLandlord2
+관리자 아이디 : khadmin1, khadmin2
