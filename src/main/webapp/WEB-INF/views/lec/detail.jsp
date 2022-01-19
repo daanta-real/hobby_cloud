@@ -442,12 +442,12 @@ $(function(){
 						</c:otherwise>
 					</c:choose>
 				
-				<!-- 찜하기 -->
-					<form name="form1" method="post" class="col-6 d-flex justify-content-end p-0"
-					 action="${pageContext.request.contextPath}/lec/cart/insert">
-					    <input type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}">
-					    <input type="submit" id="jjim-btn" class="btn btn-outline-primary" value="찜하기">
-					</form>
+<!-- 				찜하기 -->
+<!-- 					<form name="form1" method="post" class="col-6 d-flex justify-content-end p-0" -->
+<%-- 					 action="${pageContext.request.contextPath}/lec/cart/insert"> --%>
+<%-- 					    <input type="hidden" name="lecIdx" value="${lecDetailVO.lecIdx}"> --%>
+<!-- 					    <input type="submit" id="jjim-btn" class="btn btn-outline-primary" value="찜하기"> -->
+<!-- 					</form> -->
 				</div>
 				
 				<!-- 강좌 추가하기 -->

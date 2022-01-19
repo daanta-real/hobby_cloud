@@ -72,7 +72,7 @@ $(function(){
 		            <table border="1" width="400px">
 		                <tr>
 		                    <th>강좌명</th>
-		                    <th>단가</th>
+		                    <th></th>
 		                    <th>&nbsp;</th>
 		                </tr>
 		                <!-- map에 있는 list출력하기 위해 forEach문을 사용해 row라는 변수에 넣는다. -->
@@ -106,14 +106,13 @@ $(function(){
 		                </tr>
 		            </table>
 		<!--             <button id="btnUpdate">수정</button> -->
-		            <button type="button" id="btnDelete">찜 비우기</button>
-		            //btnUpdate와 btnDelete id는 위쪽에 있는 자바스크립트가 처리.
 		        </form>
+		        <button type="button" id="btnDelete" class="col-auto btn btn-outline-primary float-left">찜 비우기</button>
 		    </c:otherwise>
 		</c:choose>
-		<nav class="row p-0 pt-4 d-flex justify-content-between">
-			<button type="button" id="btnList" class="col-auto btn btn-sm btn-outline-primary" onclick="location.href='${root}/lec/list';">강좌목록</a></button>
-			<button type="button" id="btnPayment" class="col-4 btn btn-outline-primary" onclick="location.href='${root}/lec/check;">결제하기</a></button>
+		<button type="button" id="btnList" class="col-auto btn btn-outline-primary float-right" onclick="location.href='${root}/lec/list';">강좌목록</a></button>
+		<nav class="row p-0 pt-4 d-flex justify-content-between">		
+			<button type="button" id="btnPayment" class="col-4 btn btn-outline-primary row" style="float: none; margin:100 auto;" onclick="location.href='${root}/lec/check;">결제하기</a></button>
 		</nav>
 		</div>
 	</SECTION>

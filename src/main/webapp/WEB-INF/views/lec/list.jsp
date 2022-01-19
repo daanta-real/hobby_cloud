@@ -52,10 +52,10 @@
 		<div class="row p-sm-2 mx-1 mb-5">
 			<div class="container">
 				<form method="post" class="row">
-					<div class="form-group mb-4 col-6">
-						<label for="searchForm_lecIdx" class="form-label mb-0">강좌 번호</label>
-						<input name="lecIdx" id="searchForm_lecIdx" type="number" class="form-control" placeholder="강좌 번호를 입력하세요" value="${lecSearchVO.lecIdx}">
-					</div>
+<!-- 					<div class="form-group mb-4 col-6"> -->
+<!-- 						<label for="searchForm_lecIdx" class="form-label mb-0">강좌 번호</label> -->
+<%-- 						<input name="lecIdx" id="searchForm_lecIdx" type="number" class="form-control" placeholder="강좌 번호를 입력하세요" value="${lecSearchVO.lecIdx}"> --%>
+<!-- 					</div> -->
 					<div class="form-group mb-4 col-12">
 						<label for=searchForm_lecLocRegion class="form-label mb-0 d-block">지역</label>
 						<div class="btn-group w-100 flex-wrapper">
